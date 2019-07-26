@@ -2,12 +2,6 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-      "DomID": {
-        "type": "string",
-        "metadata": {
-          "description": "Lab Unique Identifier"
-        }
-      },
       "vnetName": {
         "type": "string",
         "metadata": {
@@ -20,46 +14,31 @@
           "description": "VNet prefix"
         }
       },
-      "subnet1Prefix": {
+      "subnetPrefix": {
         "type": "string",
         "metadata": {
-          "description": "Subnet 1 Prefix"
+          "description": "Subnet Prefix"
         }
       },
-      "subnet1Name": {
+      "subnetName": {
         "type": "string",
         "metadata": {
-          "description": "Subnet 1 Name"
+          "description": "Subnet Name"
         }
       },
-      "subnet2Prefix": {
+      "_artifactsLocation": {
         "type": "string",
         "metadata": {
-          "description": "Subnet 2 Prefix"
-        }
+            "description": "The location of resources, such as templates and DSC modules, that the template depends on"
+        },
+        "defaultValue": "[deployment().properties.templateLink.uri]"
       },
-      "subnet2Name": {
-        "type": "string",
+      "_artifactsLocationSasToken": {
+        "type": "securestring",
         "metadata": {
-          "description": "Subnet 2 Name"
-        }
-      },
-      "vnetprefixes": {
-        "defaultValue": [""],
-        "type": "array"
-      },
-      "subnets": {
-        "defaultValue": [
-          {
-            "name": "[parameters('subnet1Name')]",
-            "prefix": "[parameters('subnet1Prefix')]"
-          },
-          {
-            "name": "[parameters('subnet2Name')]",
-            "prefix": "[parameters('subnet2Prefix')]"
-          }
-        ],
-        "type": "array"
+            "description": "Auto-generated token to access _artifactsLocation"
+        },
+        "defaultValue": ""
       },
       "location": {
         "type": "string",
@@ -68,31 +47,37 @@
         }
       }
     },
-    "variables": {
-        "apiVersion":  "2016-03-30",
-        "subnetCount": "[length(parameters('subnets'))]"
-    },
+    "variables": {},
     "resources": [
-      {
-        "apiVersion": "2018-10-01",
-        "type": "Microsoft.Network/virtualNetworks",
-        "name": "[parameters('vnetName')]",
-        "location": "[parameters('location')]",
-        "properties": {
-          "addressSpace": {
-            "addressPrefixes": "[parameters('vnetPrefixes')]"
-          },
-          "copy": [{
-            "name": "subnets",
-            "count": "[variables('subnetCount')]",
-            "input": {
-              "name": "[parameters('subnets')[copyIndex('subnets')]['name']]",
-              "properties":{
-                "addressprefix": "[parameters('subnets')[copyIndex('subnets')]['prefix']]"
-              }
+
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-11-01",
+            "name": "VNet",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/vnet.json', parameters('_artifactsLocationSasToken')))]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "vnetName": {
+                        "value": "[parameters('vnetName')]"
+                    },
+                    "vnetPrefix": {
+                        "value": "[parameters('vnetPrefix')]"
+                    },
+                    "subnetName": {
+                        "value": "[parameters('subnetName')]"
+                    },
+                    "subnetPrefix": {
+                        "value": "[parameters('subnetPrefix')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    }
+                }
             }
-          }]
         }
-      }
     ]
   }
