@@ -144,7 +144,7 @@
   "resources": [
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2018-11-01",
+      "apiVersion": "2015-01-01",
       "name": "VNet",
       "properties": {
           "mode": "Incremental",
@@ -176,7 +176,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2018-11-01",
+      "apiVersion": "2015-01-01",
       "name": "BastionHost",
       "dependsOn": [
         "VNet"
@@ -208,7 +208,7 @@
     },    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2018-11-01",
+      "apiVersion": "2015-01-01",
       "name": "deployDCVM",
       "dependsOn": [
         "VNet",
@@ -271,7 +271,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2018-11-01",
+      "apiVersion": "2015-01-01",
       "name": "promotedc1",
       "dependsOn": [
         "VNet",
@@ -314,7 +314,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2018-11-01",
+      "apiVersion": "2015-01-01",
       "name": "updatevnetdns",
       "dependsOn": [
         "VNet",
