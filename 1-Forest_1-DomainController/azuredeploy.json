@@ -23,6 +23,13 @@
         "description": "Subnet 1 Prefix"
       }
     },    
+    "BastionsubnetPrefix": {
+      "type": "string",
+      "defaultValue": "10.1.253.0/24",
+      "metadata": {
+        "description": "Subnet 1 Prefix"
+      }
+    },        
     "subnet1Name": {
       "type": "string",
       "defaultValue": "1adsite-vnet1-subnet1",
@@ -158,6 +165,9 @@
               "subnet1Prefix": {
                   "value": "[parameters('subnet1Prefix')]"
               },
+              "BastionsubnetPrefix": {
+                "value": "[parameters('BastionsubnetPrefix')]"
+              },              
               "location": {
                   "value": "[parameters('location')]"
               }
