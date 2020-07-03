@@ -243,9 +243,6 @@
               "NetBiosDomain": {
                   "value": "[parameters('subnet1Name')]"
               },
-              "subnet1Prefix": {
-                  "value": "[parameters('subnet1Prefix')]"
-              },
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
               },                                                                                                            
