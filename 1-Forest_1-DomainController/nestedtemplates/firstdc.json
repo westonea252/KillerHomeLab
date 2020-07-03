@@ -8,12 +8,6 @@
                 "description": "Computer Name"
             }
         },
-        "DSCModuleName": {
-            "type": "string",
-            "metadata": {
-                "description": "DSC Module Names"
-            }
-        },
         "NetBiosDomain": {
             "type": "string",
             "metadata": {
@@ -58,8 +52,8 @@
         }                
     },
     "variables": {
-        "ModulesURL": "[uri(parameters('_artifactsLocation'),'/DSC/', parameters('DSCModuleName'), '.zip', parameters('_artifactsLocationSasToken'))]",
-        "ConfigurationFunction": "[concat(parameters('DSCModuleName'), '.ps1\\', parameters('DSCModuleName'))]"
+        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/FIRSTDC.zip', parameters('_artifactsLocationSasToken')))]",
+        "ConfigurationFunction": "FIRSTDC.ps1\\FIRSTDC"
     },
     "resources": [
         {

@@ -237,9 +237,6 @@
               "computerName": {
                   "value": "[parameters('computerName')]"
               },
-              "DSCModuleName": {
-                  "value": "FIRSTDC"
-              },
               "NetBiosDomain": {
                   "value": "[parameters('subnet1Name')]"
               },
