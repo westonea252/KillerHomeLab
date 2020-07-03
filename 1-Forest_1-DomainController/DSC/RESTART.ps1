@@ -1,4 +1,4 @@
-﻿configuration FIRSTDC
+﻿configuration RESTART
 {
    param
    (
