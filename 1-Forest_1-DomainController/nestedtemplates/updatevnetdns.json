@@ -1,0 +1,69 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "vnetName": {
+        "type": "string",
+        "metadata": {
+          "description": "The name of the Virtual Network to Create"
+        }
+      },
+      "vnetprefix": {
+        "type": "string",
+        "metadata": {
+          "description": "The address range of the new VNET in CIDR format"
+        }
+      },
+      "subnetName": {
+        "type": "string",
+        "metadata": {
+          "description": "The name of the subnet created in the new VNET"
+        }
+      },
+      "subnetPrefix": {
+        "type": "string",
+        "metadata": {
+          "description": "The address range of the subnet created in the new VNET"
+        }
+      },
+      "DNSServerIP": {
+        "type": "array",
+        "metadata": {
+          "description": "The DNS address(es) of the DNS Server(s) used by the VNET"
+        }
+      },
+      "location": {
+        "type": "string",
+        "metadata": {
+          "description": "Location for all resources."
+        }
+      }
+    },
+    "resources": [
+      {
+        "type": "Microsoft.Network/virtualNetworks",
+        "name": "[parameters('vnetName')]",
+        "apiVersion": "2019-02-01",
+        "location": "[parameters('location')]",
+        "properties": {
+          "addressSpace": {
+            "addressPrefixes": [
+              "[parameters('vnetPrefix')]"
+            ]
+          },
+          "dhcpOptions": {
+            "dnsServers": "[parameters('DNSServerIP')]"
+          },
+          "subnets": [
+            {
+              "name": "[parameters('subnetName')]",
+              "properties": {
+                "addressPrefix": "[parameters('subnetPrefix')]"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+  

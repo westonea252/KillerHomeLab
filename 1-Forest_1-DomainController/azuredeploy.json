@@ -311,6 +311,44 @@
               }
           }
       }
-    }        
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2018-11-01",
+      "name": "updatevnetdns",
+      "dependsOn": [
+        "VNet",
+        "BastionHost",
+        "DeployDCVM",
+        "promotedc1"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/updatevnetdns.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "vnetName": {
+                  "value": "[parameters('vnetName')]"
+              },
+              "vnetprefix": {
+                  "value": "[parameters('vnetprefix')]"
+              },
+              "subnetName": {
+                "value": "[parameters('subnet1Name')]"
+              },                                                                                                            
+              "subnetPrefix": {
+                "value": "[parameters('subnet1Prefix')]"
+              }, 
+              "DNSServerIP": {
+                "value": "[parameters('DNSServerIP')]"
+              },                                                                                                            
+              "location": {
+                  "value": "[parameters('location')]"
+              }
+          }
+      }
+    }            
   ]
 }
