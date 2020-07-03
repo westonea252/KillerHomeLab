@@ -45,12 +45,7 @@
                 "settings": {
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]"
-                },
-                "protectedSettings": {
-                    "Items": {
-                        "AdminPassword": "[parameters('adminPassword')]"
-                    }
-                }                
+                }
             }
         }
     ]
