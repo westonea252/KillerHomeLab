@@ -26,6 +26,12 @@
           "description": "The address range of the subnet created in the new VNET"
         }
       },
+      "BastionsubnetPrefix": {
+        "type": "string",
+        "metadata": {
+          "description": "The address range of the subnet created in the new VNET"
+        }
+      },      
       "DNSServerIP": {
         "type": "array",
         "metadata": {
@@ -48,19 +54,24 @@
         "properties": {
           "addressSpace": {
             "addressPrefixes": [
-              "[parameters('vnetPrefix')]"
+              "[parameters('vnetprefix')]"
             ]
-          },
-          "dhcpOptions": {
-            "dnsServers": "[parameters('DNSServerIP')]"
           },
           "subnets": [
             {
-              "name": "[parameters('subnetName')]",
+              "name": "[parameters('subnet1Name')]",
               "properties": {
-                "addressPrefix": "[parameters('subnetPrefix')]"
+                "addressPrefix": "[parameters('subnet1Prefix')]"
+                
               }
-            }
+            },
+            {
+              "name": "AzureBastionSubnet",
+              "properties": {
+                "addressPrefix": "[parameters('BastionsubnetPrefix')]"
+                
+              }
+            }                    
           ]
         }
       }
