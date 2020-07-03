@@ -57,6 +57,9 @@
               "[parameters('vnetprefix')]"
             ]
           },
+          "dhcpOptions": {
+            "dnsServers": "[parameters('DNSServerIP')]"
+          },          
           "subnets": [
             {
               "name": "[parameters('subnetName')]",
