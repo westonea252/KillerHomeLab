@@ -178,6 +178,9 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2018-11-01",
       "name": "BastionHost",
+      "dependsOn": [
+        "VNet"
+      ],
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -207,6 +210,10 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2018-11-01",
       "name": "deployDCVM",
+      "dependsOn": [
+        "VNet",
+        "BastionHost"
+      ],      
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -266,6 +273,11 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2018-11-01",
       "name": "promotedc1",
+      "dependsOn": [
+        "VNet",
+        "BastionHost",
+        "DeployDCVM"
+      ],            
       "properties": {
           "mode": "Incremental",
           "templateLink": {
