@@ -342,7 +342,7 @@
                 "value": "[parameters('subnet1Prefix')]"
               }, 
               "DNSServerIP": {
-                "value": "[parameters('computerIP')]"
+                "value": ["[parameters('computerIP')]"]
               },                                                                                                            
               "location": {
                   "value": "[parameters('location')]"
