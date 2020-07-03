@@ -86,6 +86,20 @@
             "description": "VMSize"
         }
     },        
+    "NetBiosDomain": {
+      "type": "string",
+      "defaultValue": "elliottfieldsjr",
+      "metadata": {
+          "description": "NetBios Parent Domain Name"
+      }
+    },            
+    "domainName": {
+      "type": "string",
+      "defaultValue": "elliottfieldsjr.com",
+      "metadata": {
+          "description": "NetBios Parent Domain Name"
+      }
+    },                
     "adminUsername": {
         "type": "string",
         "metadata": {
@@ -208,6 +222,47 @@
               }
           }
       }
-    }    
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2018-11-01",
+      "name": "promotedc1",
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/firstdc.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[parameters('computerName')]"
+              },
+              "DSCModuleName": {
+                  "value": "FIRSTDC"
+              },
+              "NetBiosDomain": {
+                  "value": "[parameters('subnet1Name')]"
+              },
+              "subnet1Prefix": {
+                  "value": "[parameters('subnet1Prefix')]"
+              },
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              }, 
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                                           
+              "location": {
+                  "value": "[parameters('location')]"
+              }
+          }
+      }
+    }        
   ]
 }
