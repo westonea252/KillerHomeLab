@@ -1,0 +1,98 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vnetName": {
+      "type": "string",
+      "defaultValue": "1adsite-vnet1",
+      "metadata": {
+        "description": "VNet name"
+      }
+    },
+    "vnetprefix": {
+      "type": "string",
+      "defaultValue": "10.1.0.0/16",
+      "metadata": {
+        "description": "VNet prefix"
+      }
+    },
+    "subnet1Prefix": {
+      "type": "string",
+      "defaultValue": "10.1.1.0/24",
+      "metadata": {
+        "description": "Subnet 1 Prefix"
+      }
+    },
+    "subnet1Name": {
+      "type": "string",
+      "metadata": {
+        "description": "Subnet 1 Name"
+      }
+    },
+    "vnetprefixes": {
+      "defaultValue": ["[parameters('vnetprefix')]"],
+      "type": "array"
+    },
+    "subnets": {
+      "defaultValue": [
+        {
+          "name": "[parameters('subnet1Name')]",
+          "prefix": "[parameters('subnet1Prefix')]"
+        }
+      ],
+      "type": "array"
+    },
+    "_artifactsLocation": {
+      "type": "string",
+      "metadata": {
+          "description": "The location of resources, such as templates and DSC modules, that the template depends on"
+      },
+      "defaultValue": "[deployment().properties.templateLink.uri]"
+    },
+    "_artifactsLocationSasToken": {
+        "type": "securestring",
+        "metadata": {
+            "description": "Auto-generated token to access _artifactsLocation. Leave it blank unless you need to provide your own value."
+        },
+        "defaultValue": ""
+    },    
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Region of Resources"
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2018-11-01",
+      "name": "VNet",
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/vnet.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "virtualNetworkName": {
+                  "value": "[parameters('vnetName')]"
+              },
+              "virtualNetworkAddressRange": {
+                  "value": "[parameters('vnetprefix')]"
+              },
+              "subnetName": {
+                  "value": "[parameters('subnet1Name')]"
+              },
+              "subnetRange": {
+                  "value": "[parameters('subnet1Prefix')]"
+              },
+              "location": {
+                  "value": "[parameters('location')]"
+              }
+          }
+      }
+    }
+  ]
+}
