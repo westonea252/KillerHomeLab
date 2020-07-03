@@ -185,7 +185,7 @@
                   "value": "[parameters('vnetName')]"
               },
               "subnetName": {
-                  "value": "[parameters('subnet1Name')]"
+                  "value": "AzureBastionSubnet"
               },
               "location": {
                   "value": "[parameters('location')]"
