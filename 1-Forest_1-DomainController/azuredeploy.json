@@ -25,7 +25,7 @@
     },
     "subnet1Name": {
       "type": "string",
-      "defaultValue": "1adsite-vnet1-subnet1"
+      "defaultValue": "1adsite-vnet1-subnet1",
       "metadata": {
         "description": "Subnet 1 Name"
       }
