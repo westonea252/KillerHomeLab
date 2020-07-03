@@ -1,4 +1,4 @@
-# Create a new Windows VM with Bastion Host and create a new AD Forest, Domain and DC, Organizational Unit, DNS Records
+# 1-Forest_1-DomainController
 
 This Templates deploys a Single Forest with a Single Domain Controller and also deploys Organizational Units and DNS Records
 
