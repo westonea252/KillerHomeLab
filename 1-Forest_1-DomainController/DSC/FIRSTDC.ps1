@@ -119,10 +119,6 @@
             {
                 # Reset DNS
                 Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ResetServerAddresses
-
-                # Reboot DC
-                Restart-Computer
-
             }
             GetScript =  { @{} }
             TestScript = { $false}
