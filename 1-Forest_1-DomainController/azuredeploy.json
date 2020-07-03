@@ -167,6 +167,35 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2018-11-01",
+      "name": "BastionHost",
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/bastionhost.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "publicIPAddressName": {
+                "value": "[concat(parameters('vnetName'),'-Bastion-pip')]"
+              },
+              "AllocationMethod": {
+                "value": "Static"
+              },              
+              "vnetName": {
+                  "value": "[parameters('vnetName')]"
+              },
+              "subnetName": {
+                  "value": "[parameters('subnet1Name')]"
+              },
+              "location": {
+                  "value": "[parameters('location')]"
+              }
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2018-11-01",
       "name": "deployDCVM",
       "properties": {
           "mode": "Incremental",
