@@ -59,9 +59,9 @@
           },
           "subnets": [
             {
-              "name": "[parameters('subnet1Name')]",
+              "name": "[parameters('subnetName')]",
               "properties": {
-                "addressPrefix": "[parameters('subnet1Prefix')]"
+                "addressPrefix": "[parameters('subnetPrefix')]"
                 
               }
             },
