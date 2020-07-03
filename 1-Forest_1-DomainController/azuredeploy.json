@@ -354,6 +354,33 @@
               }
           }
       }
-    }            
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "restartdc",
+      "dependsOn": [
+        "VNet",
+        "BastionHost",
+        "DeployDCVM",
+        "promotedc1",
+        "updatevnetdns"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/restart.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[parameters('computerName')]"
+              },
+              "location": {
+                  "value": "[parameters('location')]"
+              }
+          }
+      }
+    }             
   ]
 }
