@@ -14,13 +14,13 @@
           "description": "The address range of the new VNET in CIDR format"
         }
       },
-      "subnetName": {
+      "subnet1Name": {
         "type": "string",
         "metadata": {
           "description": "The name of the subnet created in the new VNET"
         }
       },
-      "subnetPrefix": {
+      "subnet1Prefix": {
         "type": "string",
         "metadata": {
           "description": "The address range of the subnet created in the new VNET"
@@ -62,12 +62,19 @@
           },          
           "subnets": [
             {
-              "name": "[parameters('subnetName')]",
+              "name": "[parameters('subnet1Name')]",
               "properties": {
-                "addressPrefix": "[parameters('subnetPrefix')]"
+                "addressPrefix": "[parameters('subnet1Prefix')]"
                 
               }
             },
+            {
+              "name": "[parameters('subnet2Name')]",
+              "properties": {
+                "addressPrefix": "[parameters('subnet2Prefix')]"
+                
+              }
+            },            
             {
               "name": "AzureBastionSubnet",
               "properties": {
