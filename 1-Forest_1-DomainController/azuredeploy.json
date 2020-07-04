@@ -28,17 +28,16 @@
             "description": "Domain Controller1 OS Version"
         }
     },
-    "licenseType": {
+    "WK1OSVersion": {
       "type": "string",
-      "defaultValue": "None",
+      "defaultValue": "19h1-pro",
       "allowedValues": [
-        "Windows_Server",
-        "None"
-      ],      
+        "19h1-pro"
+      ],
       "metadata": {
-          "description": "License Type"
+          "description": "Workstation1 OS Version"
       }
-    },     
+  },    
     "DC1VMSize": {
         "type": "string",
         "defaultValue": "Standard_D2s_v3",
@@ -46,6 +45,13 @@
             "description": "Domain Controller1 VMSize"
         }
     },        
+    "WK1VMSize": {
+      "type": "string",
+      "defaultValue": "Standard_D2s_v3",
+      "metadata": {
+          "description": "Workstation1 VMSize"
+      }
+    },            
     "NetBiosDomain": {
       "type": "string",
       "defaultValue": "killerhomelab",
@@ -114,9 +120,13 @@
     "vnet1Prefix": "[concat(parameters('vnet1ID'),'.0.0/16')]",
     "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet1')]",    
     "vnet1subnet1Prefix": "[concat(parameters('vnet1ID'),'.1.0/24')]",    
+    "vnet1subnet2Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet2')]",    
+    "vnet1subnet2Prefix": "[concat(parameters('vnet1ID'),'.2.0/24')]",    
     "vnet1BastionsubnetPrefix": "[concat(parameters('vnet1ID'),'.253.0/24')]",        
     "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",           
-    "dc1IP": "[concat(parameters('vnet1ID'),'.1.111')]",        
+    "dc1IP": "[concat(parameters('vnet1ID'),'.1.101')]",        
+    "wk1name": "[concat(parameters('NamingConvention'),'-wk-01')]",           
+    "wk1IP": "[concat(parameters('vnet1ID'),'.1.201')]",            
     "DCDataDisk1Name": "NTDS",            
     "domainName": "[concat(parameters('NetBiosDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat('DC=',parameters('NetBiosDomain'),',DC=',parameters('TLD'))]"
@@ -125,7 +135,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "VNet",
+      "name": "VNet1",
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -145,6 +155,12 @@
               "subnet1Prefix": {
                   "value": "[variables('vnet1subnet1Prefix')]"
               },
+              "subnet2Name": {
+                "value": "[variables('vnet1subnet2Name')]"
+              },
+              "subnet2Prefix": {
+                "value": "[variables('vnet1subnet2Prefix')]"
+              },              
               "BastionsubnetPrefix": {
                 "value": "[variables('vnet1BastionsubnetPrefix')]"
               },              
@@ -157,9 +173,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "BastionHost",
+      "name": "BastionHost1",
       "dependsOn": [
-        "VNet"
+        "VNet1"
       ],
       "properties": {
           "mode": "Incremental",
@@ -189,10 +205,10 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "deployDCVM",
+      "name": "deployDC1VM",
       "dependsOn": [
-        "VNet",
-        "BastionHost"
+        "VNet1",
+        "BastionHost1"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -217,7 +233,7 @@
                 "value": "[parameters('DC1OSVersion')]"
               },              
               "LicenseType": {
-                "value": "[parameters('LicenseType')]"
+                "value": "None"
               },            
               "DataDisk1Name": {
                 "value": "[variables('DCDataDisk1Name')]"
@@ -254,9 +270,9 @@
       "apiVersion": "2015-01-01",
       "name": "promotedc1",
       "dependsOn": [
-        "VNet",
-        "BastionHost",
-        "DeployDCVM"
+        "VNet1",
+        "BastionHost1",
+        "DeployDC1VM"
       ],            
       "properties": {
           "mode": "Incremental",
@@ -295,11 +311,11 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "updatevnetdns",
+      "name": "updatevnet1dns",
       "dependsOn": [
-        "VNet",
-        "BastionHost",
-        "DeployDCVM",
+        "VNet1",
+        "BastionHost1",
+        "DeployDC1VM",
         "promotedc1"
       ],            
       "properties": {
@@ -338,13 +354,13 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "restartdc",
+      "name": "restartdc1",
       "dependsOn": [
-        "VNet",
-        "BastionHost",
-        "DeployDCVM",
+        "VNet1",
+        "BastionHost1",
+        "DeployDC1VM",
         "promotedc1",
-        "updatevnetdns"
+        "updatevnet1dns"
       ],            
       "properties": {
           "mode": "Incremental",
@@ -373,12 +389,12 @@
       "apiVersion": "2015-01-01",
       "name": "configdns",
       "dependsOn": [
-        "VNet",
-        "BastionHost",
-        "DeployDCVM",
+        "VNet1",
+        "BastionHost1",
+        "DeployDC1VM",
         "promotedc1",
-        "updatevnetdns",
-        "restartdc"
+        "updatevnet1dns",
+        "restartdc1"
       ],            
       "properties": {
           "mode": "Incremental",
@@ -413,12 +429,12 @@
       "apiVersion": "2015-01-01",
       "name": "createous",
       "dependsOn": [
-        "VNet",
-        "BastionHost",
-        "DeployDCVM",
+        "VNet1",
+        "BastionHost1",
+        "DeployDC1VM",
         "promotedc1",
-        "updatevnetdns",
-        "restartdc",
+        "updatevnet1dns",
+        "restartdc1",
         "configdns"
       ],            
       "properties": {
@@ -445,6 +461,118 @@
               }
           }
       }
-    }                                      
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "deployWK1VM",
+      "dependsOn": [
+        "VNet1",
+        "BastionHost1",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "restartdc1",
+        "configdns",
+        "createous"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('wk1name')]"
+              },
+              "computerIP": {
+                  "value": "[variables('wk1IP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsDesktop"
+              },
+              "Offer": {
+                  "value": "Windows-10"
+              },
+              "OSVersion": {
+                "value": "[parameters('WK1OSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "None"
+              },            
+              "VMSize": {
+                "value": "[parameters('WK1VMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('vnet1Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('vnet1subnet2Name')]"
+              },            
+              "vnetprefix": {
+                "value": "[variables('vnet1Prefix')]"
+              },            
+              "subnetPrefix": {
+                "value": "[variables('vnet1subnet2Prefix')]"
+              },                                                                                                            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "DomainJoinWK1VM",
+      "dependsOn": [
+        "VNet1",
+        "BastionHost1",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "DeployWK1VM"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/domainjoin.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('wk1name')]"
+              },
+              "domainName": {
+                  "value": "[variables('domainName')]"
+              },
+              "OUPath": {
+                  "value": "[variables('BaseDN')]"
+              },
+              "domainJoinOptions": {
+                  "value": "3"
+              },
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                             
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }
+          }
+      }
+    }                                                                                        
   ]
 }
