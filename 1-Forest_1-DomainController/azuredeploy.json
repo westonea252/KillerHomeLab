@@ -125,6 +125,7 @@
     "vnet1BastionsubnetPrefix": "[concat(parameters('vnet1ID'),'.253.0/24')]",        
     "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",           
     "dc1IP": "[concat(parameters('vnet1ID'),'.1.101')]",        
+    "ReverseLookup1": "[concat('1.',parameters('ReverseLookup1'))]",    
     "wk1name": "[concat(parameters('NamingConvention'),'-wk-01')]",           
     "wk1IP": "[concat(parameters('vnet1ID'),'.2.201')]",            
     "DCDataDisk1Name": "NTDS",            
@@ -417,7 +418,7 @@
                 "value": "[variables('DomainName')]"
               },              
               "ReverseLookup1": {
-                "value": "[parameters('ReverseLookup1')]"
+                "value": "[variables('ReverseLookup1')]"
               },                                                                                                            
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
