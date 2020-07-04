@@ -124,9 +124,9 @@
     "vnet1subnet2Prefix": "[concat(parameters('vnet1ID'),'.2.0/24')]",    
     "vnet1BastionsubnetPrefix": "[concat(parameters('vnet1ID'),'.253.0/24')]",        
     "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",           
-    "dc1IP": "[concat(parameters('vnet1ID'),'.1.101')]",        
+    "dc1IP": "[concat(variables('vnet1subnet1Prefix'),'.101')]",        
     "wk1name": "[concat(parameters('NamingConvention'),'-wk-01')]",           
-    "wk1IP": "[concat(parameters('vnet1ID'),'.1.201')]",            
+    "wk1IP": "[concat(variables('vnet1subnet2Prefix'),'.201')]",            
     "DCDataDisk1Name": "NTDS",            
     "domainName": "[concat(parameters('NetBiosDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat('DC=',parameters('NetBiosDomain'),',DC=',parameters('TLD'))]"
