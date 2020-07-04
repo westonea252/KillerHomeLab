@@ -28,8 +28,8 @@
         }                
     },
     "variables": {
-        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/RESTART.zip', parameters('_artifactsLocationSasToken')))]",
-        "ConfigurationFunction": "RESTART.ps1\\RESTART"
+        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/RESTARTVM.zip', parameters('_artifactsLocationSasToken')))]",
+        "ConfigurationFunction": "RESTARTVM.ps1\\RESTARTVM"
     },
     "resources": [
         {
