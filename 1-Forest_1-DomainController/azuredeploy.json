@@ -133,7 +133,7 @@
     "DCDataDisk1Name": "NTDS",            
     "domainName": "[concat(parameters('NetBiosDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat('DC=',parameters('NetBiosDomain'),',DC=',parameters('TLD'))]",
-    "WKOUPath": "[concat('OU=Windows 10,CN=Workstations,',variables('BaseDN'))]"
+    "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]"
   },  
   "resources": [
     {
