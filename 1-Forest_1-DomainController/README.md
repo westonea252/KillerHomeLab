@@ -1,4 +1,4 @@
-# 1-Forest, 1-DomainController, 1 ADSite - Beta
+# 1-Forest, 1-DomainController, 1 ADSite
 
 This Templates deploys a Single Forest with a Single Domain Controller and also deploys Organizational Units and DNS Records
 
