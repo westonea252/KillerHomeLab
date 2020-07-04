@@ -2,53 +2,53 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "vnetName": {
+    "vnet1Name": {
       "type": "string",
       "defaultValue": "1adsite-vnet1",
       "metadata": {
-        "description": "VNet name"
+        "description": "VNet1 Name"
       }
     },
-    "vnetprefix": {
+    "vnet1prefix": {
       "type": "string",
       "defaultValue": "10.1.0.0/16",
       "metadata": {
-        "description": "VNet prefix"
+        "description": "VNet1 Prefix"
       }
     },
-    "subnet1Prefix": {
+    "vnet1subnet1Prefix": {
       "type": "string",
       "defaultValue": "10.1.1.0/24",
       "metadata": {
-        "description": "Subnet 1 Prefix"
+        "description": "VNet1 Subnet1 Prefix"
       }
     },    
-    "BastionsubnetPrefix": {
+    "vnet1BastionsubnetPrefix": {
       "type": "string",
       "defaultValue": "10.1.253.0/24",
       "metadata": {
-        "description": "Subnet 1 Prefix"
+        "description": "VNet1 Bastion Subnet Prefix"
       }
     },        
-    "subnet1Name": {
+    "vnet1subnet1Name": {
       "type": "string",
       "defaultValue": "1adsite-vnet1-subnet1",
       "metadata": {
-        "description": "Subnet 1 Name"
+        "description": "VNet1 Subnet1 Name"
       }
     },
-    "computerName": {
+    "dc1name": {
       "type": "string",
       "defaultValue": "dc1",
       "metadata": {
-          "description": "Computer Name"
+          "description": "Domain Controller1 Name"
       }
     },
-    "computerIP": {
+    "dc1IP": {
       "type": "string",
       "defaultValue": "10.1.1.111",
       "metadata": {
-          "description": "Computer IP Address"
+          "description": "Domain Controller1 IP Address"
       }
     },
     "Publisher": {
@@ -68,6 +68,11 @@
     "OSVersion": {
         "type": "string",
         "defaultValue": "2019-Datacenter",
+        "allowedValues": [
+          "2019-Datacenter",
+          "2016-Datacenter",
+          "2012-R2-Datacenter"
+        ],
         "metadata": {
             "description": "OS Version"
         }
@@ -86,11 +91,11 @@
           "description": "Data Disk Name 1"
       }
     },             
-    "VMSize": {
+    "DC1VMSize": {
         "type": "string",
         "defaultValue": "Standard_D2s_v3",
         "metadata": {
-            "description": "VMSize"
+            "description": "Domain Controller1 VMSize"
         }
     },        
     "NetBiosDomain": {
@@ -99,14 +104,21 @@
       "metadata": {
           "description": "NetBios Parent Domain Name"
       }
-    },            
-    "domainName": {
+    },    
+    "TLD": {
       "type": "string",
-      "defaultValue": "elliottfieldsjr.com",
+      "defaultValue": "com",
       "metadata": {
-          "description": "NetBios Parent Domain Name"
+          "description": "Top-Level Domain Name"
       }
-    },                
+    },                        
+    "RevLookup1": {
+      "type": "string",
+      "defaultValue": "10.1",
+      "metadata": {
+          "description": "DNS Reverse Lookup Zone Prefix"
+      }
+    },                    
     "adminUsername": {
         "type": "string",
         "metadata": {
@@ -141,6 +153,10 @@
       }
     }
   },
+  "variables": {
+    "domainName": "[concat(parameters('NetBiosDomain'),'.',parameters('TLD'))]",
+    "BaseDN": "[concat('DC=',parameters('NetBiosDomain'),',DC=',parameters('TLD'))]"
+  },  
   "resources": [
     {
       "type": "Microsoft.Resources/deployments",
@@ -154,19 +170,19 @@
           },
           "parameters": {
               "vnetName": {
-                  "value": "[parameters('vnetName')]"
+                  "value": "[parameters('vnet1Name')]"
               },
               "vnetprefix": {
-                  "value": "[parameters('vnetprefix')]"
+                  "value": "[parameters('vnet1Prefix')]"
               },
               "subnet1Name": {
-                  "value": "[parameters('subnet1Name')]"
+                  "value": "[parameters('vnet1subnet1Name')]"
               },
               "subnet1Prefix": {
-                  "value": "[parameters('subnet1Prefix')]"
+                  "value": "[parameters('vnet1subnet1Prefix')]"
               },
               "BastionsubnetPrefix": {
-                "value": "[parameters('BastionsubnetPrefix')]"
+                "value": "[parameters('vnet1BastionsubnetPrefix')]"
               },              
               "location": {
                   "value": "[parameters('location')]"
@@ -189,13 +205,13 @@
           },
           "parameters": {
               "publicIPAddressName": {
-                "value": "[concat(parameters('vnetName'),'-Bastion-pip')]"
+                "value": "[concat(parameters('vnet1Name'),'-Bastion-pip')]"
               },
               "AllocationMethod": {
                 "value": "Static"
               },              
               "vnetName": {
-                  "value": "[parameters('vnetName')]"
+                  "value": "[parameters('vnet1Name')]"
               },
               "subnetName": {
                   "value": "AzureBastionSubnet"
@@ -222,10 +238,10 @@
           },
           "parameters": {
               "computerName": {
-                  "value": "[parameters('computerName')]"
+                  "value": "[parameters('dc1name')]"
               },
               "computerIP": {
-                  "value": "[parameters('computerIP')]"
+                  "value": "[parameters('dc1IP')]"
               },
               "Publisher": {
                   "value": "[parameters('Publisher')]"
@@ -243,19 +259,19 @@
                 "value": "[parameters('DataDisk1Name')]"
               },            
               "VMSize": {
-                "value": "[parameters('VMSize')]"
+                "value": "[parameters('DC1VMSize')]"
               },
               "vnetName": {
-                "value": "[parameters('vnetName')]"
+                "value": "[parameters('vnet1Name')]"
               },            
               "subnetName": {
-                "value": "[parameters('subnet1Name')]"
+                "value": "[parameters('vnet1subnet1Name')]"
               },            
               "vnetprefix": {
-                "value": "[parameters('vnetprefix')]"
+                "value": "[parameters('vnet1Prefix')]"
               },            
               "subnetPrefix": {
-                "value": "[parameters('subnet1Prefix')]"
+                "value": "[parameters('vnet1subnet1Prefix')]"
               },                                                                                                            
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
@@ -286,13 +302,13 @@
           },
           "parameters": {
               "computerName": {
-                  "value": "[parameters('computerName')]"
+                  "value": "[parameters('dc1name')]"
               },
               "NetBiosDomain": {
-                  "value": "[parameters('subnet1Name')]"
+                  "value": "[parameters('NetBiosDomain')]"
               },
               "DomainName": {
-                "value": "[parameters('DomainName')]"
+                "value": "[variables('DomainName')]"
               },              
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
@@ -330,23 +346,23 @@
           },
           "parameters": {
               "vnetName": {
-                  "value": "[parameters('vnetName')]"
+                  "value": "[parameters('vnet1Name')]"
               },
               "vnetprefix": {
-                  "value": "[parameters('vnetprefix')]"
+                  "value": "[parameters('vnet1Prefix')]"
               },
               "subnetName": {
-                "value": "[parameters('subnet1Name')]"
+                "value": "[parameters('vnet1subnet1Name')]"
               },                                                                                                            
               "subnetPrefix": {
-                "value": "[parameters('subnet1Prefix')]"
+                "value": "[parameters('vnet1subnet1Prefix')]"
               }, 
               "BastionsubnetPrefix": {
-                "value": "[parameters('BastionsubnetPrefix')]"
+                "value": "[parameters('vnet1BastionsubnetPrefix')]"
               },                         
               "DNSServerIP": {
                 "value": [
-                  "[parameters('computerIP')]"
+                  "[parameters('dc1IP')]"
                 ]
               },                                                                                                            
               "location": {
@@ -374,7 +390,7 @@
           },
           "parameters": {
               "computerName": {
-                  "value": "[parameters('computerName')]"
+                  "value": "[parameters('dc1name')]"
               },
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
@@ -387,6 +403,84 @@
               }
           }
       }
-    }             
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "configdns",
+      "dependsOn": [
+        "VNet",
+        "BastionHost",
+        "DeployDCVM",
+        "promotedc1",
+        "updatevnetdns",
+        "restartdc"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/configdns.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[parameters('dc1name')]"
+              },
+              "DomainName": {
+                "value": "[variables('DomainName')]"
+              },              
+              "RevLookup1": {
+                "value": "[parameters('RevLookup1')]"
+              },                                                                                                            
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                                           
+              "location": {
+                  "value": "[parameters('location')]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "createous",
+      "dependsOn": [
+        "VNet",
+        "BastionHost",
+        "DeployDCVM",
+        "promotedc1",
+        "updatevnetdns",
+        "restartdc",
+        "configdns"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/createous.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[parameters('dc1name')]"
+              },
+              "BaseDN": {
+                "value": "[variables('BaseDN')]"
+              },              
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                                           
+              "location": {
+                  "value": "[parameters('location')]"
+              }
+          }
+      }
+    }                                      
   ]
 }
