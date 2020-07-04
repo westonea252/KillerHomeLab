@@ -1,6 +1,6 @@
-# 1-Forest, 1-DomainController, 1 ADSite
+# 1-Forest/Domain, 1-DomainController, 1-ADSite, 1-Workstation
 
-This Templates deploys a Single Forest with a Single Domain Controller and also deploys Organizational Units and DNS Records
+This Templates deploys a Single Forest/Domain, Single Domain Controller, Organizational Units, DNS Records and a Domain Joined Windows 10 Workstation
 
 Click the button below to deploy
 
