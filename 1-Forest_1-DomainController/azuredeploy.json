@@ -331,12 +331,18 @@
               "vnetprefix": {
                   "value": "[variables('vnet1Prefix')]"
               },
-              "subnetName": {
+              "subnet1Name": {
                 "value": "[variables('vnet1subnet1Name')]"
               },                                                                                                            
-              "subnetPrefix": {
+              "subnet1Prefix": {
                 "value": "[variables('vnet1subnet1Prefix')]"
               }, 
+              "subnet2Name": {
+                "value": "[variables('vnet1subnet2Name')]"
+              },                                                                                                            
+              "subnet2Prefix": {
+                "value": "[variables('vnet1subnet2Prefix')]"
+              },               
               "BastionsubnetPrefix": {
                 "value": "[variables('vnet1BastionsubnetPrefix')]"
               },                         
