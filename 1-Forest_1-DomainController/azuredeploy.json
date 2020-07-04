@@ -79,7 +79,7 @@
     },
     "licenseType": {
       "type": "string",
-      "defaultValue": "Windows_Server",
+      "defaultValue": "None",
       "metadata": {
           "description": "License Type (Windows_Server or None)"
       }
