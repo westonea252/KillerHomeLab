@@ -3,6 +3,7 @@
    param
    (
         [String]$computerName,
+        [String]$dc1lastoctet,
         [String]$domainName,
         [String]$ReverseLookup1
     )
@@ -21,7 +22,7 @@
 
         xDnsRecord DC1PtrRecord
         {
-            Name      = "111"
+            Name      = "$dc1lastoctet"
             Zone      = "$ReverseLookup1.in-addr.arpa"
             Target    = "$computerName.$DomainName"
             Type      = 'Ptr'
