@@ -112,11 +112,11 @@
           "description": "Top-Level Domain Name"
       }
     },                        
-    "RevLookup1": {
+    "ReverseLookup1": {
       "type": "string",
       "defaultValue": "10.1",
       "metadata": {
-          "description": "DNS Reverse Lookup Zone Prefix"
+          "description": "DNS Reverse Lookup Zone1 Prefix"
       }
     },                    
     "adminUsername": {
@@ -429,8 +429,8 @@
               "DomainName": {
                 "value": "[variables('DomainName')]"
               },              
-              "RevLookup1": {
-                "value": "[parameters('RevLookup1')]"
+              "ReverseLookup1": {
+                "value": "[parameters('ReverseLookup1')]"
               },                                                                                                            
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
