@@ -146,7 +146,7 @@
                   "value": "[variables('vnet1subnet1Prefix')]"
               },
               "BastionsubnetPrefix": {
-                "value": "[parameters('vnet1BastionsubnetPrefix')]"
+                "value": "[variables('vnet1BastionsubnetPrefix')]"
               },              
               "location": {
                   "value": "[parameters('Location1')]"
@@ -322,7 +322,7 @@
                 "value": "[variables('vnet1subnet1Prefix')]"
               }, 
               "BastionsubnetPrefix": {
-                "value": "[parameters('vnet1BastionsubnetPrefix')]"
+                "value": "[variables('vnet1BastionsubnetPrefix')]"
               },                         
               "DNSServerIP": {
                 "value": [
