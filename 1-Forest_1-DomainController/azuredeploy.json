@@ -129,7 +129,8 @@
     "wk1IP": "[concat(parameters('vnet1ID'),'.2.201')]",            
     "DCDataDisk1Name": "NTDS",            
     "domainName": "[concat(parameters('NetBiosDomain'),'.',parameters('TLD'))]",
-    "BaseDN": "[concat('DC=',parameters('NetBiosDomain'),',DC=',parameters('TLD'))]"
+    "BaseDN": "[concat('DC=',parameters('NetBiosDomain'),',DC=',parameters('TLD'))]",
+    "WKOUPath": "[concat('OU=Windows 10,CN=Workstations,',variables('BaseDN'))]"
   },  
   "resources": [
     {
@@ -563,7 +564,7 @@
                   "value": "[variables('domainName')]"
               },
               "OUPath": {
-                  "value": "[variables('BaseDN')]"
+                  "value": "[variables('WKOUPath')]"
               },
               "domainJoinOptions": {
                   "value": 3
