@@ -132,6 +132,15 @@
             Ensure                          = 'Present'
             DependsOn = "[xADOrganizationalUnit]ServersOU"
         }
+
+        xADOrganizationalUnit Server2019OU
+        {
+            Name                            = "Servers2019"
+            Path                            = "OU=Servers,$BaseDN"
+            Description                     = "Server2019 OU"
+            Ensure                          = 'Present'
+            DependsOn = "[xADOrganizationalUnit]ServersOU"
+        }
       
         xADOrganizationalUnit MaintenanceServersOU
         {

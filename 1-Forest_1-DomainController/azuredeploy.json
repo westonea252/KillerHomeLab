@@ -114,7 +114,7 @@
     },                        
     "ReverseLookup1": {
       "type": "string",
-      "defaultValue": "10.1",
+      "defaultValue": "1.10",
       "metadata": {
           "description": "DNS Reverse Lookup Zone1 Prefix"
       }
