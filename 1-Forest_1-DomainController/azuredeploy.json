@@ -560,7 +560,7 @@
                   "value": "[variables('BaseDN')]"
               },
               "domainJoinOptions": {
-                  "value": "3"
+                  "value": 3
               },
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
