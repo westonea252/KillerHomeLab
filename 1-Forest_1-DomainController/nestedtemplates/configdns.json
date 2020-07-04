@@ -67,7 +67,7 @@
                             "computerName": "[parameters('computerName')]",
                             "domainName": "[parameters('domainName')]",                                                        
                             "ReverseLookup1": "[parameters('ReverseLookup1')]",
-                            "dc1lastoctest": "[parameters('dc1lastoctet')]"                            
+                            "dc1lastoctet": "[parameters('dc1lastoctet')]"                            
                         }
                 }
             }
