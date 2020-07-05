@@ -1,11 +1,5 @@
 # 1-Forest/Domain, 1-DomainController, 1-ADSite, 1-Workstation
 
-![Azure Public Test Date](https://azurequickstartsservice.blob.core.windows.net/badges/active-directory-new-domain/PublicLastTestDate.svg)
-![Azure Public Test Result](https://azurequickstartsservice.blob.core.windows.net/badges/active-directory-new-domain/PublicDeployment.svg)
-
-![Azure US Gov Last Test Date](https://azurequickstartsservice.blob.core.windows.net/badges/active-directory-new-domain/FairfaxLastTestDate.svg)
-![Azure US Gov Last Test Result](https://azurequickstartsservice.blob.core.windows.net/badges/active-directory-new-domain/FairfaxDeployment.svg)
-
 This Templates deploys a Single Forest/Domain, Single Domain Controller, Organizational Units, DNS Records and a Domain Joined Windows 10 Workstation
 
 Click the button below to deploy
