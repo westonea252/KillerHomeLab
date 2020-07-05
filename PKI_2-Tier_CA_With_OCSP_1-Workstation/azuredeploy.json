@@ -490,7 +490,13 @@
               },                                                                                                            
               "dc1lastoctet": {
                 "value": "[variables('dc1lastoctet')]"
+              },    
+              "ISSUINGCAIP": {
+                "value": "[variables('icaIP')]"
               },                                                                                                                          
+              "OCSPIP": {
+                "value": "[variables('ocspIP')]"
+              },                                                                                                                                                                                                                                                                            
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
               },                                                                                                            
@@ -841,6 +847,56 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
           }
       }
-    }                                                                                              
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "grantcarequest",
+      "dependsOn": [
+        "VNet1",
+        "BastionHost1",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "deployrootca",
+        "configurerootca",
+        "deployissuingca",
+        "DomainJoinIssuingCA",
+        "configureissueca"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/grantca.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('rcaname')]"
+              },
+              "NamingConvention": {
+                  "value": "[parameters('NamingConvention')]"
+              },              
+              "IssuingCAName": {
+                  "value": "[parameters('IssuingCAName')]"
+              },              
+              "RootCAName": {
+                  "value": "[parameters('RootCAName')]"
+              },
+              "location": {
+                  "value": "[parameters('Location1')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          }
+      }
+    }                                                                                                  
   ]
 }

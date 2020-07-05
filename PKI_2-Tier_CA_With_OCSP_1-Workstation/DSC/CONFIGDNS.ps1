@@ -5,7 +5,9 @@
         [String]$computerName,
         [String]$dc1lastoctet,
         [String]$domainName,
-        [String]$ReverseLookup1
+        [String]$ReverseLookup1,
+        [String]$ISSUINGCAIP,
+        [String]$OCSPIP
     )
 
     Import-DscResource -Module xDnsServer
@@ -28,6 +30,24 @@
             Type      = 'Ptr'
             Ensure    = 'Present'
             DependsOn = "[xDnsServerADZone]ReverseADZone1"
+        }
+
+        xDnsRecord crlrecord
+        {
+            Name      = "crl"
+            Zone      = "$domainName"
+            Target    = "$ISSUINGCAIP"
+            Type      = 'ARecord'
+            Ensure    = 'Present'
+        }
+
+        xDnsRecord ocsprecord
+        {
+            Name      = "ocsp"
+            Zone      = "$domainName"
+            Target    = "$OCSPIP"
+            Type      = 'ARecord'
+            Ensure    = 'Present'
         }
     }
 }
