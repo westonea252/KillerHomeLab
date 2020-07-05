@@ -1070,7 +1070,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "configdns-2",
+      "name": "createous-2",
       "dependsOn": [
         "VNet1",
         "VNet2",
@@ -1094,22 +1094,16 @@
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/configdns.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/createous.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
               "computerName": {
                   "value": "[variables('dc2name')]"
               },
-              "DomainName": {
-                "value": "[variables('DomainName')]"
+              "BaseDN": {
+                "value": "[variables('ChildBaseDN')]"
               },              
-              "ReverseLookup1": {
-                "value": "[variables('ReverseLookup2')]"
-              },                                                                                                            
-              "dc1lastoctet": {
-                "value": "[variables('dc2lastoctet')]"
-              },                                                                                                                          
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
               },                                                                                                            
@@ -1121,7 +1115,7 @@
               }
           }
       }
-    },                  
+    },    
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
@@ -1145,7 +1139,7 @@
         "promotechilddc1",
         "updatevnet2dns-2",
         "restartchilddc1",
-        "configdns-2"
+        "createous-2"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1222,7 +1216,7 @@
         "promotechilddc1",
         "updatevnet2dns-2",
         "restartchilddc1",
-        "configdns-2",
+        "createous-2",
         "DeployWK2VM"
       ],      
       "properties": {
