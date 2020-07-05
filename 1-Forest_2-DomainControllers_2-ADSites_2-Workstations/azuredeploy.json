@@ -766,16 +766,16 @@
                 "value": "[variables('vnet2Name')]"
               },              
               "allowVirtualNetworkAccess": {
-                "value": true
+                "value": "true"
               },                                                                                                                                                                                                                                                                                                           
               "allowForwardedTraffic": {
-                "value": true
+                "value": "true"
               },                                                                                                                                                                                                                                                                                                           
               "allowGatewayTransit": {
-                "value": false
+                "value": "false"
               },
               "useRemoteGateways": {
-                "value": false
+                "value": "false"
               },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
               "location": {
                   "value": "[parameters('Location1')]"
@@ -816,16 +816,16 @@
                 "value": "[variables('vnet1Name')]"
               },              
               "allowVirtualNetworkAccess": {
-                "value": true
+                "value": "true"
               },                                                                                                                                                                                                                                                                                                           
               "allowForwardedTraffic": {
-                "value": true
+                "value": "true"
               },                                                                                                                                                                                                                                                                                                           
               "allowGatewayTransit": {
-                "value": false
+                "value": "false"
               },
               "useRemoteGateways": {
-                "value": false
+                "value": "false"
               },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
               "location": {
                   "value": "[parameters('Location2')]"
