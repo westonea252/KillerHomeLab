@@ -250,7 +250,7 @@
       "apiVersion": "2015-01-01",
       "name": "VNet2",
       "dependsOn": [
-        "VNet2"
+        "VNet1"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -318,14 +318,50 @@
               }
           }
       }
-    },    
+    },        
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "BastionHost2",
+      "dependsOn": [
+        "VNet1",
+        "VNet2",
+        "BastionHost1"
+      ],
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/bastionhost.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "publicIPAddressName": {
+                "value": "[concat(variables('vnet2Name'),'-Bastion-pip')]"
+              },
+              "AllocationMethod": {
+                "value": "Static"
+              },              
+              "vnetName": {
+                  "value": "[variables('vnet2Name')]"
+              },
+              "subnetName": {
+                  "value": "AzureBastionSubnet"
+              },
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },            
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "name": "deployDC1VM",
       "dependsOn": [
         "VNet1",
-        "BastionHost1"
+        "VNet2",
+        "BastionHost1",
+        "BastionHost2"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -388,7 +424,9 @@
       "name": "promotedc1",
       "dependsOn": [
         "VNet1",
+        "VNet2",
         "BastionHost1",
+        "BastionHost2",
         "DeployDC1VM"
       ],            
       "properties": {
@@ -431,7 +469,9 @@
       "name": "updatevnet1dns",
       "dependsOn": [
         "VNet1",
+        "VNet2",
         "BastionHost1",
+        "BastionHost2",        
         "DeployDC1VM",
         "promotedc1"
       ],            
@@ -477,13 +517,68 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "restartdc1",
+      "name": "updatevnet2dns",
       "dependsOn": [
         "VNet1",
+        "VNet2",
         "BastionHost1",
+        "BastionHost2",        
         "DeployDC1VM",
         "promotedc1",
         "updatevnet1dns"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/updatevnetdns.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "vnetName": {
+                  "value": "[variables('vnet2Name')]"
+              },
+              "vnetprefix": {
+                  "value": "[variables('vnet2Prefix')]"
+              },
+              "subnet1Name": {
+                "value": "[variables('vnet2subnet1Name')]"
+              },                                                                                                            
+              "subnet1Prefix": {
+                "value": "[variables('vnet2subnet1Prefix')]"
+              }, 
+              "subnet2Name": {
+                "value": "[variables('vnet2subnet2Name')]"
+              },                                                                                                            
+              "subnet2Prefix": {
+                "value": "[variables('vnet2subnet2Prefix')]"
+              },               
+              "BastionsubnetPrefix": {
+                "value": "[variables('vnet2BastionsubnetPrefix')]"
+              },                         
+              "DNSServerIP": {
+                "value": [
+                  "[variables('dc1IP')]"
+                ]
+              },                                                                                                            
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "restartdc1",
+      "dependsOn": [
+        "VNet1",
+        "VNet2",
+        "BastionHost1",
+        "BastionHost2",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "updatevnet2dns"
       ],            
       "properties": {
           "mode": "Incremental",
@@ -517,6 +612,7 @@
         "DeployDC1VM",
         "promotedc1",
         "updatevnet1dns",
+        "updatevnet2dns",
         "restartdc1"
       ],            
       "properties": {
@@ -560,6 +656,7 @@
         "DeployDC1VM",
         "promotedc1",
         "updatevnet1dns",
+        "updatevnet2dns",
         "restartdc1",
         "configdns"
       ],            
@@ -591,16 +688,360 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "deployWK1VM",
+      "name": "PeeringToSite2",
       "dependsOn": [
         "VNet1",
+        "VNet2",
         "BastionHost1",
+        "BastionHost2",
         "DeployDC1VM",
         "promotedc1",
         "updatevnet1dns",
+        "updatevnet2dns",
         "restartdc1",
         "configdns",
         "createous"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/peering.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "SourceVNetName": {
+                "value": "[parameters('vnet1Name')]"
+              },
+              "TargetVNetName": {
+                "value": "[parameters('vnet2Name')]"
+              },              
+              "TargetResourceGroupName": {
+                "value": "[resourceGroup()]"
+              },                                                                                                            
+              "allowVirtualNetworkAccess": {
+                "value": true
+              },                                                                                                                                                                                                                                                                                                           
+              "allowForwardedTraffic": {
+                "value": true
+              },                                                                                                                                                                                                                                                                                                           
+              "allowGatewayTransit": {
+                "value": false
+              },
+              "useRemoteGateways": {
+                "value": false
+              },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "PeeringToSite1",
+      "dependsOn": [
+        "VNet1",
+        "VNet2",
+        "BastionHost1",
+        "BastionHost2",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "updatevnet2dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "PeeringToSite2"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/peering.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "SourceVNetName": {
+                "value": "[parameters('vnet2Name')]"
+              },
+              "TargetVNetName": {
+                "value": "[parameters('vnet1Name')]"
+              },              
+              "TargetResourceGroupName": {
+                "value": "[resourceGroup()]"
+              },                                                                                                            
+              "allowVirtualNetworkAccess": {
+                "value": true
+              },                                                                                                                                                                                                                                                                                                           
+              "allowForwardedTraffic": {
+                "value": true
+              },                                                                                                                                                                                                                                                                                                           
+              "allowGatewayTransit": {
+                "value": false
+              },
+              "useRemoteGateways": {
+                "value": false
+              },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },        
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "deployDC2VM",
+      "dependsOn": [
+        "VNet1",
+        "VNet2",
+        "BastionHost1",
+        "BastionHost2",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "updatevnet2dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "PeeringToSite2",
+        "PeeringToSite1"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-2disk-vm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('dc2name')]"
+              },
+              "computerIP": {
+                  "value": "[variables('dc2IP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsServer"
+              },
+              "Offer": {
+                  "value": "WindowsServer"
+              },
+              "OSVersion": {
+                "value": "[parameters('DC2OSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "None"
+              },            
+              "DataDisk1Name": {
+                "value": "[variables('DCDataDisk1Name')]"
+              },            
+              "VMSize": {
+                "value": "[parameters('DC2VMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('vnet2Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('vnet2subnet1Name')]"
+              },            
+              "vnetprefix": {
+                "value": "[variables('vnet2Prefix')]"
+              },            
+              "subnetPrefix": {
+                "value": "[variables('vnet2subnet1Prefix')]"
+              },                                                                                                            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },        
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "promotedc2",
+      "dependsOn": [
+        "VNet1",
+        "VNet2",
+        "BastionHost1",
+        "BastionHost2",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "updatevnet2dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "PeeringToSite2",
+        "PeeringToSite1",
+        "deployDC2VM"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/otherdc.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('dc2name')]"
+              },
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },
+              "DNSServerIP": {
+                  "value": "[variables('dc1IP')]"
+              },
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                                                         
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "updatevnet2dns-2",
+      "dependsOn": [
+        "VNet1",
+        "VNet2",
+        "BastionHost1",
+        "BastionHost2",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "updatevnet2dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "PeeringToSite2",
+        "PeeringToSite1",
+        "deployDC2VM",
+        "promotedc2"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/updatevnetdns.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "vnetName": {
+                  "value": "[variables('vnet2Name')]"
+              },
+              "vnetprefix": {
+                  "value": "[variables('vnet2Prefix')]"
+              },
+              "subnet1Name": {
+                "value": "[variables('vnet2subnet1Name')]"
+              },                                                                                                            
+              "subnet1Prefix": {
+                "value": "[variables('vnet2subnet1Prefix')]"
+              }, 
+              "subnet2Name": {
+                "value": "[variables('vnet2subnet2Name')]"
+              },                                                                                                            
+              "subnet2Prefix": {
+                "value": "[variables('vnet2subnet2Prefix')]"
+              },               
+              "BastionsubnetPrefix": {
+                "value": "[variables('vnet2BastionsubnetPrefix')]"
+              },                         
+              "DNSServerIP": {
+                "value": [
+                  "[variables('dc2IP')]"
+                ]
+              },                                                                                                            
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "restartdc2",
+      "dependsOn": [
+        "VNet1",
+        "VNet2",
+        "BastionHost1",
+        "BastionHost2",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "updatevnet2dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "PeeringToSite2",
+        "PeeringToSite1",
+        "deployDC2VM",
+        "promotedc2",
+        "updatevnet2dns-2"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/restartvm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('dc1name')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                                                         
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }
+          }
+      }
+    },                
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "deployWK1VM",
+      "dependsOn": [
+        "VNet1",
+        "VNet2",
+        "BastionHost1",
+        "BastionHost2",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "updatevnet2dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "PeeringToSite2",
+        "PeeringToSite1",
+        "deployDC2VM",
+        "promotedc2",
+        "updatevnet2dns-2",
+        "restartdc2"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -660,13 +1101,22 @@
       "name": "DomainJoinWK1VM",
       "dependsOn": [
         "VNet1",
+        "VNet2",
         "BastionHost1",
+        "BastionHost2",
         "DeployDC1VM",
         "promotedc1",
         "updatevnet1dns",
+        "updatevnet2dns",
         "restartdc1",
         "configdns",
         "createous",
+        "PeeringToSite2",
+        "PeeringToSite1",
+        "deployDC2VM",
+        "promotedc2",
+        "updatevnet2dns-2",
+        "restartdc2",
         "DeployWK1VM"
       ],      
       "properties": {
