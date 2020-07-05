@@ -1203,6 +1203,142 @@
               }
           }
       }
-    }                                                                                        
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "deployWK2VM",
+      "dependsOn": [
+        "VNet1",
+        "VNet2",
+        "BastionHost1",
+        "BastionHost2",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "updatevnet2dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "createsites",
+        "PeeringToSite2",
+        "PeeringToSite1",
+        "deployDC2VM",
+        "promotedc2",
+        "updatevnet2dns-2",
+        "restartdc2",
+        "deployWK1VM",
+        "DomainJoinWK1VM"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('wk2name')]"
+              },
+              "computerIP": {
+                  "value": "[variables('wk2IP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsDesktop"
+              },
+              "Offer": {
+                  "value": "Windows-10"
+              },
+              "OSVersion": {
+                "value": "[parameters('WK1OSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "None"
+              },            
+              "VMSize": {
+                "value": "[parameters('WK1VMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('vnet2Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('vnet2subnet2Name')]"
+              },            
+              "vnetprefix": {
+                "value": "[variables('vnet2Prefix')]"
+              },            
+              "subnetPrefix": {
+                "value": "[variables('vnet2subnet2Prefix')]"
+              },                                                                                                            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "DomainJoinWK2VM",
+      "dependsOn": [
+        "VNet1",
+        "VNet2",
+        "BastionHost1",
+        "BastionHost2",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "updatevnet2dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "createsites",
+        "PeeringToSite2",
+        "PeeringToSite1",
+        "deployDC2VM",
+        "promotedc2",
+        "updatevnet2dns-2",
+        "restartdc2",
+        "DeployWK1VM",
+        "DomainJoinWK1VM",
+        "DeployWK2VM"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/domainjoin.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('wk2name')]"
+              },
+              "domainName": {
+                  "value": "[variables('domainName')]"
+              },
+              "OUPath": {
+                  "value": "[variables('WKOUPath')]"
+              },
+              "domainJoinOptions": {
+                  "value": 3
+              },
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                             
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    }                                                                                                
   ]
 }
