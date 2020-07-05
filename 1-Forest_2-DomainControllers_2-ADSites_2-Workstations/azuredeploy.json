@@ -766,7 +766,7 @@
                 "value": "[variables('vnet2Name')]"
               },              
               "TargetResourceGroupName": {
-                "value": "[resourceGroup()]"
+                "value": "[resourceId(resourceGroup().name]"
               },                                                                                                            
               "allowVirtualNetworkAccess": {
                 "value": true
