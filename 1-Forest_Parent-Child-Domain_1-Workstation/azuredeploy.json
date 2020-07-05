@@ -28,8 +28,7 @@
         "defaultValue": "2019-Datacenter",
         "allowedValues": [
           "2019-Datacenter",
-          "2016-Datacenter",
-          "2012-R2-Datacenter"
+          "2016-Datacenter"
         ],
         "metadata": {
             "description": "Domain Controller1 OS Version"
@@ -40,8 +39,7 @@
       "defaultValue": "2019-Datacenter",
       "allowedValues": [
         "2019-Datacenter",
-        "2016-Datacenter",
-        "2012-R2-Datacenter"
+        "2016-Datacenter"
       ],
       "metadata": {
           "description": "Domain Controller2 OS Version"
@@ -1077,12 +1075,22 @@
         "VNet1",
         "VNet2",
         "BastionHost1",
-        "BastionHOst2",
+        "BastionHost2",
         "DeployDC1VM",
         "promotedc1",
         "updatevnet1dns",
         "updatevnet2dns",
-        "restartdc1"      ],            
+        "restartdc1",
+        "configdns",
+        "createous",
+        "createsites",
+        "PeeringToSite2",
+        "PeeringToSite1",
+        "deployDC2VM",
+        "promotechilddc1",
+        "updatevnet2dns-2",
+        "restartchilddc1"
+      ],            
       "properties": {
           "mode": "Incremental",
           "templateLink": {

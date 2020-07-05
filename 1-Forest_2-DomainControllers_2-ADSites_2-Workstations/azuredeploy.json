@@ -28,8 +28,7 @@
         "defaultValue": "2019-Datacenter",
         "allowedValues": [
           "2019-Datacenter",
-          "2016-Datacenter",
-          "2012-R2-Datacenter"
+          "2016-Datacenter"
         ],
         "metadata": {
             "description": "Domain Controller1 OS Version"
@@ -40,8 +39,7 @@
       "defaultValue": "2019-Datacenter",
       "allowedValues": [
         "2019-Datacenter",
-        "2016-Datacenter",
-        "2012-R2-Datacenter"
+        "2016-Datacenter"
       ],
       "metadata": {
           "description": "Domain Controller2 OS Version"
