@@ -99,7 +99,7 @@
       "type": "string",
       "defaultValue": "killerhomelab",
       "metadata": {
-          "description": "NetBios Parent Domain Name"
+          "description": "NetBios Domain Name"
       }
     },    
     "TLD": {
