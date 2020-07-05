@@ -16,6 +16,13 @@
         "description": "VNet1 Prefix"
       }
     },    
+    "vnet2ID": {
+      "type": "string",
+      "defaultValue": "10.2",
+      "metadata": {
+        "description": "VNet1 Prefix"
+      }
+    },        
     "DC1OSVersion": {
         "type": "string",
         "defaultValue": "2019-Datacenter",
@@ -28,6 +35,18 @@
             "description": "Domain Controller1 OS Version"
         }
     },
+    "DC2OSVersion": {
+      "type": "string",
+      "defaultValue": "2019-Datacenter",
+      "allowedValues": [
+        "2019-Datacenter",
+        "2016-Datacenter",
+        "2012-R2-Datacenter"
+      ],
+      "metadata": {
+          "description": "Domain Controller2 OS Version"
+      }
+    },    
     "WK1OSVersion": {
       "type": "string",
       "defaultValue": "19h1-pro",
@@ -37,7 +56,17 @@
       "metadata": {
           "description": "Workstation1 OS Version"
       }
-  },    
+    },    
+    "WK2OSVersion": {
+      "type": "string",
+      "defaultValue": "19h1-pro",
+      "allowedValues": [
+        "19h1-pro"
+      ],
+      "metadata": {
+        "description": "Workstation2 OS Version"
+      }
+    },      
     "DC1VMSize": {
         "type": "string",
         "defaultValue": "Standard_D2s_v3",
@@ -45,6 +74,13 @@
             "description": "Domain Controller1 VMSize"
         }
     },        
+    "DC2VMSize": {
+      "type": "string",
+      "defaultValue": "Standard_DS11_v2",
+      "metadata": {
+          "description": "Domain Controller2 VMSize"
+      }
+    },            
     "WK1VMSize": {
       "type": "string",
       "defaultValue": "Standard_D2s_v3",
@@ -52,6 +88,13 @@
           "description": "Workstation1 VMSize"
       }
     },            
+    "WK2VMSize": {
+      "type": "string",
+      "defaultValue": "Standard_DS11_v2",
+      "metadata": {
+          "description": "Workstation2 VMSize"
+      }
+    },                
     "NetBiosDomain": {
       "type": "string",
       "defaultValue": "killerhomelab",
@@ -81,6 +124,13 @@
           "description": "DNS Reverse Lookup Zone1 Prefix"
       }
     },                    
+    "ReverseLookup2": {
+      "type": "string",
+      "defaultValue": "2.10",
+      "metadata": {
+          "description": "DNS Reverse Lookup Zone2 Prefix"
+      }
+    },                        
     "adminUsername": {
         "type": "string",
         "metadata": {
