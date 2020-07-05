@@ -20,12 +20,24 @@
                 "description": "The name of Reverse Lookup Zone 1 Network ID"
             }
         },
+        "ReverseLookup2": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of Reverse Lookup Zone 2 Network ID"
+            }
+        },        
         "dc1lastoctet": {
             "type": "string",
             "metadata": {
-                "description": "DC! Last IP Octet"
+                "description": "DC1 Last IP Octet"
             }
         },        
+        "dc2lastoctet": {
+            "type": "string",
+            "metadata": {
+                "description": "DC2 Last IP Octet"
+            }
+        },                
         "location": {
             "type": "string",
           "metadata": {
@@ -67,10 +79,14 @@
                             "computerName": "[parameters('computerName')]",
                             "domainName": "[parameters('domainName')]",                                                        
                             "ReverseLookup1": "[parameters('ReverseLookup1')]",
-                            "dc1lastoctet": "[parameters('dc1lastoctet')]"                            
+                            "dc1lastoctet": "[parameters('dc1lastoctet')]",
+                            "ReverseLookup2": "[parameters('ReverseLookup2')]",
+                            "dc2lastoctet": "[parameters('dc2lastoctet')]"                                                                                   
                         }
+                    },
+                    "protectedSettings": {
+                    }
                 }
-            }
         }
     ]
 }

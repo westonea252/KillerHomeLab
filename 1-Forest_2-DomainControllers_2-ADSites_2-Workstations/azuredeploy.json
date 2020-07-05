@@ -631,9 +631,15 @@
               "ReverseLookup1": {
                 "value": "[variables('ReverseLookup1')]"
               },                                                                                                            
+              "ReverseLookup2": {
+                "value": "[variables('ReverseLookup2')]"
+              },                                                                                                                          
               "dc1lastoctet": {
                 "value": "[variables('dc1lastoctet')]"
               },                                                                                                                          
+              "dc2lastoctet": {
+                "value": "[variables('dc2lastoctet')]"
+              },                                                                                                                                        
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
               },                                                                                                            
@@ -1250,7 +1256,7 @@
                   "value": "Windows-10"
               },
               "OSVersion": {
-                "value": "[parameters('WK1OSVersion')]"
+                "value": "[parameters('WK2OSVersion')]"
               },              
               "LicenseType": {
                 "value": "None"

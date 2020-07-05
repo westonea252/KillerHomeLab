@@ -4,8 +4,10 @@
    (
         [String]$computerName,
         [String]$dc1lastoctet,
+        [String]$dc2lastoctet,
         [String]$domainName,
-        [String]$ReverseLookup1
+        [String]$ReverseLookup1,
+        [String]$ReverseLookup2
     )
 
     Import-DscResource -Module xDnsServer
@@ -20,6 +22,14 @@
             ReplicationScope = 'Domain'
         }
 
+        xDnsServerADZone ReverseADZone2
+        {
+            Name             = "$ReverseLookup2.in-addr.arpa"
+            DynamicUpdate = 'Secure'
+            Ensure           = 'Present'
+            ReplicationScope = 'Domain'
+        }
+
         xDnsRecord DC1PtrRecord
         {
             Name      = "$dc1lastoctet"
@@ -28,6 +38,16 @@
             Type      = 'Ptr'
             Ensure    = 'Present'
             DependsOn = "[xDnsServerADZone]ReverseADZone1"
+        }
+
+        xDnsRecord DC2PtrRecord
+        {
+            Name      = "$dc2lastoctet"
+            Zone      = "$ReverseLookup2.in-addr.arpa"
+            Target    = "$computerName.$DomainName"
+            Type      = 'Ptr'
+            Ensure    = 'Present'
+            DependsOn = "[xDnsServerADZone]ReverseADZone2"
         }
     }
 }
