@@ -27,6 +27,28 @@
             "description": "Domain Controller1 OS Version"
         }
     },
+    "RCAOSVersion": {
+        "type": "string",
+        "defaultValue": "2019-Datacenter",
+        "allowedValues": [
+          "2019-Datacenter",
+          "2016-Datacenter"
+        ],
+        "metadata": {
+            "description": "Offline Root CA OS Version"
+        }
+    },   
+    "ICAOSVersion": {
+        "type": "string",
+        "defaultValue": "2019-Datacenter",
+        "allowedValues": [
+          "2019-Datacenter",
+          "2016-Datacenter"
+        ],
+        "metadata": {
+            "description": "Issuing CA OS Version"
+        }
+    },     
     "WK1OSVersion": {
       "type": "string",
       "defaultValue": "19h1-pro",
@@ -44,6 +66,27 @@
             "description": "Domain Controller1 VMSize"
         }
     },        
+    "RCAVMSize": {
+        "type": "string",
+        "defaultValue": "Standard_D2s_v3",
+        "metadata": {
+            "description": "Offline Root CA VMSize"
+        }
+    },
+    "ICAVMSize": {
+        "type": "string",
+        "defaultValue": "Standard_D2s_v3",
+        "metadata": {
+            "description": "Issuing CA VMSize"
+        }
+    },                        
+    "OCSPVMSize": {
+        "type": "string",
+        "defaultValue": "Standard_D2s_v3",
+        "metadata": {
+            "description": "OCSP VMSize"
+        }
+    },            
     "WK1VMSize": {
       "type": "string",
       "defaultValue": "Standard_D2s_v3",
@@ -57,7 +100,7 @@
       "metadata": {
           "description": "NetBios Parent Domain Name"
       }
-    },    
+    },      
     "TLD": {
       "type": "string",
       "defaultValue": "com",
@@ -79,7 +122,21 @@
       "metadata": {
           "description": "DNS Reverse Lookup Zone1 Prefix"
       }
+    },      
+    "RootCAName": {
+      "type": "string",
+      "defaultValue": "Offline Root CA",
+      "metadata": {
+          "description": "Offline Root CA Name"
+      }
     },                    
+    "IssuingCAName": {
+      "type": "string",
+      "defaultValue": "Issuing CA",
+      "metadata": {
+          "description": "Issuing CA Name"
+      }
+    },                        
     "adminUsername": {
         "type": "string",
         "metadata": {
@@ -124,15 +181,25 @@
     "vnet1BastionsubnetPrefix": "[concat(parameters('vnet1ID'),'.253.0/24')]",        
     "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",           
     "dc1IP": "[concat(parameters('vnet1ID'),'.1.',variables('dc1lastoctet'))]",        
+    "rcaname": "[concat(parameters('NamingConvention'),'-rca-01')]",           
+    "rcaIP": "[concat(parameters('vnet1ID'),'.1.',variables('rcalastoctet'))]",            
+    "icaname": "[concat(parameters('NamingConvention'),'-ica-01')]",           
+    "icaIP": "[concat(parameters('vnet1ID'),'.1.',variables('icalastoctet'))]",            
+    "ocspname": "[concat(parameters('NamingConvention'),'-ocsp-01')]",           
+    "ocspIP": "[concat(parameters('vnet1ID'),'.1.',variables('ocsplastoctet'))]",                    
     "ReverseLookup1": "[concat('1.',parameters('ReverseLookup1'))]",    
     "dc1lastoctet": "101",        
+    "rcalastoctet": "99",
+    "icalastoctet": "102",
+    "ocsplastoctet": "103",                    
     "wk1lastoctet": "201",            
     "wk1name": "[concat(parameters('NamingConvention'),'-wk-01')]",           
     "wk1IP": "[concat(parameters('vnet1ID'),'.2.',variables('wk1lastoctet'))]",        
     "DCDataDisk1Name": "NTDS",            
     "domainName": "[concat(parameters('NetBiosDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat('DC=',parameters('NetBiosDomain'),',DC=',parameters('TLD'))]",
-    "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]"
+    "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
+    "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]"    
   },  
   "resources": [
     {
@@ -477,7 +544,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "deployWK1VM",
+      "name": "deployrootca",
       "dependsOn": [
         "VNet1",
         "BastionHost1",
@@ -496,37 +563,157 @@
           },
           "parameters": {
               "computerName": {
-                  "value": "[variables('wk1name')]"
+                  "value": "[variables('rcaname')]"
               },
               "computerIP": {
-                  "value": "[variables('wk1IP')]"
+                  "value": "[variables('rcaIP')]"
               },
               "Publisher": {
-                  "value": "MicrosoftWindowsDesktop"
+                  "value": "MicrosoftWindowsServer"
               },
               "Offer": {
-                  "value": "Windows-10"
+                  "value": "WindowsServer"
               },
               "OSVersion": {
-                "value": "[parameters('WK1OSVersion')]"
+                "value": "[parameters('rcaOSVersion')]"
               },              
               "LicenseType": {
                 "value": "None"
               },            
               "VMSize": {
-                "value": "[parameters('WK1VMSize')]"
+                "value": "[parameters('rcaVMSize')]"
               },
               "vnetName": {
                 "value": "[variables('vnet1Name')]"
               },            
               "subnetName": {
-                "value": "[variables('vnet1subnet2Name')]"
+                "value": "[variables('vnet1subnet1Name')]"
               },            
               "vnetprefix": {
                 "value": "[variables('vnet1Prefix')]"
               },            
               "subnetPrefix": {
-                "value": "[variables('vnet1subnet2Prefix')]"
+                "value": "[variables('vnet1subnet1Prefix')]"
+              },                                                                                                            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }
+          }
+      }
+    },  
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "configurerootca",
+      "dependsOn": [
+        "VNet1",
+        "BastionHost1",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "deployrootca"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/rootca.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('rcaname')]"
+              },
+              "RootCAName": {
+                  "value": "[parameters('RootCAName')]"
+              },
+              "RootDomainFQDN": {
+                  "value": "[variables('domainName')]"
+              },
+              "BaseDN": {
+                  "value": "[variables('BaseDN')]"
+              },
+              "location": {
+                  "value": "[parameters('Location1')]"
+              },              
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "deployissuingca",
+      "dependsOn": [
+        "VNet1",
+        "BastionHost1",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "deployrootca",
+        "configurerootca"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('icaname')]"
+              },
+              "computerIP": {
+                  "value": "[variables('icaIP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsServer"
+              },
+              "Offer": {
+                  "value": "WindowsServer"
+              },
+              "OSVersion": {
+                "value": "[parameters('icaOSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "None"
+              },            
+              "VMSize": {
+                "value": "[parameters('icaVMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('vnet1Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('vnet1subnet1Name')]"
+              },            
+              "vnetprefix": {
+                "value": "[variables('vnet1Prefix')]"
+              },            
+              "subnetPrefix": {
+                "value": "[variables('vnet1subnet1Prefix')]"
               },                                                                                                            
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
@@ -543,7 +730,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "DomainJoinWK1VM",
+      "name": "DomainJoinIssuingCA",
       "dependsOn": [
         "VNet1",
         "BastionHost1",
@@ -553,7 +740,9 @@
         "restartdc1",
         "configdns",
         "createous",
-        "DeployWK1VM"
+        "deployrootca",
+        "configurerootca",
+        "deployissuingca"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -563,13 +752,13 @@
           },
           "parameters": {
               "computerName": {
-                  "value": "[variables('wk1name')]"
+                  "value": "[variables('icaname')]"
               },
               "domainName": {
                   "value": "[variables('domainName')]"
               },
               "OUPath": {
-                  "value": "[variables('WKOUPath')]"
+                  "value": "[variables('SRVOUPath')]"
               },
               "domainJoinOptions": {
                   "value": 3
@@ -585,6 +774,70 @@
               }
           }
       }
-    }                                                                                        
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "configureissueca",
+      "dependsOn": [
+        "VNet1",
+        "BastionHost1",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "deployrootca",
+        "configurerootca",
+        "deployissuingca",
+        "DomainJoinIssuingCA"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/issueca.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('icaname')]"
+              },
+              "NamingConvention": {
+                  "value": "[parameters('NamingConvention')]"
+              },              
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },              
+              "RootDomainFQDN": {
+                  "value": "[variables('domainName')]"
+              },                            
+              "IssuingCAName": {
+                  "value": "[parameters('IssuingCAName')]"
+              },              
+              "RootCAName": {
+                  "value": "[parameters('RootCAName')]"
+              },
+              "RootCAIP": {
+                  "value": "[variables('rcaIP')]"
+              },
+              "location": {
+                  "value": "[parameters('Location1')]"
+              },              
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+          }
+      }
+    }                                                                                              
   ]
 }
