@@ -159,11 +159,18 @@
     },    
     "Location1": {
       "type": "string",
-      "defaultValue": "EastUS",
+      "defaultValue": "USGovVirginia",
       "metadata": {
         "description": "Choose Region (Example:  Commercial=EastUS, Government=USGovVirginia)"
       }
-    }
+    },
+    "Location2": {
+      "type": "string",
+      "defaultValue": "USGovTexas",
+      "metadata": {
+        "description": "Choose Region (Example:  Commercial=WestUS, Government=USGovTexas)"
+      }
+    }    
   },
   "variables": {
     "vnet1Name": "[concat(parameters('NamingConvention'),'-VNet1')]",
@@ -173,13 +180,27 @@
     "vnet1subnet2Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet2')]",    
     "vnet1subnet2Prefix": "[concat(parameters('vnet1ID'),'.2.0/24')]",    
     "vnet1BastionsubnetPrefix": "[concat(parameters('vnet1ID'),'.253.0/24')]",        
+    "vnet2Name": "[concat(parameters('NamingConvention'),'-VNet2')]",
+    "vnet2Prefix": "[concat(parameters('vnet2ID'),'.0.0/16')]",
+    "vnet2subnet1Name": "[concat(parameters('NamingConvention'),'-VNet2-Subnet1')]",    
+    "vnet2subnet1Prefix": "[concat(parameters('vnet2ID'),'.1.0/24')]",    
+    "vnet2subnet2Name": "[concat(parameters('NamingConvention'),'-VNet2-Subnet2')]",    
+    "vnet2subnet2Prefix": "[concat(parameters('vnet2ID'),'.2.0/24')]",    
+    "vnet2BastionsubnetPrefix": "[concat(parameters('vnet2ID'),'.253.0/24')]",        
     "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",           
     "dc1IP": "[concat(parameters('vnet1ID'),'.1.',variables('dc1lastoctet'))]",        
+    "dc2name": "[concat(parameters('NamingConvention'),'-dc-02')]",           
+    "dc2IP": "[concat(parameters('vnet2ID'),'.1.',variables('dc2lastoctet'))]",            
     "ReverseLookup1": "[concat('1.',parameters('ReverseLookup1'))]",    
+    "ReverseLookup2": "[concat('1.',parameters('ReverseLookup2'))]",        
     "dc1lastoctet": "101",        
     "wk1lastoctet": "201",            
     "wk1name": "[concat(parameters('NamingConvention'),'-wk-01')]",           
     "wk1IP": "[concat(parameters('vnet1ID'),'.2.',variables('wk1lastoctet'))]",        
+    "dc2lastoctet": "101",        
+    "wk2lastoctet": "201",            
+    "wk2name": "[concat(parameters('NamingConvention'),'-wk-02')]",           
+    "wk2IP": "[concat(parameters('vnet2ID'),'.2.',variables('wk2lastoctet'))]",        
     "DCDataDisk1Name": "NTDS",            
     "domainName": "[concat(parameters('NetBiosDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat('DC=',parameters('NetBiosDomain'),',DC=',parameters('TLD'))]",
@@ -227,9 +248,51 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
+      "name": "VNet2",
+      "dependsOn": [
+        "VNet2"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/vnet.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "vnetName": {
+                  "value": "[variables('vnet2Name')]"
+              },
+              "vnetprefix": {
+                  "value": "[variables('vnet2Prefix')]"
+              },
+              "subnet1Name": {
+                  "value": "[variables('vnet2subnet1Name')]"
+              },
+              "subnet1Prefix": {
+                  "value": "[variables('vnet2subnet1Prefix')]"
+              },
+              "subnet2Name": {
+                "value": "[variables('vnet2subnet2Name')]"
+              },
+              "subnet2Prefix": {
+                "value": "[variables('vnet2subnet2Prefix')]"
+              },              
+              "BastionsubnetPrefix": {
+                "value": "[variables('vnet2BastionsubnetPrefix')]"
+              },              
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
       "name": "BastionHost1",
       "dependsOn": [
-        "VNet1"
+        "VNet1",
+        "VNet2"
       ],
       "properties": {
           "mode": "Incremental",
