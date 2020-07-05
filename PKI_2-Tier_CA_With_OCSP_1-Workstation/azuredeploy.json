@@ -811,7 +811,10 @@
               },              
               "RootDomainFQDN": {
                   "value": "[variables('domainName')]"
-              },                            
+              },          
+              "DomainName": {
+                  "value": "[variables('domainName')]"
+              },
               "IssuingCAName": {
                   "value": "[parameters('IssuingCAName')]"
               },              
