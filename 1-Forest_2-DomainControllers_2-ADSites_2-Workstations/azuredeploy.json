@@ -703,7 +703,7 @@
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/createous.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/createsites.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -749,7 +749,8 @@
         "updatevnet2dns",
         "restartdc1",
         "configdns",
-        "createous"
+        "createous",
+        "createsites"
       ],            
       "properties": {
           "mode": "Incremental",
@@ -801,6 +802,7 @@
         "restartdc1",
         "configdns",
         "createous",
+        "createsites",
         "PeeringToSite2"
       ],            
       "properties": {
@@ -853,6 +855,7 @@
         "restartdc1",
         "configdns",
         "createous",
+        "createsites",
         "PeeringToSite2",
         "PeeringToSite1"
       ],      
@@ -927,6 +930,7 @@
         "restartdc1",
         "configdns",
         "createous",
+        "createsites",
         "PeeringToSite2",
         "PeeringToSite1",
         "deployDC2VM"
@@ -984,6 +988,7 @@
         "restartdc1",
         "configdns",
         "createous",
+        "createsites",
         "PeeringToSite2",
         "PeeringToSite1",
         "deployDC2VM",
@@ -1044,6 +1049,7 @@
         "restartdc1",
         "configdns",
         "createous",
+        "createsites",
         "PeeringToSite2",
         "PeeringToSite1",
         "deployDC2VM",
@@ -1088,6 +1094,7 @@
         "restartdc1",
         "configdns",
         "createous",
+        "createsites",
         "PeeringToSite2",
         "PeeringToSite1",
         "deployDC2VM",
@@ -1163,6 +1170,7 @@
         "restartdc1",
         "configdns",
         "createous",
+        "createsites",
         "PeeringToSite2",
         "PeeringToSite1",
         "deployDC2VM",
