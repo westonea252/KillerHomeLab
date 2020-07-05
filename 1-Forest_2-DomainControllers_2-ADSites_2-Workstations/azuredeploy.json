@@ -1256,7 +1256,7 @@
                 "value": "None"
               },            
               "VMSize": {
-                "value": "[parameters('WK1VMSize')]"
+                "value": "[parameters('WK2VMSize')]"
               },
               "vnetName": {
                 "value": "[variables('vnet2Name')]"
