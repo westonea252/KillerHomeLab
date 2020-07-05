@@ -760,10 +760,10 @@
           },
           "parameters": {
               "SourceVNetName": {
-                "value": "[parameters('vnet1Name')]"
+                "value": "[variables('vnet1Name')]"
               },
               "TargetVNetName": {
-                "value": "[parameters('vnet2Name')]"
+                "value": "[variables('vnet2Name')]"
               },              
               "TargetResourceGroupName": {
                 "value": "[resourceGroup()]"
@@ -813,10 +813,10 @@
           },
           "parameters": {
               "SourceVNetName": {
-                "value": "[parameters('vnet2Name')]"
+                "value": "[variables('vnet2Name')]"
               },
               "TargetVNetName": {
-                "value": "[parameters('vnet1Name')]"
+                "value": "[variables('vnet1Name')]"
               },              
               "TargetResourceGroupName": {
                 "value": "[resourceGroup()]"
