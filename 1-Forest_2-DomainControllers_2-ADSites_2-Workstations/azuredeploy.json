@@ -606,7 +606,9 @@
       "name": "configdns",
       "dependsOn": [
         "VNet1",
+        "VNet2",
         "BastionHost1",
+        "BastionHost2",
         "DeployDC1VM",
         "promotedc1",
         "updatevnet1dns",
@@ -656,7 +658,9 @@
       "name": "createous",
       "dependsOn": [
         "VNet1",
+        "VNet2",
         "BastionHost1",
+        "BastionHost2",
         "DeployDC1VM",
         "promotedc1",
         "updatevnet1dns",
@@ -695,7 +699,9 @@
       "name": "createsites",
       "dependsOn": [
         "VNet1",
+        "VNet2",
         "BastionHost1",
+        "BastionHost2",
         "DeployDC1VM",
         "promotedc1",
         "updatevnet1dns",
