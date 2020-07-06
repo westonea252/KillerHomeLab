@@ -1097,6 +1097,207 @@
               }
           }
       }
-    }                                                                                                                                                                                                            
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "configureocsp",
+      "dependsOn": [
+        "VNet1",
+        "BastionHost1",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "deployrootca",
+        "configurerootca",
+        "deployissuingca",
+        "DomainJoinIssuingCA",
+        "configureissueca",
+        "grantcarequest",
+        "finalizeca",
+        "deployocsp",
+        "DomainJoinOCSP"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/ocsp.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ocspname')]"
+              },
+              "NamingConvention": {
+                  "value": "[parameters('NamingConvention')]"
+              },              
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },              
+              "domainName": {
+                  "value": "[variables('domainName')]"
+              },   
+              "RootDomainFQDN": {
+                  "value": "[variables('domainName')]"
+              },   
+              "IssuingCAName": {
+                  "value": "[parameters('IssuingCAName')]"
+              },              
+              "RootCAName": {
+                  "value": "[parameters('RootCAName')]"
+              },
+              "location": {
+                  "value": "[parameters('Location1')]"
+              },
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },              
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "deployWK1VM",
+      "dependsOn": [
+        "VNet1",
+        "BastionHost1",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "deployrootca",
+        "configurerootca",
+        "deployissuingca",
+        "DomainJoinIssuingCA",
+        "configureissueca",
+        "grantcarequest",
+        "finalizeca",
+        "deployocsp",
+        "DomainJoinOCSP",
+        "configureocsp"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('wk1name')]"
+              },
+              "computerIP": {
+                  "value": "[variables('wk1IP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsDesktop"
+              },
+              "Offer": {
+                  "value": "Windows-10"
+              },
+              "OSVersion": {
+                "value": "[parameters('WK1OSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "None"
+              },            
+              "VMSize": {
+                "value": "[parameters('WK1VMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('vnet1Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('vnet1subnet2Name')]"
+              },            
+              "vnetprefix": {
+                "value": "[variables('vnet1Prefix')]"
+              },            
+              "subnetPrefix": {
+                "value": "[variables('vnet1subnet2Prefix')]"
+              },                                                                                                            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "DomainJoinWK1VM",
+      "dependsOn": [
+        "VNet1",
+        "BastionHost1",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "deployrootca",
+        "configurerootca",
+        "deployissuingca",
+        "DomainJoinIssuingCA",
+        "configureissueca",
+        "grantcarequest",
+        "finalizeca",
+        "deployocsp",
+        "DomainJoinOCSP",
+        "configureocsp",
+        "DeployWK1VM"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/domainjoin.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('wk1name')]"
+              },
+              "domainName": {
+                  "value": "[variables('domainName')]"
+              },
+              "OUPath": {
+                  "value": "[variables('WKOUPath')]"
+              },
+              "domainJoinOptions": {
+                  "value": 3
+              },
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                             
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }
+          }
+      }
+    }                                                                                                                                                                                                                                                                                                           
   ]
 }

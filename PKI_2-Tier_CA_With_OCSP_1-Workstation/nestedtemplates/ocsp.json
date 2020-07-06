@@ -8,7 +8,7 @@
                 "description": "Computer Name"
             }
         },
-        "DomNC": {
+        "NamingConvention": {
             "type": "string",
             "metadata": {
                 "description": "Domain Naming Convention"
@@ -95,7 +95,7 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "computerName": "[parameters('computerName')]",
-                            "DomNC": "[parameters('DomNC')]",                            
+                            "NamingConvention": "[parameters('NamingConvention')]",                            
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                                                        
                             "domainName": "[parameters('domainName')]",                            
                             "RootDomainFQDN": "[parameters('RootDomainFQDN')]",
