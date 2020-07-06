@@ -1690,9 +1690,6 @@
               "KevVaultName": {
                   "value": "[variables('KeyVault2Name')]"
               },
-              "tenantID": {
-                  "value": "[subscription().tenantId]"
-              },                            
               "location": {
                   "value": "[parameters('Location2')]"
               }
