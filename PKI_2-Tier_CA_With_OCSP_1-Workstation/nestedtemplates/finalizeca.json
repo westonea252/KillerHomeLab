@@ -76,8 +76,8 @@
         }                
     },
     "variables": {
-        "ModulesURL": "[concat(parameters('_artifactsLocation'),'/DSC/', parameters('DSCModuleName'), '.zip', parameters('_artifactsLocationSasToken'))]",
-        "ConfigurationFunction": "[concat(parameters('DSCModuleName'), '.ps1\\', parameters('DSCModuleName'))]"
+        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/FINALIZECA.zip', parameters('_artifactsLocationSasToken')))]",
+        "ConfigurationFunction": "FINALIZECA.ps1\\FINALIZECA"
     },
     "resources": [
         {
