@@ -212,7 +212,7 @@
     "BaseDN": "[concat('DC=',parameters('NetBiosDomain'),',DC=',parameters('TLD'))]",
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
     "KeyVault1Name": "[concat(parameters('NamingConvention'),'-KeVault1')]",            
-    "KeyVault2Name": "[concat(parameters('NamingConvention'),'-KeVault2')]",                
+    "KeyVault2Name": "[concat(parameters('NamingConvention'),'-KeVault2')]"
   },  
   "resources": [
     {
