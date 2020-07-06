@@ -11,7 +11,7 @@
     "tenantID": {
       "type": "string",
       "metadata": {
-        "description": "Specifies the name of the key vault."
+        "description": "TenantID Where KeyVault will be Created."
       }
     },    
       "location": {
