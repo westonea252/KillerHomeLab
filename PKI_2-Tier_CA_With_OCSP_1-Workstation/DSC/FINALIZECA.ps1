@@ -7,7 +7,6 @@
         [String]$IssuingCAName,
         [String]$RootCAName,
         [String]$RootDomainFQDN,
-        [String]$CreateCATemplatesSASUrl,
         [System.Management.Automation.PSCredential]$Admincreds
     )
 
@@ -31,7 +30,7 @@
         xRemoteFile DownloadCreateCATemplates
         {
             DestinationPath = "C:\CertEnroll\Create_CA_Templates.ps1"
-            Uri             = "$CreateCATemplatesSASUrl"
+            Uri             = "https://raw.githubusercontent.com/elliottfieldsjr/KillerHomeLab/master/PKI_2-Tier_CA_With_OCSP_1-Workstation/Scripts/Create_CA_Templates.ps1"
             UserAgent       = "[Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer"
         }
 

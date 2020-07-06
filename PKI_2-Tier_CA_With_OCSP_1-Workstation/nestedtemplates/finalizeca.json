@@ -71,8 +71,7 @@
     },
     "variables": {
         "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/FINALIZECA.zip', parameters('_artifactsLocationSasToken')))]",
-        "ConfigurationFunction": "FINALIZECA.ps1\\FINALIZECA",
-        "CreateCATemplatesSASUrl": "[uri(parameters('_artifactsLocation'), concat('Scripts/FINALIZECA.zip', parameters('_artifactsLocationSasToken')))]"        
+        "ConfigurationFunction": "FINALIZECA.ps1\\FINALIZECA"
     },
     "resources": [
         {
@@ -94,7 +93,6 @@
                             "IssuingCAName": "[parameters('IssuingCAName')]",
                             "RootCAName": "[parameters('RootCAName')]",                            
                             "RootDomainFQDN": "[parameters('RootDomainFQDN')]",
-                            "CreateCATemplatesSASUrl": "[variables('CreateCATemplatesSASUrl')]",                                                        
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"                                                                                   
