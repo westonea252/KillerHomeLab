@@ -1602,7 +1602,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "DeployKevVault1",
+      "name": "DeployKeyVault1",
       "dependsOn": [
         "VNet1",
         "VNet1R",
@@ -1650,7 +1650,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "DeployKevVault2",
+      "name": "DeployKeyVault2",
       "dependsOn": [
         "VNet1",
         "VNet1R",
