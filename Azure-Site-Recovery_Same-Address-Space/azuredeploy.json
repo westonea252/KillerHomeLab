@@ -211,8 +211,10 @@
     "domainName": "[concat(parameters('NetBiosDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat('DC=',parameters('NetBiosDomain'),',DC=',parameters('TLD'))]",
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
-    "KeyVault1Name": "[concat(parameters('NamingConvention'),'-KeVault1')]",            
-    "KeyVault2Name": "[concat(parameters('NamingConvention'),'-KeVault2')]"
+    "KeyVault1Name": "[concat(parameters('NamingConvention'),'-KeyVault1')]",            
+    "KeyVault2Name": "[concat(parameters('NamingConvention'),'-KeyVault2')]",
+    "RSVault1Name": "[concat(parameters('NamingConvention'),'-RSVault1')]",                
+    "RSVault2Name": "[concat(parameters('NamingConvention'),'-RSVault2')]"                    
   },  
   "resources": [
     {
@@ -1695,6 +1697,107 @@
               }
           }
       }
-    }                                                                                                                                                                                                                                                                                                                                                                                                            
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "DeployRSVault1",
+      "dependsOn": [
+        "VNet1",
+        "VNet1R",
+        "VNet2",
+        "VNet2R",
+        "BastionHost1",
+        "BastionHost1R",
+        "BastionHost2",
+        "BastionHost2R",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "updatevnet2dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "createsites",
+        "PeeringToSite2",
+        "PeeringToSite1",
+        "deployDC2VM",
+        "promotedc2",
+        "updatevnet2dns-2",
+        "restartdc2",
+        "DeploySRV1VM",
+        "DomainJoinSRV1VM",
+        "DeploySRV2VM",
+        "DomainJoinSRV2VM",
+        "DeployKeyVault1",
+        "DeployKeyVault2"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/recoveryservicesvault.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "RSVaultName": {
+                  "value": "[variables('RSVault1Name')]"
+              },
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "DeployRSVault2",
+      "dependsOn": [
+        "VNet1",
+        "VNet1R",
+        "VNet2",
+        "VNet2R",
+        "BastionHost1",
+        "BastionHost1R",
+        "BastionHost2",
+        "BastionHost2R",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "updatevnet2dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "createsites",
+        "PeeringToSite2",
+        "PeeringToSite1",
+        "deployDC2VM",
+        "promotedc2",
+        "updatevnet2dns-2",
+        "restartdc2",
+        "DeploySRV1VM",
+        "DomainJoinSRV1VM",
+        "DeploySRV2VM",
+        "DomainJoinSRV2VM",
+        "DeployKeyVault1",
+        "DeployKeyVault2",
+        "DeployRSVault1"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/recoveryservicesvault.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "RSVaultName": {
+                  "value": "[variables('RSVault2Name')]"
+              },
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    }                                                                                                                                                                                                                                                                                                                                                                                                                    
   ]
 }
