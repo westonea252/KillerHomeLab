@@ -1,0 +1,61 @@
+{
+"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+"contentVersion": "1.0.0.0",
+"parameters": {
+    "keyVaultName": {
+      "type": "string",
+      "metadata": {
+        "description": "Specifies the name of the key vault."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Specifies the Azure location where the key vault should be created."
+      }
+    }
+},
+  "variables": {
+    "keysPermissions": "All",
+    "secretsPermissions": "All",
+    "skuName":  "Premium",
+    "tenantId": "[subscription().tenantId]",
+    "BackupFairfaxID": "ff281ffe-705c-4f53-9f37-a40e6f2c68f3",
+    "enabledForDeployment": true,
+    "enabledForDiskEncryption": true,        
+    "enabledForTemplateDeployment": true
+  },
+"resources": [
+    {
+      "type": "Microsoft.KeyVault/vaults",
+      "name": "[parameters('keyVaultName')]",
+      "apiVersion": "2016-10-01",
+      "location": "[parameters('location')]",
+      "properties": {
+        "enabledForDeployment": "[variables('enabledForDeployment')]",
+        "enabledForDiskEncryption": "[variables('enabledForDiskEncryption')]",
+        "enabledForTemplateDeployment": "[variables('enabledForTemplateDeployment')]",
+        "tenantId": "[variables('tenantId')]",
+        "accessPolicies": [
+          {
+            "objectId": "[variables('BackupFairfaxId')]",
+            "tenantId": "[variables('tenantId')]",
+            "permissions": {
+              "keys": "[variables('keysPermissions')]",
+              "secrets": "[variables('secretsPermissions')]"      
+            }
+          }
+        ],
+        "sku": {
+          "name": "[variables('skuName')]",
+          "family": "A"
+        },
+        "networkAcls": {
+            "defaultAction": "Allow",
+            "bypass": "AzureServices"
+        }
+      }
+    }
+   ]
+}
