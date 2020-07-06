@@ -1638,7 +1638,7 @@
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
-              "KevVaultName": {
+              "KeyVaultName": {
                   "value": "[variables('KeyVault1Name')]"
               },
               "location": {
@@ -1687,7 +1687,7 @@
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
-              "KevVaultName": {
+              "KeyVaultName": {
                   "value": "[variables('KeyVault2Name')]"
               },
               "location": {
