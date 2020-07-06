@@ -22,7 +22,7 @@
       "metadata": {
         "description": "VNet1 Prefix"
       }
-    },        
+    },    
     "DC1OSVersion": {
         "type": "string",
         "defaultValue": "2019-Datacenter",
@@ -45,26 +45,28 @@
           "description": "Domain Controller2 OS Version"
       }
     },    
-    "WK1OSVersion": {
+    "SRV1OSVersion": {
       "type": "string",
-      "defaultValue": "19h1-pro",
+      "defaultValue": "2019-Datacenter",
       "allowedValues": [
-        "19h1-pro"
+        "2019-Datacenter",
+        "2016-Datacenter"
       ],
       "metadata": {
-          "description": "Workstation1 OS Version"
+          "description": "Server1 OS Version"
       }
     },    
-    "WK2OSVersion": {
+    "SRV2OSVersion": {
       "type": "string",
-      "defaultValue": "19h1-pro",
+      "defaultValue": "2019-Datacenter",
       "allowedValues": [
-        "19h1-pro"
+        "2019-Datacenter",
+        "2016-Datacenter"
       ],
       "metadata": {
-        "description": "Workstation2 OS Version"
+          "description": "Server2 OS Version"
       }
-    },      
+    },    
     "DC1VMSize": {
         "type": "string",
         "defaultValue": "Standard_D2s_v3",
@@ -79,18 +81,18 @@
           "description": "Domain Controller2 VMSize"
       }
     },            
-    "WK1VMSize": {
+    "SRV1VMSize": {
       "type": "string",
       "defaultValue": "Standard_D2s_v3",
       "metadata": {
-          "description": "Workstation1 VMSize"
+          "description": "Server1 VMSize"
       }
     },            
-    "WK2VMSize": {
+    "SRV2VMSize": {
       "type": "string",
       "defaultValue": "Standard_DS11_v2",
       "metadata": {
-          "description": "Workstation2 VMSize"
+          "description": "Server2 VMSize"
       }
     },                
     "NetBiosDomain": {
@@ -172,17 +174,23 @@
   },
   "variables": {
     "vnet1Name": "[concat(parameters('NamingConvention'),'-VNet1')]",
+    "vnet1NameR": "[concat(parameters('NamingConvention'),'-Recovery-VNet1')]",    
     "vnet1Prefix": "[concat(parameters('vnet1ID'),'.0.0/16')]",
     "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet1')]",    
+    "vnet1subnet1NameR": "[concat(parameters('NamingConvention'),'-Recovery-VNet1-Subnet1')]",        
     "vnet1subnet1Prefix": "[concat(parameters('vnet1ID'),'.1.0/24')]",    
-    "vnet1subnet2Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet2')]",    
+    "vnet1subnet2Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet2')]",   
+    "vnet1subnet2NameR": "[concat(parameters('NamingConvention'),'-Recovery-VNet1-Subnet2')]",         
     "vnet1subnet2Prefix": "[concat(parameters('vnet1ID'),'.2.0/24')]",    
     "vnet1BastionsubnetPrefix": "[concat(parameters('vnet1ID'),'.253.0/24')]",        
-    "vnet2Name": "[concat(parameters('NamingConvention'),'-VNet2')]",
+    "vnet2Name": "[concat(parameters('NamingConvention'),'-VNet2')]",    
+    "vnet2NameR": "[concat(parameters('NamingConvention'),'-Recovery-VNet2')]",        
     "vnet2Prefix": "[concat(parameters('vnet2ID'),'.0.0/16')]",
-    "vnet2subnet1Name": "[concat(parameters('NamingConvention'),'-VNet2-Subnet1')]",    
+    "vnet2subnet1Name": "[concat(parameters('NamingConvention'),'-VNet2-Subnet1')]",   
+    "vnet2subnet1NameR": "[concat(parameters('NamingConvention'),'-Recovery-VNet2-Subnet1')]",         
     "vnet2subnet1Prefix": "[concat(parameters('vnet2ID'),'.1.0/24')]",    
     "vnet2subnet2Name": "[concat(parameters('NamingConvention'),'-VNet2-Subnet2')]",    
+    "vnet2subnet2NameR": "[concat(parameters('NamingConvention'),'-Recovery-VNet2-Subnet2')]",        
     "vnet2subnet2Prefix": "[concat(parameters('vnet2ID'),'.2.0/24')]",    
     "vnet2BastionsubnetPrefix": "[concat(parameters('vnet2ID'),'.253.0/24')]",        
     "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",           
@@ -192,17 +200,17 @@
     "ReverseLookup1": "[concat('1.',parameters('ReverseLookup1'))]",    
     "ReverseLookup2": "[concat('1.',parameters('ReverseLookup2'))]",        
     "dc1lastoctet": "101",        
-    "wk1lastoctet": "201",            
-    "wk1name": "[concat(parameters('NamingConvention'),'-wk-01')]",           
-    "wk1IP": "[concat(parameters('vnet1ID'),'.2.',variables('wk1lastoctet'))]",        
+    "srv1lastoctet": "102",            
+    "srv1name": "[concat(parameters('NamingConvention'),'-srv-01')]",           
+    "srv1IP": "[concat(parameters('vnet1ID'),'.2.',variables('srv1lastoctet'))]",        
     "dc2lastoctet": "101",        
-    "wk2lastoctet": "201",            
-    "wk2name": "[concat(parameters('NamingConvention'),'-wk-02')]",           
-    "wk2IP": "[concat(parameters('vnet2ID'),'.2.',variables('wk2lastoctet'))]",        
+    "srv2lastoctet": "102",            
+    "srv2name": "[concat(parameters('NamingConvention'),'-srv-02')]",           
+    "srv2IP": "[concat(parameters('vnet2ID'),'.2.',variables('srv2lastoctet'))]",        
     "DCDataDisk1Name": "NTDS",            
     "domainName": "[concat(parameters('NetBiosDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat('DC=',parameters('NetBiosDomain'),',DC=',parameters('TLD'))]",
-    "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]"
+    "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]"
   },  
   "resources": [
     {
@@ -246,10 +254,54 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "VNet2",
+      "name": "VNet1R",
       "dependsOn": [
         "VNet1"
-      ],      
+      ]
+      ,
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/vnet.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "vnetName": {
+                  "value": "[variables('vnet1NameR')]"
+              },
+              "vnetprefix": {
+                  "value": "[variables('vnet1Prefix')]"
+              },
+              "subnet1Name": {
+                  "value": "[variables('vnet1subnet1NameR')]"
+              },
+              "subnet1Prefix": {
+                  "value": "[variables('vnet1subnet1Prefix')]"
+              },
+              "subnet2Name": {
+                "value": "[variables('vnet1subnet2NameR')]"
+              },
+              "subnet2Prefix": {
+                "value": "[variables('vnet1subnet2Prefix')]"
+              },              
+              "BastionsubnetPrefix": {
+                "value": "[variables('vnet1BastionsubnetPrefix')]"
+              },              
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "VNet2",
+      "dependsOn": [
+        "VNet1",
+        "VNetR"
+      ]
+      ,      
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -287,10 +339,56 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
+      "name": "VNet2R",
+      "dependsOn": [
+        "VNet1",
+        "VNetR",
+        "VNet2"
+      ]
+      ,      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/vnet.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "vnetName": {
+                  "value": "[variables('vnet2NameR')]"
+              },
+              "vnetprefix": {
+                  "value": "[variables('vnet2Prefix')]"
+              },
+              "subnet1Name": {
+                  "value": "[variables('vnet2subnet1NameR')]"
+              },
+              "subnet1Prefix": {
+                  "value": "[variables('vnet2subnet1Prefix')]"
+              },
+              "subnet2Name": {
+                "value": "[variables('vnet2subnet2NameR')]"
+              },
+              "subnet2Prefix": {
+                "value": "[variables('vnet2subnet2Prefix')]"
+              },              
+              "BastionsubnetPrefix": {
+                "value": "[variables('vnet2BastionsubnetPrefix')]"
+              },              
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }
+          }
+      }
+    },        
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
       "name": "BastionHost1",
       "dependsOn": [
         "VNet1",
-        "VNet2"
+        "VNet1R",
+        "VNet2",
+        "VNet2R"
       ],
       "properties": {
           "mode": "Incremental",
@@ -320,11 +418,50 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
+      "name": "BastionHost1R",
+      "dependsOn": [
+        "VNet1",
+        "VNet1R",
+        "VNet2",
+        "VNet2R",
+        "BastionHost1"
+      ],
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/bastionhost.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "publicIPAddressName": {
+                "value": "[concat(variables('vnet1NameR'),'-Bastion-pip')]"
+              },
+              "AllocationMethod": {
+                "value": "Static"
+              },              
+              "vnetName": {
+                  "value": "[variables('vnet1NameR')]"
+              },
+              "subnetName": {
+                  "value": "AzureBastionSubnet"
+              },
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },            
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
       "name": "BastionHost2",
       "dependsOn": [
         "VNet1",
+        "VNet1R",
         "VNet2",
-        "BastionHost1"
+        "VNet2R",
+        "BastionHost1",
+        "BastionHost1R"
       ],
       "properties": {
           "mode": "Incremental",
@@ -354,12 +491,54 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
+      "name": "BastionHost2R",
+      "dependsOn": [
+        "VNet1",
+        "VNet1R",
+        "VNet2",
+        "VNet2R",
+        "BastionHost1",
+        "BastionHost1R",
+        "BastionHost2"
+      ],
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/bastionhost.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "publicIPAddressName": {
+                "value": "[concat(variables('vnet2NameR'),'-Bastion-pip')]"
+              },
+              "AllocationMethod": {
+                "value": "Static"
+              },              
+              "vnetName": {
+                  "value": "[variables('vnet2NameR')]"
+              },
+              "subnetName": {
+                  "value": "AzureBastionSubnet"
+              },
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }
+          }
+      }
+    },                
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
       "name": "deployDC1VM",
       "dependsOn": [
         "VNet1",
+        "VNet1R",
         "VNet2",
+        "VNet2R",
         "BastionHost1",
-        "BastionHost2"
+        "BastionHost1R",
+        "BastionHost2",
+        "BastionHost2R"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -422,9 +601,13 @@
       "name": "promotedc1",
       "dependsOn": [
         "VNet1",
+        "VNet1R",
         "VNet2",
+        "VNet2R",
         "BastionHost1",
+        "BastionHost1R",
         "BastionHost2",
+        "BastionHost2R",
         "DeployDC1VM"
       ],            
       "properties": {
@@ -467,9 +650,13 @@
       "name": "updatevnet1dns",
       "dependsOn": [
         "VNet1",
+        "VNet1R",
         "VNet2",
+        "VNet2R",
         "BastionHost1",
-        "BastionHost2",        
+        "BastionHost1R",
+        "BastionHost2",
+        "BastionHost2R",
         "DeployDC1VM",
         "promotedc1"
       ],            
@@ -518,9 +705,13 @@
       "name": "updatevnet2dns",
       "dependsOn": [
         "VNet1",
+        "VNet1R",
         "VNet2",
+        "VNet2R",
         "BastionHost1",
-        "BastionHost2",        
+        "BastionHost1R",
+        "BastionHost2",
+        "BastionHost2R",        
         "DeployDC1VM",
         "promotedc1",
         "updatevnet1dns"
@@ -570,9 +761,13 @@
       "name": "restartdc1",
       "dependsOn": [
         "VNet1",
+        "VNet1R",
         "VNet2",
+        "VNet2R",
         "BastionHost1",
+        "BastionHost1R",
         "BastionHost2",
+        "BastionHost2R",
         "DeployDC1VM",
         "promotedc1",
         "updatevnet1dns",
@@ -606,7 +801,13 @@
       "name": "configdns",
       "dependsOn": [
         "VNet1",
+        "VNet1R",
+        "VNet2",
+        "VNet2R",
         "BastionHost1",
+        "BastionHost1R",
+        "BastionHost2",
+        "BastionHost2R",
         "DeployDC1VM",
         "promotedc1",
         "updatevnet1dns",
@@ -656,7 +857,13 @@
       "name": "createous",
       "dependsOn": [
         "VNet1",
+        "VNet1R",
+        "VNet2",
+        "VNet2R",
         "BastionHost1",
+        "BastionHost1R",
+        "BastionHost2",
+        "BastionHost2R",
         "DeployDC1VM",
         "promotedc1",
         "updatevnet1dns",
@@ -695,7 +902,13 @@
       "name": "createsites",
       "dependsOn": [
         "VNet1",
+        "VNet1R",
+        "VNet2",
+        "VNet2R",
         "BastionHost1",
+        "BastionHost1R",
+        "BastionHost2",
+        "BastionHost2R",
         "DeployDC1VM",
         "promotedc1",
         "updatevnet1dns",
@@ -744,9 +957,13 @@
       "name": "PeeringToSite2",
       "dependsOn": [
         "VNet1",
+        "VNet1R",
         "VNet2",
+        "VNet2R",
         "BastionHost1",
+        "BastionHost1R",
         "BastionHost2",
+        "BastionHost2R",
         "DeployDC1VM",
         "promotedc1",
         "updatevnet1dns",
@@ -793,9 +1010,13 @@
       "name": "PeeringToSite1",
       "dependsOn": [
         "VNet1",
+        "VNet1R",
         "VNet2",
+        "VNet2R",
         "BastionHost1",
+        "BastionHost1R",
         "BastionHost2",
+        "BastionHost2R",
         "DeployDC1VM",
         "promotedc1",
         "updatevnet1dns",
@@ -843,9 +1064,13 @@
       "name": "deployDC2VM",
       "dependsOn": [
         "VNet1",
+        "VNet1R",
         "VNet2",
+        "VNet2R",
         "BastionHost1",
+        "BastionHost1R",
         "BastionHost2",
+        "BastionHost2R",
         "DeployDC1VM",
         "promotedc1",
         "updatevnet1dns",
@@ -918,9 +1143,13 @@
       "name": "promotedc2",
       "dependsOn": [
         "VNet1",
+        "VNet1R",
         "VNet2",
+        "VNet2R",
         "BastionHost1",
+        "BastionHost1R",
         "BastionHost2",
+        "BastionHost2R",
         "DeployDC1VM",
         "promotedc1",
         "updatevnet1dns",
@@ -976,9 +1205,13 @@
       "name": "updatevnet2dns-2",
       "dependsOn": [
         "VNet1",
+        "VNet1R",
         "VNet2",
+        "VNet2R",
         "BastionHost1",
+        "BastionHost1R",
         "BastionHost2",
+        "BastionHost2R",
         "DeployDC1VM",
         "promotedc1",
         "updatevnet1dns",
@@ -1037,9 +1270,13 @@
       "name": "restartdc2",
       "dependsOn": [
         "VNet1",
+        "VNet1R",
         "VNet2",
+        "VNet2R",
         "BastionHost1",
+        "BastionHost1R",
         "BastionHost2",
+        "BastionHost2R",
         "DeployDC1VM",
         "promotedc1",
         "updatevnet1dns",
@@ -1079,12 +1316,16 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "deployWK1VM",
+      "name": "deploySRV1VM",
       "dependsOn": [
         "VNet1",
+        "VNet1R",
         "VNet2",
+        "VNet2R",
         "BastionHost1",
+        "BastionHost1R",
         "BastionHost2",
+        "BastionHost2R",
         "DeployDC1VM",
         "promotedc1",
         "updatevnet1dns",
@@ -1108,25 +1349,25 @@
           },
           "parameters": {
               "computerName": {
-                  "value": "[variables('wk1name')]"
+                  "value": "[variables('srv1name')]"
               },
               "computerIP": {
-                  "value": "[variables('wk1IP')]"
+                  "value": "[variables('srv1IP')]"
               },
               "Publisher": {
-                  "value": "MicrosoftWindowsDesktop"
+                  "value": "MicrosoftWindowsServer"
               },
               "Offer": {
-                  "value": "Windows-10"
+                  "value": "WindowsServer"
               },
               "OSVersion": {
-                "value": "[parameters('WK1OSVersion')]"
+                "value": "[parameters('SRV1OSVersion')]"
               },              
               "LicenseType": {
                 "value": "None"
               },            
               "VMSize": {
-                "value": "[parameters('WK1VMSize')]"
+                "value": "[parameters('SRV1VMSize')]"
               },
               "vnetName": {
                 "value": "[variables('vnet1Name')]"
@@ -1155,12 +1396,16 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "DomainJoinWK1VM",
+      "name": "DomainJoinSRV1VM",
       "dependsOn": [
         "VNet1",
+        "VNet1R",
         "VNet2",
+        "VNet2R",
         "BastionHost1",
+        "BastionHost1R",
         "BastionHost2",
+        "BastionHost2R",
         "DeployDC1VM",
         "promotedc1",
         "updatevnet1dns",
@@ -1175,7 +1420,7 @@
         "promotedc2",
         "updatevnet2dns-2",
         "restartdc2",
-        "DeployWK1VM"
+        "DeploySRV1VM"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1185,13 +1430,13 @@
           },
           "parameters": {
               "computerName": {
-                  "value": "[variables('wk1name')]"
+                  "value": "[variables('srv1name')]"
               },
               "domainName": {
                   "value": "[variables('domainName')]"
               },
               "OUPath": {
-                  "value": "[variables('WKOUPath')]"
+                  "value": "[variables('SRVOUPath')]"
               },
               "domainJoinOptions": {
                   "value": 3
@@ -1211,12 +1456,16 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "deployWK2VM",
+      "name": "deploySRV2VM",
       "dependsOn": [
         "VNet1",
+        "VNet1R",
         "VNet2",
+        "VNet2R",
         "BastionHost1",
+        "BastionHost1R",
         "BastionHost2",
+        "BastionHost2R",
         "DeployDC1VM",
         "promotedc1",
         "updatevnet1dns",
@@ -1231,8 +1480,8 @@
         "promotedc2",
         "updatevnet2dns-2",
         "restartdc2",
-        "deployWK1VM",
-        "DomainJoinWK1VM"
+        "deploySRV1VM",
+        "DomainJoinSRV1VM"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1242,25 +1491,25 @@
           },
           "parameters": {
               "computerName": {
-                  "value": "[variables('wk2name')]"
+                  "value": "[variables('srv2name')]"
               },
               "computerIP": {
-                  "value": "[variables('wk2IP')]"
+                  "value": "[variables('srv2IP')]"
               },
               "Publisher": {
-                  "value": "MicrosoftWindowsDesktop"
+                  "value": "MicrosoftWindowsServer"
               },
               "Offer": {
-                  "value": "Windows-10"
+                  "value": "WindowsServer"
               },
               "OSVersion": {
-                "value": "[parameters('WK2OSVersion')]"
+                "value": "[parameters('SRV2OSVersion')]"
               },              
               "LicenseType": {
                 "value": "None"
               },            
               "VMSize": {
-                "value": "[parameters('WK2VMSize')]"
+                "value": "[parameters('SRV2VMSize')]"
               },
               "vnetName": {
                 "value": "[variables('vnet2Name')]"
@@ -1289,12 +1538,16 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "DomainJoinWK2VM",
+      "name": "DomainJoinSRV2VM",
       "dependsOn": [
         "VNet1",
+        "VNet1R",
         "VNet2",
+        "VNet2R",
         "BastionHost1",
+        "BastionHost1R",
         "BastionHost2",
+        "BastionHost2R",
         "DeployDC1VM",
         "promotedc1",
         "updatevnet1dns",
@@ -1309,9 +1562,9 @@
         "promotedc2",
         "updatevnet2dns-2",
         "restartdc2",
-        "DeployWK1VM",
-        "DomainJoinWK1VM",
-        "DeployWK2VM"
+        "DeploySRV1VM",
+        "DomainJoinSRV1VM",
+        "DeploySRV2VM"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1321,13 +1574,13 @@
           },
           "parameters": {
               "computerName": {
-                  "value": "[variables('wk2name')]"
+                  "value": "[variables('srv2name')]"
               },
               "domainName": {
                   "value": "[variables('domainName')]"
               },
               "OUPath": {
-                  "value": "[variables('WKOUPath')]"
+                  "value": "[variables('SRVOUPath')]"
               },
               "domainJoinOptions": {
                   "value": 3
