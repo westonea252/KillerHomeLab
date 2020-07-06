@@ -48,7 +48,6 @@
         "accessPolicies": [
           {
             "objectId": "[variables('BackupObjectID')]",
-            "applicationId": "[variables('BackupAppID')]",
             "tenantId": "[variables('tenantId')]",
             "permissions": {
               "keys": "[variables('keysPermissions')]",
