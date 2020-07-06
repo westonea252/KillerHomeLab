@@ -8,12 +8,6 @@
         "description": "Specifies the name of the key vault."
       }
     },
-    "tenantID": {
-      "type": "string",
-      "metadata": {
-        "description": "TenantID Where KeyVault will be Created."
-      }
-    },    
       "location": {
           "type": "string",
         "metadata": {
@@ -22,9 +16,10 @@
       }
 },
   "variables": {
-    "keysPermissions": "All",
-    "secretsPermissions": "All",
+    "keysPermissions": ["All"],
+    "secretsPermissions": ["All"],
     "skuName":  "Premium",
+    "tenantID": "[subscription().tenantId]",
     "BackupFairfaxID": "ff281ffe-705c-4f53-9f37-a40e6f2c68f3",
     "enabledForDeployment": true,
     "enabledForDiskEncryption": true,        
@@ -40,11 +35,11 @@
         "enabledForDeployment": "[variables('enabledForDeployment')]",
         "enabledForDiskEncryption": "[variables('enabledForDiskEncryption')]",
         "enabledForTemplateDeployment": "[variables('enabledForTemplateDeployment')]",
-        "tenantId": "[parameters('tenantId')]",
+        "tenantId": "[variables('tenantId')]",
         "accessPolicies": [
           {
             "objectId": "[variables('BackupFairfaxId')]",
-            "tenantId": "[parameters('tenantId')]",
+            "tenantId": "[variables('tenantId')]",
             "permissions": {
               "keys": "[variables('keysPermissions')]",
               "secrets": "[variables('secretsPermissions')]"      
