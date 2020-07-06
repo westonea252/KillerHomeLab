@@ -897,6 +897,63 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
           }
       }
-    }                                                                                                  
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "finalizeca",
+      "dependsOn": [
+        "VNet1",
+        "BastionHost1",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "deployrootca",
+        "configurerootca",
+        "deployissuingca",
+        "DomainJoinIssuingCA",
+        "configureissueca",
+        "grantcarequest"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/finalizeca.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('icaname')]"
+              },
+              "RootCAIP": {
+                  "value": "[variables('rcaIP')]"
+              },              
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },              
+              "IssuingCAName": {
+                  "value": "[parameters('IssuingCAName')]"
+              },              
+              "RootCAName": {
+                  "value": "[parameters('RootCAName')]"
+              },
+              "RootDomainFQDN": {
+                  "value": "[variables('domainName')]"
+              },   
+              "location": {
+                  "value": "[parameters('Location1')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          }
+      }
+    }                                                                                                                                                                                                        
   ]
 }
