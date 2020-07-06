@@ -299,7 +299,7 @@
       "name": "VNet2",
       "dependsOn": [
         "VNet1",
-        "VNetR"
+        "VNet1R"
       ]
       ,      
       "properties": {
@@ -342,7 +342,7 @@
       "name": "VNet2R",
       "dependsOn": [
         "VNet1",
-        "VNetR",
+        "VNet1R",
         "VNet2"
       ]
       ,      
