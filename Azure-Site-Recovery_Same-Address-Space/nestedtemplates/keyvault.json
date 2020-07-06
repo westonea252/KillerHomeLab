@@ -24,7 +24,8 @@
       ],
     "skuName":  "Premium",
     "tenantID": "[subscription().tenantId]",
-    "BackupFairfaxID": "ff281ffe-705c-4f53-9f37-a40e6f2c68f3",
+    "BackupObjectID": "9a7b9a6d-0996-4d52-889f-46473877d766",
+    "BackupAppID": "ff281ffe-705c-4f53-9f37-a40e6f2c68f3",
     "enabledForDeployment": true,
     "enabledForDiskEncryption": true,        
     "enabledForTemplateDeployment": true
@@ -42,7 +43,8 @@
         "tenantId": "[variables('tenantId')]",
         "accessPolicies": [
           {
-            "objectId": "[variables('BackupFairfaxId')]",
+            "objectId": "[variables('BackupObjectID')]",
+            "applicationId": "[variables('BackupAppID')]",
             "tenantId": "[variables('tenantId')]",
             "permissions": {
               "keys": "[variables('keysPermissions')]",
