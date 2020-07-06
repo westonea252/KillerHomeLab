@@ -8,13 +8,12 @@
         "description": "Specifies the name of the key vault."
       }
     },
-    "location": {
-      "type": "string",
-      "defaultValue": "[resourceGroup().location]",
-      "metadata": {
-        "description": "Specifies the Azure location where the key vault should be created."
+      "location": {
+          "type": "string",
+        "metadata": {
+          "description": "Region of Resources"
+        }
       }
-    }
 },
   "variables": {
     "keysPermissions": "All",
