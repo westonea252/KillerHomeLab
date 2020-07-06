@@ -89,8 +89,10 @@
                 # Create CA Templates
                 $scheduledtask = Get-ScheduledTask "Create CA Templates" -ErrorAction 0
                 $action = New-ScheduledTaskAction -Execute Powershell -Argument '.\Create_CA_Templates.ps1' -WorkingDirectory 'C:\CertEnroll'
+                IF ($scheduledtask -eq $null) {
                 Register-ScheduledTask -Action $action -TaskName "Create CA Templates" -Description "Create Web Server & OCSP CA Templates" -User $Domain\$Username -Password $Password
                 Start-ScheduledTask "Create CA Templates"
+                }
             }
             GetScript =  { @{} }
             TestScript = { $false}

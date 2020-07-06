@@ -151,13 +151,13 @@
     "adminUsername": {
         "type": "string",
         "metadata": {
-            "description": "The name of the Administrator of the new VM and Domain"
+            "description": "Admin Username"
         }
     },
     "adminPassword": {
         "type": "securestring",
       "metadata": {
-        "description": "The password for the Administrator account of the new VM and Domain"
+        "description": "Admin Password"
       }
     },    
     "_artifactsLocation": {
