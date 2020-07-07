@@ -166,9 +166,13 @@
     },             
     "BackupObjectID": {
       "type": "string",
-      "defaultValue": "9a7b9a6d-0996-4d52-889f-46473877d766",
+      "defaultValue": "",
+      "allowedValues": [
+        "9a7b9a6d-0996-4d52-889f-46473877d766",
+        "f40e18f0-6544-45c2-9d24-639a8bb3b41a"
+      ],            
       "metadata": {
-          "description": "Backup Object ID"
+          "description": "Backup Object ID.  For AzureGov Use: 9a7b9a6d-0996-4d52-889f-46473877d766, For Azure Use: f40e18f0-6544-45c2-9d24-639a8bb3b41a"
       }
     },             
     "KeyVault1ID": {
