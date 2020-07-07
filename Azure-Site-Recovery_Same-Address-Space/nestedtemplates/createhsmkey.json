@@ -45,7 +45,7 @@
       "identity": {
         "type": "UserAssigned",
         "userAssignedIdentities": {
-          "[parameters('ManagedIDName')]": {
+          "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('ManagedIDName'))]": {
           }
         }
       },
