@@ -256,7 +256,9 @@
     "KeyVault1Name": "[concat(parameters('NamingConvention'),'-KeyVault',parameters('KeyVault1ID'))]",            
     "KeyVault2Name": "[concat(parameters('NamingConvention'),'-KeyVault',parameters('KeyVault2ID'))]",            
     "RSVault1Name": "[concat(parameters('NamingConvention'),'-RSVault',parameters('RSVault1ID'))]",            
-    "RSVault2Name": "[concat(parameters('NamingConvention'),'-RSVault',parameters('RSVault2ID'))]"
+    "RSVault2Name": "[concat(parameters('NamingConvention'),'-RSVault',parameters('RSVault2ID'))]",
+    "ManagedID1Name": "[concat(parameters('NamingConvention'),'-ManagedID1')]",
+    "ManagedID2Name": "[concat(parameters('NamingConvention'),'-ManagedID2')]"            
   },  
   "resources": [
     {
@@ -1852,6 +1854,111 @@
               }
           }
       }
-    }                                                                                                                                                                                                                                                                                                                                                                                                                        
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "CreateManagedID1",
+      "dependsOn": [
+        "VNet1",
+        "VNet1R",
+        "VNet2",
+        "VNet2R",
+        "BastionHost1",
+        "BastionHost1R",
+        "BastionHost2",
+        "BastionHost2R",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "updatevnet2dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "createsites",
+        "PeeringToSite2",
+        "PeeringToSite1",
+        "deployDC2VM",
+        "promotedc2",
+        "updatevnet2dns-2",
+        "restartdc2",
+        "DeploySRV1VM",
+        "DomainJoinSRV1VM",
+        "DeploySRV2VM",
+        "DomainJoinSRV2VM",
+        "DeployRSVault1",
+        "DeployRSVault2",
+        "DeployKeyVault1",
+        "DeployKeyVault2"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/managedidentity.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "ManagedIDName": {
+                  "value": "[variables('ManagedID1Name')]"
+              },
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "CreateManagedID2",
+      "dependsOn": [
+        "VNet1",
+        "VNet1R",
+        "VNet2",
+        "VNet2R",
+        "BastionHost1",
+        "BastionHost1R",
+        "BastionHost2",
+        "BastionHost2R",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "updatevnet2dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "createsites",
+        "PeeringToSite2",
+        "PeeringToSite1",
+        "deployDC2VM",
+        "promotedc2",
+        "updatevnet2dns-2",
+        "restartdc2",
+        "DeploySRV1VM",
+        "DomainJoinSRV1VM",
+        "DeploySRV2VM",
+        "DomainJoinSRV2VM",
+        "DeployRSVault1",
+        "DeployRSVault2",
+        "DeployKeyVault1",
+        "DeployKeyVault2",
+        "CreateManagedID1"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/managedidentity.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "ManagedIDName": {
+                  "value": "[variables('ManagedID2Name')]"
+              },
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    }                                                                                                                                                                                                                                                                                                                                                                                                                            
   ]
 }

@@ -48,7 +48,8 @@
         "enabledForDiskEncryption": true,
         "enabledForTemplateDeployment": true,
         "enableSoftDelete": true,        
-        "enablePurgeProtection": true,                
+        "enablePurgeProtection": true,
+        "softDeleteRetentionInDays":  7,                
         "tenantId": "[variables('tenantId')]",
         "accessPolicies": [
           {
