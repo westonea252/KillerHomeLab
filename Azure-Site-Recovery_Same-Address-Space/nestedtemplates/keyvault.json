@@ -75,7 +75,7 @@
             }
           },
           {
-            "objectId": "[parameters('ManagedIDName').principalId]",
+            "objectId": "[parameters('ManagedIDName').Id]",
             "tenantId": "[variables('tenantId')]",
             "permissions": {
               "keys": "[variables('keysPermissions')]",
