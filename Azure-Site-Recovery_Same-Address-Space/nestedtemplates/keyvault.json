@@ -19,7 +19,13 @@
       "metadata": {
         "description": "Admin Object ID"
       }
-    },            
+    },      
+    "ManagedIDName": {
+      "type": "string",
+      "metadata": {
+        "description": "Managed ID Name"
+      }
+    },          
       "location": {
           "type": "string",
         "metadata": {
@@ -67,7 +73,15 @@
               "keys": "[variables('keysPermissions')]",
               "secrets": "[variables('secretsPermissions')]"      
             }
-          }          
+          },
+          {
+            "objectId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('ManagedIDName')), '2018-11-30').principalId]",          
+            "tenantId": "[variables('tenantId')]",
+            "permissions": {
+              "keys": "[variables('keysPermissions')]",
+              "secrets": "[variables('secretsPermissions')]"      
+            }
+          }                    
         ],
         "sku": {
           "name": "[variables('skuName')]",
