@@ -42,9 +42,6 @@
       "name": "createhsmkey",
       "location":"USGovVirginia",
       "kind": "AzurePowerShell",      
-      "dependsOn": [
-        "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
-      ],
       "identity": {
         "type": "UserAssigned",
         "userAssignedIdentities": {
