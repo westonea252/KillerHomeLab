@@ -2,6 +2,34 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "KeyVault1ID": {
+      "type": "string",
+      "defaultValue": "01",
+      "metadata": {
+        "description": "KeyVault 1 Name"
+      }
+    },
+    "KeyVault2ID": {
+      "type": "string",
+      "defaultValue": "02",
+      "metadata": {
+        "description": "KeyVault 2 Name"
+      }
+    },    
+    "RSVault1ID": {
+      "type": "string",
+      "defaultValue": "01",
+      "metadata": {
+        "description": "Recovery Services Vault 1 Name"
+      }
+    },    
+    "RSVault2ID": {
+      "type": "string",
+      "defaultValue": "02",
+      "metadata": {
+        "description": "Recovery Services Vault 2 Name"
+      }
+    },        
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
@@ -211,10 +239,10 @@
     "domainName": "[concat(parameters('NetBiosDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat('DC=',parameters('NetBiosDomain'),',DC=',parameters('TLD'))]",
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
-    "KeyVault1Name": "[concat(parameters('NamingConvention'),'-KeyVault1')]",            
-    "KeyVault2Name": "[concat(parameters('NamingConvention'),'-KeyVault2')]",
-    "RSVault1Name": "[concat(parameters('NamingConvention'),'-RSVault1')]",                
-    "RSVault2Name": "[concat(parameters('NamingConvention'),'-RSVault2')]"                    
+    "KeyVault1Name": "[concat(parameters('NamingConvention'),'-KeyVault',parameters('KeyVault1ID'))]",            
+    "KeyVault2Name": "[concat(parameters('NamingConvention'),'-KeyVault',parameters('KeyVault2ID'))]",            
+    "RSVault1Name": "[concat(parameters('NamingConvention'),'-RSVault',parameters('RSVault1ID'))]",            
+    "RSVault2Name": "[concat(parameters('NamingConvention'),'-RSVault',parameters('RSVault2ID'))]"
   },  
   "resources": [
     {
