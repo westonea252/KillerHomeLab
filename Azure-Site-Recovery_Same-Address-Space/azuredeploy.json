@@ -2,6 +2,39 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "AdminObjectID": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+          "description": "Enter the Object ID of your Azure Admin Account that needs access to your Key Vaults"
+      }
+    },                                        
+    "adminUsername": {
+        "type": "string",
+        "metadata": {
+            "description": "The name of the Administrator of the new VM and Domain"
+        }
+    },
+    "adminPassword": {
+        "type": "securestring",
+      "metadata": {
+        "description": "The password for the Administrator account of the new VM and Domain"
+      }
+    },    
+    "Location1": {
+      "type": "string",
+      "defaultValue": "USGovVirginia",
+      "metadata": {
+        "description": "Choose Region (Example:  Commercial=EastUS, Government=USGovVirginia)"
+      }
+    },
+    "Location2": {
+      "type": "string",
+      "defaultValue": "USGovTexas",
+      "metadata": {
+        "description": "Choose Region (Example:  Commercial=WestUS, Government=USGovTexas)"
+      }
+    },        
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
@@ -138,25 +171,6 @@
           "description": "Backup Object ID"
       }
     },             
-    "AdminObjectID": {
-      "type": "string",
-      "defaultValue": "bfa4bdfd-b583-40b3-ac55-2cfaf64bab9f",
-      "metadata": {
-          "description": "Backup Object ID"
-      }
-    },                                        
-    "adminUsername": {
-        "type": "string",
-        "metadata": {
-            "description": "The name of the Administrator of the new VM and Domain"
-        }
-    },
-    "adminPassword": {
-        "type": "securestring",
-      "metadata": {
-        "description": "The password for the Administrator account of the new VM and Domain"
-      }
-    },        
     "KeyVault1ID": {
       "type": "string",
       "defaultValue": "01",
@@ -198,21 +212,7 @@
             "description": "Auto-generated token to access _artifactsLocation. Leave it blank unless you need to provide your own value."
         },
         "defaultValue": ""
-    },    
-    "Location1": {
-      "type": "string",
-      "defaultValue": "USGovVirginia",
-      "metadata": {
-        "description": "Choose Region (Example:  Commercial=EastUS, Government=USGovVirginia)"
-      }
-    },
-    "Location2": {
-      "type": "string",
-      "defaultValue": "USGovTexas",
-      "metadata": {
-        "description": "Choose Region (Example:  Commercial=WestUS, Government=USGovTexas)"
-      }
-    }    
+    }
   },
   "variables": {
     "vnet1Name": "[concat(parameters('NamingConvention'),'-VNet1')]",
@@ -2020,7 +2020,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "createhsmkey1",
+      "name": "createhsmkey2",
       "dependsOn": [
         "VNet1",
         "VNet1R",
