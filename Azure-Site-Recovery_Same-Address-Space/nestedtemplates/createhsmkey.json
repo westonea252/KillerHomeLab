@@ -13,7 +13,19 @@
       "metadata": {
         "description": "Managed ID Name"
       }
-    },    
+    },   
+    "_artifactsLocation": {
+        "type": "string",
+        "metadata": {
+            "description": "The location of resources, such as templates and DSC modules, that the template depends on"
+        }
+    },
+    "_artifactsLocationSasToken": {
+        "type": "securestring",
+        "metadata": {
+            "description": "Auto-generated token to access _artifactsLocation"
+        }
+    },     
     "location": {
         "type": "string",
         "metadata": {
@@ -27,13 +39,14 @@
     "DESName": "[concat(parameters('KeyVaultName'),'-DES')]",    
     "KeySize": "2048",
     "KeyDestination": "HSM",
-    "ResourceGroupName": "githubdeployments"      
+    "ResourceGroupName": "githubdeployments",
+    "ScriptURL": "[uri(parameters('_artifactsLocation'), concat('Scripts/createhsmkey.ps1', parameters('_artifactsLocationSasToken')))]",    
 },
 "resources": [
     {
       "type": "Microsoft.Resources/deploymentScripts",
       "apiVersion": "2019-10-01-preview",
-      "name": "encryptvm",
+      "name": "createhsmkey",
       "location":"[parameters('Location')]",
       "dependsOn": [
         "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
@@ -51,7 +64,7 @@
         "azPowerShellVersion": "3.0",
         "timeout": "PT30M",
         "arguments": "[format(' -vaultName {0} -KeyName {1} -KeySize {2} -KeyDestination {3}, -DESName {4}, -ResourceGroupName {5}', parameters('keyVaultName'), variables('KeyName'), variables('KeySize'), variables('KeyDestination'), variables('DESName'), variables('ResourceGroupName'))]", // can pass an argument string, double quotes must be escaped
-        "primaryScriptUri": "",
+        "primaryScriptUri": "[variables('ScriptURL')]",
         "cleanupPreference": "OnSuccess",
         "retentionInterval": "P1D"
       }
