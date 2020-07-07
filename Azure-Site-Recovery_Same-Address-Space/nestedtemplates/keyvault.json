@@ -8,29 +8,34 @@
         "description": "Specifies the name of the key vault."
       }
     },
+    "BackupObjectID": {
+      "type": "string",
+      "metadata": {
+        "description": "Backup Object ID"
+      }
+    },        
+    "AdminObjectID": {
+      "type": "string",
+      "metadata": {
+        "description": "Admin Object ID"
+      }
+    },            
       "location": {
           "type": "string",
         "metadata": {
           "description": "Region of Resources"
         }
-      }
+    }
 },
   "variables": {
     "keysPermissions": [
-      "list"
+      "All"
       ],
     "secretsPermissions": [
-      "list"
+      "All"
       ],
     "skuName":  "Premium",
-    "tenantID": "[subscription().tenantId]",
-    "BackupObjectID": "9a7b9a6d-0996-4d52-889f-46473877d766",
-    "BackupAppID": "ff281ffe-705c-4f53-9f37-a40e6f2c68f3",
-    "enabledForDeployment": true,
-    "enabledForDiskEncryption": true,        
-    "enabledForTemplateDeployment": true,
-    "enableSoftDelete": true,
-    "enablePurgeProtection": true
+    "tenantID": "[subscription().tenantId]"
   },
 "resources": [
     {
@@ -39,21 +44,29 @@
       "apiVersion": "2016-10-01",
       "location": "[parameters('location')]",
       "properties": {
-        "enabledForDeployment": "[variables('enabledForDeployment')]",
-        "enabledForDiskEncryption": "[variables('enabledForDiskEncryption')]",
-        "enabledForTemplateDeployment": "[variables('enabledForTemplateDeployment')]",
-        "enabledSoftDelete": "[variables('enableSoftDelete')]",        
-        "enabledPurgeProtection": "[variables('enablePurgeProtection')]",                
+        "enabledForDeployment": true,
+        "enabledForDiskEncryption": true,
+        "enabledForTemplateDeployment": true,
+        "enableSoftDelete": true,        
+        "enablePurgeProtection": true,                
         "tenantId": "[variables('tenantId')]",
         "accessPolicies": [
           {
-            "objectId": "[variables('BackupObjectID')]",
+            "objectId": "[parameters('BackupObjectID')]",
             "tenantId": "[variables('tenantId')]",
             "permissions": {
               "keys": "[variables('keysPermissions')]",
               "secrets": "[variables('secretsPermissions')]"      
             }
-          }
+          },
+          {
+            "objectId": "[parameters('AdminObjectID')]",
+            "tenantId": "[variables('tenantId')]",
+            "permissions": {
+              "keys": "[variables('keysPermissions')]",
+              "secrets": "[variables('secretsPermissions')]"      
+            }
+          }          
         ],
         "sku": {
           "name": "[variables('skuName')]",
