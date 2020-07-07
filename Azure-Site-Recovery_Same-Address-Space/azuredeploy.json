@@ -1778,9 +1778,7 @@
         "DeploySRV2VM",
         "DomainJoinSRV2VM",
         "DeployRSVault1",
-        "DeployRSVault2",
-        "DeployKeyVault1",
-        "DeployKeyVault2"
+        "DeployRSVault2"
       ],      
       "properties": {
           "mode": "Incremental",
