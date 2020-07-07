@@ -1,0 +1,71 @@
+{
+"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+"contentVersion": "1.0.0.0",
+"parameters": {
+    "ManagedIDName": {
+      "type": "string",
+      "metadata": {
+        "description": "Managed ID Name"
+      }
+    },
+    "KeyVaultName": {
+      "type": "string",
+      "metadata": {
+        "description": "Managed ID Name"
+      }
+    },    
+    "location": {
+        "type": "string",
+        "metadata": {
+          "description": "Region of Resources"
+        }
+    }
+},
+"variables": {
+    "utcValue": "[utcNow()]",
+    "KeyName": "[concat(parameters('KeyVaultName'),'-HSM')]",
+    "KeySize": "2048",
+    "KeyDestination": "HSM"        
+},
+"resources": [
+    {
+      "type": "Microsoft.Resources/deploymentScripts",
+      "apiVersion": "2019-10-01-preview",
+      "name": "encryptvm",
+      "location":"[parameters('Location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
+      ],
+      "identity": {
+        "type": "UserAssigned",
+        "userAssignedIdentities": {
+          "[parameters('ManagedIDName')]": {
+          }
+        }
+      },
+      "kind": "AzurePowerShell",
+      "properties": {
+        "forceUpdateTag": "[variables('utcValue')]",
+        "azPowerShellVersion": "3.0",
+        "timeout": "PT30M",
+        "arguments": "[format(' -vaultName {0} -KeyName {1} -KeySize {2} -KeyDestination {3}', parameters('keyVaultName'), variables('KeyName'), variables('KeySize'), variables('KeyDestination'))]", // can pass an argument string, double quotes must be escaped
+        "scriptContent": "
+          param(
+            [string] [Parameter(Mandatory=$true)] $vaultName,
+            [string] [Parameter(Mandatory=$true)] $KeyName,
+            [string] [Parameter(Mandatory=$true)] $KeySize,
+            [string] [Parameter(Mandatory=$true)] $KeyDestination            
+          )
+
+          $KeyExpires = (Get-Date).AddYears(2).ToUniversalTime()
+          $KeyNotBefore = (Get-Date).ToUniversalTime()
+
+          Add-AzKeyVaultKey -VaultName $vaultName -Name $Keyname -Expires $KeyExpires -NotBefore $KeyNotBefore -Size $KeySize -Destination $KeyDestination
+
+        ",
+        "cleanupPreference": "OnSuccess",
+        "retentionInterval": "P1D"
+      }
+    }
+  ]
+}

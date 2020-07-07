@@ -38,7 +38,7 @@
         "principalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('ManagedIDName')), '2018-11-30').principalId]",
         "scope": "[resourceGroup().id]",
         "principalType": "ServicePrincipal"
-            }
-        }
-   ]
+      }
+    }
+  ]
 }
