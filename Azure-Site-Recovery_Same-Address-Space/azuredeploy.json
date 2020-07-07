@@ -151,6 +151,12 @@
             "description": "The name of the Administrator of the new VM and Domain"
         }
     },
+    "adminPassword": {
+        "type": "securestring",
+      "metadata": {
+        "description": "The password for the Administrator account of the new VM and Domain"
+      }
+    },        
     "KeyVault1ID": {
       "type": "string",
       "defaultValue": "01",
@@ -179,12 +185,6 @@
         "description": "Recovery Services Vault 2 Name"
       }
     },            
-    "adminPassword": {
-        "type": "securestring",
-      "metadata": {
-        "description": "The password for the Administrator account of the new VM and Domain"
-      }
-    },    
     "_artifactsLocation": {
       "type": "string",
       "metadata": {
