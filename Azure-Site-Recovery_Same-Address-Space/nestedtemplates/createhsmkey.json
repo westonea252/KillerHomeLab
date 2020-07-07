@@ -25,12 +25,6 @@
         "metadata": {
             "description": "Auto-generated token to access _artifactsLocation"
         }
-    },     
-    "location": {
-        "type": "string",
-        "metadata": {
-          "description": "Region of Resources"
-        }
     }
 },
 "variables": {
@@ -46,7 +40,7 @@
       "type": "Microsoft.Resources/deploymentScripts",
       "apiVersion": "2019-10-01-preview",
       "name": "createhsmkey",
-      "location":"[parameters('Location')]",
+      "location":"USGovVirginia",
       "kind": "AzurePowerShell",      
       "dependsOn": [
         "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"

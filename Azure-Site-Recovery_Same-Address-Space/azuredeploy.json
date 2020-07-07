@@ -1962,10 +1962,7 @@
               },                                                                                                            
               "_artifactsLocationSasToken": {
                 "value": "[parameters('_artifactsLocationSasToken')]"
-              },                                                                                                                                                                                                                                                                                                                                               
-              "location": {
-                  "value": "[parameters('Location1')]"
-              }
+              }                                                                                                                                                                                                                                                                                                                                              
           }
       }
     },    
@@ -2080,10 +2077,7 @@
               },                                                                                                            
               "_artifactsLocationSasToken": {
                 "value": "[parameters('_artifactsLocationSasToken')]"
-              },                                                                                                                                                                                                                                                                                                                                                  
-              "location": {
-                  "value": "[parameters('Location2')]"
-              }
+              }                                                                                                                                                                                                                                                                                                                                                 
           }
       }
     }                                                                                                                                                                                                                                                                                                                                                                                                                                
