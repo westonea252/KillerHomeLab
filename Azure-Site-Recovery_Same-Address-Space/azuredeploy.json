@@ -261,8 +261,7 @@
     "KeyVault2Name": "[concat(parameters('NamingConvention'),'-KeyVault',parameters('KeyVault2ID'))]",            
     "RSVault1Name": "[concat(parameters('NamingConvention'),'-RSVault',parameters('RSVault1ID'))]",            
     "RSVault2Name": "[concat(parameters('NamingConvention'),'-RSVault',parameters('RSVault2ID'))]",
-    "ManagedID1Name": "[concat(parameters('NamingConvention'),'-ManagedID1')]",
-    "ManagedID2Name": "[concat(parameters('NamingConvention'),'-ManagedID2')]"            
+    "ManagedIDName": "[concat(parameters('NamingConvention'),'-ManagedID')]"
   },  
   "resources": [
     {
@@ -1788,7 +1787,7 @@
           },
           "parameters": {
               "ManagedIDName": {
-                  "value": "[variables('ManagedID1Name')]"
+                  "value": "[variables('ManagedIDName')]"
               },
               "location": {
                   "value": "[parameters('Location1')]"
@@ -1963,7 +1962,7 @@
           },
           "parameters": {
               "ManagedIDName": {
-                  "value": "[variables('ManagedID1Name')]"
+                  "value": "[variables('ManagedIDName')]"
               },
               "KeyVaultName": {
                   "value": "[variables('KeyVault1Name')]"
