@@ -75,7 +75,7 @@
             }
           },
           {
-            "objectId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('ManagedIDName')).principalId]",
+            "objectId": "[parameters('ManagedIDName').principalId]",
             "tenantId": "[variables('tenantId')]",
             "permissions": {
               "keys": "[variables('keysPermissions')]",
