@@ -1846,10 +1846,10 @@
               },              
               "AdminObjectID": {
                   "value": "[parameters('AdminObjectID')]"
-              },        
-              "ManagedIDName": {
-                  "value": "[variables('ManagedID1Name')]"
-              },                                  
+              },     
+              "UserManagedObjectID": {
+                  "value": "[reference('CreateManagedID1').outputs.manageduseridentity.value]"             
+              },                         
               "location": {
                   "value": "[parameters('Location1')]"
               }
@@ -1961,9 +1961,9 @@
               "AdminObjectID": {
                   "value": "[parameters('AdminObjectID')]"
               },     
-              "ManagedIDName": {
-                  "value": "[variables('ManagedID2Name')]"
-              },                                                   
+              "UserManagedObjectID": {
+                  "value": "[reference('CreateManagedID2').outputs.manageduseridentity.value]"             
+              },                         
               "location": {
                   "value": "[parameters('Location2')]"
               }

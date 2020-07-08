@@ -20,10 +20,10 @@
         "description": "Admin Object ID"
       }
     },      
-    "ManagedIDName": {
+    "userManagedObjectID": {
       "type": "string",
       "metadata": {
-        "description": "Managed ID Name"
+        "description": "Managed ID Object ID"
       }
     },          
       "location": {
@@ -75,7 +75,7 @@
             }
           },
           {
-            "objectId": "[parameters('ManagedIDName').principalId]",
+            "objectId": "[parameters('userManagedObjectID')]",
             "tenantId": "[variables('tenantId')]",
             "permissions": {
               "keys": "[variables('keysPermissions')]",

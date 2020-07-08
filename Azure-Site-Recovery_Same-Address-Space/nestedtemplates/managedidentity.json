@@ -40,5 +40,11 @@
         "principalType": "ServicePrincipal"
       }
     }
-  ]
+  ],
+"outputs": {
+    "manageduseridentity": {
+        "type": "string",
+        "value": "[reference(resourceId(resourceGroup().name, 'Microsoft.ManagedIdentity/userAssignedIdentities', parameters('ManagedIDName'))).principalId]"
+    }
+  }      
 }
