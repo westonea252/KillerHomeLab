@@ -2022,7 +2022,7 @@
           },
           "parameters": {
               "ManagedIDName": {
-                  "value": "[variables('ManagedID2Name')]"
+                  "value": "[variables('ManagedIDName')]"
               },
               "KeyVaultName": {
                   "value": "[variables('KeyVault2Name')]"
