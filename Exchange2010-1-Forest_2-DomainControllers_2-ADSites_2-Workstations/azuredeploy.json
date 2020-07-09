@@ -27,7 +27,21 @@
       "metadata": {
         "description": "The password for the Administrator account of the new VM and Domain"
       }
-    },        
+    }, 
+    "Location1": {
+      "type": "string",
+      "defaultValue": "USGovVirginia",
+      "metadata": {
+        "description": "Choose Region (Example:  Commercial=EastUS, Government=USGovVirginia)"
+      }
+    },
+    "Location2": {
+      "type": "string",
+      "defaultValue": "USGovTexas",
+      "metadata": {
+        "description": "Choose Region (Example:  Commercial=WestUS, Government=USGovTexas)"
+      }
+    },           
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
@@ -258,20 +272,6 @@
             "description": "Auto-generated token to access _artifactsLocation. Leave it blank unless you need to provide your own value."
         },
         "defaultValue": ""
-    },    
-    "Location1": {
-      "type": "string",
-      "defaultValue": "USGovVirginia",
-      "metadata": {
-        "description": "Choose Region (Example:  Commercial=EastUS, Government=USGovVirginia)"
-      }
-    },
-    "Location2": {
-      "type": "string",
-      "defaultValue": "USGovTexas",
-      "metadata": {
-        "description": "Choose Region (Example:  Commercial=WestUS, Government=USGovTexas)"
-      }
     }    
   },
   "variables": {
