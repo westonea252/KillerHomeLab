@@ -33,7 +33,7 @@
     "KeySize": "2048",
     "KeyDestination": "HSM",
     "ResourceGroupName": "githubdeployments",
-    "ScriptURL": "[uri(parameters('_artifactsLocation'), concat('Scripts/createhsmkey.ps1', parameters('_artifactsLocationSasToken')))]"
+    "ScriptURL": "https://raw.githubusercontent.com/elliottfieldsjr/KillerHomeLab/master/Azure-Site-Recovery_Same-Address-Space/Scripts/createhsmkey.ps1"
 },
 "resources": [
     {
