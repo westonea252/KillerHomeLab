@@ -3334,6 +3334,9 @@
               "IssuingCAServer": {
                   "value": "[variables('icaname')]"
               },                               
+              "IssuingCAName": {
+                  "value": "[parameters('IssuingCAName')]"
+              },                                             
               "Site1DC": {
                   "value": "[variables('dc1name')]"
               },                                                     
