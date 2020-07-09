@@ -165,7 +165,7 @@
         xRemoteFile DownloadFilterPack2010
         {
             DestinationPath = "S:\ExchangeInstall\FilterPack64bit.exe"
-            Uri             = "https://www.microsoft.com/en-us/download/confirmation.aspx?id=17062&6B49FDFB-8E5B-4B07-BC31-15695C5A2143=1"
+            Uri             = "https://download.microsoft.com/download/0/A/2/0A28BBFA-CBFA-4C03-A739-30CCA5E21659/FilterPack64bit.exe"
             UserAgent       = "[Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer"
             DependsOn = "[File]CopyExchangeFromDC"
         }
