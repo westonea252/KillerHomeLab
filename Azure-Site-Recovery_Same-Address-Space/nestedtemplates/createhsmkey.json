@@ -40,7 +40,7 @@
       "type": "Microsoft.Resources/deploymentScripts",
       "apiVersion": "2019-10-01-preview",
       "name": "createhsmkey",
-      "location":"USGovVirginia",
+      "location": "[resourceGroup().location]",
       "kind": "AzurePowerShell",      
       "identity": {
         "type": "UserAssigned",
