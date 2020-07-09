@@ -1966,13 +1966,7 @@
               },
               "KeyVaultName": {
                   "value": "[variables('KeyVault1Name')]"
-              },      
-              "_artifactsLocation": {
-                "value": "[parameters('_artifactsLocation')]"
-              },                                                                                                            
-              "_artifactsLocationSasToken": {
-                "value": "[parameters('_artifactsLocationSasToken')]"
-              }                                                                                                                                                                                                                                                                                                                                              
+              }
           }
       }
     },    
@@ -2026,13 +2020,7 @@
               },
               "KeyVaultName": {
                   "value": "[variables('KeyVault2Name')]"
-              },   
-              "_artifactsLocation": {
-                "value": "[parameters('_artifactsLocation')]"
-              },                                                                                                            
-              "_artifactsLocationSasToken": {
-                "value": "[parameters('_artifactsLocationSasToken')]"
-              }                                                                                                                                                                                                                                                                                                                                                 
+              }
           }
       }
     }                                                                                                                                                                                                                                                                                                                                                                                                                                
