@@ -2,7 +2,7 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-      "computerName": {
+    "computerName": {
         "type": "string",
         "metadata": {
             "description": "Computer Name"
@@ -13,7 +13,7 @@
         "metadata": {
             "description": "Computer IP Address"
         }
-      },
+      },   
       "Publisher": {
         "type": "string",
         "metadata": {
@@ -25,7 +25,7 @@
         "metadata": {
             "description": "Image Publisher Offer"
         }
-      },            
+      },         
       "OSVersion": {
           "type": "string",
           "metadata": {
@@ -37,13 +37,19 @@
         "metadata": {
             "description": "License Type (Windows_Server or None)"
         }
-      },     
+      },
       "DataDisk1Name": {
         "type": "string",
         "metadata": {
             "description": "Data Disk Name 1"
         }
-      },             
+      },      
+      "DataDisk2Name": {
+        "type": "string",
+        "metadata": {
+            "description": "Data Disk Name 2"
+        }
+      },            
       "VMSize": {
           "type": "string",
           "metadata": {
@@ -156,7 +162,17 @@
                         "managedDisk": {
                             "storageAccountType": "[variables('storageAccountType')]"
                         }
-                    }
+                    },
+                    {
+                        "name": "[concat(variables('VMName'),'_',parameters('DataDisk2Name'))]",
+                        "caching": "None",
+                        "diskSizeGB": "[variables('DataDiskSize')]",
+                        "lun": 1,
+                        "createOption": "Empty",
+                          "managedDisk": {
+                              "storageAccountType": "[variables('storageAccountType')]"
+                          }
+                      }
                     ]                   
                   
               },

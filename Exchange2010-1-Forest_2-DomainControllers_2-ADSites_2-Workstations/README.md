@@ -1,4 +1,4 @@
-# Exchange 2010, 1-Forest/Domain, 2-DomainControllers, 2-ADSites, 2-WorkstationN, 2-Tier PKI
+# Exchange 2010, 1-Forest/Domain, 2-DomainControllers, 2-ADSites, 2-Workstation, 2-Tier PKI
 
 This Templates deploys a Single Forest/Domain, 2 Active Directory Sites with a Domain Controller in each, Organizational Units, DNS Records and 2 Domain Joined Windows 10 Workstations in each AD Site.  I additional to AD Exchange 2010 is deployed on 2 Windows 2008 R2 Servers in each AD Site configured as DAG Members in a single DAG.
 
