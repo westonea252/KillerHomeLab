@@ -2775,7 +2775,7 @@
           },
           "parameters": {
               "computerName": {
-                  "value": "[variables('ex1name')]"
+                  "value": "[variables('dc1name')]"
               },
               "ExchangeSP3ISOUrl": {
                   "value": "[parameters('ExchangeSP3ISOUrl')]"
