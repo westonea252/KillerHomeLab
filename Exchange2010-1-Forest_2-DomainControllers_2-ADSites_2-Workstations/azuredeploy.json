@@ -30,14 +30,14 @@
     }, 
     "Location1": {
       "type": "string",
-      "defaultValue": "USGovVirginia",
+      "defaultValue": "EastUS",
       "metadata": {
         "description": "Choose Region (Example:  Commercial=EastUS, Government=USGovVirginia)"
       }
     },
     "Location2": {
       "type": "string",
-      "defaultValue": "USGovTexas",
+      "defaultValue": "WestUS",
       "metadata": {
         "description": "Choose Region (Example:  Commercial=WestUS, Government=USGovTexas)"
       }
@@ -3544,7 +3544,10 @@
               },                            
               "IssuingCAServer": {
                   "value": "[variables('icaname')]"
-              },                               
+              },    
+              "IssuingCAName": {
+                  "value": "[parameters('IssuingCAName')]"
+              },                                                                                      
               "Site1DC": {
                   "value": "[variables('dc1name')]"
               },                                                     
