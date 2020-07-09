@@ -18,7 +18,7 @@
         xRemoteFile DiskPart
         {
             DestinationPath = "C:\DiskConfig\ExchangeDiskPart.txt"
-            Uri             = "https://raw.githubusercontent.com/elliottfieldsjr/KillerHomeLab/master/Exchange2010-1-Forest_2-DomainControllers_2-ADSites_2-Workstations/Scripts/ExchangeDiskPart.txt"
+            Uri             = "https://raw.githubusercontent.com/elliottfieldsjr/KillerHomeLab/master/Exchange2010-1-Forest_2-DomainControllers_2-ADSites_2-Workstations/Scripts/ExchangeDiskpart.txt"
             UserAgent       = "[Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer"
             DependsOn =    "[File]DiskConfig"
         }
