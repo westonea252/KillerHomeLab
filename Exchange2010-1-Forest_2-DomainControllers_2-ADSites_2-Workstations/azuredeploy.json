@@ -3523,7 +3523,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "configexchange1",
+      "name": "configexchange2",
       "dependsOn": [
         "VNet1",
         "VNet2",
