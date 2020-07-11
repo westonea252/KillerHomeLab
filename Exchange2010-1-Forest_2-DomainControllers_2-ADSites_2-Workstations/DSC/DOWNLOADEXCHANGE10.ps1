@@ -31,11 +31,20 @@
             DependsOn = '[File]Machineconfig'
         }
 
-        xMountImage MountExchangeISO
+        xMountImage DisountExchangeISO
         {
+            Ensure = "Absent"
             ImagePath   = "C:\MachineConfig\Exchange2010SP3.ISO"
             DriveLetter = 'I'
             DependsOn = '[xRemoteFile]DownloadFile'
+        }
+
+        xMountImage MountExchangeISO
+        {
+            Ensure = "Present"
+            ImagePath   = "C:\MachineConfig\Exchange2010SP3.ISO"
+            DriveLetter = 'I'
+            DependsOn = '[xMountImage]DisountExchangeISO'
         }
 
         xWaitForVolume WaitForISO
