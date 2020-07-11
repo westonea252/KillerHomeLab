@@ -3446,7 +3446,7 @@
                   "value": "[variables('dag10ip')]"
               },                                                                                                                                             
               "CAServerIP": {
-                  "value": "[variables('icaname')]"
+                  "value": "[variables('icaIP')]"
               },                                                                                                                                                                                       
               "Site": {
                   "value": "Site1"
@@ -3659,7 +3659,7 @@
                   "value": "[variables('dag10ip')]"
               },                                                                                                                                             
               "CAServerIP": {
-                  "value": "[variables('icaname')]"
+                  "value": "[variables('icaIP')]"
               },                                                                                                                                                                                       
               "Site": {
                   "value": "Site2"
