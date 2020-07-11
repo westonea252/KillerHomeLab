@@ -16,11 +16,21 @@
             RebootNodeIfNeeded = $true
         }
 
+        Script DismountISO
+        {
+      	    SetScript = {
+                Dismount-DiskImage "C:\MachineConfig\Exchange2010SP3.ISO" -ErrorAction 0
+            }
+            GetScript =  { @{} }
+            TestScript = { $false }
+        }
+
         File Machineconfig
         {
             Type = 'Directory'
             DestinationPath = 'C:\MachineConfig'
             Ensure = "Present"
+            DependsOn = '[Script]DismountISO'
         }
 
         xRemoteFile DownloadFile
