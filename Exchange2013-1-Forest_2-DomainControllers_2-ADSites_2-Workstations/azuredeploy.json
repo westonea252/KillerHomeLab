@@ -2722,8 +2722,6 @@
         "DomainJoinEX1",
         "deployex2",
         "DomainJoinEX2",
-        "configex1disk",
-        "configex2disk",
         "prepareexchange13s1"
       ],      
       "properties": {
