@@ -5,6 +5,10 @@
         [String]$computerName,
         [String]$dc1lastoctet,
         [String]$dc2lastoctet,
+        [String]$ex1IP,
+        [String]$ex2IP,
+        [String]$icaIP,
+        [String]$ocspIP,
         [String]$domainName,
         [String]$ReverseLookup1,
         [String]$ReverseLookup2
@@ -49,5 +53,114 @@
             Ensure    = 'Present'
             DependsOn = "[xDnsServerADZone]ReverseADZone2"
         }
+
+        xDnsRecord crlrecord
+        {
+            Name      = "crl"
+            Zone      = "$domainName"
+            Target    = "$icaIP"
+            Type      = 'ARecord'
+            Ensure    = 'Present'
+        }
+
+        xDnsRecord ocsprecord
+        {
+            Name      = "ocsp"
+            Zone      = "$domainName"
+            Target    = "$ocspIP"
+            Type      = 'ARecord'
+            Ensure    = 'Present'
+        }
+
+        xDnsRecord owa2010record1
+        {
+            Name      = "owa2010"
+            Zone      = "$domainName"
+            Target    = "$ex1IP"
+            Type      = 'ARecord'
+            Ensure    = 'Present'
+        }
+
+        xDnsRecord owa2010record2
+        {
+            Name      = "owa2010"
+            Zone      = "$domainName"
+            Target    = "$ex2IP"
+            Type      = 'ARecord'
+            Ensure    = 'Present'
+        }
+
+        xDnsRecord autodiscover2010record1
+        {
+            Name      = "autodiscover2010"
+            Zone      = "$domainName"
+            Target    = "$ex1IP"
+            Type      = 'ARecord'
+            Ensure    = 'Present'
+        }
+
+        xDnsRecord autodiscover2010record2
+        {
+            Name      = "autodiscover2010"
+            Zone      = "$domainName"
+            Target    = "$ex2IP"
+            Type      = 'ARecord'
+            Ensure    = 'Present'
+        }
+
+        xDnsRecord outlook2010record1
+        {
+            Name      = "outlook2010"
+            Zone      = "$domainName"
+            Target    = "$ex1IP"
+            Type      = 'ARecord'
+            Ensure    = 'Present'
+         }
+
+        xDnsRecord outlook2010record2
+        {
+            Name      = "outlook2010"
+            Zone      = "$domainName"
+            Target    = "$ex2IP"
+            Type      = 'ARecord'
+            Ensure    = 'Present'
+         }
+
+        xDnsRecord eas2010record1
+        {
+            Name      = "eas2010"
+            Zone      = "$domainName"
+            Target    = "$ex1IP"
+            Type      = 'ARecord'
+            Ensure    = 'Present'
+         }
+
+        xDnsRecord eas2010record2
+        {
+            Name      = "eas2010"
+            Zone      = "$domainName"
+            Target    = "$ex2IP"
+            Type      = 'ARecord'
+            Ensure    = 'Present'
+         }
+
+        xDnsRecord smtprecord1
+        {
+            Name      = "smtp"
+            Zone      = "$domainName"
+            Target    = "$ex1IP"
+            Type      = 'ARecord'
+            Ensure    = 'Present'
+         }
+
+        xDnsRecord smtprecord2
+        {
+            Name      = "smtp"
+            Zone      = "$domainName"
+            Target    = "$ex2IP"
+            Type      = 'ARecord'
+            Ensure    = 'Present'
+         }
+
     }
 }

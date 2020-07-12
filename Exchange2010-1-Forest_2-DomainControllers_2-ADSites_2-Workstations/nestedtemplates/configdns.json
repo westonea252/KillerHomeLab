@@ -37,7 +37,31 @@
             "metadata": {
                 "description": "DC2 Last IP Octet"
             }
-        },                
+        },        
+        "ex1IP": {
+            "type": "string",
+            "metadata": {
+                "description": "Exchange Server1 IP"
+            }
+        },                        
+        "ex2IP": {
+            "type": "string",
+            "metadata": {
+                "description": "Exchange Server2 IP"
+            }
+        },                         
+        "icaIP": {
+            "type": "string",
+            "metadata": {
+                "description": "Issuing CA IP"
+            }
+        },                        
+        "ocspIP": {
+            "type": "string",
+            "metadata": {
+                "description": "OCSP IP"
+            }
+        },                                               
         "location": {
             "type": "string",
           "metadata": {
@@ -80,8 +104,12 @@
                             "domainName": "[parameters('domainName')]",                                                        
                             "ReverseLookup1": "[parameters('ReverseLookup1')]",
                             "dc1lastoctet": "[parameters('dc1lastoctet')]",
+                            "ex1IP": "[parameters('ex1IP')]",                            
+                            "icaIP": "[parameters('icaIP')]",                                                        
+                            "ocspIP": "[parameters('ocspIP')]",                                                                                    
                             "ReverseLookup2": "[parameters('ReverseLookup2')]",
-                            "dc2lastoctet": "[parameters('dc2lastoctet')]"                                                                                   
+                            "dc2lastoctet": "[parameters('dc2lastoctet')]",
+                            "ex2IP": "[parameters('ex2IP')]"                                                                                                               
                         }
                     },
                     "protectedSettings": {

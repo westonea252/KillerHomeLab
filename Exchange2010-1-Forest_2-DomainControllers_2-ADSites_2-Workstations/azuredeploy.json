@@ -768,6 +768,18 @@
               "dc2lastoctet": {
                 "value": "[variables('dc2lastoctet')]"
               },                                                                                                                                        
+              "ex1IP": {
+                "value": "[variables('ex1IP')]"
+              },                                                                                                                          
+              "ex2IP": {
+                "value": "[variables('ex2IP')]"
+              }, 
+              "icaIP": {
+                "value": "[variables('icaIP')]"
+              },                                                                                                                          
+              "ocspIP": {
+                "value": "[variables('ocspIP')]"
+              },                                                                                                                                                                                                                                                                                                           
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
               },                                                                                                            
