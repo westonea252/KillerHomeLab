@@ -23,14 +23,14 @@
     },    
     "Location1": {
       "type": "string",
-      "defaultValue": "USGovVirginia",
+      "defaultValue": "USDoDEast",
       "metadata": {
         "description": "Choose Region (Example:  Commercial=EastUS, Government=USGovVirginia)"
       }
     },
     "Location2": {
       "type": "string",
-      "defaultValue": "USGovTexas",
+      "defaultValue": "USGovVirginia",
       "metadata": {
         "description": "Choose Region (Example:  Commercial=WestUS, Government=USGovTexas)"
       }
