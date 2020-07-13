@@ -219,6 +219,8 @@
     }
   },
   "variables": {
+    "ResourceGroup1": "[concat(parameters('NamingConvention'),'-Site1')]",
+    "ResourceGroup2": "[concat(parameters('NamingConvention'),'-Site2')]",    
     "vnet1Name": "[concat(parameters('NamingConvention'),'-VNet1')]",
     "vnet1NameR": "[concat(parameters('NamingConvention'),'-Recovery-VNet1')]",    
     "vnet1Prefix": "[concat(parameters('vnet1ID'),'.0.0/16')]",
@@ -266,8 +268,9 @@
   "resources": [
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "VNet1",
+      "resourceGroup": "[variables('ResourceGroup1')]",
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -301,11 +304,12 @@
               }
           }
       }
-    },
+    }, 
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "VNet1R",
+      "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
         "VNet1"
       ]
@@ -346,8 +350,9 @@
     },    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "VNet2",
+      "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
         "VNet1",
         "VNet1R"
@@ -389,8 +394,9 @@
     },    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "VNet2R",
+      "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
         "VNet1",
         "VNet1R",
@@ -433,8 +439,9 @@
     },        
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "BastionHost1",
+      "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
         "VNet1",
         "VNet1R",
@@ -468,8 +475,9 @@
     },        
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "BastionHost1R",
+      "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
         "VNet1",
         "VNet1R",
@@ -504,8 +512,9 @@
     },            
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "BastionHost2",
+      "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
         "VNet1",
         "VNet1R",
@@ -541,8 +550,9 @@
     },            
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "BastionHost2R",
+      "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
         "VNet1",
         "VNet1R",
@@ -579,8 +589,9 @@
     },                
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployDC1VM",
+      "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
         "VNet1",
         "VNet1R",
@@ -648,8 +659,9 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "promotedc1",
+      "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
         "VNet1",
         "VNet1R",
@@ -697,8 +709,9 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "updatevnet1dns",
+      "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
         "VNet1",
         "VNet1R",
@@ -752,8 +765,9 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "updatevnet2dns",
+      "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
         "VNet1",
         "VNet1R",
@@ -808,8 +822,9 @@
     },    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "restartdc1",
+      "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
         "VNet1",
         "VNet1R",
@@ -848,8 +863,9 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "configdns",
+      "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
         "VNet1",
         "VNet1R",
@@ -904,8 +920,9 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "createous",
+      "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
         "VNet1",
         "VNet1R",
@@ -949,8 +966,9 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "createsites",
+      "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
         "VNet1",
         "VNet1R",
@@ -1004,8 +1022,9 @@
     },    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "PeeringToSite2",
+      "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
         "VNet1",
         "VNet1R",
@@ -1057,8 +1076,9 @@
     },    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "PeeringToSite1",
+      "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
         "VNet1",
         "VNet1R",
@@ -1111,8 +1131,9 @@
     },        
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployDC2VM",
+      "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
         "VNet1",
         "VNet1R",
@@ -1190,8 +1211,9 @@
     },        
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "promotedc2",
+      "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
         "VNet1",
         "VNet1R",
@@ -1252,8 +1274,9 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "updatevnet2dns-2",
+      "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
         "VNet1",
         "VNet1R",
@@ -1317,8 +1340,9 @@
     },    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "restartdc2",
+      "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
         "VNet1",
         "VNet1R",
@@ -1366,8 +1390,9 @@
     },                
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deploySRV1VM",
+      "resourceGroup": "[variables('ResourceGroup1')]",            
       "dependsOn": [
         "VNet1",
         "VNet1R",
@@ -1446,8 +1471,9 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DomainJoinSRV1VM",
+      "resourceGroup": "[variables('ResourceGroup1')]",            
       "dependsOn": [
         "VNet1",
         "VNet1R",
@@ -1506,8 +1532,9 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deploySRV2VM",
+      "resourceGroup": "[variables('ResourceGroup2')]",            
       "dependsOn": [
         "VNet1",
         "VNet1R",
@@ -1588,8 +1615,9 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DomainJoinSRV2VM",
+      "resourceGroup": "[variables('ResourceGroup2')]",            
       "dependsOn": [
         "VNet1",
         "VNet1R",
@@ -1650,8 +1678,9 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DeployRSVault1",
+      "resourceGroup": "[variables('ResourceGroup1')]",            
       "dependsOn": [
         "VNet1",
         "VNet1R",
@@ -1698,8 +1727,9 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DeployRSVault2",
+      "resourceGroup": "[variables('ResourceGroup2')]",            
       "dependsOn": [
         "VNet1",
         "VNet1R",
@@ -1747,8 +1777,9 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "CreateManagedID",
+      "resourceGroup": "[variables('ResourceGroup2')]",            
       "dependsOn": [
         "VNet1",
         "VNet1R",
@@ -1790,15 +1821,16 @@
                   "value": "[variables('ManagedIDName')]"
               },
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[parameters('Location2')]"
               }
           }
       }
     },    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DeployKeyVault1",
+      "resourceGroup": "[variables('ResourceGroup1')]",            
       "dependsOn": [
         "VNet1",
         "VNet1R",
@@ -1857,8 +1889,9 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DeployKeyVault2",
+      "resourceGroup": "[variables('ResourceGroup2')]",            
       "dependsOn": [
         "VNet1",
         "VNet1R",
