@@ -270,7 +270,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "ResourceGroup1",
-      "resourceGroup": "[variables('ResourceGroup1')]",      
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -291,7 +290,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "ResourceGroup2",
-      "resourceGroup": "[variables('ResourceGroup2')]",
       "dependsOn": [
         "ResourceGroup1"
       ],      
