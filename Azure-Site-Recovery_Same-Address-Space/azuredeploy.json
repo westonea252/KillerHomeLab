@@ -269,49 +269,6 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "ResourceGroup1",
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/resourcegroup.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "ResourceGroupName": {
-                  "value": "[variables('ResourceGroup1')]"
-              },
-              "location": {
-                  "value": "[parameters('Location1')]"
-              }
-          }
-      }
-    }, 
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
-      "name": "ResourceGroup2",
-      "dependsOn": [
-        "ResourceGroup1"
-      ],      
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/resourcegroup.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "ResourceGroupName": {
-                  "value": "[variables('ResourceGroup2')]"
-              },
-              "location": {
-                  "value": "[parameters('Location2')]"
-              }
-          }
-      }
-    },     
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
       "name": "VNet1",
       "resourceGroup": "[variables('ResourceGroup1')]",
       "dependsOn": [
@@ -402,8 +359,6 @@
       "name": "VNet2",
       "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2",
         "VNet1",
         "VNet1R"
       ],      
@@ -447,8 +402,6 @@
       "name": "VNet2R",
       "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2",
         "VNet1",
         "VNet1R",
         "VNet2"
@@ -493,8 +446,6 @@
       "name": "BastionHost1",
       "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2",
         "VNet1",
         "VNet1R",
         "VNet2",
@@ -531,8 +482,6 @@
       "name": "BastionHost1R",
       "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2",
         "VNet1",
         "VNet1R",
         "VNet2",
@@ -570,8 +519,6 @@
       "name": "BastionHost2",
       "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2",
         "VNet1",
         "VNet1R",
         "VNet2",
@@ -610,8 +557,6 @@
       "name": "BastionHost2R",
       "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2",
         "VNet1",
         "VNet1R",
         "VNet2",
@@ -651,8 +596,6 @@
       "name": "deployDC1VM",
       "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2",
         "VNet1",
         "VNet1R",
         "VNet2",
@@ -723,8 +666,6 @@
       "name": "promotedc1",
       "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2",
         "VNet1",
         "VNet1R",
         "VNet2",
@@ -775,8 +716,6 @@
       "name": "updatevnet1dns",
       "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2",
         "VNet1",
         "VNet1R",
         "VNet2",
@@ -833,8 +772,6 @@
       "name": "updatevnet2dns",
       "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2",
         "VNet1",
         "VNet1R",
         "VNet2",
@@ -892,8 +829,6 @@
       "name": "restartdc1",
       "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2",
         "VNet1",
         "VNet1R",
         "VNet2",
@@ -935,8 +870,6 @@
       "name": "configdns",
       "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2",
         "VNet1",
         "VNet1R",
         "VNet2",
@@ -994,8 +927,6 @@
       "name": "createous",
       "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2",
         "VNet1",
         "VNet1R",
         "VNet2",
@@ -1042,8 +973,6 @@
       "name": "createsites",
       "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2",
         "VNet1",
         "VNet1R",
         "VNet2",
@@ -1100,8 +1029,6 @@
       "name": "PeeringToSite2",
       "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2",
         "VNet1",
         "VNet1R",
         "VNet2",
@@ -1156,8 +1083,6 @@
       "name": "PeeringToSite1",
       "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2",
         "VNet1",
         "VNet1R",
         "VNet2",
@@ -1213,8 +1138,6 @@
       "name": "deployDC2VM",
       "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2",
         "VNet1",
         "VNet1R",
         "VNet2",
@@ -1295,8 +1218,6 @@
       "name": "promotedc2",
       "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2",
         "VNet1",
         "VNet1R",
         "VNet2",
@@ -1360,8 +1281,6 @@
       "name": "updatevnet2dns-2",
       "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2",
         "VNet1",
         "VNet1R",
         "VNet2",
@@ -1428,8 +1347,6 @@
       "name": "restartdc2",
       "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2",
         "VNet1",
         "VNet1R",
         "VNet2",
@@ -1480,8 +1397,6 @@
       "name": "deploySRV1VM",
       "resourceGroup": "[variables('ResourceGroup1')]",            
       "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2",
         "VNet1",
         "VNet1R",
         "VNet2",
@@ -1563,8 +1478,6 @@
       "name": "DomainJoinSRV1VM",
       "resourceGroup": "[variables('ResourceGroup1')]",            
       "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2",
         "VNet1",
         "VNet1R",
         "VNet2",
@@ -1626,8 +1539,6 @@
       "name": "deploySRV2VM",
       "resourceGroup": "[variables('ResourceGroup2')]",            
       "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2",
         "VNet1",
         "VNet1R",
         "VNet2",
@@ -1711,8 +1622,6 @@
       "name": "DomainJoinSRV2VM",
       "resourceGroup": "[variables('ResourceGroup2')]",            
       "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2",
         "VNet1",
         "VNet1R",
         "VNet2",
@@ -1776,8 +1685,6 @@
       "name": "DeployRSVault1",
       "resourceGroup": "[variables('ResourceGroup1')]",            
       "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2",
         "VNet1",
         "VNet1R",
         "VNet2",
@@ -1827,8 +1734,6 @@
       "name": "DeployRSVault2",
       "resourceGroup": "[variables('ResourceGroup2')]",            
       "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2",
         "VNet1",
         "VNet1R",
         "VNet2",
@@ -1879,8 +1784,6 @@
       "name": "CreateManagedID",
       "resourceGroup": "[variables('ResourceGroup2')]",            
       "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2",
         "VNet1",
         "VNet1R",
         "VNet2",
@@ -1932,8 +1835,6 @@
       "name": "DeployKeyVault1",
       "resourceGroup": "[variables('ResourceGroup1')]",            
       "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2",
         "VNet1",
         "VNet1R",
         "VNet2",
@@ -1995,8 +1896,6 @@
       "name": "DeployKeyVault2",
       "resourceGroup": "[variables('ResourceGroup2')]",            
       "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2",
         "VNet1",
         "VNet1R",
         "VNet2",
