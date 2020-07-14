@@ -335,8 +335,7 @@
     "DB1Name": "[concat(parameters('NamingConvention'),'-13-db01')]",
     "DB2Name": "[concat(parameters('NamingConvention'),'-13-db02')]" ,             
     "DAG13Name": "[concat(parameters('NamingConvention'),'-13-dag01')]",
-    "dag13IP": "[concat(parameters('vnet1ID'),'.1.',variables('dag13lastoctet'))]",            
-    "dag13lastoctet": "210"
+    "dag13IP": "255.255.255.255"
   },  
   "resources": [
     {
