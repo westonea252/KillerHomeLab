@@ -1386,7 +1386,7 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                                         
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[parameters('Location2')]"
               }
           }
       }
