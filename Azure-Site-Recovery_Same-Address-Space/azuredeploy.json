@@ -1954,7 +1954,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "CreateHSMKey1",
       "resourceGroup": "[variables('ResourceGroup1')]",                  
       "dependsOn": [
@@ -2008,7 +2008,7 @@
     },    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "CreateHSMKey2",
       "resourceGroup": "[variables('ResourceGroup2')]",                  
       "dependsOn": [
