@@ -271,10 +271,6 @@
       "apiVersion": "2019-10-01",
       "name": "VNet1",
       "resourceGroup": "[variables('ResourceGroup1')]",
-      "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2"
-      ],            
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -315,8 +311,6 @@
       "name": "VNet1R",
       "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
-        "ResourceGroup1",
-        "ResourceGroup2",
         "VNet1"        
       ],
       "properties": {
