@@ -4,7 +4,8 @@
     [string] [Parameter(Mandatory=$true)] $KeySize,
     [string] [Parameter(Mandatory=$true)] $KeyDestination,
     [string] [Parameter(Mandatory=$true)] $DESName,
-    [string] [Parameter(Mandatory=$true)] $ResourceGroupName                                                            
+    [string] [Parameter(Mandatory=$true)] $ResourceGroupName,
+    [string] [Parameter(Mandatory=$true)] $LocationName                                                                                                                           
     )
 
 $KeyVault = Get-AzKeyVault -VaultName $vaultName
