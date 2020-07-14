@@ -52,7 +52,7 @@
       }
     },
     "variables": {
-      "remoteVNet": "[concat(parameters('TargetVNetResourceGroup'), 'Microsoft.Network/virtualNetworks', parameters('TargetVNetName'))]",
+      "remoteVNet": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups', parameters('TargetVNetResourceGroup'), '/providers/Microsoft.Network/virtualNetworks/', parameters('SourceVNetName'))]",
       "peeringName": "[concat(parameters('SourceVNetName'), '/', parameters('SourceVNetName'), '-to-', parameters('TargetVNetName'))]"
     },
     "resources": [
