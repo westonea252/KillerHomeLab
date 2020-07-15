@@ -2002,7 +2002,10 @@
               },
               "KeyVaultName": {
                   "value": "[variables('KeyVault2Name')]"
-              }
+              },
+              "Location": {
+                  "value": "[parameters('Location2')]"
+              }              
           }
       }
     }    
