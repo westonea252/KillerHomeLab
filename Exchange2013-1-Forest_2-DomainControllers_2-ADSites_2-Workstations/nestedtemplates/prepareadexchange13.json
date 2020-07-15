@@ -20,6 +20,18 @@
                 "description": "Domain Controller 1 Name"
             }
         },                                     
+        "DC2Name": {
+            "type": "string",
+            "metadata": {
+                "description": "Domain Controller 2 Name"
+            }
+        },   
+        "BaseDN": {
+            "type": "string",
+            "metadata": {
+                "description": "Base Domain Distiguished Name"
+            }
+        },                                                  
         "NetBiosDomain": {
             "type": "string",
             "metadata": {
@@ -79,6 +91,8 @@
                             "ExchangeOrgName": "[parameters('ExchangeOrgName')]",                                                        
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
                             "DC1Name": "[parameters('DC1Name')]",                                                                                    
+                            "DC2Name": "[parameters('DC2Name')]",                                                                                                                
+                            "BaseDN": "[parameters('BaseDN')]",                                                                                                                                            
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"
