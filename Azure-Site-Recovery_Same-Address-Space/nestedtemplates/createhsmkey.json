@@ -13,13 +13,7 @@
       "metadata": {
         "description": "Managed ID Name"
       }
-    },
-    "location": {
-        "type": "string",
-      "metadata": {
-        "description": "Region of Resources"
-      }
-    }                            
+    }
 },
 "variables": {
     "KeyName": "[concat(parameters('KeyVaultName'),'-HSM')]",
@@ -46,7 +40,7 @@
       "properties": {
         "azPowerShellVersion": "3.0",
         "timeout": "PT1H",
-        "arguments": "[format(' -vaultName {0} -KeyName {1} -KeySize {2} -KeyDestination {3} -DESName {4} -ResourceGroupName {5} -LocationName {6}', parameters('keyVaultName'), variables('KeyName'), variables('KeySize'), variables('KeyDestination'), variables('DESName'), variables('ResourceGroupName'), parameters('Location'))]", // can pass an argument string, double quotes must be escaped
+        "arguments": "[format(' -vaultName {0} -KeyName {1} -KeySize {2} -KeyDestination {3} -DESName {4} -ResourceGroupName {5}', parameters('keyVaultName'), variables('KeyName'), variables('KeySize'), variables('KeyDestination'), variables('DESName'), variables('ResourceGroupName'))]", // can pass an argument string, double quotes must be escaped
         "primaryScriptUri": "[variables('ScriptURL')]",
         "cleanupPreference": "OnSuccess",
         "retentionInterval": "P1D"
