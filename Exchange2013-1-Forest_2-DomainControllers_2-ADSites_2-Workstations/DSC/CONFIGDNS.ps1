@@ -72,72 +72,72 @@
             Ensure    = 'Present'
         }
 
-        xDnsRecord owa2010record1
+        xDnsRecord owa2013record1
         {
-            Name      = "owa2010"
+            Name      = "owa2013"
             Zone      = "$domainName"
             Target    = "$ex1IP"
             Type      = 'ARecord'
             Ensure    = 'Present'
         }
 
-        xDnsRecord owa2010record2
+        xDnsRecord owa2013record2
         {
-            Name      = "owa2010"
+            Name      = "owa2013"
             Zone      = "$domainName"
             Target    = "$ex2IP"
             Type      = 'ARecord'
             Ensure    = 'Present'
         }
 
-        xDnsRecord autodiscover2010record1
+        xDnsRecord autodiscover2013record1
         {
-            Name      = "autodiscover2010"
+            Name      = "autodiscover2013"
             Zone      = "$domainName"
             Target    = "$ex1IP"
             Type      = 'ARecord'
             Ensure    = 'Present'
         }
 
-        xDnsRecord autodiscover2010record2
+        xDnsRecord autodiscover2013record2
         {
-            Name      = "autodiscover2010"
+            Name      = "autodiscover2013"
             Zone      = "$domainName"
             Target    = "$ex2IP"
             Type      = 'ARecord'
             Ensure    = 'Present'
         }
 
-        xDnsRecord outlook2010record1
+        xDnsRecord outlook2013record1
         {
-            Name      = "outlook2010"
+            Name      = "outlook2013"
             Zone      = "$domainName"
             Target    = "$ex1IP"
             Type      = 'ARecord'
             Ensure    = 'Present'
          }
 
-        xDnsRecord outlook2010record2
+        xDnsRecord outlook2013record2
         {
-            Name      = "outlook2010"
+            Name      = "outlook2013"
             Zone      = "$domainName"
             Target    = "$ex2IP"
             Type      = 'ARecord'
             Ensure    = 'Present'
          }
 
-        xDnsRecord eas2010record1
+        xDnsRecord eas2013record1
         {
-            Name      = "eas2010"
+            Name      = "eas2013"
             Zone      = "$domainName"
             Target    = "$ex1IP"
             Type      = 'ARecord'
             Ensure    = 'Present'
          }
 
-        xDnsRecord eas2010record2
+        xDnsRecord eas2013record2
         {
-            Name      = "eas2010"
+            Name      = "eas2013"
             Zone      = "$domainName"
             Target    = "$ex2IP"
             Type      = 'ARecord'
