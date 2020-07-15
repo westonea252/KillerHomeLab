@@ -17,4 +17,4 @@ $Key = Add-AzKeyVaultKey -VaultName $KeyVault.VaultName -Name $Keyname -Expires 
 $desConfig = New-AzDiskEncryptionSetConfig -Location $Location -SourceVaultId $keyVault.ResourceId -KeyUrl $key.Key.Kid -IdentityType SystemAssigned
 
 $des = New-AzDiskEncryptionSet -Name $DESName -ResourceGroupName $ResourceGroupName -InputObject $desConfig
-# Set-AzKeyVaultAccessPolicy -VaultName $keyVault.VaultName -ObjectId $des.Identity.PrincipalId -PermissionsToKeys wrapkey,unwrapkey,get
+Set-AzKeyVaultAccessPolicy -VaultName $keyVault.VaultName -ObjectId $des.Identity.PrincipalId -PermissionsToKeys wrapkey,unwrapkey,get
