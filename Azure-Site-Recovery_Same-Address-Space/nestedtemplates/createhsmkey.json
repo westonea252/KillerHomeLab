@@ -26,7 +26,7 @@
     "DESName": "[concat(parameters('KeyVaultName'),'-DES')]",    
     "KeySize": "2048",
     "KeyDestination": "HSM",
-    "ResourceGroupName": "githubdeployments",
+    "ResourceGroupName": "[resourceGroup().id]",
     "ScriptURL": "https://raw.githubusercontent.com/elliottfieldsjr/KillerHomeLab/master/Azure-Site-Recovery_Same-Address-Space/Scripts/createhsmkey.ps1"
 },
 "resources": [
