@@ -26,12 +26,6 @@
                 "description": "Domain Controller used for Exchange Setup"
             }
         },                            
-        "DBName": {
-            "type": "string",
-            "metadata": {
-                "description": "Exchange Database Name"
-            }
-        },        
         "adminUsername": {
             "type": "string",
             "metadata": {
@@ -84,7 +78,6 @@
                         "Properties": {
                             "ExchangeCUSASUrl": "[parameters('ExchangeCUSASUrl')]",                                                                                                                                                              
                             "NetBiosDomain": "[parameters('NetBiosdomain')]",          
-                            "DBName": "[parameters('DBName')]",       
                             "SetupDC": "[parameters('SetupDC')]",  
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
