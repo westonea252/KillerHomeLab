@@ -12,7 +12,7 @@ $KeyVault = Get-AzKeyVault -VaultName $vaultName
 $KeyExpires = (Get-Date).AddYears(2).ToUniversalTime()
 $KeyNotBefore = (Get-Date).ToUniversalTime()
 
-$Key = Add-AzKeyVaultKey -VaultName $KeyVault.VaultName -Name $Keyname -Expires $KeyExpires -NotBefore $KeyNotBefore -Size $KeySize -Destination $KeyDestination
+Add-AzKeyVaultKey -VaultName $KeyVault.VaultName -Name $Keyname -Expires $KeyExpires -NotBefore $KeyNotBefore -Size $KeySize -Destination $KeyDestination
 
 $desConfig = New-AzDiskEncryptionSetConfig -Location $Location -SourceVaultId $keyVault.ResourceId -KeyUrl $key.Key.Kid -IdentityType SystemAssigned
 
