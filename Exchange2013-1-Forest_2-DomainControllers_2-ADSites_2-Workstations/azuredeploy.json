@@ -3374,9 +3374,6 @@
               "location": {
                   "value": "[parameters('Location2')]"
               },          
-              "DBName": {
-                  "value": "[variables('db2name')]"
-              },       
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
               },                                                                                                            

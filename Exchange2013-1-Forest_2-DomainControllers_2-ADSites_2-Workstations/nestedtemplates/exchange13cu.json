@@ -64,8 +64,8 @@
         }                
     },
     "variables": {
-        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/EXCHANGE13.zip', parameters('_artifactsLocationSasToken')))]",
-        "ConfigurationFunction": "EXCHANGE13.ps1\\EXCHANGE13"
+        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/EXCHANGE13CU.zip', parameters('_artifactsLocationSasToken')))]",
+        "ConfigurationFunction": "EXCHANGE13CU.ps1\\EXCHANGE13CU"
     },
     "resources": [
         {
