@@ -3442,7 +3442,7 @@
         "configexchange1",
         "installexchange2",
         "configexchange2",
-        "insteallexchange2cu"
+        "installexchange2cu"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -3540,7 +3540,7 @@
         "configexchange1",
         "installexchange2",
         "configexchange2",
-        "insteallexchange2cu",        
+        "installexchange2cu",        
         "DeployWK1VM"
       ],      
       "properties": {
@@ -3624,7 +3624,7 @@
         "configexchange1",
         "installexchange2",
         "configexchange2",
-        "insteallexchange2cu",        
+        "installexchange2cu",        
         "DeployWK1VM",
         "DomainJoinWK1VM"
       ],      
@@ -3724,7 +3724,7 @@
         "configexchange1",
         "installexchange2",
         "configexchange2",
-        "insteallexchange2cu",        
+        "installexchange2cu",        
         "DeployWK1VM",
         "DomainJoinWK1VM",
         "DeployWK2VM"
