@@ -14,6 +14,12 @@
         "description": "Managed ID Name"
       }
     },
+    "ResourceGroupName": {
+      "type": "string",
+      "metadata": {
+        "description": "ResourceGroupName"
+      }
+    },    
     "location": {
         "type": "string",
       "metadata": {
@@ -23,8 +29,7 @@
 },
 "variables": {
     "KeyName": "[concat(parameters('KeyVaultName'),'-HSM')]",
-    "DESName": "[concat(parameters('KeyVaultName'),'-DES')]",    
-    "ResourceGroupName": "[resourceGroup().id]"
+    "DESName": "[concat(parameters('KeyVaultName'),'-DES')]"
 },
 "resources": [
     {
@@ -43,7 +48,7 @@
       "properties": {
         "azPowerShellVersion": "3.0",
         "timeout": "PT1H",
-        "arguments": "[format(' -vaultName {0} -KeyName {1} -DESName {2} -ResourceGroupName {3} -Location {4}', parameters('keyVaultName'), variables('KeyName'), variables('DESName'), variables('ResourceGroupName'), parameters('location'))]", // can pass an argument string, double quotes must be escaped
+        "arguments": "[format(' -vaultName {0} -KeyName {1} -DESName {2} -ResourceGroupName {3} -Location {4}', parameters('keyVaultName'), variables('KeyName'), variables('DESName'), parameters('ResourceGroupName'), parameters('location'))]", // can pass an argument string, double quotes must be escaped
         "scriptContent": "
           param(
           [string] [Parameter(Mandatory=$true)] $vaultName,

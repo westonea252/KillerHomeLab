@@ -2058,6 +2058,9 @@
               "KeyVaultName": {
                   "value": "[variables('KeyVault2Name')]"
               },
+              "ResourceGroupName": {
+                  "value": "[variables('ResourceGroup2')]"
+              },              
               "Location": {
                   "value": "[parameters('Location2')]"
               }                            
