@@ -13,9 +13,16 @@
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Enter a valid URL that points to the Exchange 2013 SP1 ISO"
+        "description": "Enter a valid URL that points to the Exchange 2013 SP1 .ISO"
       }
     },
+    "Exchange2013CUEXEUrl": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Enter a valid URL that points to the Exchange 2013 CU .EXE"
+      }
+    },    
     "adminUsername": {
         "type": "string",
         "metadata": {
@@ -3293,7 +3300,98 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
           }
       }
-    },                                                                                                                        
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "installexchange2cu",
+      "dependsOn": [
+        "VNet1",
+        "VNet2",
+        "BastionHost1",
+        "BastionHost2",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "updatevnet2dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "createsites",        
+        "PeeringToSite2",
+        "PeeringToSite1",
+        "deployDC2VM",
+        "promotedc2",
+        "updatevnet2dns-2",
+        "restartdc2",
+        "deployrootca",
+        "configurerootca",
+        "deployissuingca",
+        "DomainJoinIssuingCA",
+        "configureissueca",
+        "grantcarequest",
+        "finalizeca",
+        "deployocsp",
+        "DomainJoinOCSP",
+        "configureocsp",
+        "deployfs1",
+        "DomainJoinFS1",
+        "deployfs2",
+        "DomainJoinFS2",
+        "deployex1",
+        "DomainJoinEX1",
+        "deployex2",
+        "DomainJoinEX2",
+        "prepareexchange13s1",
+        "prepareexchange13s2",        
+        "prepareadexchange13",
+        "grantextrustedsub1",
+        "grantextrustedsub2",
+        "installexchange1",
+        "configexchange1",
+        "installexchange2",
+        "configexchange2"        
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/exchange13cu.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ex2name')]"
+              },
+              "ExchangeCUSASUrl": {
+                  "value": "[parameters('Exchange2013CUEXEUrl')]"
+              },              
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },
+              "SetupDC": {
+                  "value": "[variables('dc2name')]"
+              },                                                      
+              "location": {
+                  "value": "[parameters('Location2')]"
+              },          
+              "DBName": {
+                  "value": "[variables('db2name')]"
+              },       
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                                                                                                      
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }          
+          }
+      }
+    },                                                                                                                              
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
@@ -3343,7 +3441,8 @@
         "installexchange1",
         "configexchange1",
         "installexchange2",
-        "configexchange2"
+        "configexchange2",
+        "insteallexchange2cu"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -3441,6 +3540,7 @@
         "configexchange1",
         "installexchange2",
         "configexchange2",
+        "insteallexchange2cu",        
         "DeployWK1VM"
       ],      
       "properties": {
@@ -3524,6 +3624,7 @@
         "configexchange1",
         "installexchange2",
         "configexchange2",
+        "insteallexchange2cu",        
         "DeployWK1VM",
         "DomainJoinWK1VM"
       ],      
@@ -3623,6 +3724,7 @@
         "configexchange1",
         "installexchange2",
         "configexchange2",
+        "insteallexchange2cu",        
         "DeployWK1VM",
         "DomainJoinWK1VM",
         "DeployWK2VM"
