@@ -13,19 +13,25 @@
       "metadata": {
         "description": "Managed ID Name"
       }
-    }
+    },
+    "location": {
+        "type": "string",
+      "metadata": {
+        "description": "Region of Resources"
+      }
+    }     
 },
 "variables": {
     "KeyName": "[concat(parameters('KeyVaultName'),'-HSM')]",
-    "KeySize": "2048",
-    "KeyDestination": "HSM",
-    "ScriptURL": "https://raw.githubusercontent.com/elliottfieldsjr/KillerHomeLab/master/Azure-Site-Recovery_Same-Address-Space/Scripts/createhsmkey.ps1"
+    "DESName": "[concat(parameters('KeyVaultName'),'-DES')]",    
+    "ResourceGroupName": "[resourceGroup().id]",
+    "ScriptURL": "https://raw.githubusercontent.com/elliottfieldsjr/KillerHomeLab/master/Azure-Site-Recovery_Same-Address-Space/Scripts/createdes.ps1"
 },
 "resources": [
     {
       "type": "Microsoft.Resources/deploymentScripts",
       "apiVersion": "2019-10-01-preview",
-      "name": "createhsmkey",
+      "name": "createdes",
       "location": "[resourceGroup().location]",
       "kind": "AzurePowerShell",      
       "identity": {
@@ -38,7 +44,7 @@
       "properties": {
         "azPowerShellVersion": "3.0",
         "timeout": "PT1H",
-        "arguments": "[format(' -vaultName {0} -KeyName {1} -KeySize {2} -KeyDestination {3}', parameters('keyVaultName'), variables('KeyName'), variables('KeySize'), variables('KeyDestination'))]", // can pass an argument string, double quotes must be escaped
+        "arguments": "[format(' -vaultName {0} -KeyName {1} -DESName {2} -ResourceGroupName {3} -Location {4}', parameters('keyVaultName'), variables('KeyName'), variables('DESName'), variables('ResourceGroupName'), parameters('location'))]", // can pass an argument string, double quotes must be escaped
         "primaryScriptUri": "[variables('ScriptURL')]",
         "cleanupPreference": "OnSuccess",
         "retentionInterval": "P1D"
