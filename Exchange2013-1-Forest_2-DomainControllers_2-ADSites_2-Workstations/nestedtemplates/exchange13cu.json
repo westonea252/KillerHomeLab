@@ -8,10 +8,10 @@
                 "description": "Computer Name"
             }
         },
-        "ExchangeSASUrl": {
+        "ExchangeCUSASUrl": {
             "type": "string",
             "metadata": {
-                "description": "Exchange SAS Url"
+                "description": "Exchange CU SAS Url"
             }
         },        
         "NetBiosDomain": {
@@ -82,7 +82,7 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
-                            "ExchangeSASUrl": "[parameters('ExchangeSASUrl')]",                                                                                                                                                              
+                            "ExchangeCUSASUrl": "[parameters('ExchangeCUSASUrl')]",                                                                                                                                                              
                             "NetBiosDomain": "[parameters('NetBiosdomain')]",          
                             "DBName": "[parameters('DBName')]",       
                             "SetupDC": "[parameters('SetupDC')]",  
