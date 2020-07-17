@@ -13,13 +13,19 @@
       "metadata": {
         "description": "Managed ID Name"
       }
+    },    
+    "VMName": {
+      "type": "string",
+      "metadata": {
+        "description": "VM Name"
+      }
     },
     "ResourceGroupName": {
       "type": "string",
       "metadata": {
         "description": "ResourceGroupName"
       }
-    }
+    }     
 },
 "variables": {
     "DESName": "[concat(parameters('KeyVaultName'),'-DES')]"
@@ -28,7 +34,7 @@
     {
       "type": "Microsoft.Resources/deploymentScripts",
       "apiVersion": "2019-10-01-preview",
-      "name": "assignvaultperms",
+      "name": "encryptvms",
       "location": "[resourceGroup().location]",
       "kind": "AzurePowerShell",      
       "identity": {
@@ -41,18 +47,22 @@
       "properties": {
         "azPowerShellVersion": "3.0",
         "timeout": "PT1H",
-        "arguments": "[format(' -vaultName {0} -DESName {1} -ResourceGroupName {2}', parameters('keyVaultName'), variables('DESName'), parameters('ResourceGroupName'))]", // can pass an argument string, double quotes must be escaped
+        "arguments": "[format(' -DESName {0} -VMName {1} -ResourceGroupName {2}', variables('DESName'), parameters('VMName'), parameters('ResourceGroupName'))]", // can pass an argument string, double quotes must be escaped
         "scriptContent": "
           param(
-          [string] [Parameter(Mandatory=$true)] $vaultName,
           [string] [Parameter(Mandatory=$true)] $DESName,
+          [string] [Parameter(Mandatory=$true)] $VMName,          
           [string] [Parameter(Mandatory=$true)] $ResourceGroupName
           )
 
-          $KeyVault = Get-AzKeyVault -VaultName $vaultName
-
           $des = Get-AzDiskEncryptionSet -Name $DESName -ResourceGroupName $ResourceGroupName
-          Set-AzKeyVaultAccessPolicy -VaultName $KeyVault.VaultName -ObjectId $des.Identity.PrincipalId -PermissionsToKeys wrapkey,unwrapkey,get
+          $vm = Get-AzVM -Name $VMName -ResourceGroupName $ResourceGroupName
+          $OSDisk = Get-AzDisk -name $vm.StorageProfile.OsDisk.Name
+          $DataDisk = Get-AzDisk -name $vm.StorageProfile.DataDisks[0].Name
+          Stop-AzVm -Name $VMName -ResourceGroupName $ResourceGroupName -Force
+          New-AzDiskUpdateConfig -EncryptionType 'EncryptionAtRestWithCustomerKey' -DiskEncryptionSetId $DES.Id | Update-AzDisk -ResourceGroupName $ResourceGroupName -DiskName $OSDisk.Name
+          IF ($DataDisk -ne $Null) {New-AzDiskUpdateConfig -EncryptionType 'EncryptionAtRestWithCustomerKey' -DiskEncryptionSetId $DES.Id | Update-AzDisk -ResourceGroupName $ResourceGroupName -DiskName $DataDisk.Name}
+          Start-AzVm -Name $VMName -ResourceGroupName $ResourceGroupName
         ",
         "cleanupPreference": "OnSuccess",
         "retentionInterval": "P1D"
