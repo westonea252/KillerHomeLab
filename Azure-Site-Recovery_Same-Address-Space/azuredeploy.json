@@ -2066,6 +2066,65 @@
               }                            
           }
       }
-    }    
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "AssignVaultPerms",
+      "resourceGroup": "[variables('ResourceGroup2')]",                  
+      "dependsOn": [
+        "VNet1",
+        "VNet1R",
+        "VNet2",
+        "VNet2R",
+        "BastionHost1",
+        "BastionHost1R",
+        "BastionHost2",
+        "BastionHost2R",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "updatevnet2dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "createsites",
+        "PeeringToSite2",
+        "PeeringToSite1",
+        "deployDC2VM",
+        "promotedc2",
+        "updatevnet2dns-2",
+        "restartdc2",
+        "DeploySRV1VM",
+        "DomainJoinSRV1VM",
+        "DeploySRV2VM",
+        "DomainJoinSRV2VM",
+        "DeployRSVault1",
+        "DeployRSVault2",
+        "CreateManagedID",        
+        "DeployKeyVault1",
+        "DeployKeyVault2",
+        "CreateHSMKey2",
+        "CreateDES"               
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/assignvaultperms.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "ManagedIDName": {
+                  "value": "[variables('ManagedIDName')]"
+              },
+              "KeyVaultName": {
+                  "value": "[variables('KeyVault2Name')]"
+              },
+              "ResourceGroupName": {
+                  "value": "[variables('ResourceGroup2')]"
+              }
+          }
+      }
+    }        
   ]
 }

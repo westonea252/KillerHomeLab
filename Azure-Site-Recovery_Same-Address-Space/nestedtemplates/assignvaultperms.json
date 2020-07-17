@@ -19,23 +19,16 @@
       "metadata": {
         "description": "ResourceGroupName"
       }
-    },    
-    "location": {
-        "type": "string",
-      "metadata": {
-        "description": "Region of Resources"
-      }
-    }     
+    }
 },
 "variables": {
-    "KeyName": "[concat(parameters('KeyVaultName'),'-HSM')]",
     "DESName": "[concat(parameters('KeyVaultName'),'-DES')]"
 },
 "resources": [
     {
       "type": "Microsoft.Resources/deploymentScripts",
       "apiVersion": "2019-10-01-preview",
-      "name": "createdes",
+      "name": "assignvaultperms",
       "location": "[resourceGroup().location]",
       "kind": "AzurePowerShell",      
       "identity": {
@@ -48,22 +41,18 @@
       "properties": {
         "azPowerShellVersion": "3.0",
         "timeout": "PT1H",
-        "arguments": "[format(' -vaultName {0} -KeyName {1} -DESName {2} -ResourceGroupName {3} -Location {4}', parameters('keyVaultName'), variables('KeyName'), variables('DESName'), parameters('ResourceGroupName'), parameters('location'))]", // can pass an argument string, double quotes must be escaped
+        "arguments": "[format(' -vaultName {0} -DESName {1} -ResourceGroupName {2}', parameters('keyVaultName'), variables('DESName'), parameters('ResourceGroupName'))]", // can pass an argument string, double quotes must be escaped
         "scriptContent": "
           param(
           [string] [Parameter(Mandatory=$true)] $vaultName,
-          [string] [Parameter(Mandatory=$true)] $KeyName,
           [string] [Parameter(Mandatory=$true)] $DESName,
-          [string] [Parameter(Mandatory=$true)] $ResourceGroupName,
-          [string] [Parameter(Mandatory=$true)] $Location    
+          [string] [Parameter(Mandatory=$true)] $ResourceGroupName
           )
 
           $KeyVault = Get-AzKeyVault -VaultName $vaultName
-          $Key = Get-AzKeyVaultKey -VaultName $KeyVault.VaultName -Name $KeyName
 
-          $desConfig = New-AzDiskEncryptionSetConfig -Location $Location -SourceVaultId $KeyVault.ResourceId -KeyUrl $key.Key.Kid -IdentityType SystemAssigned
-
-          $des = New-AzDiskEncryptionSet -Name $DESName -ResourceGroupName $ResourceGroupName -InputObject $desConfig
+          $des = Get-AzDiskEncryptionSet -Name $DESName -ResourceGroupName $ResourceGroupName
+          Set-AzKeyVaultAccessPolicy -VaultName $KeyVault.VaultName -ObjectId $des.Identity.PrincipalId -PermissionsToKeys wrapkey,unwrapkey,get
         ",
         "cleanupPreference": "OnSuccess",
         "retentionInterval": "P1D"
