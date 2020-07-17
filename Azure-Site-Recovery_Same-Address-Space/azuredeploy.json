@@ -2122,7 +2122,10 @@
               },                            
               "AdminObjectID": {
                   "value": "[parameters('AdminObjectID')]"
-              },     
+              },   
+              "UserManagedObjectID": {
+                  "value": "[reference('CreateManagedID').outputs.manageduseridentity.value]"             
+              },                                         
               "DESObjectID": {
                   "value": "[reference('CreateDES').outputs.DiskEncryptionSet.value]"             
               },                         
