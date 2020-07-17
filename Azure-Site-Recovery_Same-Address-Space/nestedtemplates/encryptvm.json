@@ -60,8 +60,8 @@
           $OSDisk = Get-AzDisk -name $vm.StorageProfile.OsDisk.Name
           $DataDisk = Get-AzDisk -name $vm.StorageProfile.DataDisks[0].Name
           Stop-AzVm -Name $VMName -ResourceGroupName $ResourceGroupName -Force
-          New-AzDiskUpdateConfig -EncryptionType 'EncryptionAtRestWithCustomerKey' -DiskEncryptionSetId $DES.Id | Update-AzDisk -ResourceGroupName $ResourceGroupName -DiskName $OSDisk.Name
-          IF ($DataDisk -ne $Null) {New-AzDiskUpdateConfig -EncryptionType 'EncryptionAtRestWithCustomerKey' -DiskEncryptionSetId $DES.Id | Update-AzDisk -ResourceGroupName $ResourceGroupName -DiskName $DataDisk.Name}
+          New-AzDiskUpdateConfig -EncryptionType EncryptionAtRestWithCustomerKey -DiskEncryptionSetId $DES.Id | Update-AzDisk -ResourceGroupName $ResourceGroupName -DiskName $OSDisk.Name
+          IF ($DataDisk -ne $Null) {New-AzDiskUpdateConfig -EncryptionType EncryptionAtRestWithCustomerKey -DiskEncryptionSetId $DES.Id | Update-AzDisk -ResourceGroupName $ResourceGroupName -DiskName $DataDisk.Name}
           Start-AzVm -Name $VMName -ResourceGroupName $ResourceGroupName
         ",
         "cleanupPreference": "OnSuccess",
