@@ -29,8 +29,7 @@
 },
 "variables": {
     "KeyName": "[concat(parameters('KeyVaultName'),'-HSM')]",
-    "DESName": "[concat(parameters('KeyVaultName'),'-DES')]",
-    "ResourceID": "[concat('/', subscription().id ,'/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Compute/diskEncryptionSets/', variables('DESName'))]"
+    "DESName": "[concat(parameters('KeyVaultName'),'-DES')]"
 },
 "resources": [
     {
