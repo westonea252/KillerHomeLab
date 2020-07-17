@@ -23,7 +23,6 @@
             DestinationPath = "S:\ExchangeInstall\Exchange.exe"
             Uri             = "$ExchangeCUSASUrl"
             UserAgent       = "[Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer"
-            DependsOn =    '[File]CreateSoftwareFolder'
         }
 
         Script ExtractExchangeCU
