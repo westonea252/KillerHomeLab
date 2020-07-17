@@ -73,7 +73,7 @@
 "outputs": {
     "DiskEncryptionSet": {
         "type": "string",
-        "value": "[reference(resourceId(resourceGroup().name, 'Microsoft.Compute/diskEncryptionSets', variables('DESName'))).Identity.principalId]"
+        "value": "[reference(resourceId('Microsoft.Compute/diskEncryptionSets', variables('DESName'))).Identity.principalId]"
     }
   }      
 }
