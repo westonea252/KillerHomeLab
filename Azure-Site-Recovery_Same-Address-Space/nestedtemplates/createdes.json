@@ -29,7 +29,8 @@
 },
 "variables": {
     "KeyName": "[concat(parameters('KeyVaultName'),'-HSM')]",
-    "DESName": "[concat(parameters('KeyVaultName'),'-DES')]"
+    "DESName": "[concat(parameters('KeyVaultName'),'-DES')]",
+    "ResourceID": "[concat('/', subscription().id ,'/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Compute/diskEncryptionSets/', variables('DESName')).principalId]"
 },
 "resources": [
     {
@@ -73,7 +74,7 @@
 "outputs": {
     "DiskEncryptionSet": {
         "type": "string",
-         "value": "[reference(resourceId(resourceGroup().name, 'Microsoft.Compute/diskEncryptionSets', variables('DESName'))).principalId]"
+         "value": "[reference(variables('ResourceID'))]"
     }
   }      
 }
