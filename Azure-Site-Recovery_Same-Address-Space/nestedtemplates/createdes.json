@@ -65,6 +65,10 @@
           $desConfig = New-AzDiskEncryptionSetConfig -Location $Location -SourceVaultId $KeyVault.ResourceId -KeyUrl $key.Key.Kid -IdentityType SystemAssigned
 
           $des = New-AzDiskEncryptionSet -Name $DESName -ResourceGroupName $ResourceGroupName -InputObject $desConfig
+          $output = $des.Identity.PrincipalId
+          Write-Output $output
+          $DeploymentScriptOutputs = @{}
+          $DeploymentScriptOutputs['text'] = $output
         ",
         "cleanupPreference": "OnSuccess",
         "retentionInterval": "P1D"
@@ -74,7 +78,7 @@
 "outputs": {
     "DiskEncryptionSet": {
         "type": "string",
-         "value": "[reference(variables('ResourceID')).principalId]"
+        "value": "[reference('createdes').outputs.text]"
     }
   }      
 }
