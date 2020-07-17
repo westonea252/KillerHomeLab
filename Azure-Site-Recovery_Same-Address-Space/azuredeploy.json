@@ -2183,23 +2183,17 @@
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
+              "ManagedIDName": {
+                  "value": "[variables('ManagedIDName')]"
+              },
               "KeyVaultName": {
                   "value": "[variables('KeyVault2Name')]"
               },
-              "BackupObjectID": {
-                  "value": "[parameters('BackupObjectID')]"
-              },                            
-              "AdminObjectID": {
-                  "value": "[parameters('AdminObjectID')]"
-              },   
-              "UserManagedObjectID": {
-                  "value": "[reference('CreateManagedID').outputs.manageduseridentity.value]"             
-              },                                         
-              "DESObjectID": {
-                  "value": "[reference('CreateDES').outputs.DiskEncryptionSet.value]"             
-              },                         
-              "location": {
-                  "value": "[parameters('Location2')]"
+              "VMName": {
+                  "value": "[variables('srv2name')]"
+              },              
+              "ResourceGroupName": {
+                  "value": "[variables('ResourceGroup2')]"
               }
           }
       }
