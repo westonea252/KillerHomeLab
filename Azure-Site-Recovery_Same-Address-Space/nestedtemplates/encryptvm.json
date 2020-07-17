@@ -28,7 +28,9 @@
     }     
 },
 "variables": {
-    "DESName": "[concat(parameters('KeyVaultName'),'-DES')]"
+    "DESName": "[concat(parameters('KeyVaultName'),'-DES')]",
+    "EncryptionType": "EncryptionAtRestWithCustomerKey",    
+    "ScriptURL": "https://raw.githubusercontent.com/elliottfieldsjr/KillerHomeLab/master/Azure-Site-Recovery_Same-Address-Space/Scripts/encryptvm.ps1"    
 },
 "resources": [
     {
@@ -47,23 +49,8 @@
       "properties": {
         "azPowerShellVersion": "3.0",
         "timeout": "PT1H",
-        "arguments": "[format(' -DESName {0} -VMName {1} -ResourceGroupName {2}', variables('DESName'), parameters('VMName'), parameters('ResourceGroupName'))]", // can pass an argument string, double quotes must be escaped
-        "scriptContent": "
-          param(
-          [string] [Parameter(Mandatory=$true)] $DESName,
-          [string] [Parameter(Mandatory=$true)] $VMName,          
-          [string] [Parameter(Mandatory=$true)] $ResourceGroupName
-          )
-
-          $des = Get-AzDiskEncryptionSet -Name $DESName -ResourceGroupName $ResourceGroupName
-          $vm = Get-AzVM -Name $VMName -ResourceGroupName $ResourceGroupName
-          $OSDisk = Get-AzDisk -name $vm.StorageProfile.OsDisk.Name
-          $DataDisk = Get-AzDisk -name $vm.StorageProfile.DataDisks[0].Name
-          Stop-AzVm -Name $VMName -ResourceGroupName $ResourceGroupName -Force
-          IF ($OSDisk.Encryption.Type -ne EncryptionAtRestWithCustomerKey) {New-AzDiskUpdateConfig -EncryptionType EncryptionAtRestWithCustomerKey -DiskEncryptionSetId $DES.Id | Update-AzDisk -ResourceGroupName $ResourceGroupName -DiskName $OSDisk.Name}
-          IF ($DataDisk.Encryption.Type -ne EncryptionAtRestWithCustomerKey) {New-AzDiskUpdateConfig -EncryptionType EncryptionAtRestWithCustomerKey -DiskEncryptionSetId $DES.Id | Update-AzDisk -ResourceGroupName $ResourceGroupName -DiskName $DataDisk.Name}
-          Start-AzVm -Name $VMName -ResourceGroupName $ResourceGroupName
-        ",
+        "arguments": "[format(' -DESName {0} -VMName {1} -ResourceGroupName {2} -EncryptionType {3}', variables('DESName'), parameters('VMName'), parameters('ResourceGroupName'), variables('EncryptionType'))]", // can pass an argument string, double quotes must be escaped
+        "primaryScriptUri": "[variables('ScriptURL')]",
         "cleanupPreference": "OnSuccess",
         "retentionInterval": "P1D"
       }
