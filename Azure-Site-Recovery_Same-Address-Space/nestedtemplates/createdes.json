@@ -69,5 +69,11 @@
         "retentionInterval": "P1D"
       }
     }
-  ]
+  ],
+"outputs": {
+    "DiskEncryptionSet": {
+        "type": "string",
+        "value": "[reference(resourceId(resourceGroup().name, 'Microsoft.Compute/diskEncryptionSets', variables('DESName'))).Identity.principalId]"
+    }
+  }      
 }

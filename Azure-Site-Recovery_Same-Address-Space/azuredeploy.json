@@ -2070,8 +2070,8 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "AssignVaultPerms",
-      "resourceGroup": "[variables('ResourceGroup2')]",                  
+      "name": "UpdateKeyVault2",
+      "resourceGroup": "[variables('ResourceGroup2')]",            
       "dependsOn": [
         "VNet1",
         "VNet1R",
@@ -2105,26 +2105,32 @@
         "DeployKeyVault1",
         "DeployKeyVault2",
         "CreateHSMKey2",
-        "CreateDES"               
+        "CreateDES"
       ],      
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/assignvaultperms.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/updatekeyvault.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
-              "ManagedIDName": {
-                  "value": "[variables('ManagedIDName')]"
-              },
               "KeyVaultName": {
                   "value": "[variables('KeyVault2Name')]"
               },
-              "ResourceGroupName": {
-                  "value": "[variables('ResourceGroup2')]"
+              "BackupObjectID": {
+                  "value": "[parameters('BackupObjectID')]"
+              },                            
+              "AdminObjectID": {
+                  "value": "[parameters('AdminObjectID')]"
+              },     
+              "DESObjectID": {
+                  "value": "[reference('CreateDES').outputs.DiskEncryptionSet.value]"             
+              },                         
+              "location": {
+                  "value": "[parameters('Location2')]"
               }
           }
       }
-    }        
+    }      
   ]
 }
