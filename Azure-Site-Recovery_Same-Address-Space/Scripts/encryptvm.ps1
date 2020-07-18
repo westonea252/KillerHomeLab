@@ -1,8 +1,8 @@
 param(
     [string] [Parameter(Mandatory=$true)] $DESName,
+    [string] [Parameter(Mandatory=$true)] $EncryptionType,    
     [string] [Parameter(Mandatory=$true)] $VMName,          
-    [string] [Parameter(Mandatory=$true)] $ResourceGroupName,
-    [string] [Parameter(Mandatory=$true)] $EncryptionType    
+    [string] [Parameter(Mandatory=$true)] $ResourceGroupName
     )
 
     $enc = $EncryptionType

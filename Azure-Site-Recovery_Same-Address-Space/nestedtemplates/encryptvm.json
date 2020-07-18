@@ -49,7 +49,7 @@
       "properties": {
         "azPowerShellVersion": "3.0",
         "timeout": "PT1H",
-        "arguments": "[format(' -DESName {0} -VMName {1} -ResourceGroupName {2} -EncryptionType {3}', variables('DESName'), parameters('VMName'), parameters('ResourceGroupName'), variables('EncryptionType'))]", // can pass an argument string, double quotes must be escaped
+        "arguments": "[format(' -DESName {0} -EncryptionType {1} -VMName {2} -ResourceGroupName {3}', variables('DESName'), variables('EncryptionType'), parameters('VMName'), parameters('ResourceGroupName'))]", // can pass an argument string, double quotes must be escaped
         "primaryScriptUri": "[variables('ScriptURL')]",
         "cleanupPreference": "OnSuccess",
         "retentionInterval": "P1D"
