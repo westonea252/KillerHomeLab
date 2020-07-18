@@ -2190,7 +2190,7 @@
                   "value": "[variables('KeyVault2Name')]"
               },
               "VMName": {
-                  "value": "[variables('srv2name')]"
+                  "value": "[variables('dc2name')]"
               },              
               "ResourceGroupName": {
                   "value": "[variables('ResourceGroup2')]"

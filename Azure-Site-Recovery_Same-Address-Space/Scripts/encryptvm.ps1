@@ -5,11 +5,17 @@ param(
     [string] [Parameter(Mandatory=$true)] $EncryptionType    
     )
 
-    $des = Get-AzDiskEncryptionSet -Name $DESName -ResourceGroupName $ResourceGroupName
-    $vm = Get-AzVM -Name $VMName -ResourceGroupName $ResourceGroupName
-    $OSDisk = Get-AzDisk -name $vm.StorageProfile.OsDisk.Name
-    $DataDisk = Get-AzDisk -name $vm.StorageProfile.DataDisks[0].Name
+    $enc = $EncryptionType
+    $vm = Get-AzVM -Name $VMName -ResourceGroupName $ResourceGroupName -Status
+    $OSDisk = Get-AzDisk -Name $vm.StorageProfile.OsDisk.Name
+    $DataDiskCheck = $vm.StorageProfile.DataDisks
+    IF ($OSDisk.Encryption.Type -ne $enc){
     Stop-AzVm -Name $VMName -ResourceGroupName $ResourceGroupName -Force
-    IF ($OSDisk.Encryption.Type -ne $EncryptionType) {New-AzDiskUpdateConfig -EncryptionType $EncryptionType -DiskEncryptionSetId $des.Id | Update-AzDisk -ResourceGroupName $ResourceGroupName -DiskName $OSDisk.Name}
-    IF ($DataDisk.Encryption.Type -ne $EncryptionType) {New-AzDiskUpdateConfig -EncryptionType $EncryptionType -DiskEncryptionSetId $des.Id | Update-AzDisk -ResourceGroupName $ResourceGroupName -DiskName $DataDisk.Name}
-    Start-AzVm -Name $VMName -ResourceGroupName $ResourceGroupName
+    $des = Get-AzDiskEncryptionSet -Name $DESName -ResourceGroupName $ResourceGroupName
+    New-AzDiskUpdateConfig -EncryptionType $EncryptionType -DiskEncryptionSetId $des.Id | Update-AzDisk -ResourceGroupName $ResourceGroupName -DiskName $OSDisk.Name
+    }
+    IF ($Null -ne $DataDiskCheck) {
+    $DataDisk = Get-AzDisk -Name $vm.StorageProfile.DataDisk[0].Name
+    New-AzDiskUpdateConfig -EncryptionType $EncryptionType -DiskEncryptionSetId $des.Id | Update-AzDisk -ResourceGroupName $ResourceGroupName -DiskName $DataDisk.Name
+    }
+    IF ($VM.PowerState -eq 'VM deallocated') {Start-AzVm -Name $VMName -ResourceGroupName $ResourceGroupName}
