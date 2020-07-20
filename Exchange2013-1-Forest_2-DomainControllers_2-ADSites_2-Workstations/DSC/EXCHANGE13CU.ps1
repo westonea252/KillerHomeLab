@@ -25,6 +25,14 @@
             UserAgent       = "[Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer"
         }
 
+        File ExchangeCU
+        {
+            Type = 'Directory'
+            DestinationPath = 'S:\ExchangeInstall\ExchangeCU'
+            Ensure = "Present"
+            DependsOn = '[xRemoteFile]DownloadExchangeCU'
+        }
+
         Script ExtractExchangeCU
         {
             SetScript =
@@ -35,15 +43,7 @@
             }
             GetScript =  { @{} }
             TestScript = { $false}
-            DependsOn = '[xRemoteFile]DownloadExchangeCU'
-        }
-
-        File ExchangeCU
-        {
-            Type = 'Directory'
-            DestinationPath = 'S:\ExchangeInstall\ExchangeCU'
-            Ensure = "Present"
-            DependsOn = '[Script]ExtractExchangeCU'
+            DependsOn = '[File]ExchangeCU'
         }
 
         Script InstallExchangeCU
@@ -56,7 +56,7 @@
             GetScript =  { @{} }
             TestScript = { $false}
             PsDscRunAsCredential = $DomainCreds
-            DependsOn = '[File]ExchangeCU'
+            DependsOn = '[Script]ExtractExchangeCU'
         }
 
     }
