@@ -30,8 +30,8 @@
             SetScript =
             {
                 # Create Exchange Extraction
-                Set-Content -Path C:\MachineConfig\ExtractExchange.cmd -Value "S:\ExchangeInstall\Exchange.exe /extract:S:\ExchangeInstall\ExchangeCU /q"
-                C:\MachineConfig\ExtractExchange.cmd
+                Set-Content -Path S:\ExchangeInstall\ExtractExchangeCU.cmd -Value "S:\ExchangeInstall\Exchange.exe /extract:S:\ExchangeInstall\ExchangeCU /q"
+                S:\ExchangeInstall\ExtractExchangeCU.cmd
             }
             GetScript =  { @{} }
             TestScript = { $false}
