@@ -50,7 +50,7 @@
         {
             SetScript =
             {
-                Set-Content -Path S:\ExchangeInstall\DeployExchangeCU.cmd -Value "S:\ExchangeInstall\Exchange2013CU\Setup.exe /Iacceptexchangeserverlicenseterms /Mode:Upgrade /dc:$using:SetupDC"
+                Set-Content -Path S:\ExchangeInstall\DeployExchangeCU.cmd -Value "S:\ExchangeInstall\ExchangeCU\Setup.exe /Iacceptexchangeserverlicenseterms /Mode:Upgrade /dc:$using:SetupDC"
                 S:\ExchangeInstall\DeployExchangeCU.cmd
             }
             GetScript =  { @{} }
