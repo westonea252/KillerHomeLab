@@ -70,8 +70,8 @@
         }                
     },
     "variables": {
-        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/PREPAREADEXCHANGE13.zip', parameters('_artifactsLocationSasToken')))]",
-        "ConfigurationFunction": "PREPAREADEXCHANGE13.ps1\\PREPAREADEXCHANGE13"
+        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/PREPAREADEXCHANGE16.zip', parameters('_artifactsLocationSasToken')))]",
+        "ConfigurationFunction": "PREPAREADEXCHANGE16.ps1\\PREPAREADEXCHANGE16"
     },
     "resources": [
         {

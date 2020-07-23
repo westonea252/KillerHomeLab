@@ -106,8 +106,8 @@
         }                
     },
     "variables": {
-        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/CONFIGEXCHANGE13.zip', parameters('_artifactsLocationSasToken')))]",
-        "ConfigurationFunction": "CONFIGEXCHANGE13.ps1\\CONFIGEXCHANGE13"
+        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/CONFIGEXCHANGE16.zip', parameters('_artifactsLocationSasToken')))]",
+        "ConfigurationFunction": "CONFIGEXCHANGE16.ps1\\CONFIGEXCHANGE16"
     },
     "resources": [
         {
