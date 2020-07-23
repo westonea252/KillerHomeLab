@@ -30,16 +30,11 @@
             TestScript = { $false }
         }
 
-        WindowsFeature AS-HTTP-Activation
+        #Exchange Prereqs
+        WindowsFeature NET-WCF-HTTP-Activation45
         {
             Ensure = 'Present'
-            Name = 'AS-HTTP-Activation'
-        }
-
-        WindowsFeature Desktop-Experience
-        {
-            Ensure = 'Present'
-            Name = 'Desktop-Experience'
+            Name = 'NET-WCF-HTTP-Activation45'
         }
 
         WindowsFeature NET-Framework-45-Features
@@ -48,12 +43,18 @@
             Name = 'NET-Framework-45-Features'
         }
 
+        WindowsFeature Server-Media-Foundation
+        {
+            Ensure = 'Present'
+            Name = 'Server-Media-Foundation'
+        }
+        
         WindowsFeature RPC-over-HTTP-proxy
         {
             Ensure = 'Present'
             Name = 'RPC-over-HTTP-proxy'
         }
-
+        
         WindowsFeature RSAT-Clustering
         {
             Ensure = 'Present'
@@ -71,163 +72,163 @@
             Ensure = 'Present'
             Name = 'RSAT-Clustering-Mgmt'
         }
-
+        
         WindowsFeature RSAT-Clustering-PowerShell
         {
             Ensure = 'Present'
             Name = 'RSAT-Clustering-PowerShell'
         }
-
-        WindowsFeature Web-Mgmt-Console
-        {
-            Ensure = 'Present'
-            Name = 'Web-Mgmt-Console'
-        }
-
+        
         WindowsFeature WAS-Process-Model
         {
             Ensure = 'Present'
             Name = 'WAS-Process-Model'
         }
-
+        
         WindowsFeature Web-Asp-Net45
         {
             Ensure = 'Present'
             Name = 'Web-Asp-Net45'
         }
-
+        
         WindowsFeature Web-Basic-Auth
         {
             Ensure = 'Present'
             Name = 'Web-Basic-Auth'
         }
-
+        
         WindowsFeature Web-Client-Auth
         {
             Ensure = 'Present'
             Name = 'Web-Client-Auth'
         }
-
+        
         WindowsFeature Web-Digest-Auth
         {
             Ensure = 'Present'
             Name = 'Web-Digest-Auth'
         }
-
+        
         WindowsFeature Web-Dir-Browsing
         {
             Ensure = 'Present'
             Name = 'Web-Dir-Browsing'
         }
-
+        
         WindowsFeature Web-Dyn-Compression
         {
             Ensure = 'Present'
             Name = 'Web-Dyn-Compression'
         }
-
+        
         WindowsFeature Web-Http-Errors
         {
             Ensure = 'Present'
             Name = 'Web-Http-Errors'
         }
-
+        
         WindowsFeature Web-Http-Logging
         {
             Ensure = 'Present'
             Name = 'Web-Http-Logging'
         }
-
+        
         WindowsFeature Web-Http-Redirect
         {
             Ensure = 'Present'
             Name = 'Web-Http-Redirect'
         }
-
+        
         WindowsFeature Web-Http-Tracing
         {
             Ensure = 'Present'
             Name = 'Web-Http-Tracing'
         }
-
+        
         WindowsFeature Web-ISAPI-Ext
         {
             Ensure = 'Present'
             Name = 'Web-ISAPI-Ext'
         }
-
+        
         WindowsFeature Web-ISAPI-Filter
         {
             Ensure = 'Present'
             Name = 'Web-ISAPI-Filter'
         }
-
+        
         WindowsFeature Web-Lgcy-Mgmt-Console
         {
             Ensure = 'Present'
             Name = 'Web-Lgcy-Mgmt-Console'
         }
-
+        
         WindowsFeature Web-Metabase
         {
             Ensure = 'Present'
             Name = 'Web-Metabase'
         }
-
+        
+        WindowsFeature Web-Mgmt-Console
+        {
+            Ensure = 'Present'
+            Name = 'Web-Mgmt-Console'
+        }
+        
         WindowsFeature Web-Mgmt-Service
         {
             Ensure = 'Present'
             Name = 'Web-Mgmt-Service'
         }
-
+        
         WindowsFeature Web-Net-Ext45
         {
             Ensure = 'Present'
             Name = 'Web-Net-Ext45'
         }
-
+        
         WindowsFeature Web-Request-Monitor
         {
             Ensure = 'Present'
             Name = 'Web-Request-Monitor'
         }
-
+        
         WindowsFeature Web-Server
         {
             Ensure = 'Present'
             Name = 'Web-Server'
         }
-
+        
         WindowsFeature Web-Stat-Compression
         {
             Ensure = 'Present'
             Name = 'Web-Stat-Compression'
         }
-
+        
         WindowsFeature Web-Static-Content
         {
             Ensure = 'Present'
             Name = 'Web-Static-Content'
         }
-
+        
         WindowsFeature Web-Windows-Auth
         {
             Ensure = 'Present'
             Name = 'Web-Windows-Auth'
         }
-
+        
         WindowsFeature Web-WMI
         {
             Ensure = 'Present'
             Name = 'Web-WMI'
         }
-
+        
         WindowsFeature Windows-Identity-Foundation
         {
             Ensure = 'Present'
             Name = 'Windows-Identity-Foundation'
         }
-
+        
         WindowsFeature RSAT-ADDS
         {
             Ensure = 'Present'
