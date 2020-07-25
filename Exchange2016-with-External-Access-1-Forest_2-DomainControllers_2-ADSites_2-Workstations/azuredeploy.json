@@ -332,7 +332,9 @@
     "DB1Name": "[concat(parameters('NamingConvention'),'-16-db01')]",
     "DB2Name": "[concat(parameters('NamingConvention'),'-16-db02')]" ,             
     "DAG16Name": "[concat(parameters('NamingConvention'),'-16-dag01')]",
-    "dag16IP": "255.255.255.255"
+    "dag16IP": "255.255.255.255",
+    "NSG1Name": "[concat(parameters('NamingConvention'),'-nsg01')]",
+    "NSG2Name": "[concat(parameters('NamingConvention'),'-nsg02')]" ,                 
   },  
   "resources": [
     {
@@ -3758,6 +3760,384 @@
               }
           }
       }
-    }                                                                                                  
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "addex1pip",
+      "dependsOn": [
+        "VNet1",
+        "VNet2",
+        "BastionHost1",
+        "BastionHost2",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "updatevnet2dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "createsites",        
+        "PeeringToSite2",
+        "PeeringToSite1",
+        "deployDC2VM",
+        "promotedc2",
+        "updatevnet2dns-2",
+        "restartdc2",
+        "deployrootca",
+        "configurerootca",
+        "deployissuingca",
+        "DomainJoinIssuingCA",
+        "configureissueca",
+        "grantcarequest",
+        "finalizeca",
+        "deployocsp",
+        "DomainJoinOCSP",
+        "configureocsp",
+        "deployfs1",
+        "DomainJoinFS1",
+        "deployfs2",
+        "DomainJoinFS2",
+        "deployex1",
+        "DomainJoinEX1",
+        "deployex2",
+        "DomainJoinEX2",
+        "prepareexchange16s1",
+        "prepareexchange16s2",        
+        "prepareadexchange16",
+        "grantextrustedsub1",
+        "grantextrustedsub2",
+        "installexchange1",
+        "configexchange1",
+        "installexchange2",
+        "configexchange2",
+        "DeployWK1VM",
+        "DomainJoinWK1VM",
+        "DeployWK2VM",
+        "DomainJoinWK2VM",
+        "addocspip"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-3disk-vm-pip.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ex1name')]"
+              },
+              "computerIP": {
+                  "value": "[variables('ex1IP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsServer"
+              },
+              "Offer": {
+                  "value": "WindowsServer"
+              },
+              "OSVersion": {
+                "value": "[parameters('EXOSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "None"
+              },     
+              "DataDisk1Name": {
+                "value": "Exchange"
+              },            
+              "DataDisk2Name": {
+                "value": "Software"
+              },                                                             
+              "VMSize": {
+                "value": "[parameters('ex1VMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('vnet1Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('vnet1subnet1Name')]"
+              },            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "addex2pip",
+      "dependsOn": [
+        "VNet1",
+        "VNet2",
+        "BastionHost1",
+        "BastionHost2",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "updatevnet2dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "createsites",        
+        "PeeringToSite2",
+        "PeeringToSite1",
+        "deployDC2VM",
+        "promotedc2",
+        "updatevnet2dns-2",
+        "restartdc2",
+        "deployrootca",
+        "configurerootca",
+        "deployissuingca",
+        "DomainJoinIssuingCA",
+        "configureissueca",
+        "grantcarequest",
+        "finalizeca",
+        "deployocsp",
+        "DomainJoinOCSP",
+        "configureocsp",
+        "deployfs1",
+        "DomainJoinFS1",
+        "deployfs2",
+        "DomainJoinFS2",
+        "deployex1",
+        "DomainJoinEX1",
+        "deployex2",
+        "DomainJoinEX2",
+        "prepareexchange16s1",
+        "prepareexchange16s2",        
+        "prepareadexchange16",
+        "grantextrustedsub1",
+        "grantextrustedsub2",
+        "installexchange1",
+        "configexchange1",
+        "installexchange2",
+        "configexchange2",
+        "DeployWK1VM",
+        "DomainJoinWK1VM",
+        "DeployWK2VM",
+        "DomainJoinWK2VM",
+        "addocspip",
+        "addex1pip"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-3disk-vm-pip.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ex2name')]"
+              },
+              "computerIP": {
+                  "value": "[variables('ex2IP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsServer"
+              },
+              "Offer": {
+                  "value": "WindowsServer"
+              },
+              "OSVersion": {
+                "value": "[parameters('EXOSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "None"
+              },     
+              "DataDisk1Name": {
+                "value": "Exchange"
+              },            
+              "DataDisk2Name": {
+                "value": "Software"
+              },                                                             
+              "VMSize": {
+                "value": "[parameters('ex2VMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('vnet2Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('vnet2subnet1Name')]"
+              },            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "deploynsg1",
+      "dependsOn": [
+        "VNet1",
+        "VNet2",
+        "BastionHost1",
+        "BastionHost2",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "updatevnet2dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "createsites",        
+        "PeeringToSite2",
+        "PeeringToSite1",
+        "deployDC2VM",
+        "promotedc2",
+        "updatevnet2dns-2",
+        "restartdc2",
+        "deployrootca",
+        "configurerootca",
+        "deployissuingca",
+        "DomainJoinIssuingCA",
+        "configureissueca",
+        "grantcarequest",
+        "finalizeca",
+        "deployocsp",
+        "DomainJoinOCSP",
+        "configureocsp",
+        "deployfs1",
+        "DomainJoinFS1",
+        "deployfs2",
+        "DomainJoinFS2",
+        "deployex1",
+        "DomainJoinEX1",
+        "deployex2",
+        "DomainJoinEX2",
+        "prepareexchange16s1",
+        "prepareexchange16s2",        
+        "prepareadexchange16",
+        "grantextrustedsub1",
+        "grantextrustedsub2",
+        "installexchange1",
+        "configexchange1",
+        "installexchange2",
+        "configexchange2",
+        "DeployWK1VM",
+        "DomainJoinWK1VM",
+        "DeployWK2VM",
+        "DomainJoinWK2VM",
+        "addocspip",
+        "addex1pip",
+        "addex2pip"        
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/NetworkSecurityGroup.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "NetworkSecurityGroupname": {
+                  "value": "[variables('NSG1Name')]"
+              },                                                                                                      
+              "OCSPPrivateIP": {
+                  "value": "[variables('ocspIP')]"
+              },                                                                                                      
+              "EXPrivateIP": {
+                  "value": "[variables('ex1IP')]"
+              },                                                                                                                                  
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "deploynsg2",
+      "dependsOn": [
+        "VNet1",
+        "VNet2",
+        "BastionHost1",
+        "BastionHost2",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "updatevnet2dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "createsites",        
+        "PeeringToSite2",
+        "PeeringToSite1",
+        "deployDC2VM",
+        "promotedc2",
+        "updatevnet2dns-2",
+        "restartdc2",
+        "deployrootca",
+        "configurerootca",
+        "deployissuingca",
+        "DomainJoinIssuingCA",
+        "configureissueca",
+        "grantcarequest",
+        "finalizeca",
+        "deployocsp",
+        "DomainJoinOCSP",
+        "configureocsp",
+        "deployfs1",
+        "DomainJoinFS1",
+        "deployfs2",
+        "DomainJoinFS2",
+        "deployex1",
+        "DomainJoinEX1",
+        "deployex2",
+        "DomainJoinEX2",
+        "prepareexchange16s1",
+        "prepareexchange16s2",        
+        "prepareadexchange16",
+        "grantextrustedsub1",
+        "grantextrustedsub2",
+        "installexchange1",
+        "configexchange1",
+        "installexchange2",
+        "configexchange2",
+        "DeployWK1VM",
+        "DomainJoinWK1VM",
+        "DeployWK2VM",
+        "DomainJoinWK2VM",
+        "addocspip",
+        "addex1pip",
+        "addex2pip",
+        "deploynsg1"                
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/NetworkSecurityGroup.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "NetworkSecurityGroupname": {
+                  "value": "[variables('NSG2Name')]"
+              },                                                                                                      
+              "OCSPPrivateIP": {
+                  "value": "[variables('ocspIP')]"
+              },                                                                                                      
+              "EXPrivateIP": {
+                  "value": "[variables('ex2IP')]"
+              },                                                                                                                                  
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    }                                                                                                                                                                                                                        
   ]
 }

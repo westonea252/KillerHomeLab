@@ -171,5 +171,5 @@
         "type": "string",
         "value": "[reference(resourceId(resourceGroup().name, 'Microsoft.Network/publicIPAddresses', variables('publicIPAddressName'))).ipAddress]"
     }
-  }        
+  }
 }
