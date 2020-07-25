@@ -3815,7 +3815,7 @@
         "DomainJoinWK1VM",
         "DeployWK2VM",
         "DomainJoinWK2VM",
-        "addocspip"
+        "addocsppip"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -3923,7 +3923,7 @@
         "DomainJoinWK1VM",
         "DeployWK2VM",
         "DomainJoinWK2VM",
-        "addocspip",
+        "addocsppip",
         "addex1pip"
       ],      
       "properties": {
@@ -4032,7 +4032,7 @@
         "DomainJoinWK1VM",
         "DeployWK2VM",
         "DomainJoinWK2VM",
-        "addocspip",
+        "addocsppip",
         "addex1pip",
         "addex2pip"        
       ],      
@@ -4112,7 +4112,7 @@
         "DomainJoinWK1VM",
         "DeployWK2VM",
         "DomainJoinWK2VM",
-        "addocspip",
+        "addocsppip",
         "addex1pip",
         "addex2pip",
         "deploynsg1"                
