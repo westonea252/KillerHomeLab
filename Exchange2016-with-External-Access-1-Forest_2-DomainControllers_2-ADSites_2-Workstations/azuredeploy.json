@@ -334,7 +334,7 @@
     "DAG16Name": "[concat(parameters('NamingConvention'),'-16-dag01')]",
     "dag16IP": "255.255.255.255",
     "NSG1Name": "[concat(parameters('NamingConvention'),'-nsg01')]",
-    "NSG2Name": "[concat(parameters('NamingConvention'),'-nsg02')]" ,                 
+    "NSG2Name": "[concat(parameters('NamingConvention'),'-nsg02')]"
   },  
   "resources": [
     {
