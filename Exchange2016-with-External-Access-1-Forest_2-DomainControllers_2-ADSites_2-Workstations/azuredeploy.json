@@ -4138,6 +4138,316 @@
               }
           }
       }
-    }                                                                                                                                                                                                                        
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "updatevnet1nsg",
+      "dependsOn": [
+        "VNet1",
+        "VNet2",
+        "BastionHost1",
+        "BastionHost2",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "updatevnet2dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "createsites",        
+        "PeeringToSite2",
+        "PeeringToSite1",
+        "deployDC2VM",
+        "promotedc2",
+        "updatevnet2dns-2",
+        "restartdc2",
+        "deployrootca",
+        "configurerootca",
+        "deployissuingca",
+        "DomainJoinIssuingCA",
+        "configureissueca",
+        "grantcarequest",
+        "finalizeca",
+        "deployocsp",
+        "DomainJoinOCSP",
+        "configureocsp",
+        "deployfs1",
+        "DomainJoinFS1",
+        "deployfs2",
+        "DomainJoinFS2",
+        "deployex1",
+        "DomainJoinEX1",
+        "deployex2",
+        "DomainJoinEX2",
+        "prepareexchange16s1",
+        "prepareexchange16s2",        
+        "prepareadexchange16",
+        "grantextrustedsub1",
+        "grantextrustedsub2",
+        "installexchange1",
+        "configexchange1",
+        "installexchange2",
+        "configexchange2",
+        "DeployWK1VM",
+        "DomainJoinWK1VM",
+        "DeployWK2VM",
+        "DomainJoinWK2VM",
+        "addocsppip",
+        "addex1pip",
+        "addex2pip",
+        "deploynsg1",
+        "deploynsg2"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/updatevnetnsg.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "vnetName": {
+                  "value": "[variables('vnet1Name')]"
+              },
+              "vnetprefix": {
+                  "value": "[variables('vnet1Prefix')]"
+              },
+              "subnet1Name": {
+                "value": "[variables('vnet1subnet1Name')]"
+              },                                                                                                            
+              "subnet1Prefix": {
+                "value": "[variables('vnet1subnet1Prefix')]"
+              }, 
+              "subnet2Name": {
+                "value": "[variables('vnet1subnet2Name')]"
+              },                                                                                                            
+              "subnet2Prefix": {
+                "value": "[variables('vnet1subnet2Prefix')]"
+              },               
+              "BastionsubnetPrefix": {
+                "value": "[variables('vnet1BastionsubnetPrefix')]"
+              },                         
+              "DNSServerIP": {
+                "value": [
+                  "[variables('dc1IP')]"
+                ]
+              },  
+              "NetworkSecurityGroupname": {
+                  "value": "[variables('NSG1Name')]"
+              },                                                                                                                                                                                                                              
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }
+          }
+      }
+    },                                                                                                                                                                                                                            
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "updatevnet2nsg",
+      "dependsOn": [
+        "VNet1",
+        "VNet2",
+        "BastionHost1",
+        "BastionHost2",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "updatevnet2dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "createsites",        
+        "PeeringToSite2",
+        "PeeringToSite1",
+        "deployDC2VM",
+        "promotedc2",
+        "updatevnet2dns-2",
+        "restartdc2",
+        "deployrootca",
+        "configurerootca",
+        "deployissuingca",
+        "DomainJoinIssuingCA",
+        "configureissueca",
+        "grantcarequest",
+        "finalizeca",
+        "deployocsp",
+        "DomainJoinOCSP",
+        "configureocsp",
+        "deployfs1",
+        "DomainJoinFS1",
+        "deployfs2",
+        "DomainJoinFS2",
+        "deployex1",
+        "DomainJoinEX1",
+        "deployex2",
+        "DomainJoinEX2",
+        "prepareexchange16s1",
+        "prepareexchange16s2",        
+        "prepareadexchange16",
+        "grantextrustedsub1",
+        "grantextrustedsub2",
+        "installexchange1",
+        "configexchange1",
+        "installexchange2",
+        "configexchange2",
+        "DeployWK1VM",
+        "DomainJoinWK1VM",
+        "DeployWK2VM",
+        "DomainJoinWK2VM",
+        "addocsppip",
+        "addex1pip",
+        "addex2pip",
+        "deploynsg1",
+        "deploynsg2",
+        "updatevnet1nsg"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/updatevnetnsg.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "vnetName": {
+                  "value": "[variables('vnet2Name')]"
+              },
+              "vnetprefix": {
+                  "value": "[variables('vnet2Prefix')]"
+              },
+              "subnet1Name": {
+                "value": "[variables('vnet2subnet1Name')]"
+              },                                                                                                            
+              "subnet1Prefix": {
+                "value": "[variables('vnet2subnet1Prefix')]"
+              }, 
+              "subnet2Name": {
+                "value": "[variables('vnet2subnet2Name')]"
+              },                                                                                                            
+              "subnet2Prefix": {
+                "value": "[variables('vnet2subnet2Prefix')]"
+              },               
+              "BastionsubnetPrefix": {
+                "value": "[variables('vnet2BastionsubnetPrefix')]"
+              },                         
+              "DNSServerIP": {
+                "value": [
+                  "[variables('dc2IP')]"
+                ]
+              },  
+              "NetworkSecurityGroupname": {
+                  "value": "[variables('NSG2Name')]"
+              },                                                                                                                                                                                                                              
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "createpublicdns",
+      "dependsOn": [
+        "VNet1",
+        "VNet2",
+        "BastionHost1",
+        "BastionHost2",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "updatevnet2dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "createsites",        
+        "PeeringToSite2",
+        "PeeringToSite1",
+        "deployDC2VM",
+        "promotedc2",
+        "updatevnet2dns-2",
+        "restartdc2",
+        "deployrootca",
+        "configurerootca",
+        "deployissuingca",
+        "DomainJoinIssuingCA",
+        "configureissueca",
+        "grantcarequest",
+        "finalizeca",
+        "deployocsp",
+        "DomainJoinOCSP",
+        "configureocsp",
+        "deployfs1",
+        "DomainJoinFS1",
+        "deployfs2",
+        "DomainJoinFS2",
+        "deployex1",
+        "DomainJoinEX1",
+        "deployex2",
+        "DomainJoinEX2",
+        "prepareexchange16s1",
+        "prepareexchange16s2",        
+        "prepareadexchange16",
+        "grantextrustedsub1",
+        "grantextrustedsub2",
+        "installexchange1",
+        "configexchange1",
+        "installexchange2",
+        "configexchange2",
+        "DeployWK1VM",
+        "DomainJoinWK1VM",
+        "DeployWK2VM",
+        "DomainJoinWK2VM",
+        "addocsppip",
+        "addex1pip",
+        "addex2pip",
+        "deploynsg1",
+        "deploynsg2",
+        "updatevnet1nsg",
+        "updatevnet2nsg"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/PublicDNSZone.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "ZoneName": {
+                  "value": "[variables('domainName')]"
+              },
+              "OCSPRecord": {
+                  "value": "ocsp"
+              },
+              "OCSPPublicIP": {
+                  "value": "[reference('addocsppip').outputs.PublicIP.value]"             
+              },                                                                                                                                      
+              "OWARecord": {
+                  "value": "owa2016"
+              },
+              "AutoDiscoverRecord": {
+                  "value": "autodiscover"
+              },
+              "OutlookRecord": {
+                  "value": "outlook2016"
+              },
+              "EASRecord": {
+                  "value": "eas2016"
+              },
+              "SMTP1Record": {
+                  "value": "smtp1"
+              },    
+              "SMTP2Record": {
+                  "value": "smtp2"
+              },                        
+              "EX1PublicIP": {
+                  "value": "[reference('addex1pip').outputs.PublicIP.value]"             
+              },                                                                                                                                      
+              "EX2PublicIP": {
+                  "value": "[reference('addex2pip').outputs.PublicIP.value]"             
+              }                                                                                                                                                                  
+          }
+      }
+    }                                                                                                                                                                                                                                    
   ]
 }
