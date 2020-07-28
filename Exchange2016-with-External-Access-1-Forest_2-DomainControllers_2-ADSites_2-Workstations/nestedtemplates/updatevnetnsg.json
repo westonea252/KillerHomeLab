@@ -57,7 +57,7 @@
         }
       },      
       "location": {
-        "type": "array",
+        "type": "string",
         "metadata": {
           "description": "Location for all resources."
         }
