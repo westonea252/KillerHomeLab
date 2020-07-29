@@ -28,6 +28,12 @@
         "description": "The password for the Administrator account of the new VM and Domain"
       }
     }, 
+    "ToEmail": {
+        "type": "string",
+        "metadata": {
+            "description": "Enter an Email Address to send the Trusted CA Certificates"
+        }
+    },    
     "Location1": {
       "type": "string",
       "defaultValue": "EastUS",
@@ -334,7 +340,8 @@
     "DAG16Name": "[concat(parameters('NamingConvention'),'-16-dag01')]",
     "dag16IP": "255.255.255.255",
     "NSG1Name": "[concat(parameters('NamingConvention'),'-nsg01')]",
-    "NSG2Name": "[concat(parameters('NamingConvention'),'-nsg02')]"
+    "NSG2Name": "[concat(parameters('NamingConvention'),'-nsg02')]",
+    "FromEmail": "[concat(parameters('adminUserName'),'@',variables('domainName'))]"    
   },  
   "resources": [
     {
@@ -4448,6 +4455,118 @@
               }                                                                                                                                                                  
           }
       }
-    }                                                                                                                                                                                                                                    
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "sendcompletionemail",
+      "dependsOn": [
+        "VNet1",
+        "VNet2",
+        "BastionHost1",
+        "BastionHost2",
+        "DeployDC1VM",
+        "promotedc1",
+        "updatevnet1dns",
+        "updatevnet2dns",
+        "restartdc1",
+        "configdns",
+        "createous",
+        "createsites",        
+        "PeeringToSite2",
+        "PeeringToSite1",
+        "deployDC2VM",
+        "promotedc2",
+        "updatevnet2dns-2",
+        "restartdc2",
+        "deployrootca",
+        "configurerootca",
+        "deployissuingca",
+        "DomainJoinIssuingCA",
+        "configureissueca",
+        "grantcarequest",
+        "finalizeca",
+        "deployocsp",
+        "DomainJoinOCSP",
+        "configureocsp",
+        "deployfs1",
+        "DomainJoinFS1",
+        "deployfs2",
+        "DomainJoinFS2",
+        "deployex1",
+        "DomainJoinEX1",
+        "deployex2",
+        "DomainJoinEX2",
+        "prepareexchange16s1",
+        "prepareexchange16s2",        
+        "prepareadexchange16",
+        "grantextrustedsub1",
+        "grantextrustedsub2",
+        "installexchange1",
+        "configexchange1",
+        "installexchange2",
+        "configexchange2",
+        "DeployWK1VM",
+        "DomainJoinWK1VM",
+        "DeployWK2VM",
+        "DomainJoinWK2VM",
+        "addocsppip",
+        "addex1pip",
+        "addex2pip",
+        "deploynsg1",
+        "deploynsg2",
+        "updatevnet1nsg",
+        "updatevnet2nsg",
+        "createpublicdns"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/sendemail.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "ToEmail": {
+                  "value": "[parameters('ToEmail')]"
+              },
+              "FromEmail": {
+                  "value": "[variables('FromEmail')]"
+              },
+              "IssuingCAServerName": {
+                  "value": "[variables('icaname')]"
+              },                                                                                                                                      
+              "RootCAServerName": {
+                  "value": "[variables('rcaname')]"
+              },                                                                                                                                                    
+              "IssuingCAName": {
+                  "value": "[parameters('IssuingCAName')]"
+              },
+              "RootCAName": {
+                  "value": "[parameters('RootCAName')]"
+              },
+              "RootDomainFQDN": {
+                  "value": "[variables('domainName')]"
+              },
+              "ExchangeServerName": {
+                  "value": "[variables('ex1name')]"
+              },
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                                                                                                      
+              "location": {
+                  "value": "[parameters('Location1')]"
+              },          
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+          }
+      }
+    }                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
   ]
 }
