@@ -51,7 +51,7 @@
         }
       },
       "NetworkSecurityGroupName": {
-        "type": "array",
+        "type": "string",
         "metadata": {
           "description": "Network Security Group Name"
         }
