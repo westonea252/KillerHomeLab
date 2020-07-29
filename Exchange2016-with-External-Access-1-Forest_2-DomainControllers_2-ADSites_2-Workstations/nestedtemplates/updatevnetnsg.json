@@ -63,6 +63,9 @@
         }
       }
     },
+  "variables": {
+      "NetworkSecurityGroupID": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', parameters('NetworkSecurityGroupName'))]"
+  },    
     "resources": [
       {
         "type": "Microsoft.Network/virtualNetworks",
@@ -84,7 +87,7 @@
               "properties": {
                 "addressPrefix": "[parameters('subnet1Prefix')]",
                 "networkSecurityGroup": {
-                  "id": "[parameters('networkSecurityGroupName')]"
+                  "id": "[variables('NetworkSecurityGroupID')]"
                 }                
               }
             },
@@ -93,7 +96,7 @@
               "properties": {
                 "addressPrefix": "[parameters('subnet2Prefix')]",
                 "networkSecurityGroup": {
-                  "id": "[parameters('networkSecurityGroupName')]"
+                  "id": "[variables('NetworkSecurityGroupID')]"
                 }                                
               }
             },            
