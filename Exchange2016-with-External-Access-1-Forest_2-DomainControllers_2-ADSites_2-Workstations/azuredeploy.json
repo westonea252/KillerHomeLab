@@ -4526,6 +4526,9 @@
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
+              "computerName": {
+                  "value": "[variables('ex2name')]"
+              },
               "ToEmail": {
                   "value": "[parameters('ToEmail')]"
               },
