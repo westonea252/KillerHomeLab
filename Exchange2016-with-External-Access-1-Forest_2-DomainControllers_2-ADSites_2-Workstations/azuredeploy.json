@@ -4527,7 +4527,7 @@
           },
           "parameters": {
               "computerName": {
-                  "value": "[variables('ex2name')]"
+                  "value": "[variables('ex1name')]"
               },
               "ToEmail": {
                   "value": "[parameters('ToEmail')]"
