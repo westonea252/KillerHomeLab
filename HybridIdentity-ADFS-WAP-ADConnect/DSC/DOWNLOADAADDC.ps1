@@ -1,4 +1,4 @@
-Configuration DOWNLOADAADC
+Configuration DOWNLOADAADDC
 {
    param
    (

@@ -334,7 +334,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "downloadaadc",
+      "name": "downloadaaddc",
       "dependsOn": [
         "createFSGMSA",
         "deployADCVM",
@@ -343,7 +343,7 @@
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/downloadaadc.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/downloadaaddc.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -379,7 +379,7 @@
         "createfsgmsa",
         "deployADCVM",
         "DomainJoinADC",
-        "downloadaadc"
+        "downloadaaddc"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -435,7 +435,7 @@
         "createFSGMSA",
         "deployADCVM",
         "DomainJoinADC",
-        "downloadaadc",
+        "downloadaaddc",
         "deployADFS1VM"
       ],      
       "properties": {
@@ -477,7 +477,7 @@
         "createFSGMSA",
         "deployADCVM",
         "DomainJoinADC",
-        "downloadaadc",
+        "downloadaaddc",
         "deployADFS1VM",
         "DomainJoinADFS1"
       ],      
@@ -529,7 +529,7 @@
         "createfsgmsa",
         "deployADCVM",
         "DomainJoinADC",
-        "downloadaadc",
+        "downloadaaddc",
         "deployADFS1VM",
         "DomainJoinADFS1",
         "configurefirstadfs"
@@ -588,7 +588,7 @@
         "createFSGMSA",
         "deployADCVM",
         "DomainJoinADC",
-        "downloadaadc",
+        "downloadaaddc",
         "deployADFS1VM",
         "DomainJoinADFS1",
         "configurefirstadfs",
