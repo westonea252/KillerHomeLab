@@ -13,7 +13,14 @@
       "metadata": {
         "description": "The password for the Administrator account of the new VM and Domain"
       }
-    }, 
+    },
+    "AzureADConnectDownloadUrl": {
+      "type": "string",
+      "defaultValue": "https://download.microsoft.com/download/B/0/0/B00291D0-5A83-4DE7-86F5-980BC00DE05A/AzureADConnect.msi",
+      "metadata": {
+        "description": "Download Location of Latest Azure AD Connect"
+      }
+    },         
     "Location1": {
       "type": "string",
       "defaultValue": "USGovVirginia",
@@ -327,11 +334,56 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
+      "name": "configurefirstwap",
+      "dependsOn": [
+        "createFSGMSA",
+        "deployADCVM",
+        "DomainJoinADC",
+        "deployADFS1VM",
+        "DomainJoinADFS1",
+        "configurefirstadfs",
+        "deployWAP1VM"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/downloadaadc.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('adcname')]"
+              },
+              "AzureADConnectDownloadUrl": {
+                  "value": "[parameters('AzureADConnectDownloadUrl')]"
+              },                            
+              "location": {
+                  "value": "[parameters('Location1')]"
+              },                                          
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
       "name": "deployADCVM",
       "dependsOn": [
         "createfsgmsa",
-        "deployADFVM",
-        "DomainJoinADC"
+        "deployADCVM",
+        "DomainJoinADC",
+        "downloadaadc"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -387,6 +439,7 @@
         "createFSGMSA",
         "deployADCVM",
         "DomainJoinADC",
+        "downloadaadc",
         "deployADFS1VM"
       ],      
       "properties": {
@@ -428,6 +481,7 @@
         "createFSGMSA",
         "deployADCVM",
         "DomainJoinADC",
+        "downloadaadc",
         "deployADFS1VM",
         "DomainJoinADFS1"
       ],      
@@ -479,6 +533,7 @@
         "createfsgmsa",
         "deployADCVM",
         "DomainJoinADC",
+        "downloadaadc",
         "deployADFS1VM",
         "DomainJoinADFS1",
         "configureadfs"
@@ -532,14 +587,15 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "configurewap",
+      "name": "configurefirstwap",
       "dependsOn": [
         "createFSGMSA",
         "deployADCVM",
         "DomainJoinADC",
+        "downloadaadc",
         "deployADFS1VM",
         "DomainJoinADFS1",
-        "configureadfs",
+        "configurefirstadfs",
         "deployWAP1VM"
       ],      
       "properties": {
