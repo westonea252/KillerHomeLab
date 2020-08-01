@@ -338,11 +338,7 @@
       "dependsOn": [
         "createFSGMSA",
         "deployADCVM",
-        "DomainJoinADC",
-        "deployADFS1VM",
-        "DomainJoinADFS1",
-        "configurefirstadfs",
-        "deployWAP1VM"
+        "DomainJoinADC"
       ],      
       "properties": {
           "mode": "Incremental",
