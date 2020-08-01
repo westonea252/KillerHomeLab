@@ -334,7 +334,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "configurefirstwap",
+      "name": "downloadaadc",
       "dependsOn": [
         "createFSGMSA",
         "deployADCVM",
@@ -378,7 +378,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "deployADCVM",
+      "name": "deployADFS1VM",
       "dependsOn": [
         "createfsgmsa",
         "deployADCVM",
