@@ -111,6 +111,9 @@
                 # Get Token Signing Certificate
                 IF ($signthumbprint -eq $null) {Get-Certificate -Template WebServer1 -SubjectName "CN=adfs-signing.$using:rootdomainfqdn" -DNSName "adfs-signing.$using:rootdomainfqdn" -CertStoreLocation "cert:\LocalMachine\My"}
 
+                # Export Token Signing Certificate
+                Get-ChildItem -Path cert:\LocalMachine\my\$signthumbprint | Export-PfxCertificate -FilePath "C:\Certificates\adfs-signing.$using:RootDomainFQDN.pfx" -Password $Password
+
                 # Grant FsGmsa Full Access to Signing Certificate Private Keys
                 Start-Sleep -s 60
                 $account = "$using:NetBiosDomain\$fsgmsa"

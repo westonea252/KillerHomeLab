@@ -524,6 +524,171 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
+      "name": "deployADFS2VM",
+      "dependsOn": [
+        "createfsgmsa",
+        "deployADCVM",
+        "DomainJoinADC",
+        "downloadaaddc",
+        "deployADFS1VM",
+        "DomainJoinADFS1",
+        "configurefirstadfs"        
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('adfs2name')]"
+              },
+              "computerIP": {
+                  "value": "[variables('adfs2IP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsServer"
+              },
+              "Offer": {
+                  "value": "WindowsServer"
+              },
+              "OSVersion": {
+                "value": "[parameters('ADFSOSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "None"
+              },            
+              "VMSize": {
+                "value": "[parameters('ADFS2VMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('vnet2Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('vnet2subnet1Name')]"
+              },            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "DomainJoinADFS2",
+      "dependsOn": [
+        "createFSGMSA",
+        "deployADCVM",
+        "DomainJoinADC",
+        "downloadaaddc",
+        "deployADFS1VM",
+        "DomainJoinADFS1",
+        "configurefirstadfs",
+        "deployADFS2VM"        
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/domainjoin.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('adfs2name')]"
+              },
+              "domainName": {
+                  "value": "[variables('domainName')]"
+              },
+              "OUPath": {
+                  "value": "[variables('SRVOUPath')]"
+              },
+              "domainJoinOptions": {
+                  "value": 3
+              },
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                             
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    }, 
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "configureotheradfs",
+      "dependsOn": [
+        "createFSGMSA",
+        "deployADCVM",
+        "DomainJoinADC",
+        "downloadaaddc",
+        "deployADFS1VM",
+        "DomainJoinADFS1",
+        "configurefirstadfs",
+        "deployADFS2VM",
+        "DomainJoinADFS2"        
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/otheradfs.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('adfs2name')]"
+              },
+              "RootDomainFQDN": {
+                  "value": "[variables('domainName')]"
+              },          
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },              
+              "IssuingCAName": {
+                  "value": "[parameters('IssuingCAName')]"
+              },              
+              "RootCAName": {
+                  "value": "[parameters('RootCAName')]"
+              },
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "PrimaryADFSServer": {
+                "value": "[variables('adfs1name')]"
+              },                                                                                                                          
+              "PrimaryADFSServerIP": {
+                "value": "[variables('adfs1IP')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },
+              "location": {
+                  "value": "[parameters('Location2')]"
+              },                            
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+          }
+      }
+    },               
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
       "name": "deployWAP1VM",
       "dependsOn": [
         "createfsgmsa",
@@ -532,7 +697,10 @@
         "downloadaaddc",
         "deployADFS1VM",
         "DomainJoinADFS1",
-        "configurefirstadfs"
+        "configurefirstadfs",
+        "deployADFS2VM",
+        "DomainJoinADFS2",
+        "configureotheradfs"        
       ],      
       "properties": {
           "mode": "Incremental",
@@ -592,6 +760,9 @@
         "deployADFS1VM",
         "DomainJoinADFS1",
         "configurefirstadfs",
+        "deployADFS2VM",
+        "DomainJoinADFS2",
+        "configureotheradfs",                
         "deployWAP1VM"
       ],      
       "properties": {
