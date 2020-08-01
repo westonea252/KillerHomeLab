@@ -608,7 +608,7 @@
                   "value": "[parameters('NetBiosDomain')]"
               },                            
               "ADFSServerIP": {
-                  "value": "[variables('wap1IP')]"
+                  "value": "[variables('adfs1IP')]"
               },          
               "RootDomainFQDN": {
                   "value": "[variables('domainName')]"
