@@ -476,7 +476,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "configureadfs",
+      "name": "configurefirstadfs",
       "dependsOn": [
         "createFSGMSA",
         "deployADCVM",
@@ -536,7 +536,7 @@
         "downloadaadc",
         "deployADFS1VM",
         "DomainJoinADFS1",
-        "configureadfs"
+        "configurefirstadfs"
       ],      
       "properties": {
           "mode": "Incremental",
