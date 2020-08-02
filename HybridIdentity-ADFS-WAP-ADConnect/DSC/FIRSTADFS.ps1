@@ -126,6 +126,9 @@
                 Get-ChildItem $dest2 | Move-Item -Destination $dest1
                 Remove-Item $dest2 -Force -ErrorAction 0
 
+                # Check if Token Signing Certificate Exists
+                $signthumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=adfs-signing.$using:RootDomainFQDN"}).Thumbprint
+
                 # Export Token Signing Certificate
                 Get-ChildItem -Path cert:\LocalMachine\my\$signthumbprint | Export-PfxCertificate -FilePath "C:\Certificates\adfs-signing.$using:RootDomainFQDN.pfx" -Password $Password
             }
