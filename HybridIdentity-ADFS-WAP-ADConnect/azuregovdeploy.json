@@ -964,39 +964,9 @@
               "ZoneName": {
                   "value": "[variables('domainName')]"
               },
-              "OCSPRecord": {
-                  "value": "ocsp"
-              },
-              "OCSPPublicIP": {
-                  "value": "[reference('addocsppip').outputs.PublicIP.value]"             
-              },                                                                                                                                      
-              "OWARecord": {
-                  "value": "owa2016"
-              },
-              "AutoDiscoverRecord": {
-                  "value": "autodiscover"
-              },
-              "OutlookRecord": {
-                  "value": "outlook2016"
-              },
-              "EASRecord": {
-                  "value": "eas2016"
-              },
               "ADFSRecord": {
                   "value": "adfs"
               },              
-              "SMTP1Record": {
-                  "value": "smtp1"
-              },    
-              "SMTP2Record": {
-                  "value": "smtp2"
-              },                        
-              "EX1PublicIP": {
-                  "value": "[reference('addex1pip').outputs.PublicIP.value]"             
-              },                                                                                                                                      
-              "EX2PublicIP": {
-                  "value": "[reference('addex2pip').outputs.PublicIP.value]"             
-              },
               "WAP1PublicIP": {
                   "value": "[reference('deployWAP1VM').outputs.PublicIP.value]"             
               },                                                                                                                                      
