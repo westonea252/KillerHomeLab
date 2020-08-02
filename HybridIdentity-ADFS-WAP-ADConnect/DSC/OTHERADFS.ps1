@@ -109,7 +109,7 @@
 
                 # Check if ADFS Token Signing Certificate already exists if NOT Import
                 $signthumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=adfs-signing.$using:RootDomainFQDN"}).Thumbprint
-                IF ($signthumbprint -eq $null) {Import-PfxCertificate -FilePath "C:\Certificates\adfs.$using:RootDomainFQDN.pfx" -CertStoreLocation Cert:\LocalMachine\My -Password $Password}
+                IF ($signthumbprint -eq $null) {Import-PfxCertificate -FilePath "C:\Certificates\adfs-signing.$using:RootDomainFQDN.pfx" -CertStoreLocation Cert:\LocalMachine\My -Password $Password}
 
                 # Check if Token Signing Certificate Exists
                 $signthumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=adfs-signing.$using:RootDomainFQDN"}).Thumbprint
