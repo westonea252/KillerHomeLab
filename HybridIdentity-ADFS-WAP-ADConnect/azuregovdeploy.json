@@ -807,6 +807,132 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
           }
       }
-    }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "deployWAP2VM",
+      "dependsOn": [
+        "createfsgmsa",
+        "deployADCVM",
+        "DomainJoinADC",
+        "downloadaaddc",
+        "deployADFS1VM",
+        "DomainJoinADFS1",
+        "configurefirstadfs",
+        "deployADFS2VM",
+        "DomainJoinADFS2",
+        "configureotheradfs",
+        "deployWAP1VM",
+        "configurefirstwap"        
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm-pip.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('wap2name')]"
+              },
+              "computerIP": {
+                  "value": "[variables('wap2IP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsServer"
+              },
+              "Offer": {
+                  "value": "WindowsServer"
+              },
+              "OSVersion": {
+                "value": "[parameters('WAPOSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "None"
+              },            
+              "VMSize": {
+                "value": "[parameters('WAP2VMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('vnet2Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('vnet2subnet1Name')]"
+              },            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "configureotherwap",
+      "dependsOn": [
+        "createFSGMSA",
+        "deployADCVM",
+        "DomainJoinADC",
+        "downloadaaddc",
+        "deployADFS1VM",
+        "DomainJoinADFS1",
+        "configurefirstadfs",
+        "deployADFS2VM",
+        "DomainJoinADFS2",
+        "configureotheradfs",                
+        "deployWAP1VM",
+        "configurefirstwap",
+        "deployWAP2VM"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/firstwap.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('wap2name')]"
+              },
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },                            
+              "ADFSServerIP": {
+                  "value": "[variables('adfs1IP')]"
+              },          
+              "RootDomainFQDN": {
+                  "value": "[variables('domainName')]"
+              },          
+              "IssuingCAName": {
+                  "value": "[parameters('IssuingCAName')]"
+              },              
+              "RootCAName": {
+                  "value": "[parameters('RootCAName')]"
+              },
+              "location": {
+                  "value": "[parameters('Location2')]"
+              },                                          
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+          }
+      }
+    }            
   ]
 }
