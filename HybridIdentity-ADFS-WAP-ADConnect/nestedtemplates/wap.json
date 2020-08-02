@@ -70,8 +70,8 @@
         }                
     },
     "variables": {
-        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/FIRSTWAP.zip', parameters('_artifactsLocationSasToken')))]",
-        "ConfigurationFunction": "FIRSTWAP.ps1\\FIRSTWAP"
+        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/WAP.zip', parameters('_artifactsLocationSasToken')))]",
+        "ConfigurationFunction": "WAP.ps1\\WAP"
     },
     "resources": [
         {
