@@ -90,7 +90,35 @@
       "metadata": {
         "description": "VNet1 Prefix"
       }
-    },        
+    },    
+    "ReverseLookup1": {
+      "type": "string",
+      "defaultValue": "1.16",
+      "metadata": {
+          "description": "DNS Reverse Lookup Zone1 Prefix"
+      }
+    },                    
+    "ReverseLookup2": {
+      "type": "string",
+      "defaultValue": "2.16",
+      "metadata": {
+          "description": "DNS Reverse Lookup Zone2 Prefix"
+      }
+    },             
+    "RootCAName": {
+      "type": "string",
+      "defaultValue": "Offline Root CA",
+      "metadata": {
+          "description": "Offline Root CA Name"
+      }
+    },                    
+    "IssuingCAName": {
+      "type": "string",
+      "defaultValue": "Issuing CA",
+      "metadata": {
+          "description": "Issuing CA Name"
+      }
+    },           
     "DC1OSVersion": {
       "type": "string",
       "defaultValue": "2016-Datacenter",
@@ -263,35 +291,7 @@
       "metadata": {
           "description": "Workstation2 VMSize"
       }
-    },                                       
-    "ReverseLookup1": {
-      "type": "string",
-      "defaultValue": "1.16",
-      "metadata": {
-          "description": "DNS Reverse Lookup Zone1 Prefix"
-      }
-    },                    
-    "ReverseLookup2": {
-      "type": "string",
-      "defaultValue": "2.16",
-      "metadata": {
-          "description": "DNS Reverse Lookup Zone2 Prefix"
-      }
-    },             
-    "RootCAName": {
-      "type": "string",
-      "defaultValue": "Offline Root CA",
-      "metadata": {
-          "description": "Offline Root CA Name"
-      }
-    },                    
-    "IssuingCAName": {
-      "type": "string",
-      "defaultValue": "Issuing CA",
-      "metadata": {
-          "description": "Issuing CA Name"
-      }
-    },                                       
+    },                                                                           
     "_artifactsLocation": {
       "type": "string",
       "metadata": {

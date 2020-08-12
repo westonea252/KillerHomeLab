@@ -52,7 +52,7 @@ AD DNS Zone Record Creation:
 - OUTLOOK2013 (For Exchange Server1)
 - OUTLOOK2013 (For Exchange Server2)
 - EAS2013 (For Exchange Server1)
-- EAS2016 (For Exchange Server2)
+- EAS2013 (For Exchange Server2)
 - SMTP (For Exchange Server1)
 - SMTP (For Exchange Server2)
 
@@ -85,6 +85,10 @@ Parameters that support changes
 - TLD.  Select a valid Top-Level Domain using the Pull-Down Menu.
 - Vnet1ID.  Enter first 2 octets of your desired Address Space for Virtual Network 1 (Example:  13.1)
 - Vnet2ID.  Enter first 2 octets of your desired Address Space for Virtual Network 2 (Example:  13.2)
+- Reverse Lookup1.  Enter first 2 octets of your desired Address Space in Reverse (Example:  1.13)
+- Reverse Lookup2.  Enter first 2 octets of your desired Address Space in Reverse (Example:  2.13)
+- Root CA Name.  Enter a Name for your Root Certificate Authority
+- Issuing CA Name.  Enter a Name for your Issuing Certificate Authority
 - DC1OSVersion.  Select 2016-Datacenter (Windows 2016) or 2019-Datacenter (Windows 2019) Domain Controller 1 OS Version
 - DC2OSVersion.  Select 2016-Datacenter (Windows 2016) or 2019-Datacenter (Windows 2019) Domain Controller 2 OS Version
 - RCAOSVersion.  Select 2016-Datacenter (Windows 2016) or 2019-Datacenter (Windows 2019) Root CA OS Version
@@ -105,7 +109,3 @@ Parameters that support changes
 - FS2VMSize.  Enter a Valid VM Size based on which Region the VM is deployed.
 - EX2VMSize.  Enter a Valid VM Size based on which Region the VM is deployed.
 - WK2VMSize.  Enter a Valid VM Size based on which Region the VM is deployed.
-- Reverse Lookup1.  Enter first 2 octets of your desired Address Space in Reverse (Example:  1.13)
-- Reverse Lookup2.  Enter first 2 octets of your desired Address Space in Reverse (Example:  2.13)
-- Root CA Name.  Enter a Name for your Root Certificate Authority
-- Issuing CA Name.  Enter a Name for your Issuing Certificate Authority
