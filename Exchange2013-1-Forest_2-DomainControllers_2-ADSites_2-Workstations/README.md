@@ -1,44 +1,46 @@
-# Exchange 2013, 1-Forest/Domain, 2-DomainControllers, 2-ADSites, 2-Workstation, 2-Tier PKI
+# Exchange 2013 Lab
 
 Click a button below to deploy to the cloud of your choice
 
 [![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2Fmaster%2FExchange2013-1-Forest_2-DomainControllers_2-ADSites_2-Workstations%2Fazuredeploy.json)
 [![Deploy To Azure US Gov](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.svg?sanitize=true)](https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2Fmaster%2FExchange2013-1-Forest_2-DomainControllers_2-ADSites_2-Workstations%2Fazuredeploy.json)
 
-This Templates deploys a Single Forest/Domain, 
-1 - Active Directory Forest/Domain
-2 - Active Directory Sites
-2 - Domain Controllers (1 within each AD Site)
-1 - Offline Root Certificate Authority Server
-1 - Issuing Certificate Authority Server
-1 - Online Certificate Status Protocol Server
-1 - Exchange 2013 Organization
-2 - Exchange 2013 Servers (1 within each AD Site)
-2 - File Share Witness Servers (1 within each AD Site)
-1 - Database Availability Group
-2 - Domain Joined Windows 10 Workstations (1 within each AD Site)
+This Templates deploys a Single Forest/Domain:
+
+- 1 - Active Directory Forest/Domain
+- 2 - Active Directory Sites
+- 2 - Domain Controllers (1 within each AD Site)
+- 1 - Offline Root Certificate Authority Server
+- 1 - Issuing Certificate Authority Server
+- 1 - Online Certificate Status Protocol Server
+- 1 - Exchange 2013 Organization
+- 2 - Exchange 2013 Servers (1 within each AD Site)
+- 2 - File Share Witness Servers (1 within each AD Site)
+- 1 - Database Availability Group
+- 2 - Domain Joined Windows 10 Workstations (1 within each AD Site)
 
 The deployment leverages Desired State Configuration scripts to further customize the following:
+
 AD OU Structure:
-[domain.com]
-- Accounts
---- End User
------ Office 365
------ Non-Office 365
---- Admin
---- Service
-- Groups
---- End User
---- Admin
-- Servers
---- Servers2012R2
---- Serverrs2016
---- Servers2019
-- MaintenanceServers
-- MaintenanceWorkstations
-- Workstations
---- Windows10
---- Windows7
+- [domain.com]
+- -- Accounts
+- --- End User
+- ---- Office 365
+- ---- Non-Office 365
+- --- Admin
+- --- Service
+- -- Groups
+- --- End User
+- --- Admin
+- -- Servers
+- --- Servers2012R2
+- --- Serverrs2016
+- --- Servers2019
+- -- MaintenanceServers
+- -- MaintenanceWorkstations
+- -- Workstations
+- --- Windows10
+- --- Windows7
 
 AD DNS Zone Record Creation:
 - CRL (For CRL Download)
@@ -50,7 +52,7 @@ AD DNS Zone Record Creation:
 - OUTLOOK2013 (For Exchange Server1)
 - OUTLOOK2013 (For Exchange Server2)
 - EAS2013 (For Exchange Server1)
-- EAS2013 (For Exchange Server2)
+- EAS2016 (For Exchange Server2)
 - SMTP (For Exchange Server1)
 - SMTP (For Exchange Server2)
 
@@ -64,15 +66,15 @@ Exchange
 - Exchange 2013 OS Prerequisites
 - Exchange 2013 Installation
 - Request/Receive Exchange 2013 SAN Certificate from Issuing CA
-- Exchange 2016 Certificate Enablement
+- Exchange 2013 Certificate Enablement
 - Exchange Virtual Directory Internal/External Configuration
 - Exchange Virtual Directory Authentication Configuration
 - DAG Creation and Adding both Exchange Servers
 
 Parameters that support changes
 - Exchange Org Name. Enter a name that will be used for your Exchange Organization Name.
-- Exchange2013ISOUrl.  You must create a URL or SAS URL that points to an Exchange 2013 ISO for this installation to be successful.
-- Exchange2013CUEXEUrl.  You must create a URL or SAS URL that points to the lastest Exchange 2013 CU for this installation to be successful.
+- Exchange2013ISOUrl.  You must enter a URL or created SAS URL that points to an Exchange 2013 ISO for this installation to be successful.
+- Exchange2013CUEXEUrl.  You must enter a URL or created SAS URL that points to an Exchange 2016 CU EXE for this installation to be successful.
 - Admin Username.  Enter a valid Admin Username
 - Admin Password.  Enter a valid Admin Password
 - To Email.  Please provide a working email that the Trusted Certificate Authority Chain Can be sent to.  These certificates will allow access to Exchange Services like OWA, EAS and Outlook without Certificate Security warnings.
