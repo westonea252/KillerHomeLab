@@ -52,7 +52,7 @@
       "type": "string",
       "defaultValue": "khl",
       "metadata": {
-        "description": "VNet1 Name"
+        "description": "Environment Naming Convention"
       }
     },
     "vnet1ID": {
@@ -70,74 +70,101 @@
       }
     },        
     "DC1OSVersion": {
-        "type": "string",
-        "defaultValue": "2016-Datacenter",
-        "metadata": {
-            "description": "Domain Controller1 OS Version"
-        }
-    },
+      "type": "string",
+      "defaultValue": "2016-Datacenter",
+      "allowedValues": [
+        "2019-Datacenter",
+        "2016-Datacenter"
+      ],      
+      "metadata": {
+          "description": "Domain Controller1 OS Version"
+      }
+    },    
     "DC2OSVersion": {
       "type": "string",
       "defaultValue": "2016-Datacenter",
+      "allowedValues": [
+        "2019-Datacenter",
+        "2016-Datacenter"
+      ],      
       "metadata": {
-          "description": "Domain Controller2 OS Version"
+          "description": "Domain Controller1 OS Version"
       }
-    },  
+    },
     "RCAOSVersion": {
-        "type": "string",
-        "defaultValue": "2016-Datacenter",
-        "metadata": {
-            "description": "Offline Root CA OS Version"
-        }
-    },   
+      "type": "string",
+      "defaultValue": "2016-Datacenter",
+      "allowedValues": [
+        "2019-Datacenter",
+        "2016-Datacenter"
+      ],      
+      "metadata": {
+          "description": "Offline Root CA OS Version"
+      }
+    },            
     "ICAOSVersion": {
-        "type": "string",
-        "defaultValue": "2016-Datacenter",
-        "metadata": {
-            "description": "Issuing CA OS Version"
-        }
-    },     
+      "type": "string",
+      "defaultValue": "2016-Datacenter",
+      "allowedValues": [
+        "2019-Datacenter",
+        "2016-Datacenter"
+      ],      
+      "metadata": {
+          "description": "Issuing CA OS Version"
+      }
+    },            
     "OCSPOSVersion": {
-        "type": "string",
-        "defaultValue": "2016-Datacenter",
-        "metadata": {
-            "description": "OCSP OS Version"
-        }
-    },               
+      "type": "string",
+      "defaultValue": "2016-Datacenter",
+      "allowedValues": [
+        "2019-Datacenter",
+        "2016-Datacenter"
+      ],      
+      "metadata": {
+          "description": "OCSP OS Version"
+      }
+    },            
     "FSOSVersion": {
-        "type": "string",
-        "defaultValue": "2016-Datacenter",
-        "metadata": {
-            "description": "File Server OS Version"
-        }
-    },               
+      "type": "string",
+      "defaultValue": "2016-Datacenter",
+      "allowedValues": [
+        "2019-Datacenter",
+        "2016-Datacenter"
+      ],      
+      "metadata": {
+          "description": "File Serever OS Version"
+      }
+    },                        
     "EXOSVersion": {
-        "type": "string",
-        "defaultValue": "2016-Datacenter",
-        "metadata": {
-            "description": "Exchange OS Version"
-        }
-    },                       
+      "type": "string",
+      "defaultValue": "2016-Datacenter",
+      "allowedValues": [
+        "2016-Datacenter"
+      ],      
+      "metadata": {
+          "description": "Exchange Server OS Version"
+      }
+    },            
     "WK1OSVersion": {
       "type": "string",
       "defaultValue": "19h1-pro",
       "allowedValues": [
         "19h1-pro"
-      ],
+      ],      
       "metadata": {
-          "description": "Workstation1 OS Version"
+          "description": "Worksation1 OS Version"
       }
-    },    
+    },            
     "WK2OSVersion": {
       "type": "string",
       "defaultValue": "19h1-pro",
       "allowedValues": [
         "19h1-pro"
-      ],
+      ],      
       "metadata": {
-        "description": "Workstation2 OS Version"
+          "description": "Worksation2 OS Version"
       }
-    },      
+    },             
     "DC1VMSize": {
         "type": "string",
         "defaultValue": "Standard_D2s_v3",
@@ -166,6 +193,13 @@
             "description": "Issuing CA VMSize"
         }
     },            
+    "OCSPVMSize": {
+        "type": "string",
+        "defaultValue": "Standard_D2s_v3",
+        "metadata": {
+            "description": "OCSP VMSize"
+        }
+    },                           
     "FS1VMSize": {
         "type": "string",
         "defaultValue": "Standard_D2s_v3",
@@ -180,13 +214,6 @@
             "description": "Exchange Server1 VMSize"
         }
     },                                            
-    "OCSPVMSize": {
-        "type": "string",
-        "defaultValue": "Standard_D2s_v3",
-        "metadata": {
-            "description": "OCSP VMSize"
-        }
-    },                       
     "WK1VMSize": {
       "type": "string",
       "defaultValue": "Standard_D2s_v3",

@@ -53,7 +53,7 @@
       "type": "string",
       "defaultValue": "khl",
       "metadata": {
-        "description": "VNet1 Name"
+        "description": "Environment Naming Convention"
       }
     },
     "vnet1ID": {
