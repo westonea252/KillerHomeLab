@@ -5,40 +5,40 @@ Click a button below to deploy to the cloud of your choice
 [![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2Fmaster%2FExchange2016-1-Forest_2-DomainControllers_2-ADSites_2-Workstations%2Fazuredeploy.json)
 [![Deploy To Azure US Gov](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.svg?sanitize=true)](https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2Fmaster%2FExchange2016-1-Forest_2-DomainControllers_2-ADSites_2-Workstations%2Fazuregovdeploy.json)
 
-This Templates deploys a Single Forest/Domain, 
-1 - Active Directory Forest/Domain
-2 - Active Directory Sites
-2 - Domain Controllers (1 within each AD Site)
-1 - Offline Root Certificate Authority Server
-1 - Issuing Certificate Authority Server
-1 - Online Certificate Status Protocol Server
-1 - Exchange 2016 Organization
-2 - Exchange 2016 Servers (1 within each AD Site)
-2 - File Share Witness Servers (1 within each AD Site)
-1 - Database Availability Group
-2 - Domain Joined Windows 10 Workstations (1 within each AD Site)
+This Templates deploys a Single Forest/Domain:
+1 - Active Directory Forest/Domain;
+2 - Active Directory Sites;
+2 - Domain Controllers (1 within each AD Site);
+1 - Offline Root Certificate Authority Server;
+1 - Issuing Certificate Authority Server;
+1 - Online Certificate Status Protocol Server;
+1 - Exchange 2016 Organization;
+2 - Exchange 2016 Servers (1 within each AD Site);
+2 - File Share Witness Servers (1 within each AD Site);
+1 - Database Availability Group;
+2 - Domain Joined Windows 10 Workstations (1 within each AD Site);
 
 The deployment leverages Desired State Configuration scripts to further customize the following:
 AD OU Structure:
 [domain.com]
-- Accounts
---- End User
------ Office 365
------ Non-Office 365
---- Admin
---- Service
-- Groups
---- End User
---- Admin
-- Servers
---- Servers2012R2
---- Serverrs2016
---- Servers2019
-- MaintenanceServers
-- MaintenanceWorkstations
-- Workstations
---- Windows10
---- Windows7
+- Accounts;
+--- End User;
+----- Office 365;
+----- Non-Office 365;
+--- Admin;
+--- Service;
+- Groups;
+--- End User;
+--- Admin;
+- Servers;
+--- Servers2012R2;
+--- Serverrs2016;
+--- Servers2019;
+- MaintenanceServers;
+- MaintenanceWorkstations;
+- Workstations;
+--- Windows10;
+--- Windows7;
 
 AD DNS Zone Record Creation:
 - CRL (For CRL Download)
