@@ -97,6 +97,8 @@ Parameters that support changes
 - Location1. Enter a Valid Azure Region based on which Cloud (AzureCloud, AzureUSGovernment, etc...) you are using.
 - Location2. Enter a Valid Azure Region based on which Cloud (AzureCloud, AzureUSGovernment, etc...) you are using.
 - Naming Convention. Enter a name that will be used as a naming prefix for (Servers, VNets, etc) you are using.
+- Net Bios Domain.  Enter a valid Net Bios Domain Name (Example:  killerhomelab).
+- TLD.  Select a valid Top-Level Domain using the Pull-Down Menu.
 - Vnet1ID.  Enter first 2 octets of your desired Address Space for Virtual Network 1 (Example:  16.1)
 - Vnet2ID.  Enter first 2 octets of your desired Address Space for Virtual Network 2 (Example:  16.2)
 - DC1OSVersion.  Select 2016-Datacenter (Windows 2016) or 2019-Datacenter (Windows 2019) Domain Controller 1 OS Version
@@ -119,8 +121,6 @@ Parameters that support changes
 - FS2VMSize.  Enter a Valid VM Size based on which Region the VM is deployed.
 - EX2VMSize.  Enter a Valid VM Size based on which Region the VM is deployed.
 - WK2VMSize.  Enter a Valid VM Size based on which Region the VM is deployed.
-- Net Bios Domain.  Enter a valid Net Bios Domain Name (Example:  killerhomelab).
-- TLD.  Select a valid Top-Level Domain using the Pull-Down Menu.
 - Reverse Lookup1.  Enter first 2 octets of your desired Address Space in Reverse (Example:  1.16)
 - Reverse Lookup2.  Enter first 2 octets of your desired Address Space in Reverse (Example:  2.16)
 - Root CA Name.  Enter a Name for your Root Certificate Authority

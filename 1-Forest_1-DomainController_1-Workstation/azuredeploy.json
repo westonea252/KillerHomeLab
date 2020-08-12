@@ -2,6 +2,18 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "adminUsername": {
+        "type": "string",
+        "metadata": {
+            "description": "The name of the Administrator of the new VM and Domain"
+        }
+    },
+    "adminPassword": {
+        "type": "securestring",
+      "metadata": {
+        "description": "The password for the Administrator account of the new VM and Domain"
+      }
+    },    
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
@@ -81,18 +93,6 @@
           "description": "DNS Reverse Lookup Zone1 Prefix"
       }
     },                    
-    "adminUsername": {
-        "type": "string",
-        "metadata": {
-            "description": "The name of the Administrator of the new VM and Domain"
-        }
-    },
-    "adminPassword": {
-        "type": "securestring",
-      "metadata": {
-        "description": "The password for the Administrator account of the new VM and Domain"
-      }
-    },    
     "_artifactsLocation": {
       "type": "string",
       "metadata": {

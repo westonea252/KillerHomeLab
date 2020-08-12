@@ -49,6 +49,28 @@
         "description": "Environment Naming Convention"
       }
     },
+    "NetBiosDomain": {
+      "type": "string",
+      "defaultValue": "killerhomelab",
+      "metadata": {
+          "description": "NetBios Domain Name"
+      }
+    },    
+    "TLD": {
+      "type": "string",
+      "defaultValue": "com",
+      "allowedValues": [
+        "com",
+        "net",
+        "org",
+        "edu",
+        "gov",
+        "mil"
+      ],      
+      "metadata": {
+          "description": "Top-Level Domain Name"
+      }
+    },                            
     "vnet1ID": {
       "type": "string",
       "defaultValue": "16.1",
@@ -236,28 +258,6 @@
           "description": "Workstation2 VMSize"
       }
     },                
-    "NetBiosDomain": {
-      "type": "string",
-      "defaultValue": "killerhomelab",
-      "metadata": {
-          "description": "NetBios Domain Name"
-      }
-    },    
-    "TLD": {
-      "type": "string",
-      "defaultValue": "com",
-      "allowedValues": [
-        "com",
-        "net",
-        "org",
-        "edu",
-        "gov",
-        "mil"
-      ],      
-      "metadata": {
-          "description": "Top-Level Domain Name"
-      }
-    },                        
     "ReverseLookup1": {
       "type": "string",
       "defaultValue": "1.16",
