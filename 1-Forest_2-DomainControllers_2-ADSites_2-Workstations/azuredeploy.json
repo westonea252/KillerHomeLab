@@ -2,6 +2,18 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "adminUsername": {
+        "type": "string",
+        "metadata": {
+            "description": "The name of the Administrator of the new VM and Domain"
+        }
+    },
+    "adminPassword": {
+        "type": "securestring",
+      "metadata": {
+        "description": "The password for the Administrator account of the new VM and Domain"
+      }
+    },    
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
@@ -9,6 +21,28 @@
         "description": "VNet1 Name"
       }
     },
+    "NetBiosDomain": {
+      "type": "string",
+      "defaultValue": "killerhomelab",
+      "metadata": {
+          "description": "NetBios Domain Name"
+      }
+    },    
+    "TLD": {
+      "type": "string",
+      "defaultValue": "com",
+      "allowedValues": [
+        "com",
+        "net",
+        "org",
+        "edu",
+        "gov",
+        "mil"
+      ],      
+      "metadata": {
+          "description": "Top-Level Domain Name"
+      }
+    },                            
     "vnet1ID": {
       "type": "string",
       "defaultValue": "10.1",
@@ -22,7 +56,21 @@
       "metadata": {
         "description": "VNet1 Prefix"
       }
-    },        
+    },    
+    "ReverseLookup1": {
+      "type": "string",
+      "defaultValue": "1.10",
+      "metadata": {
+          "description": "DNS Reverse Lookup Zone1 Prefix"
+      }
+    },                    
+    "ReverseLookup2": {
+      "type": "string",
+      "defaultValue": "2.10",
+      "metadata": {
+          "description": "DNS Reverse Lookup Zone2 Prefix"
+      }
+    },                                
     "DC1OSVersion": {
         "type": "string",
         "defaultValue": "2019-Datacenter",
@@ -93,54 +141,6 @@
           "description": "Workstation2 VMSize"
       }
     },                
-    "NetBiosDomain": {
-      "type": "string",
-      "defaultValue": "killerhomelab",
-      "metadata": {
-          "description": "NetBios Domain Name"
-      }
-    },    
-    "TLD": {
-      "type": "string",
-      "defaultValue": "com",
-      "allowedValues": [
-        "com",
-        "net",
-        "org",
-        "edu",
-        "gov",
-        "mil"
-      ],      
-      "metadata": {
-          "description": "Top-Level Domain Name"
-      }
-    },                        
-    "ReverseLookup1": {
-      "type": "string",
-      "defaultValue": "1.10",
-      "metadata": {
-          "description": "DNS Reverse Lookup Zone1 Prefix"
-      }
-    },                    
-    "ReverseLookup2": {
-      "type": "string",
-      "defaultValue": "2.10",
-      "metadata": {
-          "description": "DNS Reverse Lookup Zone2 Prefix"
-      }
-    },                        
-    "adminUsername": {
-        "type": "string",
-        "metadata": {
-            "description": "The name of the Administrator of the new VM and Domain"
-        }
-    },
-    "adminPassword": {
-        "type": "securestring",
-      "metadata": {
-        "description": "The password for the Administrator account of the new VM and Domain"
-      }
-    },    
     "_artifactsLocation": {
       "type": "string",
       "metadata": {
@@ -157,16 +157,16 @@
     },    
     "Location1": {
       "type": "string",
-      "defaultValue": "USGovVirginia",
+      "defaultValue": "EastUS",
       "metadata": {
-        "description": "Choose Region (Example:  Commercial=EastUS, Government=USGovVirginia)"
+        "description": "Choose Region (Example: EastUS)"
       }
     },
     "Location2": {
       "type": "string",
-      "defaultValue": "USGovTexas",
+      "defaultValue": "WestUS",
       "metadata": {
-        "description": "Choose Region (Example:  Commercial=WestUS, Government=USGovTexas)"
+        "description": "Choose Region (Example: WestUS)"
       }
     }    
   },
