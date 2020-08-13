@@ -3,7 +3,7 @@
 Click the button below to deploy
 
 [![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2Fmaster%2F1-Forest_2-DomainControllers_2-ADSites_2-Workstations%2Fazuredeploy.json)
-[![Deploy To Azure US Gov](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.svg?sanitize=true)](https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2Fmaster%2F1-Forest_2-DomainControllers_2-ADSites_2-Workstations%2Fazuredeploy.json)
+[![Deploy To Azure US Gov](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.svg?sanitize=true)](https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2Fmaster%2F1-Forest_2-DomainControllers_2-ADSites_2-Workstations%2Fazuregovdeploy.json)
 
 This Templates deploys a Single Forest/Domain:
 
@@ -48,6 +48,10 @@ Parameters that support changes
 - Reverse Lookup1.  Enter first 2 octets of your desired Address Space in Reverse (Example:  1.10)
 - Reverse Lookup2.  Enter first 2 octets of your desired Address Space in Reverse (Example:  2.10)
 - DC1OSVersion.  Select 2016-Datacenter (Windows 2016) or 2019-Datacenter (Windows 2019) Domain Controller 1 OS Version
+- DC2OSVersion.  Select 2016-Datacenter (Windows 2016) or 2019-Datacenter (Windows 2019) Domain Controller 2 OS Version
 - WK1OSVersion.  Workstation1 OS Version is not configurable and set to 19h1-pro (Windows 10).
+- WK2OSVersion.  Workstation2 OS Version is not configurable and set to 19h1-pro (Windows 10).
 - DC1VMSize.  Enter a Valid VM Size based on which Region the VM is deployed.
+- DC2VMSize.  Enter a Valid VM Size based on which Region the VM is deployed.
 - WK1VMSize.  Enter a Valid VM Size based on which Region the VM is deployed.
+- WK2VMSize.  Enter a Valid VM Size based on which Region the VM is deployed.
