@@ -13,7 +13,21 @@
       "metadata": {
         "description": "The password for the Administrator account of the new VM and Domain"
       }
-    },    
+    },
+    "Location1": {
+      "type": "string",
+      "defaultValue": "EastUS",
+      "metadata": {
+        "description": "Choose Region (Example: EastUS)"
+      }
+    },
+    "Location2": {
+      "type": "string",
+      "defaultValue": "WestUS",
+      "metadata": {
+        "description": "Choose Region (Example: WestUS)"
+      }
+    },        
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
@@ -154,21 +168,7 @@
             "description": "Auto-generated token to access _artifactsLocation. Leave it blank unless you need to provide your own value."
         },
         "defaultValue": ""
-    },    
-    "Location1": {
-      "type": "string",
-      "defaultValue": "EastUS",
-      "metadata": {
-        "description": "Choose Region (Example: EastUS)"
-      }
-    },
-    "Location2": {
-      "type": "string",
-      "defaultValue": "WestUS",
-      "metadata": {
-        "description": "Choose Region (Example: WestUS)"
-      }
-    }    
+    }
   },
   "variables": {
     "vnet1Name": "[concat(parameters('NamingConvention'),'-VNet1')]",

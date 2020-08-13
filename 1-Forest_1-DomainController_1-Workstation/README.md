@@ -42,8 +42,7 @@ Parameters that support changes
 - Net Bios Domain.  Enter a valid Net Bios Domain Name (Example:  killerhomelab).
 - TLD.  Select a valid Top-Level Domain using the Pull-Down Menu.
 - Vnet1ID.  Enter first 2 octets of your desired Address Space for Virtual Network 1 (Example:  16.1)
-- Net Bios Domain.  Enter a valid Net Bios Domain Name (Example:  killerhomelab).
-- TLD.  Select a valid Top-Level Domain using the Pull-Down Menu.
+- Reverse Lookup1.  Enter first 2 octets of your desired Address Space in Reverse (Example:  1.10)
 - DC1OSVersion.  Select 2016-Datacenter (Windows 2016) or 2019-Datacenter (Windows 2019) Domain Controller 1 OS Version
 - WK1OSVersion.  Workstation1 OS Version is not configurable and set to 19h1-pro (Windows 10).
 - DC1VMSize.  Enter a Valid VM Size based on which Region the VM is deployed.
