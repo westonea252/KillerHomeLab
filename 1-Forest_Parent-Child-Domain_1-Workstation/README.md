@@ -11,7 +11,7 @@ This Templates deploys a Single Forest/Domain:
 - 1 - Active Directory Child Domain
 - 2 - Active Directory Sites
 - 2 - Domain Controllers (1 within each Domain/AD Site)
-- 2 - Domain Joined Windows 10 Workstations (1 within each /DomainAD Site)
+- 2 - Domain Joined Windows 10 Workstations (1 within each Domain/AD Site)
 
 The deployment leverages Desired State Configuration scripts to further customize the following:
 
