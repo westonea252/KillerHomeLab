@@ -2,6 +2,32 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "adminUsername": {
+        "type": "string",
+        "metadata": {
+            "description": "The name of the Administrator of the new VM and Domain"
+        }
+    },
+    "adminPassword": {
+        "type": "securestring",
+      "metadata": {
+        "description": "The password for the Administrator account of the new VM and Domain"
+      }
+    },
+    "Location1": {
+      "type": "string",
+      "defaultValue": "USGovVirginia",
+      "metadata": {
+        "description": "Choose Region (Example:  Commercial=EastUS, Government=USGovVirginia)"
+      }
+    },
+    "Location2": {
+      "type": "string",
+      "defaultValue": "USGovTexas",
+      "metadata": {
+        "description": "Choose Region (Example:  Commercial=WestUS, Government=USGovTexas)"
+      }
+    },        
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
@@ -9,6 +35,35 @@
         "description": "VNet1 Name"
       }
     },
+    "NetBiosDomain": {
+      "type": "string",
+      "defaultValue": "killerhomelab",
+      "metadata": {
+          "description": "NetBios Domain Name"
+      }
+    },    
+    "ChildNetBiosDomain": {
+      "type": "string",
+      "defaultValue": "it",
+      "metadata": {
+          "description": "ChildNetBios Domain Name"
+      }
+    },        
+    "TLD": {
+      "type": "string",
+      "defaultValue": "com",
+      "allowedValues": [
+        "com",
+        "net",
+        "org",
+        "edu",
+        "gov",
+        "mil"
+      ],      
+      "metadata": {
+          "description": "Top-Level Domain Name"
+      }
+    },                            
     "vnet1ID": {
       "type": "string",
       "defaultValue": "10.1",
@@ -22,7 +77,21 @@
       "metadata": {
         "description": "VNet1 Prefix"
       }
-    },        
+    },    
+    "ReverseLookup1": {
+      "type": "string",
+      "defaultValue": "1.10",
+      "metadata": {
+          "description": "DNS Reverse Lookup Zone1 Prefix"
+      }
+    },                    
+    "ReverseLookup2": {
+      "type": "string",
+      "defaultValue": "2.10",
+      "metadata": {
+          "description": "DNS Reverse Lookup Zone2 Prefix"
+      }
+    },                                
     "DC1OSVersion": {
         "type": "string",
         "defaultValue": "2019-Datacenter",
@@ -76,61 +145,6 @@
           "description": "Workstation2 VMSize"
       }
     },                
-    "NetBiosDomain": {
-      "type": "string",
-      "defaultValue": "killerhomelab",
-      "metadata": {
-          "description": "NetBios Domain Name"
-      }
-    },    
-    "ChildNetBiosDomain": {
-      "type": "string",
-      "defaultValue": "it",
-      "metadata": {
-          "description": "ChildNetBios Domain Name"
-      }
-    },        
-    "TLD": {
-      "type": "string",
-      "defaultValue": "com",
-      "allowedValues": [
-        "com",
-        "net",
-        "org",
-        "edu",
-        "gov",
-        "mil"
-      ],      
-      "metadata": {
-          "description": "Top-Level Domain Name"
-      }
-    },                        
-    "ReverseLookup1": {
-      "type": "string",
-      "defaultValue": "1.10",
-      "metadata": {
-          "description": "DNS Reverse Lookup Zone1 Prefix"
-      }
-    },                    
-    "ReverseLookup2": {
-      "type": "string",
-      "defaultValue": "2.10",
-      "metadata": {
-          "description": "DNS Reverse Lookup Zone2 Prefix"
-      }
-    },                        
-    "adminUsername": {
-        "type": "string",
-        "metadata": {
-            "description": "The name of the Administrator of the new VM and Domain"
-        }
-    },
-    "adminPassword": {
-        "type": "securestring",
-      "metadata": {
-        "description": "The password for the Administrator account of the new VM and Domain"
-      }
-    },    
     "_artifactsLocation": {
       "type": "string",
       "metadata": {
@@ -144,20 +158,6 @@
             "description": "Auto-generated token to access _artifactsLocation. Leave it blank unless you need to provide your own value."
         },
         "defaultValue": ""
-    },    
-    "Location1": {
-      "type": "string",
-      "defaultValue": "USGovVirginia",
-      "metadata": {
-        "description": "Choose Region (Example:  Commercial=EastUS, Government=USGovVirginia)"
-      }
-    },
-    "Location2": {
-      "type": "string",
-      "defaultValue": "USGovTexas",
-      "metadata": {
-        "description": "Choose Region (Example:  Commercial=WestUS, Government=USGovTexas)"
-      }
     }    
   },
   "variables": {

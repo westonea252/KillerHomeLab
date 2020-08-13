@@ -32,7 +32,7 @@
       "type": "string",
       "defaultValue": "khl",
       "metadata": {
-        "description": "VNet1 Name"
+        "description": "Environment Naming Convention"
       }
     },
     "NetBiosDomain": {
@@ -136,7 +136,7 @@
     },        
     "DC2VMSize": {
       "type": "string",
-      "defaultValue": "Standard_DS11_v2",
+      "defaultValue": "Standard_D2s_v3",
       "metadata": {
           "description": "Domain Controller2 VMSize"
       }
@@ -150,7 +150,7 @@
     },            
     "WK2VMSize": {
       "type": "string",
-      "defaultValue": "Standard_DS11_v2",
+      "defaultValue": "Standard_D2s_v3",
       "metadata": {
           "description": "Workstation2 VMSize"
       }
