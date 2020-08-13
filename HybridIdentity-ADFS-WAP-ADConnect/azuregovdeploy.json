@@ -32,16 +32,52 @@
       "type": "string",
       "defaultValue": "USGovTexas",
       "metadata": {
-        "description": "Choose Region (Example:  USGovTexas)"
+        "description": "Choose Region (Example: USGovTexas)"
       }
     },           
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
       "metadata": {
-        "description": "VNet1 Name"
+        "description": "Environment Naming Convention"
       }
     },
+    "NetBiosDomain": {
+      "type": "string",
+      "defaultValue": "killerhomelab",
+      "metadata": {
+          "description": "NetBios Domain Name"
+      }
+    },    
+    "TLD": {
+      "type": "string",
+      "defaultValue": "com",
+      "allowedValues": [
+        "com",
+        "net",
+        "org",
+        "edu",
+        "gov",
+        "mil"
+      ],      
+      "metadata": {
+          "description": "Top-Level Domain Name"
+      }
+    },      
+    "RootCAName": {
+      "type": "string",
+      "defaultValue": "Offline Root CA",
+      "metadata": {
+          "description": "Offline Root CA Name"
+      }
+    },                    
+    "IssuingCAName": {
+      "type": "string",
+      "defaultValue": "Issuing CA",
+      "metadata": {
+          "description": "Issuing CA Name"
+      }
+    },     
     "vnet1ID": {
       "type": "string",
       "defaultValue": "16.1",
@@ -111,43 +147,7 @@
         "metadata": {
             "description": "WAP 2 VMSize"
         }
-    },                        
-    "NetBiosDomain": {
-      "type": "string",
-      "defaultValue": "killerhomelab",
-      "metadata": {
-          "description": "NetBios Domain Name"
-      }
-    },     
-    "RootCAName": {
-      "type": "string",
-      "defaultValue": "Offline Root CA",
-      "metadata": {
-          "description": "Offline Root CA Name"
-      }
-    },                    
-    "IssuingCAName": {
-      "type": "string",
-      "defaultValue": "Issuing CA",
-      "metadata": {
-          "description": "Issuing CA Name"
-      }
-    },                                       
-    "TLD": {
-      "type": "string",
-      "defaultValue": "com",
-      "allowedValues": [
-        "com",
-        "net",
-        "org",
-        "edu",
-        "gov",
-        "mil"
-      ],      
-      "metadata": {
-          "description": "Top-Level Domain Name"
-      }
-    },                            
+    },                                                                                         
     "_artifactsLocation": {
       "type": "string",
       "metadata": {
@@ -165,46 +165,28 @@
   },
   "variables": {
     "vnet1Name": "[concat(parameters('NamingConvention'),'-VNet1')]",
-    "vnet1Prefix": "[concat(parameters('vnet1ID'),'.0.0/16')]",
     "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet1')]",    
-    "vnet1subnet1Prefix": "[concat(parameters('vnet1ID'),'.1.0/24')]",    
-    "vnet1subnet2Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet2')]",    
-    "vnet1subnet2Prefix": "[concat(parameters('vnet1ID'),'.2.0/24')]",    
-    "vnet1BastionsubnetPrefix": "[concat(parameters('vnet1ID'),'.253.0/24')]",        
     "vnet2Name": "[concat(parameters('NamingConvention'),'-VNet2')]",
-    "vnet2Prefix": "[concat(parameters('vnet2ID'),'.0.0/16')]",
     "vnet2subnet1Name": "[concat(parameters('NamingConvention'),'-VNet2-Subnet1')]",    
-    "vnet2subnet1Prefix": "[concat(parameters('vnet2ID'),'.1.0/24')]",    
-    "vnet2subnet2Name": "[concat(parameters('NamingConvention'),'-VNet2-Subnet2')]",    
-    "vnet2subnet2Prefix": "[concat(parameters('vnet2ID'),'.2.0/24')]",    
-    "vnet2BastionsubnetPrefix": "[concat(parameters('vnet2ID'),'.253.0/24')]", 
     "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",                      
     "adcname": "[concat(parameters('NamingConvention'),'-adc-01')]",           
     "adcIP": "[concat(parameters('vnet1ID'),'.1.',variables('adclastoctet'))]", 
     "adclastoctet": "120",           
-
     "adfs1name": "[concat(parameters('NamingConvention'),'-adfs-01')]",           
     "adfs1IP": "[concat(parameters('vnet1ID'),'.1.',variables('adfs1lastoctet'))]",  
     "adfs1lastoctet": "121",                                                              
-
     "adfs2name": "[concat(parameters('NamingConvention'),'-adfs-02')]",           
     "adfs2IP": "[concat(parameters('vnet2ID'),'.1.',variables('adfs2lastoctet'))]",       
     "adfs2lastoctet": "121",                                
-
     "wap1name": "[concat(parameters('NamingConvention'),'-wap-01')]",           
     "wap1IP": "[concat(parameters('vnet1ID'),'.1.',variables('wap1lastoctet'))]",            
     "wap1lastoctet": "122",
-
     "wap2name": "[concat(parameters('NamingConvention'),'-wap-02')]",           
     "wap2IP": "[concat(parameters('vnet2ID'),'.1.',variables('wap2lastoctet'))]",            
     "wap2lastoctet": "122",
-
     "domainName": "[concat(parameters('NetBiosDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat('DC=',parameters('NetBiosDomain'),',DC=',parameters('TLD'))]",
-    "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
-    "NSG1Name": "[concat(parameters('NamingConvention'),'-nsg01')]",
-    "NSG2Name": "[concat(parameters('NamingConvention'),'-nsg02')]"
   },  
   "resources": [
     {

@@ -32,16 +32,52 @@
       "type": "string",
       "defaultValue": "WestUS",
       "metadata": {
-        "description": "Choose Region (Example:  WestUS)"
+        "description": "Choose Region (Example: WestUS)"
       }
     },           
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
       "metadata": {
-        "description": "VNet1 Name"
+        "description": "Environment Naming Convention"
       }
     },
+    "NetBiosDomain": {
+      "type": "string",
+      "defaultValue": "killerhomelab",
+      "metadata": {
+          "description": "NetBios Domain Name"
+      }
+    },    
+    "TLD": {
+      "type": "string",
+      "defaultValue": "com",
+      "allowedValues": [
+        "com",
+        "net",
+        "org",
+        "edu",
+        "gov",
+        "mil"
+      ],      
+      "metadata": {
+          "description": "Top-Level Domain Name"
+      }
+    },      
+    "RootCAName": {
+      "type": "string",
+      "defaultValue": "Offline Root CA",
+      "metadata": {
+          "description": "Offline Root CA Name"
+      }
+    },                    
+    "IssuingCAName": {
+      "type": "string",
+      "defaultValue": "Issuing CA",
+      "metadata": {
+          "description": "Issuing CA Name"
+      }
+    },     
     "vnet1ID": {
       "type": "string",
       "defaultValue": "16.1",
@@ -111,43 +147,7 @@
         "metadata": {
             "description": "WAP 2 VMSize"
         }
-    },                        
-    "NetBiosDomain": {
-      "type": "string",
-      "defaultValue": "killerhomelab",
-      "metadata": {
-          "description": "NetBios Domain Name"
-      }
-    },     
-    "RootCAName": {
-      "type": "string",
-      "defaultValue": "Offline Root CA",
-      "metadata": {
-          "description": "Offline Root CA Name"
-      }
-    },                    
-    "IssuingCAName": {
-      "type": "string",
-      "defaultValue": "Issuing CA",
-      "metadata": {
-          "description": "Issuing CA Name"
-      }
-    },                                       
-    "TLD": {
-      "type": "string",
-      "defaultValue": "com",
-      "allowedValues": [
-        "com",
-        "net",
-        "org",
-        "edu",
-        "gov",
-        "mil"
-      ],      
-      "metadata": {
-          "description": "Top-Level Domain Name"
-      }
-    },                            
+    },                                                                                         
     "_artifactsLocation": {
       "type": "string",
       "metadata": {
@@ -165,46 +165,28 @@
   },
   "variables": {
     "vnet1Name": "[concat(parameters('NamingConvention'),'-VNet1')]",
-    "vnet1Prefix": "[concat(parameters('vnet1ID'),'.0.0/16')]",
     "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet1')]",    
-    "vnet1subnet1Prefix": "[concat(parameters('vnet1ID'),'.1.0/24')]",    
-    "vnet1subnet2Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet2')]",    
-    "vnet1subnet2Prefix": "[concat(parameters('vnet1ID'),'.2.0/24')]",    
-    "vnet1BastionsubnetPrefix": "[concat(parameters('vnet1ID'),'.253.0/24')]",        
     "vnet2Name": "[concat(parameters('NamingConvention'),'-VNet2')]",
-    "vnet2Prefix": "[concat(parameters('vnet2ID'),'.0.0/16')]",
     "vnet2subnet1Name": "[concat(parameters('NamingConvention'),'-VNet2-Subnet1')]",    
-    "vnet2subnet1Prefix": "[concat(parameters('vnet2ID'),'.1.0/24')]",    
-    "vnet2subnet2Name": "[concat(parameters('NamingConvention'),'-VNet2-Subnet2')]",    
-    "vnet2subnet2Prefix": "[concat(parameters('vnet2ID'),'.2.0/24')]",    
-    "vnet2BastionsubnetPrefix": "[concat(parameters('vnet2ID'),'.253.0/24')]", 
     "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",                      
     "adcname": "[concat(parameters('NamingConvention'),'-adc-01')]",           
     "adcIP": "[concat(parameters('vnet1ID'),'.1.',variables('adclastoctet'))]", 
     "adclastoctet": "120",           
-
     "adfs1name": "[concat(parameters('NamingConvention'),'-adfs-01')]",           
     "adfs1IP": "[concat(parameters('vnet1ID'),'.1.',variables('adfs1lastoctet'))]",  
     "adfs1lastoctet": "121",                                                              
-
     "adfs2name": "[concat(parameters('NamingConvention'),'-adfs-02')]",           
     "adfs2IP": "[concat(parameters('vnet2ID'),'.1.',variables('adfs2lastoctet'))]",       
     "adfs2lastoctet": "121",                                
-
     "wap1name": "[concat(parameters('NamingConvention'),'-wap-01')]",           
     "wap1IP": "[concat(parameters('vnet1ID'),'.1.',variables('wap1lastoctet'))]",            
     "wap1lastoctet": "122",
-
     "wap2name": "[concat(parameters('NamingConvention'),'-wap-02')]",           
     "wap2IP": "[concat(parameters('vnet2ID'),'.1.',variables('wap2lastoctet'))]",            
     "wap2lastoctet": "122",
-
     "domainName": "[concat(parameters('NetBiosDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat('DC=',parameters('NetBiosDomain'),',DC=',parameters('TLD'))]",
-    "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
-    "NSG1Name": "[concat(parameters('NamingConvention'),'-nsg01')]",
-    "NSG2Name": "[concat(parameters('NamingConvention'),'-nsg02')]"
   },  
   "resources": [
     {
@@ -524,6 +506,171 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
+      "name": "deployADFS2VM",
+      "dependsOn": [
+        "createfsgmsa",
+        "deployADCVM",
+        "DomainJoinADC",
+        "downloadaaddc",
+        "deployADFS1VM",
+        "DomainJoinADFS1",
+        "configurefirstadfs"        
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('adfs2name')]"
+              },
+              "computerIP": {
+                  "value": "[variables('adfs2IP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsServer"
+              },
+              "Offer": {
+                  "value": "WindowsServer"
+              },
+              "OSVersion": {
+                "value": "[parameters('ADFSOSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "None"
+              },            
+              "VMSize": {
+                "value": "[parameters('ADFS2VMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('vnet2Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('vnet2subnet1Name')]"
+              },            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "DomainJoinADFS2",
+      "dependsOn": [
+        "createFSGMSA",
+        "deployADCVM",
+        "DomainJoinADC",
+        "downloadaaddc",
+        "deployADFS1VM",
+        "DomainJoinADFS1",
+        "configurefirstadfs",
+        "deployADFS2VM"        
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/domainjoin.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('adfs2name')]"
+              },
+              "domainName": {
+                  "value": "[variables('domainName')]"
+              },
+              "OUPath": {
+                  "value": "[variables('SRVOUPath')]"
+              },
+              "domainJoinOptions": {
+                  "value": 3
+              },
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                             
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    }, 
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "configureotheradfs",
+      "dependsOn": [
+        "createFSGMSA",
+        "deployADCVM",
+        "DomainJoinADC",
+        "downloadaaddc",
+        "deployADFS1VM",
+        "DomainJoinADFS1",
+        "configurefirstadfs",
+        "deployADFS2VM",
+        "DomainJoinADFS2"        
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/otheradfs.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('adfs2name')]"
+              },
+              "RootDomainFQDN": {
+                  "value": "[variables('domainName')]"
+              },          
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },              
+              "IssuingCAName": {
+                  "value": "[parameters('IssuingCAName')]"
+              },              
+              "RootCAName": {
+                  "value": "[parameters('RootCAName')]"
+              },
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "PrimaryADFSServer": {
+                "value": "[variables('adfs1name')]"
+              },                                                                                                                          
+              "PrimaryADFSServerIP": {
+                "value": "[variables('adfs1IP')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },
+              "location": {
+                  "value": "[parameters('Location2')]"
+              },                            
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+          }
+      }
+    },               
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
       "name": "deployWAP1VM",
       "dependsOn": [
         "createfsgmsa",
@@ -532,7 +679,10 @@
         "downloadaaddc",
         "deployADFS1VM",
         "DomainJoinADFS1",
-        "configurefirstadfs"
+        "configurefirstadfs",
+        "deployADFS2VM",
+        "DomainJoinADFS2",
+        "configureotheradfs"        
       ],      
       "properties": {
           "mode": "Incremental",
@@ -592,12 +742,15 @@
         "deployADFS1VM",
         "DomainJoinADFS1",
         "configurefirstadfs",
+        "deployADFS2VM",
+        "DomainJoinADFS2",
+        "configureotheradfs",                
         "deployWAP1VM"
       ],      
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/firstwap.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/wap.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -636,6 +789,174 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
           }
       }
-    }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "deployWAP2VM",
+      "dependsOn": [
+        "createfsgmsa",
+        "deployADCVM",
+        "DomainJoinADC",
+        "downloadaaddc",
+        "deployADFS1VM",
+        "DomainJoinADFS1",
+        "configurefirstadfs",
+        "deployADFS2VM",
+        "DomainJoinADFS2",
+        "configureotheradfs",
+        "deployWAP1VM",
+        "configurefirstwap"        
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm-pip.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('wap2name')]"
+              },
+              "computerIP": {
+                  "value": "[variables('wap2IP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsServer"
+              },
+              "Offer": {
+                  "value": "WindowsServer"
+              },
+              "OSVersion": {
+                "value": "[parameters('WAPOSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "None"
+              },            
+              "VMSize": {
+                "value": "[parameters('WAP2VMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('vnet2Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('vnet2subnet1Name')]"
+              },            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "configureotherwap",
+      "dependsOn": [
+        "createFSGMSA",
+        "deployADCVM",
+        "DomainJoinADC",
+        "downloadaaddc",
+        "deployADFS1VM",
+        "DomainJoinADFS1",
+        "configurefirstadfs",
+        "deployADFS2VM",
+        "DomainJoinADFS2",
+        "configureotheradfs",                
+        "deployWAP1VM",
+        "configurefirstwap",
+        "deployWAP2VM"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/wap.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('wap2name')]"
+              },
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },                            
+              "ADFSServerIP": {
+                  "value": "[variables('adfs1IP')]"
+              },          
+              "RootDomainFQDN": {
+                  "value": "[variables('domainName')]"
+              },          
+              "IssuingCAName": {
+                  "value": "[parameters('IssuingCAName')]"
+              },              
+              "RootCAName": {
+                  "value": "[parameters('RootCAName')]"
+              },
+              "location": {
+                  "value": "[parameters('Location2')]"
+              },                                          
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "createpublicdns",
+      "dependsOn": [
+        "createFSGMSA",
+        "deployADCVM",
+        "DomainJoinADC",
+        "downloadaaddc",
+        "deployADFS1VM",
+        "DomainJoinADFS1",
+        "configurefirstadfs",
+        "deployADFS2VM",
+        "DomainJoinADFS2",
+        "configureotheradfs",                
+        "deployWAP1VM",
+        "configurefirstwap",
+        "deployWAP2VM",
+        "configureotherwap"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/PublicDNSZone.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "ZoneName": {
+                  "value": "[variables('domainName')]"
+              },
+              "ADFSRecord": {
+                  "value": "adfs"
+              },              
+              "WAP1PublicIP": {
+                  "value": "[reference('deployWAP1VM').outputs.PublicIP.value]"             
+              },                                                                                                                                      
+              "WAP2PublicIP": {
+                  "value": "[reference('deployWAP2VM').outputs.PublicIP.value]"             
+              }                                                                                                                                                                                                                                                                                                                                                  
+          }
+      }
+    }                
   ]
 }
