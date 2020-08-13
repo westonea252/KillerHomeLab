@@ -4554,7 +4554,7 @@
           },
           "parameters": {
               "computerName": {
-                  "value": "[variables('ex1name')]"
+                  "value": "[variables('icaname')]"
               },
               "ToEmail": {
                   "value": "[parameters('ToEmail')]"
