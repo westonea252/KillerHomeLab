@@ -16,16 +16,16 @@
     },
     "Location1": {
       "type": "string",
-      "defaultValue": "EastUS",
+      "defaultValue": "USGovVirginia",
       "metadata": {
-        "description": "Choose Region (Example: EastUS)"
+        "description": "Choose Region (Example: USGovVirginia)"
       }
     },
     "Location2": {
       "type": "string",
-      "defaultValue": "WestUS",
+      "defaultValue": "USGovTexas",
       "metadata": {
-        "description": "Choose Region (Example: WestUS)"
+        "description": "Choose Region (Example: USGovTexas)"
       }
     },        
     "NamingConvention": {

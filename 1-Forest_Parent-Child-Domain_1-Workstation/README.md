@@ -42,7 +42,8 @@ Parameters that support changes
 - Location1. Enter a Valid Azure Region based on which Cloud (AzureCloud, AzureUSGovernment, etc...) you are using.
 - Location2. Enter a Valid Azure Region based on which Cloud (AzureCloud, AzureUSGovernment, etc...) you are using.
 - Naming Convention. Enter a name that will be used as a naming prefix for (Servers, VNets, etc) you are using.
-- Net Bios Domain.  Enter a valid Net Bios Domain Name (Example:  killerhomelab).
+- Net Bios Domain.  Enter a valid Net Bios Domain Name (Example: killerhomelab).
+- Child Net Bios Domain.  Enter a valid Net Bios Domain Name (Example: it).
 - TLD.  Select a valid Top-Level Domain using the Pull-Down Menu.
 - Vnet1ID.  Enter first 2 octets of your desired Address Space for Virtual Network 1 (Example:  10.1)
 - Vnet2ID.  Enter first 2 octets of your desired Address Space for Virtual Network 2 (Example:  10.2)
