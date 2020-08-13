@@ -186,7 +186,7 @@
     "wap2lastoctet": "122",
     "domainName": "[concat(parameters('NetBiosDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat('DC=',parameters('NetBiosDomain'),',DC=',parameters('TLD'))]",
-    "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
+    "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]"
   },  
   "resources": [
     {
