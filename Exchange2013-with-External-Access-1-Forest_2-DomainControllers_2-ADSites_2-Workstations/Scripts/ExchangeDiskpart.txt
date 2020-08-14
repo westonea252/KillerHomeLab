@@ -1,0 +1,8 @@
+select disk 2
+create partition primary
+assign letter=M
+format fs=NTFS LABEL="Exchange DataDisk" quick compress
+select disk 3
+create partition primary
+assign letter=S
+format fs=NTFS LABEL="Software" quick compress
