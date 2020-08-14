@@ -1,4 +1,4 @@
-# Exchange 2010 Lab
+# Exchange 2010 Lab with External Access
 
 Click the button below to deploy
 
@@ -18,6 +18,23 @@ This Templates deploys a Single Forest/Domain:
 - 2 - File Share Witness Servers (1 within each AD Site)
 - 1 - Database Availability Group
 - 2 - Domain Joined Windows 10 Workstations (1 within each AD Site)
+- 1 - Azure DNS Zone (Created based on NetBiosDomain and TLD Parameters)
+- 2 - Network Security Groups (1 Created in each Region)
+
+The deployment also makes the following customizations:
+- Adds Public IP Address to OCSP and Exchange Servers.
+- Creates Azure DNS Zone Records based on the correesponding Servers Public IP
+- -- OCSP (OCSP VM Public IP)
+- -- OWA2010 (Exchange VM1 Public IP)
+- -- OWA2010 (Exchange VM2 Public IP)
+- -- AUTODISCOVER2010 (Exchange VM1 Public IP)
+- -- AUTODISCOVER2010 (Exchange VM2 Public IP)
+- -- OUTLOOK2010 (Exchange VM1 Public IP)
+- -- OUTLOOK2010 (Exchange VM2 Public IP)
+- -- EAS2010 (Exchange VM1 Public IP)
+- -- EAS2010 (Exchange VM2 Public IP)
+- -- SMTP (Exchange VM1 Public IP)
+- -- SMTP (Exchange VM2 Public IP)
 
 The deployment leverages Desired State Configuration scripts to further customize the following:
 
@@ -76,6 +93,7 @@ Parameters that support changes
 - ExchangeSP3ISOUrl.  You must enter a URL or created SAS URL that points to an Exchange 2010 ISO for this installation to be successful.
 - Admin Username.  Enter a valid Admin Username
 - Admin Password.  Enter a valid Admin Password
+- To Email.  Please provide a working email that the Trusted Certificate Authority Chain Can be sent to.  These certificates will allow access to Exchange Services like OWA, EAS and Outlook without Certificate Security warnings.
 - Location1. Enter a Valid Azure Region based on which Cloud (AzureCloud, AzureUSGovernment, etc...) you are using.
 - Location2. Enter a Valid Azure Region based on which Cloud (AzureCloud, AzureUSGovernment, etc...) you are using.
 - Naming Convention. Enter a name that will be used as a naming prefix for (Servers, VNets, etc) you are using.

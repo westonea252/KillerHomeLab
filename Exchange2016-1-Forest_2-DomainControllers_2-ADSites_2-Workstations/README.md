@@ -76,7 +76,6 @@ Parameters that support changes
 - Exchange2016ISOUrl.  You must enter a URL or created SAS URL that points to an Exchange 2016 ISO for this installation to be successful.
 - Admin Username.  Enter a valid Admin Username
 - Admin Password.  Enter a valid Admin Password
-- To Email.  Please provide a working email that the Trusted Certificate Authority Chain Can be sent to.  These certificates will allow access to Exchange Services like OWA, EAS and Outlook without Certificate Security warnings.
 - Location1. Enter a Valid Azure Region based on which Cloud (AzureCloud, AzureUSGovernment, etc...) you are using.
 - Location2. Enter a Valid Azure Region based on which Cloud (AzureCloud, AzureUSGovernment, etc...) you are using.
 - Naming Convention. Enter a name that will be used as a naming prefix for (Servers, VNets, etc) you are using.
