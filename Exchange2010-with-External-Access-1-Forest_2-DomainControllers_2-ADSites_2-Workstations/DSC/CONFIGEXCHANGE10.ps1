@@ -6,8 +6,6 @@
         [String]$RootDomainFQDN,                
         [String]$NetBiosDomain,
         [String]$BaseDN,
-        [String]$IssuingCAServer,
-        [String]$IssuingCAName,
         [String]$Site1DC,
         [String]$Site2DC,
         [String]$ConfigDC,
@@ -28,6 +26,41 @@
             RebootNodeIfNeeded = $true
         }
 
+        File Certificates
+        {
+            Type = 'Directory'
+            DestinationPath = 'C:\Certificates'
+            Ensure = "Present"
+        }
+
+        Script ConfigureCertificate
+        {
+            SetScript =
+            {
+                # Create Credentials
+                $Load = "$using:DomainCreds"
+                $Password = $DomainCreds.Password
+
+                # Get Certificate 2010 Certificate
+                $CertCheck = Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=owa2010.$using:RootDomainFQDN"}
+                IF ($CertCheck -eq $Null) {Get-Certificate -Template WebServer1 -SubjectName "CN=owa2010.$using:RootDomainFQDN" -DNSName "owa2010.$using:RootDomainFQDN","autodiscover2010.$using:RootDomainFQDN","autodiscover.$using:RootDomainFQDN","outlook2010.$using:RootDomainFQDN","eas2010.$using:RootDomainFQDN" -CertStoreLocation "cert:\LocalMachine\My"}
+
+                $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=owa2010.$using:RootDomainFQDN"}).Thumbprint
+                (Get-ChildItem -Path Cert:\LocalMachine\My\$thumbprint).FriendlyName = "Exchange 2010 SAN Cert"
+
+                # Export Service Communication Certificate
+                $CertFile = Get-ChildItem -Path "C:\Certificates\owa2010.$using:RootDomainFQDN.pfx" -ErrorAction 0
+                IF ($CertFile -eq $Null) {Get-ChildItem -Path cert:\LocalMachine\my\$thumbprint | Export-PfxCertificate -FilePath "C:\Certificates\owa2010.$using:RootDomainFQDN.pfx" -Password $Password}
+
+                # Share Certificate
+                $CertShare = Get-SmbShare -Name Certificates -ErrorAction 0
+                IF ($CertShare -eq $Null) {New-SmbShare -Name Certificates -Path C:\Certificates -FullAccess Administrators}
+            }
+            GetScript =  { @{} }
+            TestScript = { $false}
+            DependsOn = '[File]Certificates'
+        }
+
         Script ConfigureExchange2010
         {
             SetScript =
@@ -35,45 +68,8 @@
                 repadmin /replicate "$using:Site1DC" "$using:Site2DC" "$using:BaseDN"
                 repadmin /replicate "$using:Site2DC" "$using:Site1DC" "$using:BaseDN"
 
-                $fqdn = "$using:RootDomainFQDN"
-                $CN = '"CN'
-                $DNS = '"DNS'
-                $quote = '"'
-                $windowsNT = '"$Windows NT"'
-
-                # Create Exchange Request Policy File
-                Set-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value "[Version]"
-                Add-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value "Signature=$WindowsNT"
-                Add-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value "[NewRequest]"
-                Add-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value "Subject = $CN=owa2010.$fqdn$quote"
-                Add-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value "KeyLength = 2048"
-                Add-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value "KeySpec = 1"
-                Add-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value "KeyUsage = 0xA0"
-                Add-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value "MachineKeySet = True"
-                Add-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value 'ProviderName = "Microsoft RSA SChannel Cryptographic Provider"'
-                Add-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value "RequestType = PKCS10"
-
-                Add-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value '[EnhancedKeyUsageExtension]'
-                Add-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value 'OID=1.3.6.1.5.5.7.3.1'
-                Add-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value 'OID=1.3.6.1.5.5.7.3.2'
-
-                Add-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value '[Extensions]'
-                Add-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value "2.5.29.17 = $quote{text}$quote"
-                Add-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value "_continue_ = $DNS=owa2010.$fqdn&$quote"
-                Add-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value "_continue_ = $DNS=autodiscover2010.$fqdn&$quote"
-                Add-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value "_continue_ = $DNS=eas2010.$fqdn&$quote"
-                Add-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value "_continue_ = $DNS=outlook2010.$fqdn&$quote"
-
-                Add-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value '[RequestAttributes]'
-                Add-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value 'CertificateTemplate = WebServer1'
-                
-                certreq -new S:\ExchangeInstall\GetCertificate.inf S:\ExchangeInstall\Request.req
-                certreq -submit -config "$using:IssuingCAServer\$using:IssuingCAName" S:\ExchangeInstall\Request.req S:\ExchangeInstall\Response.cer
-                certreq -accept S:\ExchangeInstall\Response.cer
-
-                # Get Exchange 2010 Certificate
+                # Get Certificate 2010 Certificate
                 $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=owa2010.$using:RootDomainFQDN"}).Thumbprint
-                (Get-ChildItem -Path Cert:\LocalMachine\My\$thumbprint).FriendlyName = "Exchange 2010 SAN Cert"
 
                 # Set Virtual Directories
                 $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri "http://$using:computername.$using:RootDomainFQDN/PowerShell/"

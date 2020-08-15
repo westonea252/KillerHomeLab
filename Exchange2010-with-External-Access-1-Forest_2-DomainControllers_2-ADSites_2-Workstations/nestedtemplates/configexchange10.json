@@ -50,18 +50,6 @@
                 "description": "Base Domain Distiguished Name"
             }
         },        
-        "IssuingCAServer": {
-            "type": "string",
-            "metadata": {
-                "description": "Issuing CA Server Name"
-            }
-        },                             
-        "IssuingCAName": {
-            "type": "string",
-            "metadata": {
-                "description": "Issuing CA Name"
-            }
-        },                                     
         "DAGName": {
             "type": "string",
             "metadata": {
@@ -144,8 +132,6 @@
                             "RootDomainFQDN": "[parameters('RootDomainFQDN')]",
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
                             "BaseDN": "[parameters('BaseDN')]",                                                        
-                            "IssuingCAServer": "[parameters('IssuingCAServer')]",                                                        
-                            "IssuingCAName": "[parameters('IssuingCAName')]",                                                                                    
                             "DAGName": "[parameters('DAGName')]",                    
                             "DAGIPAddress": "[parameters('DAGIPAddress')]",                                                                                                                                                    
                             "CAServerIP": "[parameters('CAServerIP')]",                                                                                                                                                                                

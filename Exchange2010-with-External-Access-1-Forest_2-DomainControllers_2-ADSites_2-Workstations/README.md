@@ -90,7 +90,7 @@ Exchange
 
 Parameters that support changes
 - Exchange Org Name. Enter a name that will be used for your Exchange Organization Name.
-- ExchangeSP3ISOUrl.  You must enter a URL or created SAS URL that points to an Exchange 2010 ISO for this installation to be successful.
+- Exchange2010ISOUrl.  You must enter a URL or created SAS URL that points to an Exchange 2010 SP3 ISO for this installation to be successful.
 - Admin Username.  Enter a valid Admin Username
 - Admin Password.  Enter a valid Admin Password
 - To Email.  Please provide a working email that the Trusted Certificate Authority Chain Can be sent to.  These certificates will allow access to Exchange Services like OWA, EAS and Outlook without Certificate Security warnings.

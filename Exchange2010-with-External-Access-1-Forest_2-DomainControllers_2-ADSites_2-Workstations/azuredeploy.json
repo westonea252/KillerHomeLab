@@ -9,7 +9,7 @@
         "description": "Enter an Exchange Organization Name"
       }
     },
-    "ExchangeSP3ISOUrl": {
+    "Exchange2010ISOUrl": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
@@ -2640,7 +2640,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "configex1disk",
+      "name": "prepareexchange10s1",
       "dependsOn": [
         "VNet1",
         "VNet2",
@@ -2683,13 +2683,25 @@
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/diskpart.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/prepareexchange10.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
               "computerName": {
                   "value": "[variables('ex1name')]"
               },
+              "ExchangeSASUrl": {
+                  "value": "[parameters('Exchange2010ISOUrl')]"
+              },  
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },                                        
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                                                                                 
               "location": {
                   "value": "[parameters('Location1')]"
               },          
@@ -2701,11 +2713,11 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
           }
       }
-    },                           
+    },                                                
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "configex2disk",
+      "name": "prepareexchange10s2",
       "dependsOn": [
         "VNet1",
         "VNet2",
@@ -2744,18 +2756,30 @@
         "DomainJoinEX1",
         "deployex2",
         "DomainJoinEX2",
-        "configex1disk"
+        "prepareexchange10s1"
       ],      
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/diskpart.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/prepareexchange10.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
               "computerName": {
                   "value": "[variables('ex2name')]"
               },
+              "ExchangeSASUrl": {
+                  "value": "[parameters('Exchange2010ISOUrl')]"
+              },   
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },                                        
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                                                                                 
               "location": {
                   "value": "[parameters('Location2')]"
               },          
@@ -2767,148 +2791,7 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
           }
       }
-    },                               
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "name": "downloadexchange10s1",
-      "dependsOn": [
-        "VNet1",
-        "VNet2",
-        "BastionHost1",
-        "BastionHost2",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
-        "PowerShellExecutionPolicy",                
-        "PeeringToSite2",
-        "PeeringToSite1",
-        "deployDC2VM",
-        "promotedc2",
-        "updatevnet2dns-2",
-        "restartdc2",
-        "deployrootca",
-        "configurerootca",
-        "deployissuingca",
-        "DomainJoinIssuingCA",
-        "configureissueca",
-        "grantcarequest",
-        "finalizeca",
-        "deployocsp",
-        "DomainJoinOCSP",
-        "configureocsp",
-        "deployfs1",
-        "DomainJoinFS1",
-        "deployfs2",
-        "DomainJoinFS2",
-        "deployex1",
-        "DomainJoinEX1",
-        "deployex2",
-        "DomainJoinEX2",
-        "configex1disk",
-        "configex2disk"
-      ],      
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/downloadexchange10.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "computerName": {
-                  "value": "[variables('dc1name')]"
-              },
-              "ExchangeSP3ISOUrl": {
-                  "value": "[parameters('ExchangeSP3ISOUrl')]"
-              },                        
-              "location": {
-                  "value": "[parameters('Location1')]"
-              },          
-              "_artifactsLocation": {
-                "value": "[parameters('_artifactsLocation')]"
-              },                                                                                                            
-              "_artifactsLocationSasToken": {
-                "value": "[parameters('_artifactsLocationSasToken')]"
-              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
-          }
-      }
-    },                           
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "name": "downloadexchange10s2",
-      "dependsOn": [
-        "VNet1",
-        "VNet2",
-        "BastionHost1",
-        "BastionHost2",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
-        "PowerShellExecutionPolicy",                
-        "PeeringToSite2",
-        "PeeringToSite1",
-        "deployDC2VM",
-        "promotedc2",
-        "updatevnet2dns-2",
-        "restartdc2",
-        "deployrootca",
-        "configurerootca",
-        "deployissuingca",
-        "DomainJoinIssuingCA",
-        "configureissueca",
-        "grantcarequest",
-        "finalizeca",
-        "deployocsp",
-        "DomainJoinOCSP",
-        "configureocsp",
-        "deployfs1",
-        "DomainJoinFS1",
-        "deployfs2",
-        "DomainJoinFS2",
-        "deployex1",
-        "DomainJoinEX1",
-        "deployex2",
-        "DomainJoinEX2",
-        "configex1disk",
-        "configex2disk",
-        "downloadexchange10s1"
-      ],      
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/downloadexchange10.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "computerName": {
-                  "value": "[variables('dc2name')]"
-              },
-              "ExchangeSP3ISOUrl": {
-                  "value": "[parameters('ExchangeSP3ISOUrl')]"
-              },                                      
-              "location": {
-                  "value": "[parameters('Location2')]"
-              },          
-              "_artifactsLocation": {
-                "value": "[parameters('_artifactsLocation')]"
-              },                                                                                                            
-              "_artifactsLocationSasToken": {
-                "value": "[parameters('_artifactsLocationSasToken')]"
-              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
-          }
-      }
-    },                                   
+    },   
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
@@ -2989,172 +2872,7 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
           }
       }
-    }, 
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "name": "prepareexchange10s1",
-      "dependsOn": [
-        "VNet1",
-        "VNet2",
-        "BastionHost1",
-        "BastionHost2",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
-        "PowerShellExecutionPolicy",                
-        "PeeringToSite2",
-        "PeeringToSite1",
-        "deployDC2VM",
-        "promotedc2",
-        "updatevnet2dns-2",
-        "restartdc2",
-        "deployrootca",
-        "configurerootca",
-        "deployissuingca",
-        "DomainJoinIssuingCA",
-        "configureissueca",
-        "grantcarequest",
-        "finalizeca",
-        "deployocsp",
-        "DomainJoinOCSP",
-        "configureocsp",
-        "deployfs1",
-        "DomainJoinFS1",
-        "deployfs2",
-        "DomainJoinFS2",
-        "deployex1",
-        "DomainJoinEX1",
-        "deployex2",
-        "DomainJoinEX2",
-        "configex1disk",
-        "configex2disk",
-        "downloadexchange10s1",
-        "downloadexchange10s2",
-        "prepareadexchange10"
-      ],      
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/prepareexchange10.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "computerName": {
-                  "value": "[variables('ex1name')]"
-              },
-              "DCIP": {
-                  "value": "[variables('dc1IP')]"
-              },  
-              "NetBiosDomain": {
-                  "value": "[parameters('NetBiosDomain')]"
-              },                                        
-              "adminUsername": {
-                "value": "[parameters('adminUsername')]"
-              },                                                                                                            
-              "adminPassword": {
-                "value": "[parameters('adminPassword')]"
-              },                                                                                                                                                                                                                                                                                                                                 
-              "location": {
-                  "value": "[parameters('Location1')]"
-              },          
-              "_artifactsLocation": {
-                "value": "[parameters('_artifactsLocation')]"
-              },                                                                                                            
-              "_artifactsLocationSasToken": {
-                "value": "[parameters('_artifactsLocationSasToken')]"
-              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
-          }
-      }
-    },                                                
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "name": "prepareexchange10s2",
-      "dependsOn": [
-        "VNet1",
-        "VNet2",
-        "BastionHost1",
-        "BastionHost2",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
-        "PowerShellExecutionPolicy",                
-        "PeeringToSite2",
-        "PeeringToSite1",
-        "deployDC2VM",
-        "promotedc2",
-        "updatevnet2dns-2",
-        "restartdc2",
-        "deployrootca",
-        "configurerootca",
-        "deployissuingca",
-        "DomainJoinIssuingCA",
-        "configureissueca",
-        "grantcarequest",
-        "finalizeca",
-        "deployocsp",
-        "DomainJoinOCSP",
-        "configureocsp",
-        "deployfs1",
-        "DomainJoinFS1",
-        "deployfs2",
-        "DomainJoinFS2",
-        "deployex1",
-        "DomainJoinEX1",
-        "deployex2",
-        "DomainJoinEX2",
-        "configex1disk",
-        "configex2disk",
-        "downloadexchange10s1",
-        "downloadexchange10s2",
-        "prepareadexchange10",
-        "prepareexchange10s1"
-      ],      
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/prepareexchange10.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "computerName": {
-                  "value": "[variables('ex2name')]"
-              },
-              "DCIP": {
-                  "value": "[variables('dc2IP')]"
-              },  
-              "NetBiosDomain": {
-                  "value": "[parameters('NetBiosDomain')]"
-              },                                        
-              "adminUsername": {
-                "value": "[parameters('adminUsername')]"
-              },                                                                                                            
-              "adminPassword": {
-                "value": "[parameters('adminPassword')]"
-              },                                                                                                                                                                                                                                                                                                                                 
-              "location": {
-                  "value": "[parameters('Location2')]"
-              },          
-              "_artifactsLocation": {
-                "value": "[parameters('_artifactsLocation')]"
-              },                                                                                                            
-              "_artifactsLocationSasToken": {
-                "value": "[parameters('_artifactsLocationSasToken')]"
-              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
-          }
-      }
-    },   
+    },     
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
@@ -3197,13 +2915,9 @@
         "DomainJoinEX1",
         "deployex2",
         "DomainJoinEX2",
-        "configex1disk",
-        "configex2disk",
-        "downloadexchange10s1",
-        "downloadexchange10s2",
-        "prepareadexchange10",
         "prepareexchange10s1",
-        "prepareexchange10s2"
+        "prepareexchange10s2",
+        "prepareadexchange10"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -3272,13 +2986,9 @@
         "DomainJoinEX1",
         "deployex2",
         "DomainJoinEX2",
-        "configex1disk",
-        "configex2disk",
-        "downloadexchange10s1",
-        "downloadexchange10s2",
-        "prepareadexchange10",
         "prepareexchange10s1",
         "prepareexchange10s2",
+        "prepareadexchange10",
         "grantextrustedsub1"
       ],      
       "properties": {
@@ -3348,13 +3058,9 @@
         "DomainJoinEX1",
         "deployex2",
         "DomainJoinEX2",
-        "configex1disk",
-        "configex2disk",
-        "downloadexchange10s1",
-        "downloadexchange10s2",
-        "prepareadexchange10",
         "prepareexchange10s1",
         "prepareexchange10s2",
+        "prepareadexchange10",
         "grantextrustedsub1",
         "grantextrustedsub2"
       ],      
@@ -3437,13 +3143,9 @@
         "DomainJoinEX1",
         "deployex2",
         "DomainJoinEX2",
-        "configex1disk",
-        "configex2disk",
-        "downloadexchange10s1",
-        "downloadexchange10s2",
-        "prepareadexchange10",
         "prepareexchange10s1",
         "prepareexchange10s2",
+        "prepareadexchange10",
         "grantextrustedsub1",
         "grantextrustedsub2",
         "installexchange1"
@@ -3557,13 +3259,9 @@
         "DomainJoinEX1",
         "deployex2",
         "DomainJoinEX2",
-        "configex1disk",
-        "configex2disk",
-        "downloadexchange10s1",
-        "downloadexchange10s2",
-        "prepareadexchange10",
         "prepareexchange10s1",
         "prepareexchange10s2",
+        "prepareadexchange10",
         "grantextrustedsub1",
         "grantextrustedsub2",
         "installexchange1",
@@ -3648,13 +3346,9 @@
         "DomainJoinEX1",
         "deployex2",
         "DomainJoinEX2",
-        "configex1disk",
-        "configex2disk",
-        "downloadexchange10s1",
-        "downloadexchange10s2",
-        "prepareadexchange10",
         "prepareexchange10s1",
         "prepareexchange10s2",
+        "prepareadexchange10",
         "grantextrustedsub1",
         "grantextrustedsub2",
         "installexchange1",
@@ -3770,13 +3464,9 @@
         "DomainJoinEX1",
         "deployex2",
         "DomainJoinEX2",
-        "configex1disk",
-        "configex2disk",
-        "downloadexchange10s1",
-        "downloadexchange10s2",
-        "prepareadexchange10",
         "prepareexchange10s1",
         "prepareexchange10s2",
+        "prepareadexchange10",
         "grantextrustedsub1",
         "grantextrustedsub2",
         "installexchange1",
@@ -3872,13 +3562,9 @@
         "DomainJoinEX1",
         "deployex2",
         "DomainJoinEX2",
-        "configex1disk",
-        "configex2disk",
-        "downloadexchange10s1",
-        "downloadexchange10s2",
-        "prepareadexchange10",
         "prepareexchange10s1",
         "prepareexchange10s2",
+        "prepareadexchange10",
         "grantextrustedsub1",
         "grantextrustedsub2",
         "installexchange1",
@@ -3960,13 +3646,9 @@
         "DomainJoinEX1",
         "deployex2",
         "DomainJoinEX2",
-        "configex1disk",
-        "configex2disk",
-        "downloadexchange10s1",
-        "downloadexchange10s2",
-        "prepareadexchange10",
         "prepareexchange10s1",
         "prepareexchange10s2",
+        "prepareadexchange10",
         "grantextrustedsub1",
         "grantextrustedsub2",
         "installexchange1",
@@ -4064,13 +3746,9 @@
         "DomainJoinEX1",
         "deployex2",
         "DomainJoinEX2",
-        "configex1disk",
-        "configex2disk",
-        "downloadexchange10s1",
-        "downloadexchange10s2",
-        "prepareadexchange10",
         "prepareexchange10s1",
         "prepareexchange10s2",
+        "prepareadexchange10",
         "grantextrustedsub1",
         "grantextrustedsub2",
         "installexchange1",
@@ -4154,13 +3832,9 @@
         "DomainJoinEX1",
         "deployex2",
         "DomainJoinEX2",
-        "configex1disk",
-        "configex2disk",
-        "downloadexchange10s1",
-        "downloadexchange10s2",
-        "prepareadexchange10",
         "prepareexchange10s1",
         "prepareexchange10s2",
+        "prepareadexchange10",
         "grantextrustedsub1",
         "grantextrustedsub2",
         "installexchange1",
@@ -4260,13 +3934,9 @@
         "DomainJoinEX1",
         "deployex2",
         "DomainJoinEX2",
-        "configex1disk",
-        "configex2disk",
-        "downloadexchange10s1",
-        "downloadexchange10s2",
-        "prepareadexchange10",
         "prepareexchange10s1",
         "prepareexchange10s2",
+        "prepareadexchange10",
         "grantextrustedsub1",
         "grantextrustedsub2",
         "installexchange1",
@@ -4373,13 +4043,9 @@
         "DomainJoinEX1",
         "deployex2",
         "DomainJoinEX2",
-        "configex1disk",
-        "configex2disk",
-        "downloadexchange10s1",
-        "downloadexchange10s2",
-        "prepareadexchange10",
         "prepareexchange10s1",
         "prepareexchange10s2",
+        "prepareadexchange10",
         "grantextrustedsub1",
         "grantextrustedsub2",
         "installexchange1",
@@ -4487,13 +4153,9 @@
         "DomainJoinEX1",
         "deployex2",
         "DomainJoinEX2",
-        "configex1disk",
-        "configex2disk",
-        "downloadexchange10s1",
-        "downloadexchange10s2",
-        "prepareadexchange10",
         "prepareexchange10s1",
         "prepareexchange10s2",
+        "prepareadexchange10",
         "grantextrustedsub1",
         "grantextrustedsub2",
         "installexchange1",
@@ -4572,13 +4234,9 @@
         "DomainJoinEX1",
         "deployex2",
         "DomainJoinEX2",
-        "configex1disk",
-        "configex2disk",
-        "downloadexchange10s1",
-        "downloadexchange10s2",
-        "prepareadexchange10",
         "prepareexchange10s1",
         "prepareexchange10s2",
+        "prepareadexchange10",
         "grantextrustedsub1",
         "grantextrustedsub2",
         "installexchange1",
@@ -4658,13 +4316,9 @@
         "DomainJoinEX1",
         "deployex2",
         "DomainJoinEX2",
-        "configex1disk",
-        "configex2disk",
-        "downloadexchange10s1",
-        "downloadexchange10s2",
-        "prepareadexchange10",
         "prepareexchange10s1",
         "prepareexchange10s2",
+        "prepareadexchange10",
         "grantextrustedsub1",
         "grantextrustedsub2",
         "installexchange1",
@@ -4765,13 +4419,9 @@
         "DomainJoinEX1",
         "deployex2",
         "DomainJoinEX2",
-        "configex1disk",
-        "configex2disk",
-        "downloadexchange10s1",
-        "downloadexchange10s2",
-        "prepareadexchange10",
         "prepareexchange10s1",
         "prepareexchange10s2",
+        "prepareadexchange10",
         "grantextrustedsub1",
         "grantextrustedsub2",
         "installexchange1",
@@ -4873,13 +4523,9 @@
         "DomainJoinEX1",
         "deployex2",
         "DomainJoinEX2",
-        "configex1disk",
-        "configex2disk",
-        "downloadexchange10s1",
-        "downloadexchange10s2",
-        "prepareadexchange10",
         "prepareexchange10s1",
         "prepareexchange10s2",
+        "prepareadexchange10",
         "grantextrustedsub1",
         "grantextrustedsub2",
         "installexchange1",
@@ -4983,13 +4629,9 @@
         "DomainJoinEX1",
         "deployex2",
         "DomainJoinEX2",
-        "configex1disk",
-        "configex2disk",
-        "downloadexchange10s1",
-        "downloadexchange10s2",
-        "prepareadexchange10",
         "prepareexchange10s1",
         "prepareexchange10s2",
+        "prepareadexchange10",
         "grantextrustedsub1",
         "grantextrustedsub2",
         "installexchange1",
