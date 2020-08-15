@@ -3167,12 +3167,6 @@
               "BaseDN": {
                   "value": "[variables('BaseDN')]"
               },                            
-              "IssuingCAServer": {
-                  "value": "[variables('icaname')]"
-              },                               
-              "IssuingCAName": {
-                  "value": "[parameters('IssuingCAName')]"
-              },                                             
               "Site1DC": {
                   "value": "[variables('dc1name')]"
               },                                                     
@@ -3372,12 +3366,6 @@
               "BaseDN": {
                   "value": "[variables('BaseDN')]"
               },                            
-              "IssuingCAServer": {
-                  "value": "[variables('icaname')]"
-              },    
-              "IssuingCAName": {
-                  "value": "[parameters('IssuingCAName')]"
-              },                                                                                      
               "Site1DC": {
                   "value": "[variables('dc1name')]"
               },                                                     
