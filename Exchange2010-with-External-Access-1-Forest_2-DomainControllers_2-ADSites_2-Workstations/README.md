@@ -2,8 +2,8 @@
 
 Click the button below to deploy
 
-[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2Fmaster%2FExchange2010-with-External-Access-1-Forest_2-DomainControllers_2-ADSites_2-Workstations%2Fazuredeploy.json)
-[![Deploy To Azure US Gov](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.svg?sanitize=true)](https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2Fmaster%2FExchange2010-with-External-Access-1-Forest_2-DomainControllers_2-ADSites_2-Workstations%2Fazuregovdeploy.json)
+[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2Fmaster%2FExchange2010-1-Forest_2-DomainControllers_2-ADSites_2-Workstations-08%2Fazuredeploy.json)
+[![Deploy To Azure US Gov](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.svg?sanitize=true)](https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2Fmaster%2FExchange2010-1-Forest_2-DomainControllers_2-ADSites_2-Workstations-08%2Fazuregovdeploy.json)
 
 This Templates deploys a Single Forest/Domain:
 
@@ -90,7 +90,7 @@ Exchange
 
 Parameters that support changes
 - Exchange Org Name. Enter a name that will be used for your Exchange Organization Name.
-- Exchange2010ISOUrl.  You must enter a URL or created SAS URL that points to an Exchange 2010 SP3 ISO for this installation to be successful.
+- ExchangeSP3ISOUrl.  You must enter a URL or created SAS URL that points to an Exchange 2010 ISO for this installation to be successful.
 - Admin Username.  Enter a valid Admin Username
 - Admin Password.  Enter a valid Admin Password
 - To Email.  Please provide a working email that the Trusted Certificate Authority Chain Can be sent to.  These certificates will allow access to Exchange Services like OWA, EAS and Outlook without Certificate Security warnings.

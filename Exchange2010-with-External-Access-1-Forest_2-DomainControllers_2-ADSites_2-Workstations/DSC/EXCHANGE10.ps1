@@ -21,7 +21,7 @@
         {
             SetScript =
             {
-                Set-Content -Path S:\ExchangeInstall\DeployExchange.cmd -Value "I:\Setup.com /roles:mb,ca,ht /mdbname:$using:DBName /dbfilepath:M:\$using:DBName\$using:DBName.edb /logfolderpath:M:\$using:DBName /dc:$using:SetupDC"
+                Set-Content -Path S:\ExchangeInstall\DeployExchange.cmd -Value "S:\ExchangeInstall\Exchange2010SP3\Setup.com /roles:mb,ca,ht /mdbname:$using:DBName /dbfilepath:M:\$using:DBName\$using:DBName.edb /logfolderpath:M:\$using:DBName /dc:$using:SetupDC"
                 S:\ExchangeInstall\DeployExchange.cmd
             }
             GetScript =  { @{} }

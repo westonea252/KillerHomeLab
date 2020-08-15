@@ -8,13 +8,12 @@
                 "description": "Computer Name"
             }
         },
-       "ExchangeSASUrl": {
+        "DCIP": {
             "type": "string",
             "metadata": {
-                "description": "Exchange SAS Url"
+                "description": "Domain Controller IP"
             }
-        },        
-
+        },                                
         "NetBiosDomain": {
             "type": "string",
             "metadata": {
@@ -71,7 +70,7 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
-                            "ExchangeSASUrl": "[parameters('ExchangeSASUrl')]",                            
+                            "DCIP": "[parameters('DCIP')]",                            
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
