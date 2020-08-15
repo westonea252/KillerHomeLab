@@ -316,7 +316,6 @@
         {
             ImagePath   = 'S:\ExchangeInstall\Exchange2010.iso'
             DriveLetter = 'I'
-            DependsOn = '[Package]InstallUCMA'
         }
 
         xWaitForVolume WaitForISO
