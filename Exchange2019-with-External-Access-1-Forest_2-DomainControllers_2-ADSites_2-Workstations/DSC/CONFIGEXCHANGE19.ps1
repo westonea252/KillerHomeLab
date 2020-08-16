@@ -1,4 +1,4 @@
-﻿configuration CONFIGEXCHANGE16
+﻿configuration CONFIGEXCHANGE19
 {
    param
    (
@@ -41,16 +41,16 @@
                 $Load = "$using:DomainCreds"
                 $Password = $DomainCreds.Password
 
-                # Get Certificate 2016 Certificate
-                $CertCheck = Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=owa2016.$using:RootDomainFQDN"}
-                IF ($CertCheck -eq $Null) {Get-Certificate -Template WebServer1 -SubjectName "CN=owa2016.$using:RootDomainFQDN" -DNSName "owa2016.$using:RootDomainFQDN","autodiscover.$using:RootDomainFQDN","autodiscover2016.$using:RootDomainFQDN","outlook2016.$using:RootDomainFQDN","eas2016.$using:RootDomainFQDN" -CertStoreLocation "cert:\LocalMachine\My"}
+                # Get Certificate 2019 Certificate
+                $CertCheck = Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=owa2019.$using:RootDomainFQDN"}
+                IF ($CertCheck -eq $Null) {Get-Certificate -Template WebServer1 -SubjectName "CN=owa2019.$using:RootDomainFQDN" -DNSName "owa2019.$using:RootDomainFQDN","autodiscover.$using:RootDomainFQDN","autodiscover2019.$using:RootDomainFQDN","outlook2019.$using:RootDomainFQDN","eas2019.$using:RootDomainFQDN" -CertStoreLocation "cert:\LocalMachine\My"}
 
-                $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=owa2016.$using:RootDomainFQDN"}).Thumbprint
-                (Get-ChildItem -Path Cert:\LocalMachine\My\$thumbprint).FriendlyName = "Exchange 2016 SAN Cert"
+                $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=owa2019.$using:RootDomainFQDN"}).Thumbprint
+                (Get-ChildItem -Path Cert:\LocalMachine\My\$thumbprint).FriendlyName = "Exchange 2019 SAN Cert"
 
                 # Export Service Communication Certificate
-                $CertFile = Get-ChildItem -Path "C:\Certificates\owa2016.$using:RootDomainFQDN.pfx" -ErrorAction 0
-                IF ($CertFile -eq $Null) {Get-ChildItem -Path cert:\LocalMachine\my\$thumbprint | Export-PfxCertificate -FilePath "C:\Certificates\owa2016.$using:RootDomainFQDN.pfx" -Password $Password}
+                $CertFile = Get-ChildItem -Path "C:\Certificates\owa2019.$using:RootDomainFQDN.pfx" -ErrorAction 0
+                IF ($CertFile -eq $Null) {Get-ChildItem -Path cert:\LocalMachine\my\$thumbprint | Export-PfxCertificate -FilePath "C:\Certificates\owa2019.$using:RootDomainFQDN.pfx" -Password $Password}
 
                 # Share Certificate
                 $CertShare = Get-SmbShare -Name Certificates -ErrorAction 0
@@ -61,15 +61,15 @@
             DependsOn = '[File]Certificates'
         }
 
-        Script ConfigureExchange2016
+        Script ConfigureExchange2019
         {
             SetScript =
             {
                 repadmin /replicate "$using:Site1DC" "$using:Site2DC" "$using:BaseDN"
                 repadmin /replicate "$using:Site2DC" "$using:Site1DC" "$using:BaseDN"
 
-                # Get Certificate 2016 Certificate
-                $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=owa2016.$using:RootDomainFQDN"}).Thumbprint
+                # Get Certificate 2019 Certificate
+                $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=owa2019.$using:RootDomainFQDN"}).Thumbprint
                 
                 # Connect to Exchange
                 $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri "http://$using:computerName.$using:RootDomainFQDN/PowerShell/"
@@ -77,28 +77,28 @@
 
                 # Set Virtual Directories
                 # Set AUTODISCOVER Virtual Directory
-                Set-ClientAccessServer "$using:computerName" –AutodiscoverServiceInternalUri "https://autodiscover2016.$using:RootDomainFQDN/Autodiscover/Autodiscover.xml"
+                Set-ClientAccessServer "$using:computerName" –AutodiscoverServiceInternalUri "https://autodiscover2019.$using:RootDomainFQDN/Autodiscover/Autodiscover.xml"
                 
                 # Set OWA Virtual Directory"
-                Set-OWAVirtualDirectory –Identity "$using:computerName\owa (Default Web Site)" –InternalURL "https://owa2016.$using:RootDomainFQDN/OWA" -ExternalURL "https://owa2016.$using:RootDomainFQDN/OWA" -ExternalAuthenticationMethods NTLM -FormsAuthentication:$False -BasicAuthentication:$False –WindowsAuthentication:$True
+                Set-OWAVirtualDirectory –Identity "$using:computerName\owa (Default Web Site)" –InternalURL "https://owa2019.$using:RootDomainFQDN/OWA" -ExternalURL "https://owa2019.$using:RootDomainFQDN/OWA" -ExternalAuthenticationMethods NTLM -FormsAuthentication:$False -BasicAuthentication:$False –WindowsAuthentication:$True
 
                 # Set ECP Virtual Directory
-                Set-ECPVirtualDirectory –Identity "$using:computerName\ecp (Default Web Site)" –InternalURL "https://owa2016.$using:RootDomainFQDN/ECP" -ExternalURL "https://owa2016.$using:RootDomainFQDN/ECP" -ExternalAuthenticationMethods NTLM -FormsAuthentication:$False -BasicAuthentication:$False –WindowsAuthentication:$True
+                Set-ECPVirtualDirectory –Identity "$using:computerName\ecp (Default Web Site)" –InternalURL "https://owa2019.$using:RootDomainFQDN/ECP" -ExternalURL "https://owa2019.$using:RootDomainFQDN/ECP" -ExternalAuthenticationMethods NTLM -FormsAuthentication:$False -BasicAuthentication:$False –WindowsAuthentication:$True
 
                 # Set OAB Virtual Directory
-                Set-OABVirtualDirectory –Identity "$using:computerName\oab (Default Web Site)" –InternalURL "https://outlook2016.$using:RootDomainFQDN/OAB" -ExternalURL "https://outlook2016.$using:RootDomainFQDN/OAB"
+                Set-OABVirtualDirectory –Identity "$using:computerName\oab (Default Web Site)" –InternalURL "https://outlook2019.$using:RootDomainFQDN/OAB" -ExternalURL "https://outlook2019.$using:RootDomainFQDN/OAB"
                 
                 # Set MRS PROXY Virtual Directory"
                 Set-WebServicesVirtualDirectory –Identity "$using:computerName\EWS (Default Web Site)" –MRSProxyEnabled:$True
-                Set-WebServicesVirtualDirectory –Identity "$using:computerName\EWS (Default Web Site)" –InternalURL "https://outlook2016.$using:RootDomainFQDN/EWS/Exchange.asmx" -ExternalURL "https://outlook2016.$using:RootDomainFQDN/EWS/Exchange.asmx"
+                Set-WebServicesVirtualDirectory –Identity "$using:computerName\EWS (Default Web Site)" –InternalURL "https://outlook2019.$using:RootDomainFQDN/EWS/Exchange.asmx" -ExternalURL "https://outlook2019.$using:RootDomainFQDN/EWS/Exchange.asmx"
 
                 # Set ACTIVESYNC Virtual Directory
-                Set-ActiveSyncVirtualDirectory –Identity "$using:computerName\Microsoft-Server-ActiveSync (Default Web Site)" –InternalURL "https://eas2016.$using:RootDomainFQDN/Microsoft-Server-ActiveSync" -ExternalURL "https://eas2016.$using:RootDomainFQDN/Microsoft-Server-ActiveSync"
+                Set-ActiveSyncVirtualDirectory –Identity "$using:computerName\Microsoft-Server-ActiveSync (Default Web Site)" –InternalURL "https://eas2019.$using:RootDomainFQDN/Microsoft-Server-ActiveSync" -ExternalURL "https://eas2019.$using:RootDomainFQDN/Microsoft-Server-ActiveSync"
 
                 # Set MAPI Virtual Directory
-                Set-MapiVirtualDirectory –Identity "$using:computerName\mapi (Default Web Site)" –InternalURL "https://outlook2016.$using:RootDomainFQDN/MAPI" -ExternalURL "https://outlook2016.$using:RootDomainFQDN/MAPI" -IISAuthenticationMethods Ntlm,OAuth,Negotiate
+                Set-MapiVirtualDirectory –Identity "$using:computerName\mapi (Default Web Site)" –InternalURL "https://outlook2019.$using:RootDomainFQDN/MAPI" -ExternalURL "https://outlook2019.$using:RootDomainFQDN/MAPI" -IISAuthenticationMethods Ntlm,OAuth,Negotiate
 
-                # Enable Exchange 2016 Certificate
+                # Enable Exchange 2019 Certificate
                 Enable-ExchangeCertificate -Thumbprint $thumbprint -Services IIS -Confirm:$False
 
                 # Create DAG

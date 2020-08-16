@@ -43,7 +43,7 @@
 
                 # Get Certificate 2013 Certificate
                 $CertCheck = Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=owa2013.$using:RootDomainFQDN"}
-                IF ($CertCheck -eq $Null) {Get-Certificate -Template WebServer1 -SubjectName "CN=owa2013.$using:RootDomainFQDN" -DNSName "owa2013.$using:RootDomainFQDN","autodiscover2013.$using:RootDomainFQDN","outlook2013.$using:RootDomainFQDN","eas2013.$using:RootDomainFQDN" -CertStoreLocation "cert:\LocalMachine\My"}
+                IF ($CertCheck -eq $Null) {Get-Certificate -Template WebServer1 -SubjectName "CN=owa2013.$using:RootDomainFQDN" -DNSName "owa2013.$using:RootDomainFQDN","autodiscover.$using:RootDomainFQDN","autodiscover2013.$using:RootDomainFQDN","outlook2013.$using:RootDomainFQDN","eas2013.$using:RootDomainFQDN" -CertStoreLocation "cert:\LocalMachine\My"}
 
                 $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=owa2013.$using:RootDomainFQDN"}).Thumbprint
                 (Get-ChildItem -Path Cert:\LocalMachine\My\$thumbprint).FriendlyName = "Exchange 2013 SAN Cert"

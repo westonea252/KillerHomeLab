@@ -60,6 +60,7 @@
                 Add-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value '[Extensions]'
                 Add-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value "2.5.29.17 = $quote{text}$quote"
                 Add-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value "_continue_ = $DNS=owa2010.$fqdn&$quote"
+                Add-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value "_continue_ = $DNS=autodiscover.$fqdn&$quote"
                 Add-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value "_continue_ = $DNS=autodiscover2010.$fqdn&$quote"
                 Add-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value "_continue_ = $DNS=eas2010.$fqdn&$quote"
                 Add-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value "_continue_ = $DNS=outlook2010.$fqdn&$quote"

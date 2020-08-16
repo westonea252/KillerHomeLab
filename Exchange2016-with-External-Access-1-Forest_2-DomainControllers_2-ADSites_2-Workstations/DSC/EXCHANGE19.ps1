@@ -1,4 +1,4 @@
-﻿configuration EXCHANGE16
+﻿configuration EXCHANGE19
 {
    param
    (
@@ -24,11 +24,11 @@
             Ensure = "Present"
         }
 
-        Script InstallExchange2016
+        Script InstallExchange2019
         {
             SetScript =
             {
-                Set-Content -Path S:\ExchangeInstall\DeployExchange.cmd -Value "J:\Setup.exe /Iacceptexchangeserverlicenseterms /Mode:Install /Role:Mailbox /DbFilePath:M:\$using:DBName\$using:DBName.edb /LogFolderPath:M:\$using:DBName /MdbName:$using:DBName /dc:$using:SetupDC"
+                Set-Content -Path S:\ExchangeInstall\DeployExchange.cmd -Value "L:\Setup.exe /Iacceptexchangeserverlicenseterms /Mode:Install /Role:Mailbox /DbFilePath:M:\$using:DBName\$using:DBName.edb /LogFolderPath:M:\$using:DBName /MdbName:$using:DBName /dc:$using:SetupDC"
                 S:\ExchangeInstall\DeployExchange.cmd
             }
             GetScript =  { @{} }

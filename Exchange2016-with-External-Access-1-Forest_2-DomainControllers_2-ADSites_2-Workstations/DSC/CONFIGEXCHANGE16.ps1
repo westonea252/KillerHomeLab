@@ -43,7 +43,7 @@
 
                 # Get Certificate 2016 Certificate
                 $CertCheck = Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=owa2016.$using:RootDomainFQDN"}
-                IF ($CertCheck -eq $Null) {Get-Certificate -Template WebServer1 -SubjectName "CN=owa2016.$using:RootDomainFQDN" -DNSName "owa2016.$using:RootDomainFQDN","autodiscover2016.$using:RootDomainFQDN","outlook2016.$using:RootDomainFQDN","eas2016.$using:RootDomainFQDN" -CertStoreLocation "cert:\LocalMachine\My"}
+                IF ($CertCheck -eq $Null) {Get-Certificate -Template WebServer1 -SubjectName "CN=owa2016.$using:RootDomainFQDN" -DNSName "owa2016.$using:RootDomainFQDN","autodiscover.$using:RootDomainFQDN","autodiscover2016.$using:RootDomainFQDN","outlook2016.$using:RootDomainFQDN","eas2016.$using:RootDomainFQDN" -CertStoreLocation "cert:\LocalMachine\My"}
 
                 $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=owa2016.$using:RootDomainFQDN"}).Thumbprint
                 (Get-ChildItem -Path Cert:\LocalMachine\My\$thumbprint).FriendlyName = "Exchange 2016 SAN Cert"
