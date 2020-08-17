@@ -365,7 +365,6 @@
     "DB1Name": "[concat(parameters('NamingConvention'),'-19-db01')]",
     "DB2Name": "[concat(parameters('NamingConvention'),'-19-db02')]" ,             
     "DAG19Name": "[concat(parameters('NamingConvention'),'-19-dag01')]",
-    "dag19IP": "255.255.255.255",
     "NSG1Name": "[concat(parameters('NamingConvention'),'-nsg01')]",
     "NSG2Name": "[concat(parameters('NamingConvention'),'-nsg02')]",
     "FromEmail": "[concat(parameters('adminUserName'),'@',variables('domainName'))]"    
@@ -3105,9 +3104,6 @@
               },                            
               "DAGName": {
                   "value": "[variables('dag19name')]"
-              },                                                                                                                                             
-              "DAGIPAddress": {
-                  "value": "[variables('dag19ip')]"
               },                                                                                                                                             
               "CAServerIP": {
                   "value": "[variables('icaIP')]"

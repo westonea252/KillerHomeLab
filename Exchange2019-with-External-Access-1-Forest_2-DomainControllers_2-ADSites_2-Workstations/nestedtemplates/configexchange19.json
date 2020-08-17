@@ -56,12 +56,6 @@
                 "description": "Database Availability Group Name"
             }
         },                             
-        "DAGIPAddress": {
-            "type": "string",
-            "metadata": {
-                "description": "Database Availability Group IP"
-            }
-        },  
         "CAServerIP": {
             "type": "string",
             "metadata": {
@@ -133,7 +127,6 @@
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",        
                             "BaseDN": "[parameters('BaseDN')]",                                                        
                             "DAGName": "[parameters('DAGName')]",                    
-                            "DAGIPAddress": "[parameters('DAGIPAddress')]",    
                             "CAServerIP": "[parameters('CAServerIP')]",                                                                                                                                                                                
                             "Site": "[parameters('Site')]",                                                                                                                                                                            
                             "AdminCreds": {

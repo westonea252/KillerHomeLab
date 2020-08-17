@@ -54,6 +54,12 @@
             Ensure = 'Present'
             Name = 'RPC-over-HTTP-proxy'
         }
+
+        WindowsFeature Failover-Clustering
+        {
+            Ensure = 'Present'
+            Name = 'Failover-Clustering'
+        }
         
         WindowsFeature RSAT-Clustering
         {

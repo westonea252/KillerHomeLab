@@ -11,7 +11,6 @@
         [String]$ConfigDC,
         [String]$Site1FSW,
         [String]$DAGName,
-        [String]$DAGIPAddress,
         [String]$CAServerIP,
         [String]$Site,
         [System.Management.Automation.PSCredential]$Admincreds
@@ -104,7 +103,6 @@
                 # Create DAG
                 $DAGCheck = Get-DatabaseAvailabilityGroup -Identity "$using:DAGName" -DomainController "$using:ConfigDC" -ErrorAction 0
                 IF ($DAGCheck -eq $null) {New-DatabaseAvailabilityGroup -Name "$using:DAGName" -WitnessServer "$using:Site1FSW" -WitnessDirectory C:\FSWs -DomainController "$using:ConfigDC"}
-                Set-DatabaseAvailabilityGroup -Identity "$using:DAGName" -DatabaseAvailabilityGroupIpAddresses "$using:DAGIPAddress" -DomainController "$using:ConfigDC"
                 Add-DatabaseAvailabilityGroupServer -Identity "$using:DAGName" -MailboxServer "$using:computerName" -DomainController "$using:ConfigDC"
 
                 # Create Connectors
