@@ -3299,9 +3299,6 @@
               "DAGName": {
                   "value": "[variables('dag19name')]"
               },                                                                                                                                             
-              "DAGIPAddress": {
-                  "value": "[variables('dag19ip')]"
-              },                                                                                                                                             
               "CAServerIP": {
                   "value": "[variables('icaIP')]"
               },                                                                                                                                                                                       
