@@ -59,7 +59,7 @@
     },         
     "vnet1ID": {
       "type": "string",
-      "defaultValue": "16.1",
+      "defaultValue": "10.1",
       "metadata": {
         "description": "VNet1 Prefix"
       }
