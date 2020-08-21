@@ -136,7 +136,13 @@
               },              
               "LicenseType": {
                 "value": "None"
+              },   
+              "DataDisk1Name": {
+                "value": "SQLDatabases"
               },            
+              "DataDisk2Name": {
+                "value": "SQLLogs"
+              },                       
               "VMSize": {
                 "value": "[parameters('SQLVMSize')]"
               },
