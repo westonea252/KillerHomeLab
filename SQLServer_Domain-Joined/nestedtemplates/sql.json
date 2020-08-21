@@ -1,5 +1,5 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "computerName": {
@@ -13,25 +13,19 @@
             "metadata": {
                 "description": "NetBios Domain Name"
             }
-        },
-        "domainName": {
+        },     
+        "SQLSASUrl": {
             "type": "string",
-          "metadata": {
-            "description": "The FQDN of the AD Domain created "
-          }
-        },
-        "DnsServerIP": {
-            "type": "string",
-          "metadata": {
-            "description": "DNS Server IP "
-          }
-        },                                       
+            "metadata": {
+                "description": "Azure AD Connect Download URL"
+            }
+        },                             
         "location": {
             "type": "string",
           "metadata": {
             "description": "Region of Resources"
           }
-        }, 
+        },
         "adminUsername": {
             "type": "string",
             "metadata": {
@@ -43,7 +37,7 @@
           "metadata": {
             "description": "The password for the Administrator account of the new VM and Domain"
           }
-        },
+        },         
         "_artifactsLocation": {
             "type": "string",
             "metadata": {
@@ -58,8 +52,8 @@
         }                
     },
     "variables": {
-        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/OTHERDC.zip', parameters('_artifactsLocationSasToken')))]",
-        "ConfigurationFunction": "OTHERDC.ps1\\OTHERDC"
+        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/SQL.zip', parameters('_artifactsLocationSasToken')))]",
+        "ConfigurationFunction": "SQL.ps1\\SQL"
     },
     "resources": [
         {
@@ -76,13 +70,13 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
-                            "DomainName": "[parameters('domainName')]",
-                            "NetBiosDomain": "[parameters('NetBiosDomain')]",
-                            "DnsServerIP": "[parameters('DnsServerIP')]",                            
-                        "AdminCreds": {
+                            "NetBiosDomain": "[parameters('NetBiosDomain')]",                                                        
+                            "SQLSASUrl": "[parameters('SQLSASUrl')]",                                                        
+                            "AdminCreds": {
                             "UserName": "[parameters('adminUsername')]",
-                            "Password": "PrivateSettingsRef:AdminPassword"
+                            "Password": "PrivateSettingsRef:AdminPassword"                                                                                   
                         }
+
                         }
                 },
                 "protectedSettings": {
