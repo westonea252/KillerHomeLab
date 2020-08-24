@@ -8,30 +8,6 @@
                 "description": "Computer Name"
             }
         },
-        "GPOName": {
-            "type": "string",
-          "metadata": {
-            "description": "Policy GPO Name"
-          }
-        },
-        "GPOSASUrl": {
-            "type": "string",
-          "metadata": {
-            "description": "GPO Download Url"
-          }
-        },
-        "GPOGUID": {
-            "type": "string",
-          "metadata": {
-            "description": "GPO GUID"
-          }
-        },
-        "BaseDN": {
-            "type": "string",
-            "metadata": {
-                "description": "Base Domain Distiguished Name"
-            }
-        },
         "location": {
             "type": "string",
           "metadata": {
@@ -52,9 +28,8 @@
         }                
     },
     "variables": {
-        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/GPO.zip', parameters('_artifactsLocationSasToken')))]",
-        "ConfigurationFunction": "GPO.ps1\\GPO"
-
+        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/EXDISKPART.zip', parameters('_artifactsLocationSasToken')))]",
+        "ConfigurationFunction": "EXDISKPART.ps1\\EXDISKPART"
     },
     "resources": [
         {
@@ -69,13 +44,7 @@
                 "autoUpgradeMinorVersion": true,
                 "settings": {
                     "ModulesUrl": "[variables('modulesUrl')]",
-                    "ConfigurationFunction": "[variables('configurationFunction')]",
-                        "Properties": {
-                            "GPOName": "[parameters('GPOName')]",
-                            "GPOSASUrl": "[parameters('GPOSASUrl')]",                            
-                            "GPOGUID": "[parameters('GPOGUID')]", 
-                            "BaseDN": "[parameters('BaseDN')]"
-                        }
+                    "ConfigurationFunction": "[variables('configurationFunction')]"
                     }
                 }
             }
