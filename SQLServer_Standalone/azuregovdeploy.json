@@ -23,9 +23,9 @@
     },
     "Location1": {
       "type": "string",
-      "defaultValue": "EastUS",
+      "defaultValue": "USGovVirginia",
       "metadata": {
-        "description": "Choose Region (Example:  EastUS)"
+        "description": "Choose Region (Example:  USGovVirginia)"
       }
     },
     "NamingConvention": {
