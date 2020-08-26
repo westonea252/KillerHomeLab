@@ -6,6 +6,7 @@ Click the button below to deploy
 [![Deploy To Azure US Gov](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.svg?sanitize=true)](https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2Fmaster%2FHybridIdentity-ADFS-WAP-ADConnect%2Fazuregovdeploy.json)
 
 This Templates IS MEANT TO BE USED AS AN ADD-ON to the following labs:
+**** THE PARAMETERS SPECIFIED FOR THIS ADD-ON LAB MUST MATCH THE PARAMETERS OF THE BASE LAB THAT IT WILL BE ADDED TO ****
 
 - Exchange2016-with-External-Access-1-Forest_2-DomainControllers_2-ADSites_2-Workstations
 
