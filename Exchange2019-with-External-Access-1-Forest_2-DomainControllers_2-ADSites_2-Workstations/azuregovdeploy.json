@@ -30,6 +30,7 @@
     }, 
     "ToEmail": {
         "type": "string",
+        "defaultValue": "",
         "metadata": {
             "description": "Enter an Email Address to send the Trusted CA Certificates"
         }
