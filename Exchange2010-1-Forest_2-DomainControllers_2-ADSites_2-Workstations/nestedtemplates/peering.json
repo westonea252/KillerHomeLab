@@ -1,5 +1,5 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
       "SourceVNetName": {
@@ -12,6 +12,12 @@
         "type": "string",
         "metadata": {
           "description": "Set the remote VNet name"
+        }
+      },
+      "TargetResourceGroupName": {
+        "type": "string",
+        "metadata": {
+          "description": "Sets the remote VNet Resource group"
         }
       },
       "allowVirtualNetworkAccess": {
@@ -46,7 +52,7 @@
       }
     },
     "variables": {
-      "remoteVNet": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks', parameters('TargetVNetName'))]",
+      "remoteVNet": "[resourceId(parameters('TargetResourceGroupName'), 'Microsoft.Network/virtualNetworks', parameters('TargetVNetName'))]",
       "peeringName": "[concat(parameters('SourceVNetName'), '/', parameters('SourceVNetName'), '-to-', parameters('TargetVNetName'))]"
     },
     "resources": [
