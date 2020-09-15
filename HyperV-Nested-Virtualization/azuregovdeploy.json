@@ -242,7 +242,7 @@
               "HyperVNATIP": {
                 "value": "[ variables('HyperVNATIP')]"
               },                                                                                                            
-              "HyperVVNetPrefix": {
+              "HyperVSubnetPrefix": {
                 "value": "[variables('HyperVsubnetPrefix')]"
               },
               "_artifactsLocation": {
