@@ -16,6 +16,7 @@
         {
             Name   = 'Hyper-V'
             Ensure = 'Present'
+            IncludeAllSubFeature = $true
         }
 
         xWaitforDisk Disk2
