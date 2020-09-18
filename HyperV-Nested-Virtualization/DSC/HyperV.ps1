@@ -19,6 +19,13 @@
             IncludeAllSubFeature = $true
         }
 
+        WindowsFeature 'RSAT-Hyper-V-Tools'
+        {
+            Name   = 'RSAT-Hyper-V-Tools'
+            Ensure = 'Present'
+            IncludeAllSubFeature = $true
+        }
+
         xWaitforDisk Disk2
         {
              DiskId = 2
