@@ -39,7 +39,8 @@
             SetScript =
             {
                 # Create Credentials
-                $AzureCreds = "$using:TenantCreds"
+                $Load = "$using:TenantCreds"
+                $AzureCreds = $TenantCreds
 
                 # Load Azure PowerShell
                 $AzModCheck = Get-Module -Name Az.Accounts -ErrorAction SilentlyContinue
