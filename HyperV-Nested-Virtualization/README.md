@@ -10,6 +10,12 @@ The Template deploys the folowing:
 
 The deployment leverages Desired State Configuration scripts to further customize the following:
 
+Azure Site Recovery
+- Install Azure PowerShell on Hyper-V Host
+- Create Recovery Services Vault
+- Create ASR Hyper-V Site
+- Download ASR Regisration Key
+
 Hyper-V Deployment
 - Create DataDisk
 - Install HyperV
@@ -20,6 +26,8 @@ Hyper-V Deployment
 Parameters that support changes
 - Admin Username.  Enter a valid Admin Username
 - Admin Password.  Enter a valid Admin Password
+- Tenant Admin.  Enter a valid Azure Tenant Admin
+- HyperVSite.  Enter a valid name for a Hyper-V Site
 - Location1. Enter a Valid Azure Region based on which Cloud (AzureCloud, AzureUSGovernment, etc...) you are using.
 - Naming Convention. Enter a name that will be used as a naming prefix for (Servers, VNets, etc) you are using.
 - Vnet1ID.  Enter first 2 octets of your desired Address Space for Virtual Network 1 (Example:  10.1)
