@@ -10,6 +10,7 @@
 
     Import-DscResource -Module xPendingReboot # Used for Reboots
 
+    Node localhost
     {
         LocalConfigurationManager
         {
