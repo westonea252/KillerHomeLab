@@ -232,38 +232,26 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "name": "ConfigureHyperV",
+      "apiVersion": "2019-10-01",
+      "name": "DeployRSVault",
       "dependsOn": [
         "VNet1",
         "BastionHost1",
         "DeployHVVM"
-      ],
+      ],    
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/HyperV.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/recoveryservicesvault.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
-              "computerName": {
-                  "value": "[variables('hvname')]"
+              "RSVaultName": {
+                  "value": "[variables('VaultName')]"
               },
               "location": {
                   "value": "[parameters('Location1')]"
-              },                                          
-              "HyperVNATIP": {
-                "value": "[ variables('HyperVNATIP')]"
-              },                                                                                                            
-              "HyperVSubnetPrefix": {
-                "value": "[variables('HyperVsubnetPrefix')]"
-              },
-              "_artifactsLocation": {
-                "value": "[parameters('_artifactsLocation')]"
-              },                                                                                                            
-              "_artifactsLocationSasToken": {
-                "value": "[parameters('_artifactsLocationSasToken')]"
-              }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+              }
           }
       }
     },
@@ -275,7 +263,7 @@
         "VNet1",
         "BastionHost1",
         "DeployHVVM",
-        "ConfigureHyperV"
+        "DeployRSVault"
       ],
       "properties": {
           "mode": "Incremental",
@@ -313,31 +301,43 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
           }
       }
-    },
+    },    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
-      "name": "DeployRSVault2",
+      "apiVersion": "2015-01-01",
+      "name": "ConfigureHyperV",
       "dependsOn": [
         "VNet1",
         "BastionHost1",
         "DeployHVVM",
-        "ConfigureHyperV",
+        "DeployRSVault",
         "ConfigureASR"
-      ],    
+      ],
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/recoveryservicesvault.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/HyperV.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
-              "RSVaultName": {
-                  "value": "[variables('VaultName')]"
+              "computerName": {
+                  "value": "[variables('hvname')]"
               },
               "location": {
                   "value": "[parameters('Location1')]"
-              }
+              },                                          
+              "HyperVNATIP": {
+                "value": "[ variables('HyperVNATIP')]"
+              },                                                                                                            
+              "HyperVSubnetPrefix": {
+                "value": "[variables('HyperVsubnetPrefix')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
           }
       }
     }       

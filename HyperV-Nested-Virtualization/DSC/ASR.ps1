@@ -8,7 +8,14 @@
         [System.Management.Automation.PSCredential]$Admincreds
     )
 
+    Import-DscResource -Module xPendingReboot # Used for Reboots
+
     {
+        LocalConfigurationManager
+        {
+            RebootNodeIfNeeded = $true
+        }
+
         Script ConfigureASR
         {
             SetScript =
@@ -46,5 +53,11 @@
             GetScript =  { @{} }
             TestScript = { $false}
         }
+
+        xPendingReboot AfterRoleInstallation
+        {
+            Name       = 'AfterRoleInstallation'
+        }
+
      }
   }
