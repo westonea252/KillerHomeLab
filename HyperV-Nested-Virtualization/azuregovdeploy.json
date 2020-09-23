@@ -8,6 +8,18 @@
             "description": "The name of the Administrator of the new VM and Domain"
         }
     },
+    "TenantAdmin": {
+        "type": "string",
+        "metadata": {
+            "description": "Azure Tenant Admin Account"
+        }
+    },    
+    "HyperVSite": {
+        "type": "string",
+        "metadata": {
+            "description": "ASR Hyper-V Site Name"
+        }
+    },        
     "adminPassword": {
         "type": "securestring",
       "metadata": {
@@ -87,7 +99,8 @@
     "HyperVsubnetPrefix": "[concat(parameters('HyperVSubnetID'),'.0/24')]",         
     "hvname": "[concat(parameters('NamingConvention'),'-hv-01')]",                      
     "hvIP": "[concat(parameters('vnet1ID'),'.1.',variables('hvlastoctet'))]", 
-    "hvlastoctet": "123"
+    "hvlastoctet": "123",
+    "VaultName": "[concat(parameters('NamingConvention'),'-RSV')]"
   },  
   "resources": [
     {
@@ -253,6 +266,80 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
           }
       }
-    } 
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "ConfigureASR",
+      "dependsOn": [
+        "VNet1",
+        "BastionHost1",
+        "DeployHVVM",
+        "ConfigureHyperV"
+      ],
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/ASR.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('hvname')]"
+              },
+              "VaultName": {
+                "value": "[variables('VaultName')]"
+              },                                                                                                            
+              "HyperVSite": {
+                "value": "[parameters('HyperVSite')]"
+              },
+              "TenantAdmin": {
+                "value": "[parameters('TenantAdmin')]"
+              },              
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                      
+              "location": {
+                  "value": "[parameters('Location1')]"
+              },                                          
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DeployRSVault2",
+      "dependsOn": [
+        "VNet1",
+        "BastionHost1",
+        "DeployHVVM",
+        "ConfigureHyperV",
+        "ConfigureASR"
+      ],    
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/recoveryservicesvault.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "RSVaultName": {
+                  "value": "[variables('VaultName')]"
+              },
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }
+          }
+      }
+    }       
   ]
 }
