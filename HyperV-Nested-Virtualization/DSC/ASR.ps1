@@ -37,14 +37,14 @@
             SetScript =
             {
                 # Create Credentials
-                $Load = "$using:AdminCreds"
+                $Creds = "$using:AdminCreds"
 
                 # Load Azure PowerShell
                 Import-Module Az                
 
                 # Store Hashed Credentials Locally
                 New-Item -Path C:\AzureCreds -Type Directory
-                "$using:AdminCreds.Password" | ConvertFrom-SecureString | Out-File C:\AzureCreds\azureaccount.txt
+                $Creds.Password | ConvertFrom-SecureString | Out-File C:\AzureCreds\azureaccount.txt
 
                 # Login to Azure
                 $Azureusername = "$using:TenantAdmin"
