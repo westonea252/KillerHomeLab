@@ -4,8 +4,8 @@
    (
         [String]$VaultName,
         [String]$HyperVSite,
-        [String]$TenantAdmin,
-        [System.Management.Automation.PSCredential]$Admincreds
+        [System.Management.Automation.PSCredential]$Admincreds,
+        [System.Management.Automation.PSCredential]$Tenantcreds
     )
 
     Import-DscResource -Module xPendingReboot # Used for Reboots
@@ -22,10 +22,12 @@
             SetScript =
             {
                 # Install Azure PowerShell
-                Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
-                Install-Module Az -Force
-                Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
-                Import-Module Az                
+                $NuGetCheck = Get-PackageProvider -Name NuGet -ErrorAction SilentlyContinue
+                IF ($NuGetCheck -eq $Null) {Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force}
+                $AzModCheck = Get-Module -Name Az.Accounts -ErrorAction SilentlyContinue
+                IF ($AzModCheck -eq $Null) {Install-Module Az -Force}
+                IF ($AzModCheck -eq $Null) {Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force}
+                IF ($AzModCheck -eq $Null) {Import-Module Az}                
             }
             GetScript =  { @{} }
             TestScript = { $false}
@@ -37,26 +39,20 @@
             SetScript =
             {
                 # Create Credentials
-                $Creds = "$using:AdminCreds"
+                $AzureCreds = "$using:TenantCreds"
 
                 # Load Azure PowerShell
-                Import-Module Az                
-
-                # Store Hashed Credentials Locally
-                New-Item -Path C:\AzureCreds -Type Directory
-                $Creds.Password | ConvertFrom-SecureString | Out-File C:\AzureCreds\azureaccount.txt
-
-                # Login to Azure
-                $Azureusername = "$using:TenantAdmin"
-                $Azurepassword = Get-Content C:\AzureCreds\azureaccount.txt
-                $AzureCreds = New-Object -typename System.Management.Automation.PSCredential -argumentlist $Azureusername, ($Azurepassword | ConvertTo-SecureString)
+                $AzModCheck = Get-Module -Name Az.Accounts -ErrorAction SilentlyContinue
+                IF ($AzModCheck -ne $Null) {Import-Module Az}                
+                
                 Connect-AzAccount -Environment AzureUSGovernment -Credential $AzureCreds
 ​
                 # Get Vault
                 $Vault = Get-AzRecoveryServicesVault -Name "$using:VaultName"
 
                 # Create Hyper-V Site
-                New-AzRecoveryServicesAsrFabric -Type HyperVSite -Name "$using:HyperVSite"
+                $FabricCheck = Get-AzRecoveryServicesAsrFabric -Name "$using:HyperVSite"
+                IF ($FabricCheck -eq $Null) {New-AzRecoveryServicesAsrFabric -Type HyperVSite -Name "$using:HyperVSite"}
 
                 # Generate and Download Registration Key
                 $SiteIdentifier = Get-AzRecoveryServicesAsrFabric -Name "$using:HyperVSite" | Select-Object -ExpandProperty SiteIdentifier

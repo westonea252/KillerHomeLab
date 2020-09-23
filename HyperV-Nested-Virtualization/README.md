@@ -27,6 +27,7 @@ Parameters that support changes
 - Admin Username.  Enter a valid Admin Username
 - Admin Password.  Enter a valid Admin Password
 - Tenant Admin.  Enter a valid Azure Tenant Admin
+- Tenant Password.  Enter a valid Azure Tenant Password
 - HyperVSite.  Enter a valid name for a Hyper-V Site
 - Location1. Enter a Valid Azure Region based on which Cloud (AzureCloud, AzureUSGovernment, etc...) you are using.
 - Naming Convention. Enter a name that will be used as a naming prefix for (Servers, VNets, etc) you are using.

@@ -20,6 +20,12 @@
             "description": "Azure Tenant Admin Account"
         }
     },    
+    "TenantPassword": {
+        "type": "securestring",
+        "metadata": {
+            "description": "Azure Tenant Admin Password"
+        }
+    },      
     "HyperVSite": {
         "type": "string",
         "metadata": {
@@ -284,6 +290,9 @@
               "TenantAdmin": {
                 "value": "[parameters('TenantAdmin')]"
               },              
+              "TenantPassword": {
+                "value": "[parameters('TenantPassword')]"
+              },                            
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
               },                                                                                                            

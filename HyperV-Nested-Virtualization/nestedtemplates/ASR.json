@@ -26,6 +26,12 @@
                 "description": "Azure Tenant Admin"
             }
         },
+      "TenantPassword": {
+          "type": "securestring",
+        "metadata": {
+          "description": "Azure Tenant Password"
+        }
+      },         
       "adminUsername": {
           "type": "string",
           "metadata": {
@@ -78,11 +84,14 @@
                         "Properties": {
                             "VaultName": "[parameters('VaultName')]",
                             "HyperVSite": "[parameters('HyperVSite')]",
-                            "TenantAdmin": "[parameters('TenantAdmin')]",
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"
-                            }                                                        
+                            },
+                            "TenantCreds": {
+                                "UserName": "[parameters('TenantAdmin')]",
+                                "Password": "PrivateSettingsRef:TenantPassword"
+                            }                                                                                    
                         }
                     },
                     "protectedSettings": {
