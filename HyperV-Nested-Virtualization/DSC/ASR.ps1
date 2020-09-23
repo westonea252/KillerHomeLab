@@ -17,6 +17,21 @@
             RebootNodeIfNeeded = $true
         }
 
+        Script InstallAzModule
+        {
+            SetScript =
+            {
+                # Install Azure PowerShell
+                Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+                Install-Module Az -Force
+                Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
+                Import-Module Az                
+            }
+            GetScript =  { @{} }
+            TestScript = { $false}
+            PsDscRunAsCredential = $Admincreds
+        }
+
         Script ConfigureASR
         {
             SetScript =
@@ -25,10 +40,7 @@
                 $Load = "$using:AdminCreds"
                 $Password = $AdminCreds.GetNetworkCredential().Password
 
-                # Install Azure PowerShell
-                Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
-                Install-Module Az -Force
-                Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
+                # Load Azure PowerShell
                 Import-Module Az                
 
                 # Store Hashed Credentials Locally
@@ -53,6 +65,7 @@
             }
             GetScript =  { @{} }
             TestScript = { $false}
+            DependsOn = '[Script]InstallAzModule'
         }
 
         xPendingReboot AfterRoleInstallation
