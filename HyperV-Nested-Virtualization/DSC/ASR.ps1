@@ -50,9 +50,10 @@
 ​
                 # Get Vault
                 $Vault = Get-AzRecoveryServicesVault -Name "$using:VaultName"
-
+                Set-AzRecoveryServicesAsrVaultContext -Vault $Vault
+                
                 # Create Hyper-V Site
-                $FabricCheck = Get-AzRecoveryServicesAsrFabric -Name "$using:HyperVSite"
+                $FabricCheck = Get-AzRecoveryServicesAsrFabric -Name "$using:HyperVSite" -ErrorAction SilentlyContinue
                 IF ($FabricCheck -eq $Null) {New-AzRecoveryServicesAsrFabric -Type HyperVSite -Name "$using:HyperVSite"}
 
                 # Generate and Download Registration Key
