@@ -57,12 +57,12 @@
 
                 # Generate and Download Registration Key
                 $SiteIdentifier = Get-AzRecoveryServicesAsrFabric -Name "$using:HyperVSite" | Select-Object -ExpandProperty SiteIdentifier
-                $path = Get-AzRecoveryServicesVaultSettingsFile -Vault "$using:Vault" -SiteIdentifier $SiteIdentifier -SiteFriendlyName "$using:HyperVSite"
+                $path = Get-AzRecoveryServicesVaultSettingsFile -Vault $Vault -SiteIdentifier $SiteIdentifier -SiteFriendlyName "$using:HyperVSite"
             }
             GetScript =  { @{} }
             TestScript = { $false}
             DependsOn = '[Script]InstallAzModule'
-            Credential = $Admincreds
+            PsDscRunAsCredential = $Admincreds
         }
 
         xPendingReboot AfterRoleInstallation
