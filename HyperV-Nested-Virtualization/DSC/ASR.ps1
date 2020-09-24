@@ -62,7 +62,6 @@
             GetScript =  { @{} }
             TestScript = { $false}
             DependsOn = '[Script]InstallAzModule'
-            PsDscRunAsCredential = $Admincreds
         }
 
         xPendingReboot AfterRoleInstallation
