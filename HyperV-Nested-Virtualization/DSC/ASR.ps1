@@ -24,7 +24,7 @@
                 # Install Azure PowerShell
                 $NuGetCheck = Get-PackageProvider -Name NuGet -ErrorAction SilentlyContinue
                 IF ($NuGetCheck -eq $Null) {Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force}
-                $AzModCheck = Get-Module -Name Az.Accounts -ErrorAction SilentlyContinue
+                $AzModCheck = Get-Module -Name Az -ErrorAction SilentlyContinue
                 IF ($AzModCheck -eq $Null) {Install-Module Az -Force}
                 IF ($AzModCheck -eq $Null) {Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force}
                 IF ($AzModCheck -eq $Null) {Import-Module Az}                
@@ -39,18 +39,25 @@
             SetScript =
             {
                 # Create Credentials
-                $Load = "$using:TenantCreds"
-                $AzureCreds = $TenantCreds
+                $AzureUser = $using:TenantCreds
+                $AzurePass = ConvertTo-SecureString -AsPlainText -String $using:TenantCreds -Force
+                $AzureCreds = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $AzureUser,$AzurePass
 
                 # Load Azure PowerShell
-                $AzModCheck = Get-Module -Name Az.Accounts -ErrorAction SilentlyContinue
-                IF ($AzModCheck -ne $Null) {Import-Module Az}                
+                $AzModCheck = Get-Module -Name Az -ErrorAction SilentlyContinue
+                IF ($AzModCheck -ne $Null) {Import-Module Az}
                 
-                Connect-AzAccount -Environment AzureUSGovernment -Credential $AzureCreds
-​
+                New-Item -Path C:\TestBeforeLogin -Type Directory                
+                
+                Connect-AzAccount -Environment AzureUSGovernment -Credential $AzureCreds -Verbose
+
+                New-Item -Path C:\TestAfterLoginLogin -Type Directory                ​
+                
                 # Get Vault
                 $Vault = Get-AzRecoveryServicesVault -Name "$using:VaultName"
                 Set-AzRecoveryServicesAsrVaultContext -Vault $Vault
+
+                New-Item -Path C:\TestAfterVaultContext -Type Directory                
                 
                 # Create Hyper-V Site
                 $FabricCheck = Get-AzRecoveryServicesAsrFabric -Name "$using:HyperVSite" -ErrorAction SilentlyContinue
