@@ -39,8 +39,7 @@
             SetScript =
             {
                 # Create Credentials
-                $Creds = "$using:TenantCreds"
-                $AzureCreds = New-Object System.Management.Automation.PSCredential ("$($Creds.UserName)", $Creds.Password)
+                $AzureCreds = New-Object System.Management.Automation.PSCredential ("$($using:TenantCreds.UserName)", $using:TenantCreds.Password)
 
                 # Load Azure PowerShell
                 $AzModCheck = Get-Module -Name Az -ErrorAction SilentlyContinue
