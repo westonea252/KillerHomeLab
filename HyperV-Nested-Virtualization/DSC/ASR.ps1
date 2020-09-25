@@ -39,7 +39,7 @@
             SetScript =
             {
                 # Create Credentials
-                $Creds = $using:TenantAdmin
+                $Creds = $using:TenantCreds
                 $Username = $Creds.GetNetworkCredential().Username
                 $PlainPassword = $Creds.GetNetworkCredential().Password
                 $SecurePassword = ConvertTo-SecureString $PlainPassword -AsPlainText -Force
