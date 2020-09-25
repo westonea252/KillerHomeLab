@@ -39,11 +39,10 @@
             SetScript =
             {
                 # Create Credentials
-                $Creds = $using:TenantCreds
-                $Username = $Creds.GetNetworkCredential().Username
-                $PlainPassword = $Creds.GetNetworkCredential().Password
+                $Load = $using:TenantCreds
+                $Username = $TenantCreds.GetNetworkCredential().Username
+                $PlainPassword = $TenantCreds.GetNetworkCredential().Password
                 $SecurePassword = ConvertTo-SecureString $PlainPassword -AsPlainText -Force
-
                 $AzureCreds = New-Object System.Management.Automation.PSCredential ($UserName, $SecurePassword)
 
                 # Load Azure PowerShell
