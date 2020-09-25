@@ -39,7 +39,12 @@
             SetScript =
             {
                 # Create Credentials
-                $AzureCreds = New-Object System.Management.Automation.PSCredential ("$($using:TenantCreds.UserName)", $using:TenantCreds.Password)
+                $Creds = $using:TenantAdmin
+                $Username = $Creds.GetNetworkCredential().Username
+                $PlainPassword = $Creds.GetNetworkCredential().Password
+                $SecurePassword = ConvertTo-SecureString $PlainPassword -AsPlainText -Force
+
+                $AzureCreds = New-Object System.Management.Automation.PSCredential ($UserName, $SecurePassword)
 
                 # Load Azure PowerShell
                 $AzModCheck = Get-Module -Name Az -ErrorAction SilentlyContinue
@@ -47,7 +52,7 @@
                 
                 New-Item -Path C:\TestBeforeLogin -Type Directory                
                 
-                Connect-AzAccount -Environment AzureUSGovernment -Credential $AzureCreds -Verbose
+                Connect-AzAccount -Environment AzureUSGovernment -Credential $AzureCreds
 
                 New-Item -Path C:\TestAfterLoginLogin -Type Directory                ​
                 
