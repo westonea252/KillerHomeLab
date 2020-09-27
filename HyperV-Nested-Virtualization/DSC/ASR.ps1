@@ -61,7 +61,7 @@
                 
                 New-Item -Path C:\TestBeforeLogin -Type Directory                
                 
-                Connect-AzAccount -Environment AzureUSGovernment -Credential $AzureCreds
+                Connect-AzAccount -Environment AzureUSGovernment -Credential $AzureCreds -Scope CurrentUser -Verbose -Force
 
                 New-Item -Path C:\TestAfterLoginLogin -Type Directory                ​
                 
