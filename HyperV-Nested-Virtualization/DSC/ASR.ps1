@@ -42,7 +42,9 @@
                 $Creds = $using:TenantCreds
                 $Creds | ft Username, Password > C:\Creds.txt
                 $Creds.GetType() | fl > C:\CredsType.txt
-                $Creds.Password.Length | fl > C:\CredsLenghth.txt
+                $Creds.Password.Length | fl > C:\CredsLength.txt
+                $Creds.GetNetworkCredential().Password | fl > C:\CredsPlainPassword.txt
+                $Creds.GetNetworkCredential().SecurePassword | fl > C:\CredsSecurePassword.txt
 
                 $Username = $Creds.Username
                 $Username | fl > C:\Username.txt
@@ -56,7 +58,7 @@
                 $AzureCreds.Password | fl > C:\AzureCredsPassword.txt
                 $AzureCreds.Password.Length | fl > C:\AzureCredsPasswordLenghth.txt
 
-                Connect-AzAccount -Environment AzureUSGovernment -Credential $AzureCreds -Scope CurrentUser -Verbose -Force
+                Connect-AzAccount -Environment AzureUSGovernment -Credential $AzureCreds -Debug
 
                 New-Item -Path C:\TestAfterLoginLogin -Type Directory                ​
                 
