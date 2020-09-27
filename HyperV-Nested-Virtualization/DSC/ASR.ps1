@@ -40,23 +40,13 @@
             {                 
                 # Create Credentials
                 $Creds = $using:TenantCreds
-                $Creds | ft Username, Password > C:\Creds.txt
-                $Creds.GetType() | fl > C:\CredsType.txt
-                $Creds.Password.Length | fl > C:\CredsLength.txt
                 $Creds.GetNetworkCredential().Password | fl > C:\CredsPlainPassword.txt
-                $Creds.GetNetworkCredential().SecurePassword | fl > C:\CredsSecurePassword.txt
 
-                $Username = $Creds.Username
-                $Username | fl > C:\Username.txt
-
-                $Password = $Creds.Password
-                $Password | fl > C:\Password.txt
-
-                $AzureCreds = New-Object System.Management.Automation.PSCredential ($UserName, $Password)
+                $AzureCreds = New-Object System.Management.Automation.PSCredential ("$($Creds.UserName)", $Creds.Password)
                 $AzureCreds.GetType() | fl > C:\AzureCredsType.txt
                 $AzureCreds.UserName | fl > C:\AzureCredsUsername.txt
-                $AzureCreds.Password | fl > C:\AzureCredsPassword.txt
-                $AzureCreds.Password.Length | fl > C:\AzureCredsPasswordLenghth.txt
+                $AzureCreds.GetNetworkCredential().Password | fl > C:\AzureCredsPlainTextPassword.txt
+                $AzureCreds.Password.Length | fl > C:\AzureCredsPasswordLength.txt
 
                 Connect-AzAccount -Environment AzureUSGovernment -Credential $AzureCreds -Debug
 
