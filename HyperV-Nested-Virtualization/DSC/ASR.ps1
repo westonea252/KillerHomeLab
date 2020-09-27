@@ -40,10 +40,20 @@
             {
                 # Create Credentials
                 $DeserializedCreds = $using:TenantCreds
+                $DeserializedCreds | ft Username, Password > C:\Deserialize.txt
+
                 $Username = $DeserializedCreds.GetNetworkCredential().Username
+                $Username | fl > C:\Username.txt
+
                 $PlainPassword = $DeserializedCreds.GetNetworkCredential().Password
+                $PlainPassword | fl > C:\PlainPassword.txt
+
                 $SecurePassword = ConvertTo-SecureString $PlainPassword -AsPlainText -Force
+                $SecurePassword | fl > C:\SecurePassword.txt
+
                 $AzureCreds = New-Object System.Management.Automation.PSCredential ($UserName, $SecurePassword)
+                $AzureCreds.UserName | fl > C:\AzureCredsUsername.txt
+                $AzureCreds.Password | fl > C:\AzureCredsPassword.txt
 
                 # Load Azure PowerShell
                 $AzModCheck = Get-Module -Name Az -ErrorAction SilentlyContinue
