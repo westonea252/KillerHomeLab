@@ -39,9 +39,9 @@
             SetScript =
             {
                 # Create Credentials
-                $Load = $using:TenantCreds
-                $Username = $TenantCreds.GetNetworkCredential().Username
-                $PlainPassword = $TenantCreds.GetNetworkCredential().Password
+                $DeserializedCreds = $using:TenantCreds
+                $Username = $DeserializedCreds.GetNetworkCredential().Username
+                $PlainPassword = $DeserializedCreds.GetNetworkCredential().Password
                 $SecurePassword = ConvertTo-SecureString $PlainPassword -AsPlainText -Force
                 $AzureCreds = New-Object System.Management.Automation.PSCredential ($UserName, $SecurePassword)
 
