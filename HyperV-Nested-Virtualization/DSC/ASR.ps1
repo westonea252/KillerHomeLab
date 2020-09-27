@@ -52,7 +52,7 @@
                 $AzureCreds.UserName | fl > C:\AzureCredsUsername.txt
                 $AzureCreds.Password | fl > C:\AzureCredsPassword.txt
 
-                Connect-AzAccount -Environment AzureUSGovernment -Credential "$using:TenantCreds" -Scope CurrentUser -Verbose -Force
+                Connect-AzAccount -Environment AzureUSGovernment -Credential $AzureCreds -Scope CurrentUser -Verbose -Force
 
                 New-Item -Path C:\TestAfterLoginLogin -Type Directory                ​
                 
