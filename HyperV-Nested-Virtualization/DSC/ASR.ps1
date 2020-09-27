@@ -37,20 +37,8 @@
         Script ConfigureASR
         {
             SetScript =
-            {
-                # Create Credentials
-                $AzureCreds = $using:TenantCreds
-                $AzureCreds | ft Username, Password > C:\AzureCreds.txt
-                $AzureCreds.UserName | fl > C:\AzureCredsUsername.txt
-                $AzureCreds.Password | fl > C:\AzureCredsPassword.txt
-
-                # Load Azure PowerShell
-                $AzModCheck = Get-Module -Name Az -ErrorAction SilentlyContinue
-                IF ($AzModCheck -ne $Null) {Import-Module Az}
-                
-                New-Item -Path C:\TestBeforeLogin -Type Directory                
-                
-                Connect-AzAccount -Environment AzureUSGovernment -Credential $AzureCreds -Scope CurrentUser -Verbose -Force
+            {                 
+                Connect-AzAccount -Environment AzureUSGovernment -Credential "$using:TenantCreds" -Scope CurrentUser -Verbose -Force
 
                 New-Item -Path C:\TestAfterLoginLogin -Type Directory                ​
                 
