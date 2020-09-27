@@ -38,6 +38,20 @@
         {
             SetScript =
             {                 
+                # Create Credentials
+                $Creds = $using:TenantCreds
+                $Creds | ft Username, Password > C:\Creds.txt
+
+                $Username = $Creds.Username
+                $Username | fl > C:\Username.txt
+
+                $Password = $Creds.Password
+                $Password | fl > C:\Password.txt
+
+                $AzureCreds = New-Object System.Management.Automation.PSCredential ($UserName, $Password)
+                $AzureCreds.UserName | fl > C:\AzureCredsUsername.txt
+                $AzureCreds.Password | fl > C:\AzureCredsPassword.txt
+
                 Connect-AzAccount -Environment AzureUSGovernment -Credential "$using:TenantCreds" -Scope CurrentUser -Verbose -Force
 
                 New-Item -Path C:\TestAfterLoginLogin -Type Directory                ​
