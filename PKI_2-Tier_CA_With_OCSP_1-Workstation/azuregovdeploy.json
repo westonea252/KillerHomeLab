@@ -28,13 +28,20 @@
         "description": "VNet1 Name"
       }
     },
+    "SubDNSDomain": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+          "description": "Sub DNS Domain Name Example:  sub1. must include DOT AT END"
+      }
+    },      
     "NetBiosDomain": {
       "type": "string",
       "defaultValue": "killerhomelab",
       "metadata": {
           "description": "NetBios Parent Domain Name"
       }
-    },      
+    },          
     "TLD": {
       "type": "string",
       "defaultValue": "com",
@@ -207,7 +214,7 @@
     "wk1name": "[concat(parameters('NamingConvention'),'-wk-01')]",           
     "wk1IP": "[concat(parameters('vnet1ID'),'.2.',variables('wk1lastoctet'))]",        
     "DCDataDisk1Name": "NTDS",            
-    "domainName": "[concat(parameters('NetBiosDomain'),'.',parameters('TLD'))]",
+    "domainName": "[concat(parameters('SubDNSDomain'),parameters('NetBiosDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat('DC=',parameters('NetBiosDomain'),',DC=',parameters('TLD'))]",
     "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]"    
