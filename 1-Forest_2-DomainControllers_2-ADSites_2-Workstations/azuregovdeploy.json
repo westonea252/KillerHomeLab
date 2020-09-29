@@ -16,7 +16,7 @@
     },
     "Location1": {
       "type": "string",
-      "defaultValue": "USGovvVirginia",
+      "defaultValue": "USGovVirginia",
       "metadata": {
         "description": "Choose Region (Example: USGovVirginia)"
       }
