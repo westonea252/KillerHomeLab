@@ -37,7 +37,7 @@ Parameters that support changes
 - Sub DNS Domain.  OPTIONALLY, enter a valid DNS Sub Domain. (Example:  sub1. or sub1.sub2.    This entry must end with a DOT )
 - Sub DNS BaseDN.  OPTIONALLY, enter a valid DNS Sub Base DN. (Example:  DC=sub1, or DC=sub1,DC=sub2,    This entry must end with a COMMA )
 - Net Bios Domain.  Enter a valid Net Bios Domain Name (Example:  sub1).
-- Internal Domain.  Enter a valid Internal Domain 
+- Internal Domain.  Enter a valid Internal Domain (Exmaple:  killerhomelab)
 - TLD.  Select a valid Top-Level Domain using the Pull-Down Menu.
 - Vnet1ID.  Enter first 2 octets of your desired Address Space for Virtual Network 1 (Example:  10.1)
 - Vnet2ID.  Enter first 2 octets of your desired Address Space for Virtual Network 2 (Example:  10.2)

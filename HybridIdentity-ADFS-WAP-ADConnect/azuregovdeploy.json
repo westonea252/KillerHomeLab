@@ -70,6 +70,13 @@
           "description": "NetBios Parent Domain Name"
       }
     },                 
+    "ExternalDomain": {
+      "type": "string",
+      "defaultValue": "killerhomelab",
+      "metadata": {
+          "description": "External DNS Parent Domain Name"
+      }
+    },                     
     "TLD": {
       "type": "string",
       "defaultValue": "com",
@@ -206,14 +213,53 @@
     "wap2IP": "[concat(parameters('vnet2ID'),'.1.',variables('wap2lastoctet'))]",            
     "wap2lastoctet": "122",
     "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
+    "RootDomainFQDN": "[concat(parameters('ExternalDomain'),'.',parameters('TLD'))]",    
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]"
   },  
   "resources": [
+{
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "configdns",
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/configdns.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('dc1name')]"
+              },
+              "RootDomainFQDN": {
+                "value": "[variables('RootDomainFQDN')]"
+              },              
+              "ADFSServer1IP": {
+                "value": "[variables('adfs1IP')]"
+              },                                                                                                            
+              "ADFSServer2IP": {
+                "value": "[variables('adfs2IP')]"
+              },                                                                                                                          
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                                           
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }
+          }
+      }
+    },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "name": "createFSGMSA",
+      "dependsOn": [
+        "configdns"
+      ],  
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -228,7 +274,7 @@
                   "value": "[parameters('NetBiosDomain')]"
               },              
               "domainName": {
-                  "value": "[variables('domainName')]"
+                  "value": "[variables('RootDomainFQDN')]"
               },
               "location": {
                   "value": "[parameters('Location1')]"
@@ -247,6 +293,7 @@
       "apiVersion": "2015-01-01",
       "name": "deployADCVM",
       "dependsOn": [
+        "configdns",
         "createfsgmsa"
       ],      
       "properties": {
@@ -300,7 +347,8 @@
       "apiVersion": "2015-01-01",
       "name": "DomainJoinADC",
       "dependsOn": [
-        "createFSGMSA",
+        "configdns",
+        "createFSGMSA",      
         "deployADCVM"
       ],      
       "properties": {
@@ -339,7 +387,8 @@
       "apiVersion": "2015-01-01",
       "name": "downloadaaddc",
       "dependsOn": [
-        "createFSGMSA",
+        "configdns",  
+        "createFSGMSA",               
         "deployADCVM",
         "DomainJoinADC"
       ],      
@@ -379,7 +428,9 @@
       "apiVersion": "2015-01-01",
       "name": "deployADFS1VM",
       "dependsOn": [
+        "configdns",  
         "createfsgmsa",
+        "configdns",                
         "deployADCVM",
         "DomainJoinADC",
         "downloadaaddc"
@@ -435,6 +486,7 @@
       "apiVersion": "2015-01-01",
       "name": "DomainJoinADFS1",
       "dependsOn": [
+        "configdns",  
         "createFSGMSA",
         "deployADCVM",
         "DomainJoinADC",
@@ -477,6 +529,7 @@
       "apiVersion": "2015-01-01",
       "name": "configurefirstadfs",
       "dependsOn": [
+        "configdns",          
         "createFSGMSA",
         "deployADCVM",
         "DomainJoinADC",
@@ -495,7 +548,7 @@
                   "value": "[variables('adfs1name')]"
               },
               "RootDomainFQDN": {
-                  "value": "[variables('domainName')]"
+                  "value": "[variables('RootDomainFQDN')]"
               },          
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
@@ -529,6 +582,7 @@
       "apiVersion": "2015-01-01",
       "name": "deployADFS2VM",
       "dependsOn": [
+        "configdns",          
         "createfsgmsa",
         "deployADCVM",
         "DomainJoinADC",
@@ -588,6 +642,7 @@
       "apiVersion": "2015-01-01",
       "name": "DomainJoinADFS2",
       "dependsOn": [
+        "configdns",  
         "createFSGMSA",
         "deployADCVM",
         "DomainJoinADC",
@@ -633,6 +688,7 @@
       "apiVersion": "2015-01-01",
       "name": "configureotheradfs",
       "dependsOn": [
+        "configdns",  
         "createFSGMSA",
         "deployADCVM",
         "DomainJoinADC",
@@ -654,7 +710,7 @@
                   "value": "[variables('adfs2name')]"
               },
               "RootDomainFQDN": {
-                  "value": "[variables('domainName')]"
+                  "value": "[variables('RootDomainFQDN')]"
               },          
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
@@ -694,6 +750,7 @@
       "apiVersion": "2015-01-01",
       "name": "deployWAP1VM",
       "dependsOn": [
+        "configdns",  
         "createfsgmsa",
         "deployADCVM",
         "DomainJoinADC",
@@ -756,6 +813,7 @@
       "apiVersion": "2015-01-01",
       "name": "configurefirstwap",
       "dependsOn": [
+        "configdns",  
         "createFSGMSA",
         "deployADCVM",
         "DomainJoinADC",
@@ -785,7 +843,7 @@
                   "value": "[variables('adfs1IP')]"
               },          
               "RootDomainFQDN": {
-                  "value": "[variables('domainName')]"
+                  "value": "[variables('RootDomainFQDN')]"
               },          
               "IssuingCAName": {
                   "value": "[parameters('IssuingCAName')]"
@@ -816,6 +874,7 @@
       "apiVersion": "2015-01-01",
       "name": "deployWAP2VM",
       "dependsOn": [
+        "configdns",  
         "createfsgmsa",
         "deployADCVM",
         "DomainJoinADC",
@@ -880,6 +939,7 @@
       "apiVersion": "2015-01-01",
       "name": "configureotherwap",
       "dependsOn": [
+        "configdns",  
         "createFSGMSA",
         "deployADCVM",
         "DomainJoinADC",
@@ -911,7 +971,7 @@
                   "value": "[variables('adfs1IP')]"
               },          
               "RootDomainFQDN": {
-                  "value": "[variables('domainName')]"
+                  "value": "[variables('RootDomainFQDN')]"
               },          
               "IssuingCAName": {
                   "value": "[parameters('IssuingCAName')]"
@@ -942,6 +1002,7 @@
       "apiVersion": "2015-01-01",
       "name": "createpublicdns",
       "dependsOn": [
+        "configdns",  
         "createFSGMSA",
         "deployADCVM",
         "DomainJoinADC",
