@@ -44,11 +44,18 @@
     },          
     "NetBiosDomain": {
       "type": "string",
-      "defaultValue": "killerhomelab",
+      "defaultValue": "dir",
       "metadata": {
           "description": "NetBios Parent Domain Name"
       }
     },          
+    "InternalDomain": {
+      "type": "string",
+      "defaultValue": "killerhomelab",
+      "metadata": {
+          "description": "NetBios Parent Domain Name"
+      }
+    },              
     "TLD": {
       "type": "string",
       "defaultValue": "com",
@@ -221,8 +228,8 @@
     "wk1name": "[concat(parameters('NamingConvention'),'-wk-01')]",           
     "wk1IP": "[concat(parameters('vnet1ID'),'.2.',variables('wk1lastoctet'))]",        
     "DCDataDisk1Name": "NTDS",            
-    "domainName": "[concat(parameters('SubDNSDomain'),parameters('NetBiosDomain'),'.',parameters('TLD'))]",
-    "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('NetBiosDomain'),',DC=',parameters('TLD'))]",
+    "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
+    "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
     "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]"    
   },  
