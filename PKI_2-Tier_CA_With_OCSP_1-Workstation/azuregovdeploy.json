@@ -32,7 +32,7 @@
       "type": "string",
       "defaultValue": "",
       "metadata": {
-          "description": "Sub DNS Domain Name Example:  sub1. must include DOT AT END"
+          "description": "Sub DNS Domain Name Example:  sub1. must include a DOT AT END"
       }
     },      
     "SubDNSBaseDN": {

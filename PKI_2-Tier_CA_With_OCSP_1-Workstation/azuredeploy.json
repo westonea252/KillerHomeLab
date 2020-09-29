@@ -16,9 +16,9 @@
     },     
     "Location1": {
       "type": "string",
-      "defaultValue": "EastUS",
+      "defaultValue": "East",
       "metadata": {
-        "description": "Choose Region (Example:  EastUS)"
+        "description": "Choose Region (Example:  East)"
       }
     },      
     "NamingConvention": {
@@ -28,13 +28,34 @@
         "description": "VNet1 Name"
       }
     },
+    "SubDNSDomain": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+          "description": "Sub DNS Domain Name Example:  sub1. must include DOT AT END"
+      }
+    },      
+    "SubDNSBaseDN": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+          "description": "Sub DNS Domain Name Example:  DC=sub2,DC=sub1, must include COMMA AT END"
+      }
+    },          
     "NetBiosDomain": {
+      "type": "string",
+      "defaultValue": "dir",
+      "metadata": {
+          "description": "NetBios Parent Domain Name"
+      }
+    },          
+    "InternalDomain": {
       "type": "string",
       "defaultValue": "killerhomelab",
       "metadata": {
           "description": "NetBios Parent Domain Name"
       }
-    },      
+    },              
     "TLD": {
       "type": "string",
       "defaultValue": "com",
@@ -207,8 +228,8 @@
     "wk1name": "[concat(parameters('NamingConvention'),'-wk-01')]",           
     "wk1IP": "[concat(parameters('vnet1ID'),'.2.',variables('wk1lastoctet'))]",        
     "DCDataDisk1Name": "NTDS",            
-    "domainName": "[concat(parameters('NetBiosDomain'),'.',parameters('TLD'))]",
-    "BaseDN": "[concat('DC=',parameters('NetBiosDomain'),',DC=',parameters('TLD'))]",
+    "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
+    "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
     "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]"    
   },  
