@@ -1026,7 +1026,7 @@
           },
           "parameters": {
               "ZoneName": {
-                  "value": "[variables('domainName')]"
+                  "value": "[variables('RootDomainFQDN')]"
               },
               "ADFSRecord": {
                   "value": "adfs"
