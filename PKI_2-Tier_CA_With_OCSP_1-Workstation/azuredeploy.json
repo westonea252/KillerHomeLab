@@ -32,14 +32,14 @@
       "type": "string",
       "defaultValue": "",
       "metadata": {
-          "description": "Sub DNS Domain Name Example:  sub1. must include DOT AT END"
+          "description": "Sub DNS Domain Name Example:  sub1. must include a DOT AT END. LEAVE EMPTY IF NO SUB DNS DOMAIN IS NEEDED!!!!"
       }
     },      
     "SubDNSBaseDN": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-          "description": "Sub DNS Domain Name Example:  DC=sub2,DC=sub1, must include COMMA AT END"
+          "description": "Sub DNS Domain Name Example:  DC=sub2,DC=sub1, must include COMMA AT END. LEAVE EMPTY IF NO SUB DNS DOMAIN IS SPECIFIED!!!!"
       }
     },          
     "NetBiosDomain": {
