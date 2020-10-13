@@ -101,8 +101,6 @@
     }
   },
   "variables": {
-    "ResourceGroup1": "[concat(parameters('NamingConvention'),'-Site1')]",
-    "ResourceGroup2": "[concat(parameters('NamingConvention'),'-Site2')]",    
     "vnet1Name": "[concat(parameters('NamingConvention'),'-VNet1')]",
     "vnet1Prefix": "[concat(parameters('vnet1ID'),'.0.0/16')]",
     "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet1')]",    
@@ -132,7 +130,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DeployNPM",
-      "resourceGroup": "[variables('ResourceGroup1')]",
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -140,9 +137,6 @@
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
-              "ResourceGroupName": {
-                  "value": "[variables('ResourceGroup1')]"
-              },
               "workspaceName": {
                   "value": "[variables('WorkSpaceName')]"
               },
@@ -162,7 +156,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "VNet1",
-      "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
         "DeployNPM"        
       ],
@@ -204,7 +197,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "VNet2",
-      "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
         "DeployNPM",
         "VNet1"
@@ -247,7 +239,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "BastionHost1",
-      "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
         "DeployNPM",
         "VNet1",
@@ -282,7 +273,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "BastionHost2",
-      "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
         "DeployNPM",
         "VNet1",
@@ -318,7 +308,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "deployVNet1VM",
-      "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
         "DeployNPM",
         "VNet1",
@@ -376,7 +365,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "deployVNet2VM",
-      "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
         "DeployNPM",
         "VNet1",
@@ -435,7 +423,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "PeeringToSite2",
-      "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
         "DeployNPM",
         "VNet1",
@@ -459,7 +446,7 @@
                 "value": "[variables('vnet2Name')]"
               },              
               "TargetVNetResourceGroup": {
-                "value": "[variables('ResourceGroup2')]"
+                "value": "[resourceGroup().ResourceGroupName]"
               },                            
               "allowVirtualNetworkAccess": {
                 "value": "true"
@@ -483,7 +470,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "PeeringToSite1",
-      "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
         "DeployNPM",
         "VNet1",
@@ -508,7 +494,7 @@
                 "value": "[variables('vnet1Name')]"
               },              
               "TargetVNetResourceGroup": {
-                "value": "[variables('ResourceGroup1')]"
+                "value": "[resourceGroup().resourceGroupName]"
               },              
               "allowVirtualNetworkAccess": {
                 "value": "true"
@@ -532,7 +518,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "CreateManagedID",
-      "resourceGroup": "[variables('ResourceGroup2')]",            
       "dependsOn": [
         "DeployNPM",
         "VNet1",
@@ -564,7 +549,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "ConnectVM1",
-      "resourceGroup": "[variables('ResourceGroup1')]",                  
       "dependsOn": [
         "DeployNPM",
         "VNet1",
@@ -591,10 +575,10 @@
                   "value": "[variables('WorkSpaceName')]"
               },
               "VMResourceGroupName": {
-                  "value": "[variables('ResourceGroup1')]"
+                  "value": "[resourceGroup().resourceGroupName]"
               },       
               "WorkspaceResourceGroupName": {
-                  "value": "[variables('ResourceGroup1')]"
+                  "value": "[resourceGroup().resourceGroupName]"
               },              
               "Location": {
                   "value": "[parameters('Location1')]"
@@ -606,7 +590,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "ConnectVM2",
-      "resourceGroup": "[variables('ResourceGroup1')]",                  
       "dependsOn": [
         "DeployNPM",
         "VNet1",
@@ -634,10 +617,10 @@
                   "value": "[variables('WorkSpaceName')]"
               },
               "VMResourceGroupName": {
-                  "value": "[variables('ResourceGroup2')]"
+                  "value": "[resourceGroup().resourceGroupName]"
               },       
               "WorkspaceResourceGroupName": {
-                  "value": "[variables('ResourceGroup1')]"
+                  "value": "[resourceGroup().resourceGroupName]"
               },              
               "Location": {
                   "value": "[parameters('Location1')]"
