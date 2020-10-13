@@ -287,8 +287,7 @@
         "DeployNPM",
         "VNet1",
         "VNet2",
-        "BastionHost1",
-        "BastionHost2"
+        "BastionHost1"
       ],
       "properties": {
           "mode": "Incremental",
