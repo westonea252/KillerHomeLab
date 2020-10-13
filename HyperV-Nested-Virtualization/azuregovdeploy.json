@@ -263,64 +263,13 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
-      "name": "ConfigureASR",
-      "dependsOn": [
-        "VNet1",
-        "BastionHost1",
-        "DeployHVVM",
-        "DeployRSVault"
-      ],
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/ASR.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "computerName": {
-                  "value": "[variables('hvname')]"
-              },
-              "VaultName": {
-                "value": "[variables('VaultName')]"
-              },                                                                                                            
-              "HyperVSite": {
-                "value": "[parameters('HyperVSite')]"
-              },
-              "TenantAdmin": {
-                "value": "[parameters('TenantAdmin')]"
-              },              
-              "TenantPassword": {
-                "value": "[parameters('TenantPassword')]"
-              },                            
-              "adminUsername": {
-                "value": "[parameters('adminUsername')]"
-              },                                                                                                            
-              "adminPassword": {
-                "value": "[parameters('adminPassword')]"
-              },                                                                                                                                                      
-              "location": {
-                  "value": "[parameters('Location1')]"
-              },                                          
-              "_artifactsLocation": {
-                "value": "[parameters('_artifactsLocation')]"
-              },                                                                                                            
-              "_artifactsLocationSasToken": {
-                "value": "[parameters('_artifactsLocationSasToken')]"
-              }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
-          }
-      }
-    },    
-    {
-      "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "name": "ConfigureHyperV",
       "dependsOn": [
         "VNet1",
         "BastionHost1",
         "DeployHVVM",
-        "DeployRSVault",
-        "ConfigureASR"
+        "DeployRSVault"
       ],
       "properties": {
           "mode": "Incremental",
