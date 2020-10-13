@@ -1,10 +1,10 @@
-﻿Param(
-    [string]$VM,
-    [string]$WorkspaceName,
-    [string]$WorkspaceResourceGroup,
-    [string]$VMResourceGroup,
-    [string]$Location
-)
+﻿param(
+    [string] [Parameter(Mandatory=$true)] $VM,
+    [string] [Parameter(Mandatory=$true)] $WorkspaceName,
+    [string] [Parameter(Mandatory=$true)] $WorkspaceResourceGroup,
+    [string] [Parameter(Mandatory=$true)] $VMResourceGroup,
+    [string] [Parameter(Mandatory=$true)] $Location
+    )
 
 $Workspace =  Get-AzOperationalInsightsWorkspace -ResourceGroupName $WorkspaceResourceGroup -Name $WorkspaceName
 $WorkspaceID = $Workspace.CustomerId
