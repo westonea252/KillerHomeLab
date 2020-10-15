@@ -140,6 +140,9 @@
               "workspaceName": {
                   "value": "[variables('WorkSpaceName')]"
               },
+              "solutionTypes": {
+                  "value": ["NetworkMonitoring"]
+              },              
               "subscriptionID": {
                   "value": "[variables('SubscriptionID')]"
               },
