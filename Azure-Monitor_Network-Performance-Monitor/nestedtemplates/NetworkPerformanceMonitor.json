@@ -2,6 +2,12 @@
 "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
 "contentVersion": "1.0.0.0",
 "parameters": {
+    "resourcegroupName": {
+        "type": "string",
+        "metadata": {
+            "description": "Resource Group Name"
+          }
+    },
     "workspaceName": {
         "type": "string",
         "metadata": {
@@ -33,9 +39,6 @@
     }
       }
 },
-"variables": {
-    "ResourceGroupName": "[resourceGroup().ResourceGroupName]"
-},
 "resources": [
     {
         "type": "Microsoft.OperationalInsights/workspaces",
@@ -59,9 +62,9 @@
         "dependsOn": [
             "[resourceId('Microsoft.OperationalInsights/workspaces',parameters('workspaceName'))]"
         ],        
-        "id": "[Concat('/subscriptions/', parameters('subscriptionId'), '/resourceGroups/', variables('resourcegroupName'), '/providers/Microsoft.OperationsManagement/solutions/', parameters('solutionTypes')[copyIndex()], '(', parameters('workspaceName'), ')')]",
+        "id": "[Concat('/subscriptions/', parameters('subscriptionId'), '/resourceGroups/', parameters('resourcegroupName'), '/providers/Microsoft.OperationsManagement/solutions/', parameters('solutionTypes')[copyIndex()], '(', parameters('workspaceName'), ')')]",
         "properties": {
-            "workspaceResourceId": "[Concat('/subscriptions/', parameters('subscriptionId'), '/resourceGroups/', variables('resourcegroupName'), '/providers/Microsoft.OperationalInsights/workspaces/', parameters('workspaceName'))]"
+            "workspaceResourceId": "[Concat('/subscriptions/', parameters('subscriptionId'), '/resourceGroups/', parameters('resourcegroupName'), '/providers/Microsoft.OperationalInsights/workspaces/', parameters('workspaceName'))]"
         },
         "plan": {
             "name": "[Concat(parameters('solutionTypes')[copyIndex()], '(', parameters('workspaceName'), ')')]",
