@@ -578,7 +578,7 @@
               "VMResourceGroupName": {
                   "value": "[variables('ResourceGroup')]"
               },       
-              "WorkspaceResourceGroupName": {
+              "WorkspaceResourceGroup": {
                   "value": "[variables('ResourceGroup')]"
               },              
               "Location": {
@@ -620,7 +620,7 @@
               "VMResourceGroupName": {
                   "value": "[variables('ResourceGroup')]"
               },       
-              "WorkspaceResourceGroupName": {
+              "WorkspaceResourceGroup": {
                   "value": "[variables('ResourceGroup')]"
               },              
               "Location": {
