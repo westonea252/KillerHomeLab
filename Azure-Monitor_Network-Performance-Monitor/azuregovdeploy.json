@@ -101,6 +101,7 @@
     }
   },
   "variables": {
+    "ResourceGroup": "[resourceGroup().Name]",    
     "vnet1Name": "[concat(parameters('NamingConvention'),'-VNet1')]",
     "vnet1Prefix": "[concat(parameters('vnet1ID'),'.0.0/16')]",
     "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet1')]",    
@@ -572,10 +573,10 @@
                   "value": "[variables('WorkSpaceName')]"
               },
               "VMResourceGroupName": {
-                  "value": "[resourceGroup().resourceGroupName]"
+                  "value": "[variables('ResourceGroup')]"
               },       
               "WorkspaceResourceGroupName": {
-                  "value": "[resourceGroup().resourceGroupName]"
+                  "value": "[variables('ResourceGroup')]"
               },              
               "Location": {
                   "value": "[parameters('Location1')]"
@@ -614,10 +615,10 @@
                   "value": "[variables('WorkSpaceName')]"
               },
               "VMResourceGroupName": {
-                  "value": "[resourceGroup().resourceGroupName]"
+                  "value": "[variables('ResourceGroup')]"
               },       
               "WorkspaceResourceGroupName": {
-                  "value": "[resourceGroup().resourceGroupName]"
+                  "value": "[variables('ResourceGroup')]"
               },              
               "Location": {
                   "value": "[parameters('Location1')]"
