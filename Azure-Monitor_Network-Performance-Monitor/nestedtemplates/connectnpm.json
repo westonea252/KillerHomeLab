@@ -40,7 +40,7 @@
     }     
 },
 "variables": {
-    "ScriptURL": "https://raw.githubusercontent.com/elliottfieldsjr/KillerHomeLab/master/Azure-Site-Recovery_Same-Address-Space/Scripts/ConnectToWorkspace.ps1"
+    "ScriptURL": "https://raw.githubusercontent.com/elliottfieldsjr/KillerHomeLab/master/Azure-Monitor_Network-Performance-Monitor/Scripts/ConnectToWorkspace.ps1"
 },
 "resources": [
     {
