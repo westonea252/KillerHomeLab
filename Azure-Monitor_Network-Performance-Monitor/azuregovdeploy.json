@@ -2,6 +2,12 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "LAWID": {
+      "type": "string",
+      "metadata": {
+        "description": "Unique identifier for Log Analytics Workspace"
+      }
+    },
     "adminUsername": {
       "type": "string",
       "metadata": {
@@ -122,9 +128,9 @@
     "vm2IP": "[concat(parameters('vnet2ID'),'.1.',variables('vm2lastoctet'))]",            
     "vm1lastoctet": "101",        
     "vm2lastoctet": "101",        
-    "WorkSpaceName": "[concat(parameters('NamingConvention'),'-LAW')]",
+    "WorkSpaceName": "[concat(parameters('NamingConvention'),'-LAW',parameters('LAWID'))]",
     "SubscriptionID": "[subscription().SubscriptionId]",
-    "ManagedIDName": "[concat(parameters('NamingConvention'),'-ManagedID')]"    
+    "ManagedIDName": "[concat(parameters('NamingConvention'),'-ManagedID')]"
   },  
   "resources": [
     {
