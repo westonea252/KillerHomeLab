@@ -581,6 +581,9 @@
               "WorkspaceResourceGroup": {
                   "value": "[variables('ResourceGroup')]"
               },              
+              "ManagedIDName": {
+                  "value": "[variables('ManagedIDName')]"
+              },                            
               "Location": {
                   "value": "[parameters('Location1')]"
               }                            
