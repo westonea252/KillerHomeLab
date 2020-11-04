@@ -21,6 +21,13 @@
         "description": "Enter a valid URL that points to the SQL 2019 or 2017 .ISO"
       }
     },
+    "SQLNode": {
+      "type": "string",
+      "defaultValue": "01",
+      "metadata": {
+        "description": "SQL Node Number"
+      }
+    },    
     "Location1": {
       "type": "string",
       "defaultValue": "USGovVirginia",
@@ -121,7 +128,7 @@
   "variables": {
     "vnet1Name": "[concat(parameters('NamingConvention'),'-VNet1')]",
     "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet1')]",    
-    "sqlname": "[concat(parameters('NamingConvention'),'-sql-01')]",                      
+    "sqlname": "[concat(parameters('NamingConvention'),'-sql-',parameters('sqlnode'))]",                      
     "sqlIP": "[concat(parameters('vnet1ID'),'.1.',variables('sqllastoctet'))]", 
     "sqllastoctet": "123",           
     "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
