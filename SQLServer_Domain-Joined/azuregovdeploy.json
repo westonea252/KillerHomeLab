@@ -23,11 +23,18 @@
     },
     "SQLNode": {
       "type": "string",
-      "defaultValue": "01",
+      "defaultValue": "",
       "metadata": {
         "description": "SQL Node Number"
       }
     },    
+    "sqllastoctet": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "SQL Node Last Octet"
+      }
+    },        
     "Location1": {
       "type": "string",
       "defaultValue": "USGovVirginia",
@@ -129,8 +136,7 @@
     "vnet1Name": "[concat(parameters('NamingConvention'),'-VNet1')]",
     "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet1')]",    
     "sqlname": "[concat(parameters('NamingConvention'),'-sql-',parameters('sqlnode'))]",                      
-    "sqlIP": "[concat(parameters('vnet1ID'),'.1.',variables('sqllastoctet'))]", 
-    "sqllastoctet": "123",           
+    "sqlIP": "[concat(parameters('vnet1ID'),'.1.',parameters('sqllastoctet'))]", 
     "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]"
