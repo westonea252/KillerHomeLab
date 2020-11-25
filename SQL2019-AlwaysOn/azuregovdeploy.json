@@ -168,6 +168,35 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
+      "name": "DeploySQLAvailabilitySet",
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/AvailabilitySet.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "AvailabilitySetName": {
+                  "value": "[variables('AvailabilitySetName')]"
+              },
+              "UpdateDomainCount": {
+                  "value": 5
+              },            
+              "FaultDomainCount": {
+                  "value": 2
+              },               
+              "Sku": {
+                  "value": "Aligned"
+              },                                          
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
       "name": "DeploySQL2019AzureVM1",
       "properties": {
           "mode": "Incremental",
