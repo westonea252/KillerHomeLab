@@ -14,32 +14,60 @@
         "description": "The password for the Administrator account of the new VM and Domain"
       }
     },
-    "SQLSASUrl": {
+    "OSDiskType": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "Premium_LRS",
       "metadata": {
-        "description": "Enter a valid URL that points to the SQL 2019 or 2017 .ISO"
-      }
-    },
-    "SQLNode": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "SQL Node Number"
+        "description": "SQL Node1 Number"
       }
     },    
-    "sqllastoctet": {
+    "SQLNode1": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "SQL Node Last Octet"
+        "description": "SQL Node1 Number (Example:  01)"
+      }
+    },    
+    "SQLNode2": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "SQL Node2 Number (Example:  02)"
       }
     },        
+    "sql1lastdataoctet": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "SQL Node1 Last Data Octet (Example:  11)"
+      }
+    },        
+    "sql2lastdataoctet": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "SQL Node2 Last Data Octet (Example:  12)"
+      }
+    },            
+    "sql1lastmgmtoctet": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "SQL Node1 Last Mgmt Octet (Example:  11)"
+      }
+    },            
+    "sql2lastmgmtoctet": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "SQL Node2 Last Mgmt Octet (Example:  12)"
+      }
+    },                
     "Location1": {
       "type": "string",
-      "defaultValue": "USGovVirginia",
+      "defaultValue": "USDoDEast",
       "metadata": {
-        "description": "Choose Region (Example:  USGovVirginia)"
+        "description": "Choose Region (Example:  USDoDEast)"
       }
     },
     "NamingConvention": {
@@ -94,22 +122,11 @@
     },         
     "vnet1ID": {
       "type": "string",
-      "defaultValue": "10.1",
+      "defaultValue": "14.1",
       "metadata": {
         "description": "VNet1 Prefix"
       }
     },    
-    "SQLOSVersion": {
-        "type": "string",
-        "defaultValue": "2019-Datacenter",
-        "allowedValues": [
-          "2019-Datacenter",
-          "2016-Datacenter"
-        ],            
-        "metadata": {
-            "description": "SQL OS Version"
-        }
-    },
     "SQLVMSize": {
         "type": "string",
         "defaultValue": "Standard_D8s_v3",
@@ -135,8 +152,14 @@
   "variables": {
     "vnet1Name": "[concat(parameters('NamingConvention'),'-VNet1')]",
     "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet1')]",    
-    "sqlname": "[concat(parameters('NamingConvention'),'-sql-',parameters('sqlnode'))]",                      
-    "sqlIP": "[concat(parameters('vnet1ID'),'.1.',parameters('sqllastoctet'))]", 
+    "vnet1subnet2Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet2')]",        
+    "AvailabilitySetName": "[concat(parameters('NamingConvention'),'-SQL-AVS')]",            
+    "sqlname1": "[concat(parameters('NamingConvention'),'-sql-',parameters('sqlnode1'))]",                      
+    "sqlname2": "[concat(parameters('NamingConvention'),'-sql-',parameters('sqlnode2'))]",                          
+    "sql1dataIP": "[concat(parameters('vnet1ID'),'.1.',parameters('sql1lastdataoctet'))]", 
+    "sql2dataIP": "[concat(parameters('vnet1ID'),'.1.',parameters('sql2lastdataoctet'))]",     
+    "sql1mgmtIP": "[concat(parameters('vnet1ID'),'.2.',parameters('sql1lastmgmtoctet'))]",     
+    "sql2mgmtIP": "[concat(parameters('vnet1ID'),'.2.',parameters('sql2lastmgmtoctet'))]",         
     "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]"
@@ -145,137 +168,288 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "deploySQLVM",
+      "name": "DeploySQL2019AzureVM1",
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-3disk-vm.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/sqlservervm-multi-nic', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
               "computerName": {
-                  "value": "[variables('sqlname')]"
+                  "value": "[variables('sqlname1')]"
               },
-              "computerIP": {
-                  "value": "[variables('sqlIP')]"
-              },
-              "Publisher": {
-                  "value": "MicrosoftWindowsServer"
-              },
-              "Offer": {
-                  "value": "WindowsServer"
-              },
-              "OSVersion": {
-                "value": "[parameters('SQLOSVersion')]"
+              "AvailabilitySetName": {
+                  "value": "[variables('AvailabilitySetName')]"
               },              
-              "LicenseType": {
-                "value": "None"
-              },   
-              "DataDisk1Name": {
-                "value": "SQLDatabases"
-              },            
-              "DataDisk2Name": {
-                "value": "SQLLogs"
-              },                       
-              "VMSize": {
-                "value": "[parameters('SQLVMSize')]"
+              "ManagementIP": {
+                  "value": "[variables('sql1mgmtIP')]"
               },
+              "DataIP": {
+                  "value": "[variables('sql1dataIP')]"
+              },                            
+              "subnet1Name": {
+                "value": "[variables('vnet1subnet1Name')]"
+              },      
+              "subnet2Name": {
+                "value": "[variables('vnet1subnet2Name')]"
+              },           
               "vnetName": {
                 "value": "[variables('vnet1Name')]"
-              },            
-              "subnetName": {
-                "value": "[variables('vnet1subnet1Name')]"
-              },            
+              }, 
+              "osDiskType": {
+                "value": "[parameters('OSDiskType')]"
+              },    
+              "dataDisks": {
+                  "value": [
+                      {
+                          "lun": 0,
+                          "createOption": "attach",
+                          "caching": "ReadOnly",
+                          "writeAcceleratorEnabled": false,
+                          "id": null,
+                          "name": "[concat(variables('sqlname1'),'_DataDisk_0')]",
+                          "storageAccountType": null,
+                          "diskSizeGB": null,
+                          "diskEncryptionSet": null
+                      },
+                      {
+                          "lun": 1,
+                          "createOption": "attach",
+                          "caching": "None",
+                          "writeAcceleratorEnabled": false,
+                          "id": null,
+                          "name": "[concat(variables('sqlname1'),'_DataDisk_1')]",
+                          "storageAccountType": null,
+                          "diskSizeGB": null,
+                          "diskEncryptionSet": null
+                      }
+                  ]
+              },      
+              "dataDiskResources": {
+                  "value": [
+                      {
+                          "name": "[concat(variables('sqlname1'),'_DataDisk_0')]",
+                          "sku": "[parameters('OSDiskType')]",
+                          "properties": {
+                              "diskSizeGB": 1024,
+                              "creationData": {
+                                  "createOption": "empty"
+                              }
+                          }
+                      },
+                      {
+                          "name": "[concat(variables('sqlname1'),'_DataDisk_1')]",
+                          "sku": "[parameters('OSDiskType')]",
+                          "properties": {
+                              "diskSizeGB": 1024,
+                              "creationData": {
+                                  "createOption": "empty"
+                              }
+                          }
+                      }
+                  ]
+              },      
+              "VMSize": {
+                "value": "[parameters('SQLVMSize')]"
+              },                            
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
               },                                                                                                            
               "adminPassword": {
                 "value": "[parameters('adminPassword')]"
-              },                                                                                                                                        
-              "location": {
-                  "value": "[parameters('Location1')]"
-              }
-          }
-      }
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "name": "DomainJoinSQL",
-      "dependsOn": [
-        "deploySQLVM"
-      ],      
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/domainjoin.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "computerName": {
-                  "value": "[variables('sqlname')]"
-              },
-              "domainName": {
-                  "value": "[variables('domainName')]"
-              },
-              "OUPath": {
-                  "value": "[variables('SRVOUPath')]"
-              },
-              "domainJoinOptions": {
-                  "value": 3
-              },
-              "adminUsername": {
-                "value": "[parameters('adminUsername')]"
-              },                                                                                                            
-              "adminPassword": {
-                "value": "[parameters('adminPassword')]"
-              },                                                                                                                                                                                                                                                                             
-              "location": {
-                  "value": "[parameters('Location1')]"
-              }
-          }
-      }
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "name": "InstallSQL",
-      "dependsOn": [
-        "deploySQLVM",
-        "DomainJoinSQL"
-      ],      
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/sql.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "computerName": {
-                  "value": "[variables('sqlname')]"
-              },
-              "SQLSASUrl": {
-                  "value": "[parameters('SQLSASUrl')]"
-              },                            
-              "NetBiosDomain": {
-                  "value": "[parameters('NetBiosDomain')]"
-              },                            
+              },   
 
+              "sqlConnectivityType": {
+                  "value": "Private"
+              },
+              "sqlPortNumber": {
+                  "value": 1433
+              },
+              "sqlStorageWorkloadType": {
+                  "value": "OLTP"
+              },
+              "sqlStorageDisksConfigurationType": {
+                  "value": "NEW"
+              },
+              "sqlAutopatchingDayOfWeek": {
+                  "value": "Sunday"
+              },
+              "sqlAutopatchingStartHour": {
+                  "value": "2"
+              },
+              "sqlAutopatchingWindowDuration": {
+                  "value": "60"
+              },
+              "dataPath": {
+                  "value": "F:\\data"
+              },
+              "dataDisksLUNs": {
+                  "value": [
+                      0
+                  ]
+              },
+              "logPath": {
+                  "value": "G:\\log"
+              },
+              "logDisksLUNs": {
+                  "value": [
+                      1
+                  ]
+              },
+              "tempDbPath": {
+                  "value": "D:\\tempDb"
+              },
+              "rServicesEnabled": {
+                  "value": "false"
+              },                                                                                                                                                                 
               "location": {
                   "value": "[parameters('Location1')]"
-              },                                          
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "DeploySQL2019AzureVM2",
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/sqlservervm-multi-nic', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('sqlname2')]"
+              },
+              "AvailabilitySetName": {
+                  "value": "[variables('AvailabilitySetName')]"
+              },                            
+              "ManagementIP": {
+                  "value": "[variables('sql2mgmtIP')]"
+              },
+              "DataIP": {
+                  "value": "[variables('sql2dataIP')]"
+              },                            
+              "subnet1Name": {
+                "value": "[variables('vnet1subnet1Name')]"
+              },      
+              "subnet2Name": {
+                "value": "[variables('vnet1subnet2Name')]"
+              },           
+              "vnetName": {
+                "value": "[variables('vnet1Name')]"
+              }, 
+              "osDiskType": {
+                "value": "[parameters('OSDiskType')]"
+              },    
+              "dataDisks": {
+                  "value": [
+                      {
+                          "lun": 0,
+                          "createOption": "attach",
+                          "caching": "ReadOnly",
+                          "writeAcceleratorEnabled": false,
+                          "id": null,
+                          "name": "[concat(variables('sqlname2'),'_DataDisk_0')]",
+                          "storageAccountType": null,
+                          "diskSizeGB": null,
+                          "diskEncryptionSet": null
+                      },
+                      {
+                          "lun": 1,
+                          "createOption": "attach",
+                          "caching": "None",
+                          "writeAcceleratorEnabled": false,
+                          "id": null,
+                          "name": "[concat(variables('sqlname2'),'_DataDisk_1')]",
+                          "storageAccountType": null,
+                          "diskSizeGB": null,
+                          "diskEncryptionSet": null
+                      }
+                  ]
+              },      
+              "dataDiskResources": {
+                  "value": [
+                      {
+                          "name": "[concat(variables('sqlname2'),'_DataDisk_0')]",
+                          "sku": "[parameters('OSDiskType')]",
+                          "properties": {
+                              "diskSizeGB": 1024,
+                              "creationData": {
+                                  "createOption": "empty"
+                              }
+                          }
+                      },
+                      {
+                          "name": "[concat(variables('sqlname2'),'_DataDisk_1')]",
+                          "sku": "[parameters('OSDiskType')]",
+                          "properties": {
+                              "diskSizeGB": 1024,
+                              "creationData": {
+                                  "createOption": "empty"
+                              }
+                          }
+                      }
+                  ]
+              },      
+              "VMSize": {
+                "value": "[parameters('SQLVMSize')]"
+              },                            
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
               },                                                                                                            
               "adminPassword": {
                 "value": "[parameters('adminPassword')]"
+              },   
+
+              "sqlConnectivityType": {
+                  "value": "Private"
               },
-              "_artifactsLocation": {
-                "value": "[parameters('_artifactsLocation')]"
-              },                                                                                                            
-              "_artifactsLocationSasToken": {
-                "value": "[parameters('_artifactsLocationSasToken')]"
-              }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+              "sqlPortNumber": {
+                  "value": 1433
+              },
+              "sqlStorageWorkloadType": {
+                  "value": "OLTP"
+              },
+              "sqlStorageDisksConfigurationType": {
+                  "value": "NEW"
+              },
+              "sqlAutopatchingDayOfWeek": {
+                  "value": "Sunday"
+              },
+              "sqlAutopatchingStartHour": {
+                  "value": "2"
+              },
+              "sqlAutopatchingWindowDuration": {
+                  "value": "60"
+              },
+              "dataPath": {
+                  "value": "F:\\data"
+              },
+              "dataDisksLUNs": {
+                  "value": [
+                      0
+                  ]
+              },
+              "logPath": {
+                  "value": "G:\\log"
+              },
+              "logDisksLUNs": {
+                  "value": [
+                      1
+                  ]
+              },
+              "tempDbPath": {
+                  "value": "D:\\tempDb"
+              },
+              "rServicesEnabled": {
+                  "value": "false"
+              },                                                                                                                                                                 
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }
           }
       }
     } 
