@@ -198,6 +198,9 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "name": "DeploySQL2019AzureVM1",
+      "dependsOn": [
+        "DeploySQLAvailabilitySet"
+      ],           
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -342,6 +345,9 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "name": "DeploySQL2019AzureVM2",
+      "dependsOn": [
+        "DeploySQLAvailabilitySet"
+      ],                 
       "properties": {
           "mode": "Incremental",
           "templateLink": {
