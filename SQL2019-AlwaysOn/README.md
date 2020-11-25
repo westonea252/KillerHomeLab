@@ -38,10 +38,10 @@ Parameters that support changes
 - OSDiskType.  Storage Sku (Example:  Premium_LRS)
 - SQLNode1.  Enter a valid SQL Node Number which is used to generate the SQL VM1 Name
 - SQLNode2.  Enter a valid SQL Node Number which is used to generate the SQL VM2 Name
-- sql1lastdataoctet.  Enter the desired last IP octet for SQL VM1's Data NIC.
-- sql2lastdataoctet.  Enter the desired last IP octet for SQL VM2's Data NIC.
-- sql1lastmgmtoctet.  Enter the desired last IP octet for SQL VM1's Management NIC.
-- sql2lastmgmtoctet.  Enter the desired last IP octet for SQL VM2's Management NIC.
+- sql1lastdataoctet.  Enter the desired last IP octet for SQL VM1's Data NIC (Example:  11).
+- sql2lastdataoctet.  Enter the desired last IP octet for SQL VM2's Data NIC (Example:  12).
+- sql1lastmgmtoctet.  Enter the desired last IP octet for SQL VM1's Management NIC (Example:  11).
+- sql2lastmgmtoctet.  Enter the desired last IP octet for SQL VM2's Management NIC (Example:  12).
 - Location. Enter a Valid Azure Region based on which Cloud (AzureCloud, AzureUSGovernment, etc...) you are using.
 - Naming Convention. Enter a name that will be used as a naming prefix for (Servers, VNets, etc) you are using.
 - Sub DNS Domain.  OPTIONALLY, enter a valid DNS Sub Domain. (Example:  sub1. or sub1.sub2.    This entry must end with a DOT )
