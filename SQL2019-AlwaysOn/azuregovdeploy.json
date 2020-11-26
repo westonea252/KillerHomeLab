@@ -169,11 +169,11 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "CreateAccounts",
+      "name": "CreateSQLAccounts",
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/accounts.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/sqlaccounts.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -604,6 +604,122 @@
               }
           }
       }
-    }        
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "GrantInstallLocalAdminSQLVM1",
+      "dependsOn": [
+        "CreateSQLAccounts"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/grantlocaladmin.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('sqlname1')]"
+              },
+              "Account": {
+                  "value": "Install"
+              },            
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },    
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "GrantInstallLocalAdminSQLVM2",
+      "dependsOn": [
+        "CreateSQLAccounts"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/grantlocaladmin.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('sqlname2')]"
+              },
+              "Account": {
+                  "value": "Install"
+              },            
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },    
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "GrantSQLSvc1LocalAdminSQLVM1",
+      "dependsOn": [
+        "CreateSQLAccounts"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/grantlocaladmin.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('sqlname1')]"
+              },
+              "Account": {
+                  "value": "SQLSvc1"
+              },            
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },    
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "GrantSQLSvc2LocalAdminSQLVM2",
+      "dependsOn": [
+        "CreateSQLAccounts"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/grantlocaladmin.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('sqlname2')]"
+              },
+              "Account": {
+                  "value": "SQLSvc2"
+              },            
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },    
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }
+          }
+      }
+    }                     
   ]
 }

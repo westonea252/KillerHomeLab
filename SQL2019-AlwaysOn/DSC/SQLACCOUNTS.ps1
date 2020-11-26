@@ -1,4 +1,4 @@
-﻿configuration ACCOUNTS
+﻿configuration SQLACCOUNTS
 {
    param
    (
