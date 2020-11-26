@@ -810,7 +810,9 @@
       "dependsOn": [
         "CreateSQLAccounts",
         "DeploySQL2019AzureVM2",
-        "DomainJoinSQL2VM"
+        "DomainJoinSQL2VM",
+        "GrantInstallLocalAdminSQLVM2",
+        "GrantSQLSvc2LocalAdminSQLVM2"               
       ],      
       "properties": {
           "mode": "Incremental",
