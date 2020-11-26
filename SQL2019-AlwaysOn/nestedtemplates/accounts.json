@@ -76,7 +76,6 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
-                            "computerName": "[parameters('computerName')]",                                                        
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
                             "DomainName": "[parameters('DomainName')]",                            
                             "BaseDN": "[parameters('BaseDN')]",
