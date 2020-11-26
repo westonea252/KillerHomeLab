@@ -610,7 +610,9 @@
       "apiVersion": "2015-01-01",
       "name": "GrantInstallLocalAdminSQLVM1",
       "dependsOn": [
-        "CreateSQLAccounts"
+        "CreateSQLAccounts",
+        "DeploySQL2019AzureVM1",
+        "DomainJoinSQL1VM"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -645,8 +647,10 @@
       "apiVersion": "2015-01-01",
       "name": "GrantInstallLocalAdminSQLVM2",
       "dependsOn": [
-        "CreateSQLAccounts"
-      ],      
+        "CreateSQLAccounts",
+        "DeploySQL2019AzureVM2",
+        "DomainJoinSQL2VM"
+      ],          
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -680,7 +684,9 @@
       "apiVersion": "2015-01-01",
       "name": "GrantSQLSvc1LocalAdminSQLVM1",
       "dependsOn": [
-        "CreateSQLAccounts"
+        "CreateSQLAccounts",
+        "DeploySQL2019AzureVM1",
+        "DomainJoinSQL1VM"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -715,7 +721,9 @@
       "apiVersion": "2015-01-01",
       "name": "GrantSQLSvc2LocalAdminSQLVM2",
       "dependsOn": [
-        "CreateSQLAccounts"
+        "CreateSQLAccounts",
+        "DeploySQL2019AzureVM2",
+        "DomainJoinSQL2VM"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -750,7 +758,9 @@
       "apiVersion": "2015-01-01",
       "name": "CreateSQLLoginforInstallSQLVM1",
       "dependsOn": [
-        "CreateSQLAccounts"
+        "CreateSQLAccounts",
+        "DeploySQL2019AzureVM1",
+        "DomainJoinSQL1VM"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -794,7 +804,9 @@
       "apiVersion": "2015-01-01",
       "name": "CreateSQLLoginforInstallSQLVM2",
       "dependsOn": [
-        "CreateSQLAccounts"
+        "CreateSQLAccounts",
+        "DeploySQL2019AzureVM2",
+        "DomainJoinSQL2VM"
       ],      
       "properties": {
           "mode": "Incremental",
