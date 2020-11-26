@@ -770,7 +770,13 @@
               },    
               "DomainName": {
                   "value": "[variables('DomainName')]"
-              },                  
+              },  
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                                                           
               "location": {
                   "value": "[parameters('Location1')]"
               },
@@ -808,7 +814,13 @@
               },    
               "DomainName": {
                   "value": "[variables('DomainName')]"
-              },                  
+              }, 
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                                                            
               "location": {
                   "value": "[parameters('Location1')]"
               },
