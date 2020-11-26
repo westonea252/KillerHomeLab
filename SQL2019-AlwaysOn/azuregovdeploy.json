@@ -630,7 +630,13 @@
               },    
               "location": {
                   "value": "[parameters('Location1')]"
-              }
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }              
           }
       }
     },
@@ -659,7 +665,13 @@
               },    
               "location": {
                   "value": "[parameters('Location1')]"
-              }
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }              
           }
       }
     },
@@ -688,7 +700,13 @@
               },    
               "location": {
                   "value": "[parameters('Location1')]"
-              }
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }              
           }
       }
     },
@@ -717,9 +735,91 @@
               },    
               "location": {
                   "value": "[parameters('Location1')]"
-              }
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }              
           }
       }
-    }                     
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "CreateSQLLoginforInstallSQLVM1",
+      "dependsOn": [
+        "CreateSQLAccounts"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/createsqllogin.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('sqlname1')]"
+              },
+              "Account": {
+                  "value": "Install"
+              },            
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },    
+              "DomainName": {
+                  "value": "[variables('DomainName')]"
+              },                  
+              "location": {
+                  "value": "[parameters('Location1')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }              
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "CreateSQLLoginforInstallSQLVM2",
+      "dependsOn": [
+        "CreateSQLAccounts"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/createsqllogin.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('sqlname2')]"
+              },
+              "Account": {
+                  "value": "Install"
+              },            
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },    
+              "DomainName": {
+                  "value": "[variables('DomainName')]"
+              },                  
+              "location": {
+                  "value": "[parameters('Location1')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }              
+          }
+      }
+    }                             
   ]
 }
