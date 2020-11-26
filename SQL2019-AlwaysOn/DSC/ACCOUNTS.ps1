@@ -17,7 +17,7 @@
         ADUser Install
         {
             Ensure     = 'Present'
-            UserName   = Install
+            UserName   = "Install"
             DomainName = $DomainName
             Path       = "OU=Office 365,OU=End User,OU=Accounts,$BaseDN"
             Password = $DomainCreds
@@ -27,7 +27,7 @@
         ADUser SQLSvc1
         {
             Ensure     = 'Present'            
-            UserName   = SQLSvc1
+            UserName   = "SQLSvc1"
             DomainName = $DomainName
             Path       = "OU=Office 365,OU=End User,OU=Accounts,$BaseDN"
             Password = $DomainCreds
@@ -37,7 +37,7 @@
         ADUser SQLSvc2
         {
             Ensure     = 'Present'            
-            UserName   = SQLSvc2
+            UserName   = "SQLSvc2"
             DomainName = $DomainName
             Path       = "OU=Office 365,OU=End User,OU=Accounts,$BaseDN"
             Password = $DomainCreds
