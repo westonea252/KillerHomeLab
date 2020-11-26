@@ -12,7 +12,7 @@
         {
             SetScript =
             {
-                Add-LocalGroupMember -Member "$NetBiosDomain\$Account" -Group Administrators
+                Add-LocalGroupMember -Member "$using:NetBiosDomain\$Using:Account" -Group Administrators
             }
             GetScript =  { @{} }
             TestScript = { $false}
