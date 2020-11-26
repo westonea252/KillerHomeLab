@@ -154,6 +154,7 @@
     "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet1')]",    
     "vnet1subnet2Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet2')]",        
     "AvailabilitySetName": "[concat(parameters('NamingConvention'),'-SQL-AVS')]",            
+    "dcname1": "[concat(parameters('NamingConvention'),'-dc-01')]",                      
     "sqlname1": "[concat(parameters('NamingConvention'),'-sql-',parameters('sqlnode1'))]",                      
     "sqlname2": "[concat(parameters('NamingConvention'),'-sql-',parameters('sqlnode2'))]",     
     "sql1mgmtIP": "[concat(parameters('vnet1ID'),'.1.',parameters('sql1lastmgmtoctet'))]",     
@@ -165,6 +166,41 @@
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]"
   },  
   "resources": [
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "CreateAccounts",
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/accounts.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('dcname1')]"
+              },
+              "BaseDN": {
+                  "value": "[variables('BaseDN')]"
+              },            
+              "DomainName": {
+                  "value": "[variables('DomainName')]"
+              },   
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },    
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                     
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }
+          }
+      }
+    },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
@@ -291,7 +327,6 @@
               "adminPassword": {
                 "value": "[parameters('adminPassword')]"
               },   
-
               "sqlConnectivityType": {
                   "value": "Private"
               },
