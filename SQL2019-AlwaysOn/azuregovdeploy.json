@@ -168,6 +168,7 @@
     "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet1')]",    
     "vnet1subnet2Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet2')]",        
     "AvailabilitySetName": "[concat(parameters('NamingConvention'),'-SQL-AVS')]",            
+    "StorageAccountName": "[concat(parameters('NamingConvention'),'storage')]",                
     "dcname1": "[concat(parameters('NamingConvention'),'-dc-01')]",                      
     "sqlname1": "[concat(parameters('NamingConvention'),'-sql-',parameters('sqlnode1'))]",                      
     "sqlname2": "[concat(parameters('NamingConvention'),'-sql-',parameters('sqlnode2'))]",     
@@ -941,6 +942,36 @@
               }              
           }
       }
-    }                                                                                      
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "CreateStorage",
+      "dependsOn": [
+        "CreateSQLAccounts",
+        "DeploySQL2019AzureVM1",
+        "DomainJoinSQL1VM",
+        "GrantInstallLocalAdminSQLVM1",
+        "CreateSQLLoginforInstallSQLVM1",
+        "InstallWFCSQLVM1",
+        "RoutingSQLVM1",
+        "RoutingSQLVM2"        
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/storage.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "StorageAccountName": {
+                  "value": "[variables('StorageAccountName')]"
+              },                                                     
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }          
+          }
+      }
+    }                                                                                       
   ]
 }
