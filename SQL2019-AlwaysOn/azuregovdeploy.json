@@ -56,20 +56,20 @@
         "description": "SQL Node1 Last Data Octet (Example:  11)"
       }
     },        
-    "sql1DGlastdataoctet": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "SQL Node1 Default Gateway Last Data Octet (Example:  1)"
-      }
-    },            
     "sql2lastdataoctet": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
         "description": "SQL Node2 Last Data Octet (Example:  12)"
       }
-    },            
+    },        
+    "sql1DGlastdataoctet": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "SQL Node1 Default Gateway Last Data Octet (Example:  1)"
+      }
+    },                    
     "sql2DGlastdataoctet": {
       "type": "string",
       "defaultValue": "",
@@ -174,8 +174,8 @@
     "sql1mgmtIP": "[concat(parameters('vnet1ID'),'.1.',parameters('sql1lastmgmtoctet'))]",     
     "sql2mgmtIP": "[concat(parameters('vnet1ID'),'.1.',parameters('sql2lastmgmtoctet'))]",                                  
     "sql1dataIP": "[concat(parameters('vnet1ID'),'.2.',parameters('sql1lastdataoctet'))]", 
-    "sql1DGdataIP": "[concat(parameters('vnet1ID'),'.2.',parameters('sql1DGlastdataoctet'))]",     
-    "sql2dataIP": "[concat(parameters('vnet1ID'),'.2.',parameters('sql2lastdataoctet'))]",     
+    "sql2dataIP": "[concat(parameters('vnet1ID'),'.2.',parameters('sql2lastdataoctet'))]", 
+    "sql1DGdataIP": "[concat(parameters('vnet1ID'),'.2.',parameters('sql1DGlastdataoctet'))]",             
     "sql2DGdataIP": "[concat(parameters('vnet1ID'),'.2.',parameters('sql2DGlastdataoctet'))]",         
     "Subnet2ID": "[concat(parameters('vnet1ID'),'.2')]",             
     "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
