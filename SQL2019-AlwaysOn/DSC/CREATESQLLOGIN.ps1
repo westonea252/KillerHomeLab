@@ -21,7 +21,7 @@
             Name                 = "$NetBiosDomain\$Account"
             LoginType            = 'WindowsUser'
             ServerName           = "$ComputerName.$DomainName"
-            InstanceName         = 'DSC'
+            InstanceName         = 'SQL Server (MSSQLSERVER)'
             PsDscRunAsCredential = $Admincreds
         }
 
