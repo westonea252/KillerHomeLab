@@ -12,7 +12,7 @@
         {
             SetScript =
             {
-                $AccountCheck = Get-LocalGroupMember -Group Administrators -Member "$using:Account" -ErrorAction 0
+                $AccountCheck = Get-LocalGroupMember -Group Administrators -Member "$using:NetBiosDomain\$Using:Account" -ErrorAction 0
                 IF ($AccountCheck -eq $null){Add-LocalGroupMember -Member "$using:NetBiosDomain\$Using:Account" -Group Administrators}
             }
             GetScript =  { @{} }
