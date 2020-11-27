@@ -169,7 +169,10 @@
     "vnet1subnet2Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet2')]",        
     "AvailabilitySetName": "[concat(parameters('NamingConvention'),'-SQL-AVS')]",            
     "StorageAccountName": "[concat(parameters('NamingConvention'),'storage')]",                
+    "StorageEndpoint": "core.usgovcloudapi.net",                    
+    "BlobService": "[concat(variables('StorageAccountName'),'.blob.',variables('StorageEndpoint'))]", 
     "dcname1": "[concat(parameters('NamingConvention'),'-dc-01')]",                      
+    "sqlclustername": "[concat(parameters('NamingConvention'),'-clust')]",     
     "sqlname1": "[concat(parameters('NamingConvention'),'-sql-',parameters('sqlnode1'))]",                      
     "sqlname2": "[concat(parameters('NamingConvention'),'-sql-',parameters('sqlnode2'))]",     
     "sql1mgmtIP": "[concat(parameters('vnet1ID'),'.1.',parameters('sql1lastmgmtoctet'))]",     
@@ -966,12 +969,76 @@
           "parameters": {
               "StorageAccountName": {
                   "value": "[variables('StorageAccountName')]"
-              },                                                     
+              },       
               "location": {
                   "value": "[parameters('Location1')]"
               }          
           }
       }
-    }                                                                                       
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "ConfigureWFCSQLVM1",
+      "dependsOn": [
+        "CreateSQLAccounts",
+        "DeploySQL2019AzureVM1",
+        "DomainJoinSQL1VM",
+        "GrantInstallLocalAdminSQLVM1",
+        "CreateSQLLoginforInstallSQLVM1",
+        "InstallWFCSQLVM1",
+        "RoutingSQLVM1",
+        "RoutingSQLVM2",
+        "CreateStorage"      
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/configwfc.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "SQLClusterName": {
+                  "value": "[variables('sqlclustername')]"
+              },       
+              "SQLNode1": {
+                  "value": "[variables('sqlname1')]"
+              },                     
+              "SQLNode2": {
+                  "value": "[variables('sqlname2')]"
+              },          
+              "NetBiosName": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },          
+              "StorageAccountName": {
+                  "value": "[variables('StorageAccountName')]"
+              },                                            
+              "StorageEndpoint": {
+                  "value": "[variables('StorageEndpoint')]"
+              },                      
+              "BlobService": {
+                  "value": "[variables('BlobService')]"
+              },                                                                                           
+              "StorageAccountKey": {
+                  "value": "[reference('CreateStorage').outputs.Key.value]"             
+              },   
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                                                            
+              "location": {
+                  "value": "[parameters('Location1')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                            
+          }
+      }
+    }                                                                                                                                                                                  
   ]
 }
