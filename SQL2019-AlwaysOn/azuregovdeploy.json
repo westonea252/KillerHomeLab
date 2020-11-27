@@ -998,6 +998,9 @@
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
+              "computerName": {
+                  "value": "[variables('sqlname1')]"
+              },
               "SQLClusterName": {
                   "value": "[variables('sqlclustername')]"
               },       
