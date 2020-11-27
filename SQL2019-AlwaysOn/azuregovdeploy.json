@@ -699,9 +699,12 @@
               "computerName": {
                   "value": "[variables('sqlname1')]"
               },
-              "Account": {
+              "InstallAccount": {
                   "value": "Install"
-              },            
+              },      
+              "SvcAccount": {
+                  "value": "SQLSvc1"
+              },                   
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },    
@@ -746,9 +749,12 @@
               "computerName": {
                   "value": "[variables('sqlname2')]"
               },
-              "Account": {
+              "InstallAccount": {
                   "value": "Install"
-              },            
+              },      
+              "SvcAccount": {
+                  "value": "SQLSvc2"
+              },                          
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },    
