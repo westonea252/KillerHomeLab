@@ -1007,7 +1007,7 @@
               "SQLNode2": {
                   "value": "[variables('sqlname2')]"
               },          
-              "NetBiosName": {
+              "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },          
               "StorageAccountName": {
