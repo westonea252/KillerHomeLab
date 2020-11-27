@@ -14,6 +14,12 @@
                 "description": "Default Gateway for 2nd Nic"
             }
         },
+        "Subnet": {
+            "type": "string",
+            "metadata": {
+                "description": "Subnet for 2nd Nic"
+            }
+        },        
         "location": {
             "type": "string",
           "metadata": {
@@ -52,7 +58,8 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
-                            "NextHop": "[parameters('NextHop')]"
+                            "NextHop": "[parameters('NextHop')]",
+                            "Subnet": "[parameters('Subnet')]"                            
                         }
                 },
                 "protectedSettings": {
