@@ -29,7 +29,7 @@
         }             
     ],
     "outputs": {
-        "Keys": {
+        "Key": {
             "type": "string",
             "value": "[listKeys(variables('storageAccountId'), '2019-04-01').keys[0].value]"
         }
