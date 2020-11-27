@@ -49,13 +49,7 @@
             "metadata": {
                 "description": "Storage Endpoint"
             }
-        },    
-        "BlobService": {
-            "type": "string",
-            "metadata": {
-                "description": "Blob Service Url"
-            }
-        },                   
+        },                    
         "adminUsername": {
             "type": "string",
             "metadata": {
@@ -113,7 +107,6 @@
                             "StorageAccountName": "[parameters('StorageAccountName')]",                                                        
                             "StorageAccountKey": "[parameters('StorageAccountKey')]",                            
                             "StorageEndpoint": "[parameters('StorageEndpoint')]",                                                        
-                            "BlobService": "[parameters('BlobService')]",                                                                                    
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"

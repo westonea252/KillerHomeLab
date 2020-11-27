@@ -170,7 +170,6 @@
     "AvailabilitySetName": "[concat(parameters('NamingConvention'),'-SQL-AVS')]",            
     "StorageAccountName": "[concat(parameters('NamingConvention'),'storage')]",                
     "StorageEndpoint": "core.usgovcloudapi.net",                    
-    "BlobService": "[concat(variables('StorageAccountName'),'.blob.',variables('StorageEndpoint'))]", 
     "dcname1": "[concat(parameters('NamingConvention'),'-dc-01')]",                      
     "sqlclustername": "[concat(parameters('NamingConvention'),'-clust')]",     
     "sqlname1": "[concat(parameters('NamingConvention'),'-sql-',parameters('sqlnode1'))]",                      
@@ -1018,10 +1017,7 @@
               },                                            
               "StorageEndpoint": {
                   "value": "[variables('StorageEndpoint')]"
-              },                      
-              "BlobService": {
-                  "value": "[variables('BlobService')]"
-              },                                                                                           
+              },                                                                                                              
               "StorageAccountKey": {
                   "value": "[reference('CreateStorage').outputs.Key.value]"             
               },   

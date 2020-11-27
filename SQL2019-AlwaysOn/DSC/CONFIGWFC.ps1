@@ -8,8 +8,7 @@
         [String]$NetBiosDomain,
         [String]$StorageAccountName,
         [String]$StorageAccountKey,
-        [String]$StorageEndpoint,
-        [String]$BlobService,        
+        [String]$StorageEndpoint,        
         [System.Management.Automation.PSCredential]$Admincreds
     )
 
@@ -29,7 +28,7 @@
                 IF ($cluster -eq $null) {New-Cluster -Name "$using:SQLClusterName" -Node "$using:SQLNode1","$using:SQLNode2"}
 
 		        # Create Cloud Storage Account
-		        Set-ClusterQuorum -CloudWitness -AccountName "$using:BlobService" -AccessKey "$using:StorageAccountKey" -EndPoint "$using:StorageEndPoint"
+		        Set-ClusterQuorum -CloudWitness -AccountName "$using:StorageAccountName" -AccessKey "$using:StorageAccountKey" -EndPoint "$using:StorageEndPoint"
             }
             GetScript =  { @{} }
             TestScript = { $false}
