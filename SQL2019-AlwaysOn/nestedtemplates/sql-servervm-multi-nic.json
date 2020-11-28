@@ -245,7 +245,7 @@
             "properties": {
                 "virtualMachineResourceId": "[resourceId('Microsoft.Compute/virtualMachines', parameters('computerName'))]",
                 "sqlManagement": "Full",
-                "SqlServerLicenseType": "PAYG",
+                "SqlServerLicenseType": "AHUB",
                 "AutoPatchingSettings": {
                     "Enable": true,
                     "DayOfWeek": "[parameters('sqlAutopatchingDayOfWeek')]",
