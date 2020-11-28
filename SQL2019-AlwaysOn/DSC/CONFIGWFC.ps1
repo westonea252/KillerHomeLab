@@ -12,6 +12,8 @@
         [System.Management.Automation.PSCredential]$Admincreds
     )
 
+    [System.Management.Automation.PSCredential ]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosDomain}\$($Admincreds.UserName)", $Admincreds.Password)
+
     Node localhost
     {
         LocalConfigurationManager
@@ -24,7 +26,7 @@
             SetScript =
             {
                 # Create Cluster
-                $Cluster = Get-Cluster -Name "$using:SQLClusterName"  -ErrorAction 0
+                $Cluster = Get-Cluster -Name "$using:SQLClusterName" -ErrorAction 0
                 IF ($cluster -eq $null) {New-Cluster -Name "$using:SQLClusterName" -Node "$using:SQLNode1","$using:SQLNode2"}
 
 		        # Create Cloud Storage Account
@@ -32,6 +34,7 @@
             }
             GetScript =  { @{} }
             TestScript = { $false}
+            PsDscRunAsCredential = $DomainCreds
         }
     }
 }
