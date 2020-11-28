@@ -986,6 +986,7 @@
         "GrantInstallLocalAdminSQLVM1",
         "CreateSQLLoginforInstallSQLVM1",
         "InstallWFCSQLVM1",
+        "InstallWFCSQLVM2",        
         "RoutingSQLVM1",
         "RoutingSQLVM2",
         "CreateStorage"      
