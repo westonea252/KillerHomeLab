@@ -26,12 +26,36 @@
                 "description": "SQL Node2"
             }
         },   
+        "SQLDBName": {
+            "type": "string",
+            "metadata": {
+                "description": "SQL Datbase Name"
+            }
+        },   
+        "SQLServiceAccount1": {
+            "type": "string",
+            "metadata": {
+                "description": "SQL Service Account 1"
+            }
+        },                   
+        "SQLServiceAccount2": {
+            "type": "string",
+            "metadata": {
+                "description": "SQL Service Account 2"
+            }
+        },                           
         "NetBiosDomain": {
             "type": "string",
             "metadata": {
                 "description": "NetBios Domain Name"
             }
         },    
+        "domainName": {
+            "type": "string",
+          "metadata": {
+            "description": "The FQDN of the AD Domain created "
+          }
+        }, 
         "StorageAccountName": {
             "type": "string",
             "metadata": {
@@ -103,7 +127,11 @@
                             "SQLClusterName": "[parameters('SQLClusterName')]",                        
                             "SQLNode1": "[parameters('SQLNode1')]",
                             "SQLNode2": "[parameters('SQLNode2')]",                                                                                            
+                            "SQLDBName": "[parameters('SQLDBName')]",                                                                                                                        
+                            "SQLServiceAccount1": "[parameters('SQLServiceAccount1')]",                                                                                                                                                    
+                            "SQLServiceAccount2": "[parameters('SQLServiceAccount2')]",                                                                                                                                                                                
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
+                            "DomainName": "[parameters('DomainName')]",                                                        
                             "StorageAccountName": "[parameters('StorageAccountName')]",                                                        
                             "StorageAccountKey": "[parameters('StorageAccountKey')]",                            
                             "StorageEndpoint": "[parameters('StorageEndpoint')]",                                                        

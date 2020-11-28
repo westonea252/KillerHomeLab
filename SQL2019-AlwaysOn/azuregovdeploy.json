@@ -172,6 +172,7 @@
     "StorageEndpoint": "core.usgovcloudapi.net",                    
     "dcname1": "[concat(parameters('NamingConvention'),'-dc-01')]",                      
     "sqlclustername": "[concat(parameters('NamingConvention'),'-clust')]",     
+    "sqldbname": "[concat(parameters('NamingConvention'),'-db01')]",         
     "sqlname1": "[concat(parameters('NamingConvention'),'-sql-',parameters('sqlnode1'))]",                      
     "sqlname2": "[concat(parameters('NamingConvention'),'-sql-',parameters('sqlnode2'))]",     
     "sql1mgmtIP": "[concat(parameters('vnet1ID'),'.1.',parameters('sql1lastmgmtoctet'))]",     
@@ -1009,10 +1010,22 @@
               },                     
               "SQLNode2": {
                   "value": "[variables('sqlname2')]"
-              },          
+              },   
+              "SQLDBName": {
+                  "value": "[variables('sqldbname')]"
+              },                        
+              "SQLServiceAccount1": {
+                "value": "SQLSvc1"
+              },                
+              "SQLServiceAccount2": {
+                "value": "SQLSvc2"
+              },                              
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },          
+              "DomainName": {
+                  "value": "[variables('domainName')]"
+              },                        
               "StorageAccountName": {
                   "value": "[variables('StorageAccountName')]"
               },                                            
@@ -1023,7 +1036,7 @@
                   "value": "[reference('CreateStorage').outputs.Key.value]"             
               },   
               "adminUsername": {
-                "value": "[parameters('adminUsername')]"
+                "value": "Install"
               },                                                                                                            
               "adminPassword": {
                 "value": "[parameters('adminPassword')]"
