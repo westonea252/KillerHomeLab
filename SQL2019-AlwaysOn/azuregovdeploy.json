@@ -949,6 +949,78 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
+      "name": "RestartSQLVM1",
+      "dependsOn": [
+        "CreateSQLAccounts",
+        "DeploySQL2019AzureVM1",
+        "DomainJoinSQL1VM",
+        "GrantInstallLocalAdminSQLVM1",
+        "CreateSQLLoginforInstallSQLVM1",
+        "InstallWFCSQLVM1",
+        "RoutingSQLVM1",
+        "RoutingSQLVM2"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/restartvm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('sqlname1')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                                                         
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "RestartSQLVM2",
+      "dependsOn": [
+        "CreateSQLAccounts",
+        "DeploySQL2019AzureVM1",
+        "DomainJoinSQL1VM",
+        "GrantInstallLocalAdminSQLVM1",
+        "CreateSQLLoginforInstallSQLVM1",
+        "InstallWFCSQLVM1",
+        "RoutingSQLVM1",
+        "RoutingSQLVM2"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/restartvm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('sqlname2')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                                                         
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }
+          }
+      }
+    },        
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
       "name": "CreateStorage",
       "dependsOn": [
         "CreateSQLAccounts",
@@ -958,7 +1030,9 @@
         "CreateSQLLoginforInstallSQLVM1",
         "InstallWFCSQLVM1",
         "RoutingSQLVM1",
-        "RoutingSQLVM2"        
+        "RoutingSQLVM2",
+        "RestartSQLVM1",
+        "RestartSQLVM2"    
       ],      
       "properties": {
           "mode": "Incremental",
@@ -990,6 +1064,8 @@
         "InstallWFCSQLVM2",        
         "RoutingSQLVM1",
         "RoutingSQLVM2",
+        "RestartSQLVM1",
+        "RestartSQLVM2",            
         "CreateStorage"      
       ],      
       "properties": {
