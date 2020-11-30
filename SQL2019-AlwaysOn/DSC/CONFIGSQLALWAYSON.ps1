@@ -1,4 +1,4 @@
-﻿configuration CONFIGWFC
+﻿configuration CONFIGALWAYSON
 {
    param
    (

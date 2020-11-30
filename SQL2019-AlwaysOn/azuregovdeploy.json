@@ -1185,9 +1185,6 @@
               "computerName": {
                   "value": "[variables('sqlname1')]"
               },
-              "SQLClusterName": {
-                  "value": "[variables('sqlclustername')]"
-              },                     
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },          
@@ -1240,9 +1237,6 @@
               "computerName": {
                   "value": "[variables('sqlname2')]"
               },
-              "SQLClusterName": {
-                  "value": "[variables('sqlclustername')]"
-              },                     
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },          
