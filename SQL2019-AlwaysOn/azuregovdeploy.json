@@ -1053,7 +1053,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "ConfigureWFCSQLVM1",
+      "name": "CreateWFCSQLVM1",
       "dependsOn": [
         "CreateSQLAccounts",
         "DeploySQL2019AzureVM1",
@@ -1071,7 +1071,7 @@
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/configwfc.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/createwfc.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -1080,7 +1080,220 @@
               },
               "SQLClusterName": {
                   "value": "[variables('sqlclustername')]"
-              },       
+              },                     
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },          
+              "adminUsername": {
+                "value": "Install"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                                                            
+              "location": {
+                  "value": "[parameters('Location1')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                            
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "CreateWFCSQLVM2",
+      "dependsOn": [
+        "CreateSQLAccounts",
+        "DeploySQL2019AzureVM1",
+        "DomainJoinSQL1VM",
+        "GrantInstallLocalAdminSQLVM1",
+        "CreateSQLLoginforInstallSQLVM1",
+        "InstallWFCSQLVM1",
+        "InstallWFCSQLVM2",        
+        "RoutingSQLVM1",
+        "RoutingSQLVM2",
+        "RestartSQLVM1",
+        "RestartSQLVM2",            
+        "CreateStorage",
+        "CreateWFCSQLVM1"      
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/createwfc.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('sqlname2')]"
+              },
+              "SQLClusterName": {
+                  "value": "[variables('sqlclustername')]"
+              },                     
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },          
+              "adminUsername": {
+                "value": "Install"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                                                            
+              "location": {
+                  "value": "[parameters('Location1')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                            
+          }
+      }
+    },   
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "EnableSQLAlwaysOnSQLVM1",
+      "dependsOn": [
+        "CreateSQLAccounts",
+        "DeploySQL2019AzureVM1",
+        "DomainJoinSQL1VM",
+        "GrantInstallLocalAdminSQLVM1",
+        "CreateSQLLoginforInstallSQLVM1",
+        "InstallWFCSQLVM1",
+        "InstallWFCSQLVM2",        
+        "RoutingSQLVM1",
+        "RoutingSQLVM2",
+        "RestartSQLVM1",
+        "RestartSQLVM2",            
+        "CreateStorage",
+        "CreateWFCSQLVM1",
+        "CreateWFCSQLVM2"      
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/enablesqlalwayson.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('sqlname1')]"
+              },
+              "SQLClusterName": {
+                  "value": "[variables('sqlclustername')]"
+              },                     
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },          
+              "adminUsername": {
+                "value": "Install"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                                                            
+              "location": {
+                  "value": "[parameters('Location1')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                            
+          }
+      }
+    },        
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "EnableSQLAlwaysOnSQLVM2",
+      "dependsOn": [
+        "CreateSQLAccounts",
+        "DeploySQL2019AzureVM1",
+        "DomainJoinSQL1VM",
+        "GrantInstallLocalAdminSQLVM1",
+        "CreateSQLLoginforInstallSQLVM1",
+        "InstallWFCSQLVM1",
+        "InstallWFCSQLVM2",        
+        "RoutingSQLVM1",
+        "RoutingSQLVM2",
+        "RestartSQLVM1",
+        "RestartSQLVM2",            
+        "CreateStorage",
+        "CreateWFCSQLVM1",
+        "CreateWFCSQLVM2",
+        "EnableSQLAlwaysOnSQLVM1"      
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/enablesqlalwayson.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('sqlname2')]"
+              },
+              "SQLClusterName": {
+                  "value": "[variables('sqlclustername')]"
+              },                     
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },          
+              "adminUsername": {
+                "value": "Install"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                                                            
+              "location": {
+                  "value": "[parameters('Location1')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                            
+          }
+      }
+    },            
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "ConfigureWFCSQL",
+      "dependsOn": [
+        "CreateSQLAccounts",
+        "DeploySQL2019AzureVM1",
+        "DomainJoinSQL1VM",
+        "GrantInstallLocalAdminSQLVM1",
+        "CreateSQLLoginforInstallSQLVM1",
+        "InstallWFCSQLVM1",
+        "InstallWFCSQLVM2",        
+        "RoutingSQLVM1",
+        "RoutingSQLVM2",
+        "RestartSQLVM1",
+        "RestartSQLVM2",            
+        "CreateStorage",
+        "CreateWFCSQLVM1",
+        "CreateWFCSQLVM2"     
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/configsqlalwayson.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('sqlname1')]"
+              },
               "SQLNode1": {
                   "value": "[variables('sqlname1')]"
               },                     
@@ -1128,6 +1341,6 @@
               }                                                                            
           }
       }
-    }                                                                                                                                                                                  
+    }                                                                                                                                                                                       
   ]
 }

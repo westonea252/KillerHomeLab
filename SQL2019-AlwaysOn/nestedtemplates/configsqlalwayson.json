@@ -7,13 +7,7 @@
             "metadata": {
                 "description": "Computer Name"
             }
-        },
-        "SQLClusterName": {
-            "type": "string",
-            "metadata": {
-                "description": "SQL Cluster Name"
-            }
-        },        
+        },       
         "SQLNode1": {
             "type": "string",
             "metadata": {
@@ -106,8 +100,8 @@
         }                
     },
     "variables": {
-        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/CONFIGWFC.zip', parameters('_artifactsLocationSasToken')))]",
-        "ConfigurationFunction": "CONFIGWFC.ps1\\CONFIGWFC"
+        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/CONFIGALWAYSON.zip', parameters('_artifactsLocationSasToken')))]",
+        "ConfigurationFunction": "CONFIGALWAYSON.ps1\\CONFIGALWAYSON"
     },
     "resources": [
         {
@@ -124,7 +118,6 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
-                            "SQLClusterName": "[parameters('SQLClusterName')]",                        
                             "SQLNode1": "[parameters('SQLNode1')]",
                             "SQLNode2": "[parameters('SQLNode2')]",                                                                                            
                             "SQLDBName": "[parameters('SQLDBName')]",                                                                                                                        
