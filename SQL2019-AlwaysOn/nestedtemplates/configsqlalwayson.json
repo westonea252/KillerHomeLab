@@ -100,8 +100,8 @@
         }                
     },
     "variables": {
-        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/CONFIGALWAYSON.zip', parameters('_artifactsLocationSasToken')))]",
-        "ConfigurationFunction": "CONFIGALWAYSON.ps1\\CONFIGALWAYSON"
+        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/CONFIGSQLALWAYSON.zip', parameters('_artifactsLocationSasToken')))]",
+        "ConfigurationFunction": "CONFIGSQLALWAYSON.ps1\\CONFIGSQLALWAYSON"
     },
     "resources": [
         {

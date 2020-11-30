@@ -1,4 +1,4 @@
-﻿configuration CONFIGALWAYSON
+﻿configuration CONFIGSQLALWAYSON
 {
    param
    (
