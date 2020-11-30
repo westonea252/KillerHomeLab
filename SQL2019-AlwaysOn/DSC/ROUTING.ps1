@@ -13,6 +13,17 @@
             RebootNodeIfNeeded = $true
         }
 
+        Script UnregisterNIC
+        {
+            SetScript =
+            {
+                # UnRegister NIC 2
+                Set-DnsClient -InterfaceAlias "Ethernet" -RegisterThisConnectionsAddress:$False                
+            }
+            GetScript =  { @{} }
+            TestScript = { $false}
+        }
+
        Script AddStaticRoute2ndNic
         {
             SetScript =
