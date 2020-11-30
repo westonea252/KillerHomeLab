@@ -22,7 +22,7 @@
             InstanceName = "DEFAULT"
             Ensure = "Present"
             RestartTimeout = 120
-            PsDscRunAsCredential =  = $DomainCreds
+            PsDscRunAsCredential = $DomainCreds
         }
     }
 }
