@@ -20,7 +20,7 @@
             {
                 # UnRegister NIC 2
                 $ManagementAdapter = Get-NetIPAddress | Where-Object {$_.IPAddress -like "$using:ManagementSubnet"+"*"}
-                Set-DnsClient -InterfaceAlias $MangementAdapter.InterfaceAlias -RegisterThisConnectionsAddress:$False                
+                Set-DnsClient -InterfaceAlias $ManagementAdapter.InterfaceAlias -RegisterThisConnectionsAddress:$False                
             }
             GetScript =  { @{} }
             TestScript = { $false}
