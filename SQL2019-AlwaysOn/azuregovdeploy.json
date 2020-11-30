@@ -181,6 +181,7 @@
     "sql2dataIP": "[concat(parameters('vnet1ID'),'.2.',parameters('sql2lastdataoctet'))]", 
     "sql1DGdataIP": "[concat(parameters('vnet1ID'),'.2.',parameters('sql1DGlastdataoctet'))]",             
     "sql2DGdataIP": "[concat(parameters('vnet1ID'),'.2.',parameters('sql2DGlastdataoctet'))]",         
+    "Subnet1ID": "[concat(parameters('vnet1ID'),'.1')]",             
     "Subnet2ID": "[concat(parameters('vnet1ID'),'.2')]",             
     "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
@@ -930,8 +931,11 @@
               },
               "NextHop": {
                   "value": "[variables('sql2DGdataIP')]"
-              },   
-              "Subnet": {
+              },
+              "ManagementSubnet": {
+                  "value": "[variables('Subnet1ID')]"
+              },                                             
+              "DataSubnet": {
                   "value": "[variables('Subnet2ID')]"
               },                            
               "location": {

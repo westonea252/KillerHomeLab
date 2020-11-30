@@ -14,7 +14,13 @@
                 "description": "Default Gateway for 2nd Nic"
             }
         },
-        "Subnet": {
+        "ManagementSubnet": {
+            "type": "string",
+            "metadata": {
+                "description": "Subnet for 1st Nic"
+            }
+        },                
+        "DataSubnet": {
             "type": "string",
             "metadata": {
                 "description": "Subnet for 2nd Nic"
@@ -59,7 +65,8 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "NextHop": "[parameters('NextHop')]",
-                            "Subnet": "[parameters('Subnet')]"                            
+                            "ManagementSubnet": "[parameters('ManagementSubnet')]",
+                            "DataSubnet": "[parameters('DataSubnet')]"                                                                                    
                         }
                 },
                 "protectedSettings": {
