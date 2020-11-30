@@ -1276,7 +1276,9 @@
         "RestartSQLVM2",            
         "CreateStorage",
         "CreateWFCSQLVM1",
-        "CreateWFCSQLVM2"     
+        "CreateWFCSQLVM2",
+        "EnableSQLAlwaysOnSQLVM1",
+        "EnableSQLAlwaysOnSQLVM2"        
       ],      
       "properties": {
           "mode": "Incremental",
