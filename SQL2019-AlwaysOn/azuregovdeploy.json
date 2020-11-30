@@ -892,9 +892,12 @@
               "NextHop": {
                   "value": "[variables('sql1DGdataIP')]"
               },       
-              "Subnet": {
+              "ManagementSubnet": {
+                  "value": "[variables('Subnet1ID')]"
+              },                                             
+              "DataSubnet": {
                   "value": "[variables('Subnet2ID')]"
-              },                                                 
+              },                                                
               "location": {
                   "value": "[parameters('Location1')]"
               },
