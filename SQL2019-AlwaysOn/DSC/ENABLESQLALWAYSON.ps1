@@ -19,7 +19,7 @@
 
         SqlAlwaysOnService EnableSQLAlwaysOn
         {
-            InstanceName = "DEFAULT"
+            InstanceName = "MSSQLSERVER"
             Ensure = "Present"
             RestartTimeout = 120
             PsDscRunAsCredential = $DomainCreds
