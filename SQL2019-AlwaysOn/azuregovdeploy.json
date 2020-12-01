@@ -1331,8 +1331,8 @@
                   "value": "[reference('CreateStorage').outputs.Key.value]"             
               },   
               "adminUsername": {
-                "value": "Install"
-              },                                                                                                            
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                           
               "adminPassword": {
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                                                                                                                                                                                            
