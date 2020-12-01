@@ -52,7 +52,7 @@
             Ensure = "Present"
             RecoveryModel = "Full"
             OwnerName = $DBOwner
-            PsDscRunAsCredential = $DomainCreds
+            PsDscRunAsCredential = $AdminCreds
         }
 
        Script BackupRestoreDB
@@ -81,8 +81,8 @@
             Ensure = "Present"
             Port = 5022
             ServerName = $SQLNode1
-            InstanceName = "DEFAULT"
-            PsDscRunAsCredential = $DomainCreds
+            InstanceName = "MSSQLSERVER"
+            PsDscRunAsCredential = $AdminCreds
             DependsOn = '[File]SQLBackup', '[SqlDatabase]CreateSQLDatabase', '[Script]BackupRestoreDB'
         }
 
@@ -93,8 +93,8 @@
             Ensure = "Present"
             Port = 5022
             ServerName = $SQLNode2
-            InstanceName = "DEFAULT"
-            PsDscRunAsCredential = $DomainCreds
+            InstanceName = "MSSQLSERVER"
+            PsDscRunAsCredential = $AdminCreds
             DependsOn = '[File]SQLBackup', '[SqlDatabase]CreateSQLDatabase', '[Script]BackupRestoreDB'
         }
 
@@ -102,7 +102,7 @@
         {
             Name = "SQL-AG"
             ServerName = $SQLNode1
-            InstanceName = "DEFAULT"
+            InstanceName = "MSSQLSERVER"
             Ensure = "Present"
             AvailabilityMode = "SynchronousCommit"
             FailoverMode = "Automatic"
