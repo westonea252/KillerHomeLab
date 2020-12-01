@@ -89,13 +89,15 @@
     "vnet1subnet2Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet2')]",    
     "vnet1subnet2Prefix": "[concat(parameters('vnet1ID'),'.2.0/24')]",    
     "vnet1BastionsubnetPrefix": "[concat(parameters('vnet1ID'),'.253.0/24')]",
+    "vnet1GatewaysubnetPrefix": "[concat(parameters('vnet1ID'),'.0.0/24')]",    
     "vnet2Name": "[concat(parameters('NamingConvention'),'-VNet2')]",
     "vnet2Prefix": "[concat(parameters('vnet2ID'),'.0.0/16')]",
     "vnet2subnet1Name": "[concat(parameters('NamingConvention'),'-VNet2-Subnet1')]",    
     "vnet2subnet1Prefix": "[concat(parameters('vnet2ID'),'.1.0/24')]",    
     "vnet2subnet2Name": "[concat(parameters('NamingConvention'),'-VNet2-Subnet2')]",    
     "vnet2subnet2Prefix": "[concat(parameters('vnet2ID'),'.2.0/24')]",    
-    "vnet2BastionsubnetPrefix": "[concat(parameters('vnet2ID'),'.253.0/24')]",        
+    "vnet2BastionsubnetPrefix": "[concat(parameters('vnet2ID'),'.253.0/24')]",  
+    "vnet2GatewaysubnetPrefix": "[concat(parameters('vnet2ID'),'.0.0/24')]",              
     "vm1name": "[concat(parameters('NamingConvention'),'-vm-01')]",               
     "vm2name": "[concat(parameters('NamingConvention'),'-vm-02')]",
     "VMlastoctet": "101",                                                             
@@ -134,7 +136,10 @@
               },              
               "BastionsubnetPrefix": {
                 "value": "[variables('vnet1BastionsubnetPrefix')]"
-              },              
+              },       
+              "GatewaysubnetPrefix": {
+                "value": "[variables('vnet1GatewaysubnetPrefix')]"
+              },                                   
               "location": {
                   "value": "[parameters('Location1')]"
               }
@@ -175,7 +180,10 @@
               },              
               "BastionsubnetPrefix": {
                 "value": "[variables('vnet2BastionsubnetPrefix')]"
-              },              
+              },         
+              "GatewaysubnetPrefix": {
+                "value": "[variables('vnet2GatewaysubnetPrefix')]"
+              },                                                      
               "location": {
                   "value": "[parameters('Location2')]"
               }
