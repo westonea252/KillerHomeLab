@@ -1296,10 +1296,7 @@
           "parameters": {
               "computerName": {
                   "value": "[variables('sqlname1')]"
-              },
-              "DBOwner": {
-                  "value": "[concat(parameters('NetBiosDomain'),'/Install')]"                      
-              },                     
+              },                  
               "SQLNode1": {
                   "value": "[variables('sqlname1')]"
               },                     
@@ -1331,7 +1328,7 @@
                   "value": "[reference('CreateStorage').outputs.Key.value]"             
               },   
               "adminUsername": {
-                "value": "[parameters('adminUsername')]"
+                "value": "Install"
               },                                                                                                           
               "adminPassword": {
                 "value": "[parameters('adminPassword')]"
