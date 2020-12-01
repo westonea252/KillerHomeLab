@@ -51,7 +51,7 @@
             Ensure = "Present"
             RecoveryModel = "Full"
             OwnerName = $DomainCreds
-            PsDscRunAsCredential =  = $DomainCreds
+            PsDscRunAsCredential = $DomainCreds
         }
 
        Script BackupRestoreDB
