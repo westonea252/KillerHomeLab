@@ -69,7 +69,7 @@
             }
             GetScript =  { @{} }
             TestScript = { $false}
-            PsDscRunAsCredential = $DomainCreds
+            PsDscRunAsCredential = $AdminCreds
             DependsOn = '[File]SQLBackup', '[SqlDatabase]CreateSQLDatabase'
         }
 
