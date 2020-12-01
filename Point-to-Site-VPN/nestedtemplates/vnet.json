@@ -38,18 +38,6 @@
           "description": "Subnet 2 Prefix"
         }
       }, 
-      "subnet3Name": {
-        "type": "string",
-        "metadata": {
-          "description": "Subnet 3 Name"
-        }
-      },      
-      "subnet3Prefix": {
-        "type": "string",
-        "metadata": {
-          "description": "Subnet 3 Prefix"
-        }
-      }, 
       "GatewaysubnetPrefix": {
         "type": "string",
         "metadata": {
@@ -96,13 +84,6 @@
               
             }
           },          
-         {
-            "name": "[parameters('subnet3Name')]",
-            "properties": {
-              "addressPrefix": "[parameters('subnet3Prefix')]"
-              
-            }
-          }, 
           {
             "name": "GatewaySubnet",
             "properties": {
