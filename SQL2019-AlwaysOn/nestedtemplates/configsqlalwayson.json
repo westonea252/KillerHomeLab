@@ -8,6 +8,12 @@
                 "description": "Computer Name"
             }
         },       
+        "DBOwner": {
+            "type": "string",
+            "metadata": {
+                "description": "DB owner name"
+            }
+        },                
         "SQLNode1": {
             "type": "string",
             "metadata": {
@@ -118,6 +124,7 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
+                            "DBOwner": "[parameters('DBOwner')]",
                             "SQLNode1": "[parameters('SQLNode1')]",
                             "SQLNode2": "[parameters('SQLNode2')]",                                                                                            
                             "SQLDBName": "[parameters('SQLDBName')]",                                                                                                                        

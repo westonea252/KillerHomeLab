@@ -1297,6 +1297,9 @@
               "computerName": {
                   "value": "[variables('sqlname1')]"
               },
+              "DBOwner": {
+                  "value": "[concat(parameters('NetBiosDomain'),'/Install')]"                      
+              },                     
               "SQLNode1": {
                   "value": "[variables('sqlname1')]"
               },                     
