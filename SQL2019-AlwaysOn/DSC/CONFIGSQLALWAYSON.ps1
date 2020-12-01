@@ -87,7 +87,7 @@
 
         SqlEndpoint CreateSQL2Endpoint
         {
-            EndpointName =  = 'Endpoint2'
+            EndpointName = 'Endpoint2'
             EndpointType = 'DatabaseMirroring'
             Ensure = "Present"
             Port = 5022
