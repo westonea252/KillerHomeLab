@@ -237,13 +237,13 @@
           },
           "parameters": {
               "publicIPAddressName": {
-                "value": "[concat(variables('vnet1Name'),'-Bastion-pip')]"
+                "value": "[concat(variables('vnet2Name'),'-Bastion-pip')]"
               },
               "AllocationMethod": {
                 "value": "Static"
               },              
               "vnetName": {
-                  "value": "[variables('vnet1Name')]"
+                  "value": "[variables('vnet2Name')]"
               },
               "subnetName": {
                   "value": "AzureBastionSubnet"
