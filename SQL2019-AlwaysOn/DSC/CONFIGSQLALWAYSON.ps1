@@ -2,7 +2,6 @@
 {
    param
    (
-        [String]$DBOwner,     
         [String]$SQLNode1,     
         [String]$SQLNode2, 
         [String]$SQLDBName,
@@ -51,7 +50,6 @@
             InstanceName = "MSSQLSERVER"
             Ensure = "Present"
             RecoveryModel = "Full"
-            OwnerName = $DBOwner
             PsDscRunAsCredential = $AdminCreds
         }
 
