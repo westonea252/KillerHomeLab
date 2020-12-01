@@ -42,6 +42,7 @@
             }
             GetScript =  { @{} }
             TestScript = { $false}
+            PsDscRunAsCredential = $AdminCreds
         }
 
         SqlDatabase CreateSQLDatabase
