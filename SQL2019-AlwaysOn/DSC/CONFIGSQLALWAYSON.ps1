@@ -48,7 +48,7 @@
         SqlDatabase CreateSQLDatabase
         {
             Name = $SQLDBName
-            InstanceName = "DEFAULT"
+            InstanceName = "MSSQLSERVER"
             Ensure = "Present"
             RecoveryModel = "Full"
             OwnerName = $DBOwner
