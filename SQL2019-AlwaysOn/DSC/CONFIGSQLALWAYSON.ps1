@@ -127,6 +127,7 @@
             PrimaryReplicaServerName = $SQLNode1
             PrimaryReplicaInstanceName = "MSSQLSERVER"
             ProcessOnlyOnActiveNode = $true
+            PsDscRunAsCredential = $AdminCreds
             DependsOn = '[SqlEndpoint]CreateSQL1Endpoint','[SqlEndpoint]CreateSQL2Endpoint'
         }
     }
