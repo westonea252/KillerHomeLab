@@ -42,7 +42,7 @@
             }
             GetScript =  { @{} }
             TestScript = { $false}
-            PsDscRunAsCredential = $AdminCreds
+            PsDscRunAsCredential = $DomainCreds
         }
 
         SqlDatabase CreateSQLDatabase
@@ -59,7 +59,9 @@
             SetScript =
             {
                 # Backup Database
-                New-SmbShare -Name SQLBackup -Path C:\SQLBackup -FullAccess "$using:NetBiosDomain\$using:SQLServiceAccount1$","$using:NetBiosDomain\$using:SQLServiceAccount2$",Administrators
+                $SQLSvc1 = "$using:NetBiosDomain\$using:SQLServiceAccount1"
+                $SQLSvc2 = "$using:NetBiosDomain\$using:SQLServiceAccount2"
+                New-SmbShare -Name SQLBackup -Path C:\SQLBackup -FullAccess "$SQLSvc1","$SQLSvc2",Administrators
                 Backup-SqlDatabase -Database "$using:SQLDBName" -BackupFile "\\$using:SQLNode1\SQLBackup\$using:SQLDBName.bak" -ServerInstance "$using:SQLNode1"
                 Backup-SqlDatabase -Database "$using:SQLDBName" -BackupFile "\\$using:SQLNode1\SQLBackup\$using:SQLDBName.log" -ServerInstance "$using:SQLNode1" -BackupAction Log
 
