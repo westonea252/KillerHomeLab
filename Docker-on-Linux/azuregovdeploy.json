@@ -37,10 +37,10 @@
     },  
     "OSVersion": {
         "type": "string",
-        "defaultValue": "2019-Datacenter",
+        "defaultValue": "8.1",
         "allowedValues": [
-          "2019-Datacenter",
-          "2016-Datacenter"
+          "8.1",
+          "8.0"
         ],            
         "metadata": {
             "description": "OS Version"
@@ -173,10 +173,10 @@
                   "value": "[variables('vmIP')]"
               },
               "Publisher": {
-                  "value": "MicrosoftWindowsServer"
+                  "value": "Redhat"
               },
               "Offer": {
-                  "value": "WindowsServer"
+                  "value": "RHEL"
               },
               "OSVersion": {
                 "value": "[parameters('OSVersion')]"
