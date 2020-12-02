@@ -120,15 +120,17 @@
         SqlAGReplica AddNodetoSQLAG
         {
             Ensure = "Present"
-            Name = $SQLNode2
+            Name = "$SQLNode2\\MSSQLSERVER"
             AvailabilityGroupName = "SQL-AG"
             ServerName = $SQLNode2
             InstanceName = "MSSQLSERVER"
             PrimaryReplicaServerName = $SQLNode1
             PrimaryReplicaInstanceName = "MSSQLSERVER"
-            ProcessOnlyOnActiveNode = $true
+            AvailabilityMode = "SynchronousCommit"
+            FailoverMode = "Automatic"
+            EndpointHostName = "$SQLNode2.$DomainName"
             PsDscRunAsCredential = $AdminCreds
-            DependsOn = '[SqlEndpoint]CreateSQL1Endpoint','[SqlEndpoint]CreateSQL2Endpoint'
+            DependsOn = '[SqlEndpoint]CreateSQL1Endpoint','[SqlEndpoint]CreateSQL2Endpoint', '[SqlAG]CreateSQLAG'
         }
     }
 }
