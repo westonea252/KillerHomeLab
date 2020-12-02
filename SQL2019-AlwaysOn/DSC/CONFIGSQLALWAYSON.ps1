@@ -38,7 +38,8 @@
             SetScript =
             {
 		        # Create Cloud Storage Account
-		        Set-ClusterQuorum -CloudWitness -AccountName "$using:StorageAccountName" -AccessKey "$using:StorageAccountKey" -EndPoint "$using:StorageEndPoint"
+                $CloudWitness = Get-ClusterQuorum | Where-Object {$_.QuorumResource -like "Cloud Witness"}
+		        IF ($CloudWitness -eq $null) {Set-ClusterQuorum -CloudWitness -AccountName "$using:StorageAccountName" -AccessKey "$using:StorageAccountKey" -EndPoint "$using:StorageEndPoint"}
             }
             GetScript =  { @{} }
             TestScript = { $false}
@@ -58,10 +59,15 @@
         {
             SetScript =
             {
-                # Backup Database
+                # Variables
                 $SQLSvc1 = "$using:NetBiosDomain\$using:SQLServiceAccount1"
                 $SQLSvc2 = "$using:NetBiosDomain\$using:SQLServiceAccount2"
-                New-SmbShare -Name SQLBackup -Path C:\SQLBackup -FullAccess "$SQLSvc1","$SQLSvc2",Administrators
+                
+                # Create Shares
+                $BackupShare = Get-SmbShare -Name SQLBackup -ErrorAction 0
+                IF ($Backupshare -eq $null) {New-SmbShare -Name SQLBackup -Path C:\SQLBackup -FullAccess "$SQLSvc1","$SQLSvc2",Administrators}
+                
+                # Backup Database
                 Backup-SqlDatabase -Database "$using:SQLDBName" -BackupFile "\\$using:SQLNode1\SQLBackup\$using:SQLDBName.bak" -ServerInstance "$using:SQLNode1"
                 Backup-SqlDatabase -Database "$using:SQLDBName" -BackupFile "\\$using:SQLNode1\SQLBackup\$using:SQLDBName.log" -ServerInstance "$using:SQLNode1" -BackupAction Log
 
