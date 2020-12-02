@@ -110,18 +110,5 @@
             EndpointHostName = "$SQLNode1.$DomainName"
             DependsOn = '[SqlEndpoint]CreateSQL1Endpoint','[SqlEndpoint]CreateSQL2Endpoint'
         }
-
-        SqlAGReplica AddNodetoSQLAG
-        {
-            Ensure = "Present"
-            Name = $SQLNode2
-            AvailabilityGroupName = "SQL-AG"
-            ServerName = $SQLNode2
-            InstanceName = "MSSQLSERVER"
-            PrimaryReplicaServerName = $SQLNode1
-            PrimaryReplicaInstanceName = "MSSQLSERVER"
-            ProcessOnlyOnActiveNode = $true
-            DependsOn = '[SqlEndpoint]CreateSQL1Endpoint','[SqlEndpoint]CreateSQL2Endpoint'
-        }
     }
 }
