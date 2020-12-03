@@ -54,7 +54,7 @@
             InstanceName = "MSSQLSERVER"
             Ensure = "Present"
             RecoveryModel = "Full"
-            OwnerName = 
+            OwnerName = $DomainDBCreds
             PsDscRunAsCredential = $AdminCreds
         }
 
