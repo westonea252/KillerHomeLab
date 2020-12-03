@@ -54,8 +54,7 @@
             InstanceName = "MSSQLSERVER"
             Ensure = "Present"
             RecoveryModel = "Full"
-            OwnerName = $DomainDBCreds
-            PsDscRunAsCredential = $AdminCreds
+            PsDscRunAsCredential = $DomainDBCreds
         }
 
        Script BackupRestoreDB
