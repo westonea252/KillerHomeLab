@@ -5,7 +5,6 @@
         [String]$SQLNode1,     
         [String]$SQLNode2, 
         [String]$SQLDBName,
-        [String]$SQLDBOwner,     
         [String]$SQLServiceAccount1,                     
         [String]$SQLServiceAccount2,                     
         [String]$NetBiosDomain,
@@ -13,13 +12,14 @@
         [String]$StorageAccountName,
         [String]$StorageAccountKey,
         [String]$StorageEndpoint,        
-        [System.Management.Automation.PSCredential]$Admincreds
+        [System.Management.Automation.PSCredential]$Admincreds,
+        [System.Management.Automation.PSCredential]$SQLDBOwner
     )
 
     Import-DscResource -Module SqlServerDsc # Used for SQL Object Creation
 
     [System.Management.Automation.PSCredential ]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosDomain}\$($Admincreds.UserName)", $Admincreds.Password)
-    [System.Management.Automation.PSCredential ]$DomainDBCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosDomain}\$($SQLDBOwner)", $Admincreds.Password)
+    [System.Management.Automation.PSCredential ]$DomainDBCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosDomain}\$($SQLDBOwner.UserName)", $Admincreds.Password)
 
     Node localhost
     {

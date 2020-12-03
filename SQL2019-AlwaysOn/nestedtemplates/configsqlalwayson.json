@@ -138,7 +138,11 @@
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"
-                            }                                                                                                               
+                            },
+                            "SQLDBOwnerCreds": {
+                                "UserName": "[parameters('SQLDBOwner')]",
+                                "Password": "PrivateSettingsRef:AdminPassword"
+                            }                                                                                                                                           
                         }
                 },
                 "protectedSettings": {
