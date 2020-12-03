@@ -20,6 +20,12 @@
             "description": "SQL Cluster Name"
           }
         }, 
+        "ManagementSubnet": {
+            "type": "string",
+            "metadata": {
+                "description": "Subnet for 1st Nic"
+            }
+        },          
         "adminUsername": {
             "type": "string",
             "metadata": {
@@ -71,6 +77,7 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "SQLClusterName": "[parameters('SQLClusterName')]",
+                            "ManagementSubnet": "[parameters('ManagementSubnet')]",                            
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",

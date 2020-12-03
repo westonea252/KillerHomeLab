@@ -134,5 +134,16 @@
             PsDscRunAsCredential = $AdminCreds
             DependsOn = '[SqlEndpoint]CreateSQL1Endpoint','[SqlEndpoint]CreateSQL2Endpoint', '[SqlAG]CreateSQLAG'
         }
+
+        SqlAGDatabase AddSQLAGDatabase
+        {
+            DatabaseName = $SQLDBName
+            ServerName = $SQLNode1
+            InstanceName = "MSSQLSERVER"
+            AvailabilityGroupName = "SQL-AG"
+            BackupPath = "\\$SQLNode1\SQLBackup\"
+            Ensure = "Present"
+            DependsOn = '[SqlAGReplica]AddNodetoSQLAG'
+        }
     }
 }

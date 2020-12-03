@@ -1087,7 +1087,10 @@
               },
               "SQLClusterName": {
                   "value": "[variables('sqlclustername')]"
-              },                     
+              },  
+              "ManagementSubnet": {
+                  "value": "[variables('Subnet1ID')]"
+              },                                                                              
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },          
@@ -1140,7 +1143,10 @@
               },
               "SQLClusterName": {
                   "value": "[variables('sqlclustername')]"
-              },                     
+              },   
+              "ManagementSubnet": {
+                  "value": "[variables('Subnet1ID')]"
+              },                                                                             
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },          

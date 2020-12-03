@@ -2,7 +2,8 @@
 {
    param
    (
-        [String]$SQLClusterName,     
+        [String]$SQLClusterName,
+        [String]$ManagementSubnet,             
         [String]$NetBiosDomain,
         [System.Management.Automation.PSCredential]$Admincreds
     )
@@ -22,6 +23,20 @@
         {
             Name = $SQLClusterName
             DomainAdministratorCredential = $DomainCreds
+        }
+
+       Script RemovePrimaryNICFromCluster
+        {
+            SetScript =
+            {
+                # Variables
+                $Cluster = (Get-ClusterNetworkInterface | Where-Object {$_.Ipv4Addresses -like "$using:ManagementSubnet"+"*"}).Network
+                (Get-ClusterNetwork $Cluster[0].Name).Role = "None"
+            }
+            GetScript =  { @{} }
+            TestScript = { $false}
+            PsDscRunAsCredential = $AdminCreds
+            DependsOn = '[xCluster]CreateCluster'
         }
     }
 }
