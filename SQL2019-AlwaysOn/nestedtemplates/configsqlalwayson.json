@@ -127,7 +127,6 @@
                             "SQLNode1": "[parameters('SQLNode1')]",
                             "SQLNode2": "[parameters('SQLNode2')]",                                                                                            
                             "SQLDBName": "[parameters('SQLDBName')]",                                                                                                                        
-                            "SQLDBOwner": "[parameters('SQLDBOwner')]",                                                                                                                                                    
                             "SQLServiceAccount1": "[parameters('SQLServiceAccount1')]",                                                                                                                                                    
                             "SQLServiceAccount2": "[parameters('SQLServiceAccount2')]",                                                                                                                                                                                
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
