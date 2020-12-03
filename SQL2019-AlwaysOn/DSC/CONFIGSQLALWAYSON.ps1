@@ -5,6 +5,7 @@
         [String]$SQLNode1,     
         [String]$SQLNode2, 
         [String]$SQLDBName,
+        [String]$SQLDBOwner,     
         [String]$SQLServiceAccount1,                     
         [String]$SQLServiceAccount2,                     
         [String]$NetBiosDomain,
@@ -18,6 +19,7 @@
     Import-DscResource -Module SqlServerDsc # Used for SQL Object Creation
 
     [System.Management.Automation.PSCredential ]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosDomain}\$($Admincreds.UserName)", $Admincreds.Password)
+    [System.Management.Automation.PSCredential ]$DomainDBCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosDomain}\$($SQLDBOwner)", $Admincreds.Password)
 
     Node localhost
     {
@@ -43,7 +45,7 @@
             }
             GetScript =  { @{} }
             TestScript = { $false}
-            PsDscRunAsCredential = $DomainCreds
+            PsDscRunAsCredential = $DomainDBCreds
         }
 
         SqlDatabase CreateSQLDatabase
@@ -52,6 +54,7 @@
             InstanceName = "MSSQLSERVER"
             Ensure = "Present"
             RecoveryModel = "Full"
+            OwnerName = 
             PsDscRunAsCredential = $AdminCreds
         }
 
@@ -120,7 +123,7 @@
         SqlAGReplica AddNodetoSQLAG
         {
             Ensure = "Present"
-            Name = "$SQLNode2\\MSSQLSERVER"
+            Name = "$SQLNode2"
             AvailabilityGroupName = "SQL-AG"
             ServerName = $SQLNode2
             InstanceName = "MSSQLSERVER"

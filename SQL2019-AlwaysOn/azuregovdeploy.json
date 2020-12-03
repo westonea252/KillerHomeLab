@@ -1306,6 +1306,9 @@
               "SQLDBName": {
                   "value": "[variables('sqldbname')]"
               },                        
+              "SQLDBOwner": {
+                "value": "Install"
+              },      
               "SQLServiceAccount1": {
                 "value": "SQLSvc1"
               },                

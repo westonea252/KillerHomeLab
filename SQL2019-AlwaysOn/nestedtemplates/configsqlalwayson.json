@@ -25,7 +25,13 @@
             "metadata": {
                 "description": "SQL Datbase Name"
             }
-        },   
+        },  
+        "SQLDBOwner": {
+            "type": "string",
+            "metadata": {
+                "description": "SQL DB Owner Name"
+            }
+        },           
         "SQLServiceAccount1": {
             "type": "string",
             "metadata": {
@@ -121,6 +127,7 @@
                             "SQLNode1": "[parameters('SQLNode1')]",
                             "SQLNode2": "[parameters('SQLNode2')]",                                                                                            
                             "SQLDBName": "[parameters('SQLDBName')]",                                                                                                                        
+                            "SQLDBOwner": "[parameters('SQLDBOwner')]",                                                                                                                                                    
                             "SQLServiceAccount1": "[parameters('SQLServiceAccount1')]",                                                                                                                                                    
                             "SQLServiceAccount2": "[parameters('SQLServiceAccount2')]",                                                                                                                                                                                
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
