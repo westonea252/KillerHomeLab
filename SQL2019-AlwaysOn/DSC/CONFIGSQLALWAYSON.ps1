@@ -144,6 +144,7 @@
             BackupPath = "\\$SQLNode1\SQLBackup\"
             Ensure = "Present"
             DependsOn = '[SqlAGReplica]AddNodetoSQLAG'
+            PsDscRunAsCredential = $DomainDBCreds
         }
     }
 }
