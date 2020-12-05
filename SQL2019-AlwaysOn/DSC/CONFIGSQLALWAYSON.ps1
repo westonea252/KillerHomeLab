@@ -139,6 +139,38 @@
             DependsOn = '[SqlEndpoint]CreateSQL1Endpoint','[SqlEndpoint]CreateSQL2Endpoint', '[SqlAG]CreateSQLAG'
         }
 
+       Script GrantSQLSvcConnect
+        {
+            SetScript =
+            {
+                # Variables
+                $SQLSvc = "$using:NetBiosDomain\$using:SQLServiceAccount"
+                $instanceName1 = "$using:SQLNode1"
+                $instanceName2 = "$using:SQLNode2"
+                $endpointName1 = "Endpoint1"
+                $endpointName2 = "Endpoint2"
+                $endpointAccount = "$SQLSvc"
+
+                $server1 = New-Object Microsoft.SqlServer.Management.Smo.Server $instanceName1
+                $endpoint1 = $server1.Endpoints[$endpointName1]
+
+                $server2 = New-Object Microsoft.SqlServer.Management.Smo.Server $instanceName2
+                $endpoint2 = $server2.Endpoints[$endpointName2]
+
+                #identify the Connect permission object
+                $permissionSet1 = New-Object Microsoft.SqlServer.Management.Smo.ObjectPermissionSet([Microsoft.SqlServer.Management.Smo.ObjectPermission]::Connect)
+                $permissionSet2 = New-Object Microsoft.SqlServer.Management.Smo.ObjectPermissionSet([Microsoft.SqlServer.Management.Smo.ObjectPermission]::Connect)
+
+                #grant permission
+                $endpoint1.Grant($permissionSet1,$endpointAccount1)                
+                $endpoint2.Grant($permissionSet2,$endpointAccount2)                
+            }
+            GetScript =  { @{} }
+            TestScript = { $false}
+            PsDscRunAsCredential = $AdminCreds
+            DependsOn = '[SqlAGReplica]AddNodetoSQLAG'
+        }
+
         SqlAGDatabase AddSQLAGDatabase
         {
             DatabaseName = $SQLDBName

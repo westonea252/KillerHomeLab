@@ -62,17 +62,6 @@
             DependsOn = '[Script]GrantSysAdmin'
         }
 
-        SqlPermission 'GRANTSQLSVC'
-        {
-            Ensure               = 'Present'
-            ServerName           = "$ComputerName.$DomainName"
-            InstanceName         = 'MSSQLSERVER'
-            Principal            = "$NetBiosDomain\$SvcAccount"
-            Permission           = 'ConnectSql'
-            PsDscRunAsCredential = $Admincreds
-            DependsOn = '[Script]GrantSysAdmin'
-        }
-
         SqlServiceAccount 'SetServiceAccount'
         {
             ServerName     = "$ComputerName.$DomainName"
