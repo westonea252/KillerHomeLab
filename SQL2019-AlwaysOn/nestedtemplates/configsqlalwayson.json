@@ -32,18 +32,12 @@
                 "description": "SQL DB Owner Name"
             }
         },           
-        "SQLServiceAccount1": {
+        "SQLServiceAccount": {
             "type": "string",
             "metadata": {
-                "description": "SQL Service Account 1"
+                "description": "SQL Service Account"
             }
         },                   
-        "SQLServiceAccount2": {
-            "type": "string",
-            "metadata": {
-                "description": "SQL Service Account 2"
-            }
-        },                           
         "NetBiosDomain": {
             "type": "string",
             "metadata": {
@@ -127,8 +121,7 @@
                             "SQLNode1": "[parameters('SQLNode1')]",
                             "SQLNode2": "[parameters('SQLNode2')]",                                                                                            
                             "SQLDBName": "[parameters('SQLDBName')]",                                                                                                                        
-                            "SQLServiceAccount1": "[parameters('SQLServiceAccount1')]",                                                                                                                                                    
-                            "SQLServiceAccount2": "[parameters('SQLServiceAccount2')]",                                                                                                                                                                                
+                            "SQLServiceAccount": "[parameters('SQLServiceAccount')]",                                                                                                                                                   
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
                             "DomainName": "[parameters('DomainName')]",                                                        
                             "StorageAccountName": "[parameters('StorageAccountName')]",                                                        

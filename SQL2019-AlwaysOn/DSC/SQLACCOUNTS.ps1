@@ -2,9 +2,11 @@
 {
    param
    (
+        [String]$NetBiosDomain,
         [String]$DomainName,        
         [String]$BaseDN,
-        [String]$NetBiosDomain,
+        [String]$ServiceAccount,        
+        [String]$InstallAccount,        
         [System.Management.Automation.PSCredential]$Admincreds
     )
 
@@ -17,7 +19,7 @@
         ADUser Install
         {
             Ensure     = 'Present'
-            UserName   = "Install"
+            UserName   = $InstallAccount
             DomainName = $DomainName
             Path       = "OU=Service,OU=Accounts,$BaseDN"
             Password = $DomainCreds
@@ -27,29 +29,20 @@
         ADUser SQLSvc1
         {
             Ensure     = 'Present'            
-            UserName   = "SQLSvc1"
+            UserName   = $ServiceAccount
             DomainName = $DomainName
             Path       = "OU=Service,OU=Accounts,$BaseDN"
             Password = $DomainCreds
             Enabled = $True
         }
 
-        ADUser SQLSvc2
-        {
-            Ensure     = 'Present'            
-            UserName   = "SQLSvc2"
-            DomainName = $DomainName
-            Path       = "OU=Service,OU=Accounts,$BaseDN"
-            Password = $DomainCreds
-            Enabled = $True
-        }
         Script GrantCreateComputerAccounts
         {
             SetScript =
             {
 
                 $acl = get-acl "ad:$using:BaseDN"
-                $User = Get-ADUser Install
+                $User = Get-ADUser "$using:InstallAccount"
 
                 # The following object specific ACE is to grant Group permission to change user password on all user objects under OU
                 $objectguid = new-object Guid bf967a86-0de6-11d0-a285-00aa003049e2 # is the rightsGuid for the extended right Create Computer Account

@@ -5,8 +5,7 @@
         [String]$SQLNode1,     
         [String]$SQLNode2, 
         [String]$SQLDBName,
-        [String]$SQLServiceAccount1,                     
-        [String]$SQLServiceAccount2,                     
+        [String]$SQLServiceAccount,                     
         [String]$NetBiosDomain,
         [String]$DomainName,
         [String]$StorageAccountName,
@@ -62,12 +61,11 @@
             SetScript =
             {
                 # Variables
-                $SQLSvc1 = "$using:NetBiosDomain\$using:SQLServiceAccount1"
-                $SQLSvc2 = "$using:NetBiosDomain\$using:SQLServiceAccount2"
+                $SQLSvc = "$using:NetBiosDomain\$using:ServiceAccount"
                 
                 # Create Shares
                 $BackupShare = Get-SmbShare -Name SQLBackup -ErrorAction 0
-                IF ($Backupshare -eq $null) {New-SmbShare -Name SQLBackup -Path C:\SQLBackup -FullAccess "$SQLSvc1","$SQLSvc2",Administrators}
+                IF ($Backupshare -eq $null) {New-SmbShare -Name SQLBackup -Path C:\SQLBackup -FullAccess "$SQLSvc",Administrators}
                 
                 # Backup Database
                 Backup-SqlDatabase -Database "$using:SQLDBName" -BackupFile "\\$using:SQLNode1\SQLBackup\$using:SQLDBName.bak" -ServerInstance "$using:SQLNode1"

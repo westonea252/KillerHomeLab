@@ -26,6 +26,18 @@
                 "description": "NetBios Domain Name"
             }
         },    
+        "ServiceAccount": {
+            "type": "string",
+            "metadata": {
+                "description": "Service Account"
+            }
+        },            
+        "InstallAccount": {
+            "type": "string",
+            "metadata": {
+                "description": "Install Account"
+            }
+        },                    
         "adminUsername": {
             "type": "string",
             "metadata": {
@@ -79,6 +91,8 @@
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
                             "DomainName": "[parameters('DomainName')]",                            
                             "BaseDN": "[parameters('BaseDN')]",
+                            "ServiceAccount": "[parameters('ServiceAccount')]",                                                        
+                            "InstallAccount": "[parameters('InstallAccount')]",                                                                                    
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"
