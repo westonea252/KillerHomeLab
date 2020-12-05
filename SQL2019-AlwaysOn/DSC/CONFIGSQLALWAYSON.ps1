@@ -61,7 +61,7 @@
             SetScript =
             {
                 # Variables
-                $SQLSvc = "$using:NetBiosDomain\$using:ServiceAccount"
+                $SQLSvc = "$using:NetBiosDomain\$using:SQLServiceAccount"
                 
                 # Create Shares
                 $BackupShare = Get-SmbShare -Name SQLBackup -ErrorAction 0
