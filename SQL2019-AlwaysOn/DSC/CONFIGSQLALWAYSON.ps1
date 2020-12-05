@@ -66,14 +66,20 @@
                 # Create Shares
                 $BackupShare = Get-SmbShare -Name SQLBackup -ErrorAction 0
                 IF ($Backupshare -eq $null) {New-SmbShare -Name SQLBackup -Path C:\SQLBackup -FullAccess "$SQLSvc",Administrators}
-                
+               
                 # Backup Database
+                [System.Reflection.Assembly]::LoadWithPartialName('Microsoft.SqlServer.SMO') | out-null
+                $server = New-Object ('Microsoft.SqlServer.Management.Smo.Server') "$using:SQLNode1"
+                $database = $Server.Databases | Where-Object {$_.Name -like "$using:SQLDBName"}
+                IF ($database.LastBackupDate -like "*0001*") {
+                
                 Backup-SqlDatabase -Database "$using:SQLDBName" -BackupFile "\\$using:SQLNode1\SQLBackup\$using:SQLDBName.bak" -ServerInstance "$using:SQLNode1"
                 Backup-SqlDatabase -Database "$using:SQLDBName" -BackupFile "\\$using:SQLNode1\SQLBackup\$using:SQLDBName.log" -ServerInstance "$using:SQLNode1" -BackupAction Log
 
                 # Restore the database and log on the secondary (using NO RECOVERY)  
                 Restore-SqlDatabase -Database "$using:SQLDBName" -BackupFile "\\$using:SQLNode1\SQLBackup\$using:SQLDBName.bak" -ServerInstance "$using:SQLNode2" -NoRecovery
                 Restore-SqlDatabase -Database "$using:SQLDBName" -BackupFile "\\$using:SQLNode1\SQLBackup\$using:SQLDBName.log" -ServerInstance "$using:SQLNode2" -RestoreAction Log -NoRecovery
+                }
             }
             GetScript =  { @{} }
             TestScript = { $false}
