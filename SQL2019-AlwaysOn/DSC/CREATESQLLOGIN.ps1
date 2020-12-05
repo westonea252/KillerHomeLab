@@ -26,6 +26,16 @@
             PsDscRunAsCredential = $Admincreds
         }
 
+        SqlLogin CreateSQLSvcSQLLogin
+        {
+            Ensure               = 'Present'
+            Name                 = "$NetBiosDomain\$SvcAccount"
+            LoginType            = 'WindowsUser'
+            ServerName           = "$ComputerName.$DomainName"
+            InstanceName         = 'MSSQLSERVER'
+            PsDscRunAsCredential = $Admincreds
+        }
+
         Script GrantSysAdmin
         {
             SetScript =
@@ -38,7 +48,7 @@
             GetScript =  { @{} }
             TestScript = { $false}
             PsDscRunAsCredential = $Admincreds
-            DependsOn = '[SqlLogin]CreateInstallSQLLogin'
+            DependsOn = '[SqlLogin]CreateInstallSQLLogin', '[SqlLogin]CreateSQLSvcSQLLogin'
         }
 
         SqlPermission 'GRANTSYSTEM'
@@ -48,6 +58,17 @@
             InstanceName         = 'MSSQLSERVER'
             Principal            = 'NT AUTHORITY\SYSTEM'
             Permission           = 'AlterAnyAvailabilityGroup', 'ConnectSql','ViewServerState'
+            PsDscRunAsCredential = $Admincreds
+            DependsOn = '[Script]GrantSysAdmin'
+        }
+
+        SqlPermission 'GRANTSQLSVC'
+        {
+            Ensure               = 'Present'
+            ServerName           = "$ComputerName.$DomainName"
+            InstanceName         = 'MSSQLSERVER'
+            Principal            = "$NetBiosDomain\$SvcAccount"
+            Permission           = 'ConnectSql'
             PsDscRunAsCredential = $Admincreds
             DependsOn = '[Script]GrantSysAdmin'
         }
