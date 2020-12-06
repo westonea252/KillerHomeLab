@@ -30,13 +30,13 @@
     },
     "LoadBalancerSku": {
         "type": "string",
-        "defaultValue": "Standard",        
-        "metadata": {
-            "description": "Load Balancer Sku Type"
-        },
+      "defaultValue": "Standard",
       "allowedValues": [
         "Standard"
-      ]        
+      ],
+        "metadata": {
+            "description": "Load Balancer Sku Type"
+        }           
     },                
     "ServiceAccount": {
         "type": "string",
