@@ -2,6 +2,7 @@
 {
    param
    (
+        [String]$SQLAGName,     
         [String]$SQLNode1,     
         [String]$SQLNode2, 
         [String]$SQLDBName,
@@ -113,7 +114,7 @@
 
         SqlAG CreateSQLAG
         {
-            Name = "SQL-AG"
+            Name = $SQLAGName
             ServerName = $SQLNode1
             InstanceName = "MSSQLSERVER"
             Ensure = "Present"
@@ -127,7 +128,7 @@
         {
             Ensure = "Present"
             Name = "$SQLNode2"
-            AvailabilityGroupName = "SQL-AG"
+            AvailabilityGroupName = $SQLAGName
             ServerName = $SQLNode2
             InstanceName = "MSSQLSERVER"
             PrimaryReplicaServerName = $SQLNode1

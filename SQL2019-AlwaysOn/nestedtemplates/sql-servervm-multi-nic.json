@@ -8,6 +8,9 @@
         "AvailabilitySetName": {
             "type": "string"
         },        
+        "LoadBalencerName": {
+            "type": "string"
+        },                
         "enableAcceleratedNetworking": {
             "type": "bool",
             "defaultValue": true         
@@ -135,8 +138,13 @@
                             "privateIPAddress": "[variables('NicIPAddress2')]",
                             "subnet": {
                                 "id": "[variables('subnetId2')]"
-                            }                            
-                            }
+                            },
+                            "loadBalancerBackendAddressPools": [
+                                {
+                                "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('LoadBalencerName'), 'SQLServers')]"
+                                }
+                            ]                                                        
+                        }
                     }
                 ],
                 "enableAcceleratedNetworking": "[parameters('enableAcceleratedNetworking')]"
