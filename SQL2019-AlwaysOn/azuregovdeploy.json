@@ -80,51 +80,51 @@
     },                                 
     "SQLNode1": {
       "type": "string",
-      "defaultValue": "01",
+      "defaultValue": "111",
       "metadata": {
-        "description": "SQL Node1 Number (Example:  01)"
+        "description": "SQL Node1 Number (Example:  111)"
       }
     },    
     "SQLNode2": {
       "type": "string",
-      "defaultValue": "02",
+      "defaultValue": "112",
       "metadata": {
-        "description": "SQL Node2 Number (Example:  02)"
+        "description": "SQL Node2 Number (Example:  112)"
       }
     },
     "sqllastapoctet": {
       "type": "string",
-      "defaultValue": "10",
+      "defaultValue": "110",
       "metadata": {
-        "description": "SQL Access Point Last Octet (Example:  10)"
+        "description": "SQL Access Point Last Octet (Example:  110)"
       }
     },                             
     "sql1lastmgmtoctet": {
       "type": "string",
-      "defaultValue": "11",
+      "defaultValue": "111",
       "metadata": {
-        "description": "SQL Node1 Last Mgmt Octet (Example:  11)"
+        "description": "SQL Node1 Last Mgmt Octet (Example:  111)"
       }
     },                 
     "sql2lastmgmtoctet": {
       "type": "string",
-      "defaultValue": "12",
+      "defaultValue": "112",
       "metadata": {
-        "description": "SQL Node2 Last Mgmt Octet (Example:  12)"
+        "description": "SQL Node2 Last Mgmt Octet (Example:  112)"
       }
     },
     "sql1lastdataoctet": {
       "type": "string",
-      "defaultValue": "11",
+      "defaultValue": "111",
       "metadata": {
-        "description": "SQL Node1 Last Data Octet (Example:  11)"
+        "description": "SQL Node1 Last Data Octet (Example:  111)"
       }
     },        
     "sql2lastdataoctet": {
       "type": "string",
-      "defaultValue": "12",
+      "defaultValue": "112",
       "metadata": {
-        "description": "SQL Node2 Last Data Octet (Example:  12)"
+        "description": "SQL Node2 Last Data Octet (Example:  112)"
       }
     },        
     "sql1DGlastdataoctet": {
