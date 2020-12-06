@@ -57,21 +57,21 @@
         "description": "SQL Node1 Number"
       }
     },
-    "sqlclustername": {
+    "SqlClusterName": {
       "type": "string",
       "defaultValue": "KHL-CLUST",
       "metadata": {
         "description": "Windows Failover Cluster Name"
       }
     },                                     
-    "sqlagname": {
+    "SQLAGName": {
       "type": "string",
       "defaultValue": "KHL-AG",
       "metadata": {
         "description": "SQL Availability Group Name"
       }
     },                             
-    "sqlapname": {
+    "SQLAPname": {
       "type": "string",
       "defaultValue": "KHL-AP",
       "metadata": {
@@ -80,61 +80,61 @@
     },                                 
     "SQLNode1": {
       "type": "string",
-      "defaultValue": "111",
+      "defaultValue": "01",
       "metadata": {
-        "description": "SQL Node1 Number (Example:  111)"
+        "description": "SQL Node1 Number (Example:  01)"
       }
     },    
     "SQLNode2": {
       "type": "string",
-      "defaultValue": "112",
+      "defaultValue": "02",
       "metadata": {
-        "description": "SQL Node2 Number (Example:  112)"
+        "description": "SQL Node2 Number (Example:  02)"
       }
     },
-    "sqllastapoctet": {
+    "SQLLastAPOctet": {
       "type": "string",
       "defaultValue": "110",
       "metadata": {
         "description": "SQL Access Point Last Octet (Example:  110)"
       }
     },                             
-    "sql1lastmgmtoctet": {
+    "SQL1LastMgmtOctet": {
       "type": "string",
       "defaultValue": "111",
       "metadata": {
         "description": "SQL Node1 Last Mgmt Octet (Example:  111)"
       }
     },                 
-    "sql2lastmgmtoctet": {
+    "SQL2LastMgmtOctet": {
       "type": "string",
       "defaultValue": "112",
       "metadata": {
         "description": "SQL Node2 Last Mgmt Octet (Example:  112)"
       }
     },
-    "sql1lastdataoctet": {
+    "SQL1LastDataOctet": {
       "type": "string",
       "defaultValue": "111",
       "metadata": {
         "description": "SQL Node1 Last Data Octet (Example:  111)"
       }
     },        
-    "sql2lastdataoctet": {
+    "SQL2LastDataOctet": {
       "type": "string",
       "defaultValue": "112",
       "metadata": {
         "description": "SQL Node2 Last Data Octet (Example:  112)"
       }
     },        
-    "sql1DGlastdataoctet": {
+    "SQL1DGLastDataOctet": {
       "type": "string",
       "defaultValue": "1",
       "metadata": {
         "description": "SQL Node1 Default Gateway Last Data Octet (Example:  1)"
       }
     },                    
-    "sql2DGlastdataoctet": {
+    "SQL2DGLastDataOctet": {
       "type": "string",
       "defaultValue": "1",
       "metadata": {
@@ -198,7 +198,7 @@
           "description": "Top-Level Domain Name"
       }
     },         
-    "vnet1ID": {
+    "VNet1ID": {
       "type": "string",
       "defaultValue": "10.1",
       "metadata": {
