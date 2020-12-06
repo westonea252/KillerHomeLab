@@ -33,9 +33,7 @@
         "metadata": {
             "description": "Load Balancer Sku Type"
         },
-      "defaultValue": "Basic",        
       "allowedValues": [
-        "Basic",
         "Standard"
       ]        
     },                
