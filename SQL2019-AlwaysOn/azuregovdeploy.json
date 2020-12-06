@@ -16,7 +16,7 @@
     },
     "AvailabilitySetName": {
         "type": "string",
-      "defaultValue": "KHL-SQL-AS",
+      "defaultValue": "KHL-SQL-AVS",
         "metadata": {
             "description": "Availability Set Name"
         }
