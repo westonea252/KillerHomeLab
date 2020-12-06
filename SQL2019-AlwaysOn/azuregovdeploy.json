@@ -81,63 +81,63 @@
     },                                 
     "SQLNode1": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "01",
       "metadata": {
         "description": "SQL Node1 Number (Example:  01)"
       }
     },    
     "SQLNode2": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "02",
       "metadata": {
         "description": "SQL Node2 Number (Example:  02)"
       }
     },
     "sqllastapoctet": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "10",
       "metadata": {
         "description": "SQL Access Point Last Octet (Example:  10)"
       }
     },                             
     "sql1lastmgmtoctet": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "11",
       "metadata": {
         "description": "SQL Node1 Last Mgmt Octet (Example:  11)"
       }
     },                 
     "sql2lastmgmtoctet": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "12",
       "metadata": {
         "description": "SQL Node2 Last Mgmt Octet (Example:  12)"
       }
     },
     "sql1lastdataoctet": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "11",
       "metadata": {
         "description": "SQL Node1 Last Data Octet (Example:  11)"
       }
     },        
     "sql2lastdataoctet": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "12",
       "metadata": {
         "description": "SQL Node2 Last Data Octet (Example:  12)"
       }
     },        
     "sql1DGlastdataoctet": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "1",
       "metadata": {
         "description": "SQL Node1 Default Gateway Last Data Octet (Example:  1)"
       }
     },                    
     "sql2DGlastdataoctet": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "1",
       "metadata": {
         "description": "SQL Node2 Default Gateway Last Data Octet (Example:  1)"
       }
@@ -201,7 +201,7 @@
     },         
     "vnet1ID": {
       "type": "string",
-      "defaultValue": "14.1",
+      "defaultValue": "10.1",
       "metadata": {
         "description": "VNet1 Prefix"
       }
