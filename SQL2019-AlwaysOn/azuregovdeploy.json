@@ -23,13 +23,14 @@
     },    
     "LoadBalancerName": {
         "type": "string",
-      "defaultValue": "KHL-SQL-LB",
+        "defaultValue": "KHL-SQL-LB",
         "metadata": {
             "description": "Load Balancer Name"
         }
     },
     "LoadBalancerSku": {
         "type": "string",
+        "defaultValue": "Standard",        
         "metadata": {
             "description": "Load Balancer Sku Type"
         },
