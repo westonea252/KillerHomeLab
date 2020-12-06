@@ -8,7 +8,7 @@
         "AvailabilitySetName": {
             "type": "string"
         },        
-        "LoadBalencerName": {
+        "LoadBalancerName": {
             "type": "string"
         },                
         "enableAcceleratedNetworking": {
@@ -141,7 +141,7 @@
                             },
                             "loadBalancerBackendAddressPools": [
                                 {
-                                "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('LoadBalencerName'), 'SQLServers')]"
+                                "id": "[resourceId('Microsoft.Network/loadBalancers/backendAddressPools', parameters('LoadBalancerName'), 'SQLServers')]"
                                 }
                             ]                                                        
                         }
