@@ -3,6 +3,8 @@
    param
    (
         [String]$SQLAGName,     
+        [String]$SQLAPName,     
+        [String]$SQLAPIP,     
         [String]$SQLNode1,     
         [String]$SQLNode2, 
         [String]$SQLDBName,
@@ -181,6 +183,52 @@
             Ensure = "Present"
             DependsOn = '[SqlAGReplica]AddNodetoSQLAG'
             PsDscRunAsCredential = $DomainDBCreds
+        }
+
+       Script CreateSQLAGListener
+        {
+            SetScript =
+            {
+                # Create Client Access Point
+                $NetworkName = Get-ClusterResource -Name "$using:SQLAPName" -ErrorAction 0
+                IF ($NetworkName -eq $Null) {
+                
+                # Stop Role
+                Stop-ClusterResource "$using:SQLAGName"
+
+                # Add Cluste Network Name
+                Add-ClusterResource -Name "$using:SQLAGName" -Type "Network Name" -Group "$using:SQLAGName"
+
+                # Set Cluster IP Parameters
+                Get-ClusterResource "$using:SQLAPName" | Set-ClusterParameter -Multiple @{"Name"="$using:SQLAPName";"DnsName"="$using:SQLAPName"}
+                }
+
+                # Create IP Address
+                $IP = Get-ClusterResource -Name "$using:SQLAPName-IP" -ErrorAction 0
+                IF ($IP -eq $Null) {
+                
+                # Stop Role
+                Stop-ClusterResource "$using:SQLAGName"
+
+                # Add Cluster IP
+                Add-ClusterResource -Name "$using:SQLAPName-IP" -Type "IP Address" -Group "$using:SQLAGName"
+
+                # Set Dependencies
+                Set-ClusterResourceDependency -Resource "$using:SQLAGName" -Dependency "[$using:SQLAPName]"
+                Set-ClusterResourceDependency -Resource "$using:SQLAPName" -Dependency "[$using:SQLAPName-IP]"
+
+                # Set Cluster IP Parameters
+                Get-ClusterResource "$using:SQLAPName-IP" | Set-ClusterParameter -Multiple @{"Address"="$using:SQLAPIP";"ProbePort"="59999";"SubnetMask"="255.255.255.255";"Network"="Cluster Network 1";"EnableDhcp"=0}
+
+                # Start Role
+                Start-ClusterResource "$using:SQLAGName"
+                }
+
+            }
+            GetScript =  { @{} }
+            TestScript = { $false}
+            PsDscRunAsCredential = $DomainDBCreds
+            DependsOn = '[SqlAGDatabase]AddSQLAGDatabase'
         }
     }
 }
