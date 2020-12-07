@@ -176,7 +176,7 @@
             DatabaseName = $SQLDBName
             ServerName = $SQLNode1
             InstanceName = "MSSQLSERVER"
-            AvailabilityGroupName = "SQL-AG"
+            AvailabilityGroupName = $SQLAGName
             BackupPath = "\\$SQLNode1\SQLBackup\"
             Ensure = "Present"
             DependsOn = '[SqlAGReplica]AddNodetoSQLAG'
