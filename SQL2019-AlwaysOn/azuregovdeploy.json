@@ -1179,7 +1179,7 @@
           },
           "parameters": {
               "computerName": {
-                  "value": "[variables('sqlname2')]"
+                  "value": "[variables('dcname1')]"
               },
               "SQLAPName": {
                   "value": "[parameters('SQLAPName')]"
