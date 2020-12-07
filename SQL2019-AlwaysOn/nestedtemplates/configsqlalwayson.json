@@ -14,6 +14,12 @@
                 "description": "SQL Node1"
             }
         },                
+        "SQLAGName": {
+            "type": "string",
+            "metadata": {
+                "description": "SQL Availability Group Name"
+            }
+        },                        
         "SQLNode2": {
             "type": "string",
             "metadata": {
@@ -118,6 +124,7 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
+                            "SQLAGName": "[parameters('SQLAGName')]",
                             "SQLNode1": "[parameters('SQLNode1')]",
                             "SQLNode2": "[parameters('SQLNode2')]",                                                                                            
                             "SQLDBName": "[parameters('SQLDBName')]",                                                                                                                        
