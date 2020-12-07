@@ -189,6 +189,7 @@
         {
             SetScript =
             {
+                $SQLAPIPName = "$using:SQLAPName"+'-IP'
                 # Create Client Access Point
                 $NetworkName = Get-ClusterResource -Name "$using:SQLAPName" -ErrorAction 0
                 IF ($NetworkName -eq $Null) {
@@ -204,21 +205,21 @@
                 }
 
                 # Create IP Address
-                $IP = Get-ClusterResource -Name "$using:SQLAPName-IP" -ErrorAction 0
+                $IP = Get-ClusterResource -Name $SQLAPIPName -ErrorAction 0
                 IF ($IP -eq $Null) {
                 
                 # Stop Role
                 Stop-ClusterResource "$using:SQLAGName"
 
                 # Add Cluster IP
-                Add-ClusterResource -Name "$using:SQLAPName-IP" -Type "IP Address" -Group "$using:SQLAGName"
+                Add-ClusterResource -Name $SQLAPIPName -Type "IP Address" -Group "$using:SQLAGName"
 
                 # Set Dependencies
                 Set-ClusterResourceDependency -Resource "$using:SQLAGName" -Dependency "[$using:SQLAPName]"
-                Set-ClusterResourceDependency -Resource "$using:SQLAPName" -Dependency "[$using:SQLAPName-IP]"
+                Set-ClusterResourceDependency -Resource "$using:SQLAPName" -Dependency "[$SQLAPIPName]"
 
                 # Set Cluster IP Parameters
-                Get-ClusterResource "$using:SQLAPName-IP" | Set-ClusterParameter -Multiple @{"Address"="$using:SQLAPIP";"ProbePort"="59999";"SubnetMask"="255.255.255.255";"Network"="Cluster Network 1";"EnableDhcp"=0}
+                Get-ClusterResource $SQLAPIPName | Set-ClusterParameter -Multiple @{"Address"="$using:SQLAPIP";"ProbePort"="59999";"SubnetMask"="255.255.255.255";"Network"="Cluster Network 1";"EnableDhcp"=0}
 
                 # Start Role
                 Start-ClusterResource "$using:SQLAGName"
