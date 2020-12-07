@@ -1376,10 +1376,7 @@
               },           
               "vnetName": {
                 "value": "[variables('vnet1Name')]"
-              }, 
-              "osDiskType": {
-                "value": "[parameters('OSDiskType')]"
-              },    
+              },   
               "location": {
                   "value": "[parameters('Location1')]"
               }
@@ -1414,9 +1411,6 @@
               },           
               "vnetName": {
                 "value": "[variables('vnet1Name')]"
-              }, 
-              "osDiskType": {
-                "value": "[parameters('OSDiskType')]"
               },    
               "location": {
                   "value": "[parameters('Location1')]"
