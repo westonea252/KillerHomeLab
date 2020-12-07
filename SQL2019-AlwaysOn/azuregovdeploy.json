@@ -301,41 +301,6 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "DeploySQLLoadBalancer",
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/LoadBalancer.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "LoadBalancerName": {
-                  "value": "[parameters('LoadBalancerName')]"
-              },
-              "SQLAPName": {
-                  "value": "[parameters('sqlapname')]"
-              },    
-              "SQLAPIP": {
-                  "value": "[variables('sqlapIP')]"
-              },                        
-              "vnetName": {
-                "value": "[variables('vnet1Name')]"
-              },               
-              "subnetName": {
-                "value": "[variables('vnet1subnet2Name')]"
-              },                         
-              "Sku": {
-                  "value": "[parameters('LoadBalancerSku')]"
-              },                                          
-              "location": {
-                  "value": "[parameters('Location1')]"
-              }
-          }
-      }
-    },    
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
       "name": "DeploySQLAvailabilitySet",
       "properties": {
           "mode": "Incremental",
@@ -367,8 +332,7 @@
       "apiVersion": "2015-01-01",
       "name": "DeploySQL2019AzureVM1",
       "dependsOn": [
-        "DeploySQLAvailabilitySet",
-        "DeploySQLLoadBalancer"
+        "DeploySQLAvailabilitySet"
       ],           
       "properties": {
           "mode": "Incremental",
@@ -382,10 +346,7 @@
               },
               "AvailabilitySetName": {
                   "value": "[parameters('AvailabilitySetName')]"
-              },   
-              "LoadBalancerName": {
-                  "value": "[parameters('LoadBalancerName')]"
-              },                                                                   
+              },                                                          
               "ManagementIP": {
                   "value": "[variables('sql1mgmtIP')]"
               },
@@ -517,8 +478,7 @@
       "apiVersion": "2015-01-01",
       "name": "DeploySQL2019AzureVM2",
       "dependsOn": [
-        "DeploySQLAvailabilitySet",
-        "DeploySQLLoadBalancer"        
+        "DeploySQLAvailabilitySet"     
       ],                 
       "properties": {
           "mode": "Incremental",
@@ -532,9 +492,6 @@
               },
               "AvailabilitySetName": {
                   "value": "[parameters('AvailabilitySetName')]"
-              },   
-              "LoadBalancerName": {
-                  "value": "[parameters('LoadBalancerName')]"
               },                                          
               "ManagementIP": {
                   "value": "[variables('sql2mgmtIP')]"
@@ -744,8 +701,6 @@
       "apiVersion": "2015-01-01",
       "name": "GrantInstallLocalAdminSQLVM1",
       "dependsOn": [
-        "CreateSQLAccounts",
-        "DeploySQL2019AzureVM1",
         "DomainJoinSQL1VM"
       ],      
       "properties": {
@@ -781,8 +736,6 @@
       "apiVersion": "2015-01-01",
       "name": "GrantInstallLocalAdminSQLVM2",
       "dependsOn": [
-        "CreateSQLAccounts",
-        "DeploySQL2019AzureVM2",
         "DomainJoinSQL2VM"
       ],          
       "properties": {
@@ -818,9 +771,6 @@
       "apiVersion": "2015-01-01",
       "name": "CreateSQLLoginforInstallSQLVM1",
       "dependsOn": [
-        "CreateSQLAccounts",
-        "DeploySQL2019AzureVM1",
-        "DomainJoinSQL1VM",
         "GrantInstallLocalAdminSQLVM1"
       ],      
       "properties": {
@@ -868,9 +818,6 @@
       "apiVersion": "2015-01-01",
       "name": "CreateSQLLoginforInstallSQLVM2",
       "dependsOn": [
-        "CreateSQLAccounts",
-        "DeploySQL2019AzureVM2",
-        "DomainJoinSQL2VM",
         "GrantInstallLocalAdminSQLVM2"
       ],      
       "properties": {
@@ -918,10 +865,6 @@
       "apiVersion": "2015-01-01",
       "name": "InstallWFCSQLVM1",
       "dependsOn": [
-        "CreateSQLAccounts",
-        "DeploySQL2019AzureVM1",
-        "DomainJoinSQL1VM",
-        "GrantInstallLocalAdminSQLVM1",
         "CreateSQLLoginforInstallSQLVM1"
       ],      
       "properties": {
@@ -951,10 +894,6 @@
       "apiVersion": "2015-01-01",
       "name": "InstallWFCSQLVM2",
       "dependsOn": [
-        "CreateSQLAccounts",
-        "DeploySQL2019AzureVM2",
-        "DomainJoinSQL2VM",
-        "GrantInstallLocalAdminSQLVM2",
         "CreateSQLLoginforInstallSQLVM2"
       ],      
       "properties": {
@@ -984,11 +923,6 @@
       "apiVersion": "2015-01-01",
       "name": "RoutingSQLVM1",
       "dependsOn": [
-        "CreateSQLAccounts",
-        "DeploySQL2019AzureVM1",
-        "DomainJoinSQL1VM",
-        "GrantInstallLocalAdminSQLVM1",
-        "CreateSQLLoginforInstallSQLVM1",
         "InstallWFCSQLVM1"
       ],      
       "properties": {
@@ -1027,11 +961,6 @@
       "apiVersion": "2015-01-01",
       "name": "RoutingSQLVM2",
       "dependsOn": [
-        "CreateSQLAccounts",
-        "DeploySQL2019AzureVM2",
-        "DomainJoinSQL2VM",
-        "GrantInstallLocalAdminSQLVM2",
-        "CreateSQLLoginforInstallSQLVM2",
         "InstallWFCSQLVM2"
       ],      
       "properties": {
@@ -1070,14 +999,7 @@
       "apiVersion": "2015-01-01",
       "name": "RestartSQLVM1",
       "dependsOn": [
-        "CreateSQLAccounts",
-        "DeploySQL2019AzureVM1",
-        "DomainJoinSQL1VM",
-        "GrantInstallLocalAdminSQLVM1",
-        "CreateSQLLoginforInstallSQLVM1",
-        "InstallWFCSQLVM1",
-        "RoutingSQLVM1",
-        "RoutingSQLVM2"
+        "RoutingSQLVM1"
       ],            
       "properties": {
           "mode": "Incremental",
@@ -1106,13 +1028,6 @@
       "apiVersion": "2015-01-01",
       "name": "RestartSQLVM2",
       "dependsOn": [
-        "CreateSQLAccounts",
-        "DeploySQL2019AzureVM1",
-        "DomainJoinSQL1VM",
-        "GrantInstallLocalAdminSQLVM1",
-        "CreateSQLLoginforInstallSQLVM1",
-        "InstallWFCSQLVM1",
-        "RoutingSQLVM1",
         "RoutingSQLVM2"
       ],            
       "properties": {
@@ -1142,14 +1057,6 @@
       "apiVersion": "2015-01-01",
       "name": "CreateStorage",
       "dependsOn": [
-        "CreateSQLAccounts",
-        "DeploySQL2019AzureVM1",
-        "DomainJoinSQL1VM",
-        "GrantInstallLocalAdminSQLVM1",
-        "CreateSQLLoginforInstallSQLVM1",
-        "InstallWFCSQLVM1",
-        "RoutingSQLVM1",
-        "RoutingSQLVM2",
         "RestartSQLVM1",
         "RestartSQLVM2"    
       ],      
@@ -1174,17 +1081,6 @@
       "apiVersion": "2015-01-01",
       "name": "CreateWFCSQLVM1",
       "dependsOn": [
-        "CreateSQLAccounts",
-        "DeploySQL2019AzureVM1",
-        "DomainJoinSQL1VM",
-        "GrantInstallLocalAdminSQLVM1",
-        "CreateSQLLoginforInstallSQLVM1",
-        "InstallWFCSQLVM1",
-        "InstallWFCSQLVM2",        
-        "RoutingSQLVM1",
-        "RoutingSQLVM2",
-        "RestartSQLVM1",
-        "RestartSQLVM2",            
         "CreateStorage"      
       ],      
       "properties": {
@@ -1229,18 +1125,6 @@
       "apiVersion": "2015-01-01",
       "name": "CreateWFCSQLVM2",
       "dependsOn": [
-        "CreateSQLAccounts",
-        "DeploySQL2019AzureVM1",
-        "DomainJoinSQL1VM",
-        "GrantInstallLocalAdminSQLVM1",
-        "CreateSQLLoginforInstallSQLVM1",
-        "InstallWFCSQLVM1",
-        "InstallWFCSQLVM2",        
-        "RoutingSQLVM1",
-        "RoutingSQLVM2",
-        "RestartSQLVM1",
-        "RestartSQLVM2",            
-        "CreateStorage",
         "CreateWFCSQLVM1"      
       ],      
       "properties": {
@@ -1285,18 +1169,6 @@
       "apiVersion": "2015-01-01",
       "name": "EnableSQLAlwaysOnSQLVM1",
       "dependsOn": [
-        "CreateSQLAccounts",
-        "DeploySQL2019AzureVM1",
-        "DomainJoinSQL1VM",
-        "GrantInstallLocalAdminSQLVM1",
-        "CreateSQLLoginforInstallSQLVM1",
-        "InstallWFCSQLVM1",
-        "InstallWFCSQLVM2",        
-        "RoutingSQLVM1",
-        "RoutingSQLVM2",
-        "RestartSQLVM1",
-        "RestartSQLVM2",            
-        "CreateStorage",
         "CreateWFCSQLVM1",
         "CreateWFCSQLVM2"      
       ],      
@@ -1336,21 +1208,6 @@
       "apiVersion": "2015-01-01",
       "name": "EnableSQLAlwaysOnSQLVM2",
       "dependsOn": [
-        "CreateSQLAccounts",
-        "DeploySQL2019AzureVM1",
-        "DeploySQL2019AzureVM2",        
-        "DomainJoinSQL1VM",
-        "GrantInstallLocalAdminSQLVM1",
-        "CreateSQLLoginforInstallSQLVM1",
-        "InstallWFCSQLVM1",
-        "InstallWFCSQLVM2",        
-        "RoutingSQLVM1",
-        "RoutingSQLVM2",
-        "RestartSQLVM1",
-        "RestartSQLVM2",            
-        "CreateStorage",
-        "CreateWFCSQLVM1",
-        "CreateWFCSQLVM2",
         "EnableSQLAlwaysOnSQLVM1"      
       ],      
       "properties": {
@@ -1389,21 +1246,6 @@
       "apiVersion": "2015-01-01",
       "name": "ConfigureWFCSQL",
       "dependsOn": [
-        "CreateSQLAccounts",
-        "DeploySQL2019AzureVM1",
-        "DeploySQL2019AzureVM2",        
-        "DomainJoinSQL1VM",
-        "GrantInstallLocalAdminSQLVM1",
-        "CreateSQLLoginforInstallSQLVM1",
-        "InstallWFCSQLVM1",
-        "InstallWFCSQLVM2",        
-        "RoutingSQLVM1",
-        "RoutingSQLVM2",
-        "RestartSQLVM1",
-        "RestartSQLVM2",            
-        "CreateStorage",
-        "CreateWFCSQLVM1",
-        "CreateWFCSQLVM2",
         "EnableSQLAlwaysOnSQLVM1",
         "EnableSQLAlwaysOnSQLVM2"        
       ],      
@@ -1467,6 +1309,343 @@
               }                                                                            
           }
       }
-    }                                                                                                                                                                                       
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "DeploySQLLoadBalancer",
+      "dependsOn": [
+        "ConfigureWFCSQL"        
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/LoadBalancer.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "LoadBalancerName": {
+                  "value": "[parameters('LoadBalancerName')]"
+              },
+              "SQLAPName": {
+                  "value": "[parameters('sqlapname')]"
+              },    
+              "SQLAPIP": {
+                  "value": "[variables('sqlapIP')]"
+              },                        
+              "vnetName": {
+                "value": "[variables('vnet1Name')]"
+              },               
+              "subnetName": {
+                "value": "[variables('vnet1subnet2Name')]"
+              },                         
+              "Sku": {
+                  "value": "[parameters('LoadBalancerSku')]"
+              },                                          
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "DeploySQL2019AzureVM1-LB",
+      "dependsOn": [
+        "DeploySQLLoadBalancer"
+      ],           
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/sql-servervm-multi-nic-lb.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('sqlname1')]"
+              },
+              "AvailabilitySetName": {
+                  "value": "[parameters('AvailabilitySetName')]"
+              },   
+              "LoadBalancerName": {
+                  "value": "[parameters('LoadBalancerName')]"
+              },                                                                   
+              "ManagementIP": {
+                  "value": "[variables('sql1mgmtIP')]"
+              },
+              "DataIP": {
+                  "value": "[variables('sql1dataIP')]"
+              },                            
+              "subnet1Name": {
+                "value": "[variables('vnet1subnet1Name')]"
+              },      
+              "subnet2Name": {
+                "value": "[variables('vnet1subnet2Name')]"
+              },           
+              "vnetName": {
+                "value": "[variables('vnet1Name')]"
+              }, 
+              "osDiskType": {
+                "value": "[parameters('OSDiskType')]"
+              },    
+              "dataDisks": {
+                  "value": [
+                      {
+                          "lun": 0,
+                          "createOption": "attach",
+                          "caching": "ReadOnly",
+                          "writeAcceleratorEnabled": false,
+                          "id": null,
+                          "name": "[concat(variables('sqlname1'),'_DataDisk_0')]",
+                          "storageAccountType": null,
+                          "diskSizeGB": null,
+                          "diskEncryptionSet": null
+                      },
+                      {
+                          "lun": 1,
+                          "createOption": "attach",
+                          "caching": "None",
+                          "writeAcceleratorEnabled": false,
+                          "id": null,
+                          "name": "[concat(variables('sqlname1'),'_DataDisk_1')]",
+                          "storageAccountType": null,
+                          "diskSizeGB": null,
+                          "diskEncryptionSet": null
+                      }
+                  ]
+              },      
+              "dataDiskResources": {
+                  "value": [
+                      {
+                          "name": "[concat(variables('sqlname1'),'_DataDisk_0')]",
+                          "sku": "[parameters('OSDiskType')]",
+                          "properties": {
+                              "diskSizeGB": 1024,
+                              "creationData": {
+                                  "createOption": "empty"
+                              }
+                          }
+                      },
+                      {
+                          "name": "[concat(variables('sqlname1'),'_DataDisk_1')]",
+                          "sku": "[parameters('OSDiskType')]",
+                          "properties": {
+                              "diskSizeGB": 1024,
+                              "creationData": {
+                                  "createOption": "empty"
+                              }
+                          }
+                      }
+                  ]
+              },      
+              "VMSize": {
+                "value": "[parameters('SQLVMSize')]"
+              },                            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },   
+              "sqlConnectivityType": {
+                  "value": "Private"
+              },
+              "sqlPortNumber": {
+                  "value": 1433
+              },
+              "sqlStorageWorkloadType": {
+                  "value": "OLTP"
+              },
+              "sqlStorageDisksConfigurationType": {
+                  "value": "NEW"
+              },
+              "sqlAutopatchingDayOfWeek": {
+                  "value": "Sunday"
+              },
+              "sqlAutopatchingStartHour": {
+                  "value": "2"
+              },
+              "sqlAutopatchingWindowDuration": {
+                  "value": "60"
+              },
+              "dataPath": {
+                  "value": "F:\\data"
+              },
+              "dataDisksLUNs": {
+                  "value": [
+                      0
+                  ]
+              },
+              "logPath": {
+                  "value": "G:\\log"
+              },
+              "logDisksLUNs": {
+                  "value": [
+                      1
+                  ]
+              },
+              "tempDbPath": {
+                  "value": "D:\\tempDb"
+              },
+              "rServicesEnabled": {
+                  "value": "false"
+              },                                                                                                                                                                 
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "DeploySQL2019AzureVM2-LB",
+      "dependsOn": [
+        "DeploySQLLoadBalancer"     
+      ],                 
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/sql-servervm-multi-nic-lb.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('sqlname2')]"
+              },
+              "AvailabilitySetName": {
+                  "value": "[parameters('AvailabilitySetName')]"
+              },   
+              "LoadBalancerName": {
+                  "value": "[parameters('LoadBalancerName')]"
+              },                                          
+              "ManagementIP": {
+                  "value": "[variables('sql2mgmtIP')]"
+              },
+              "DataIP": {
+                  "value": "[variables('sql2dataIP')]"
+              },                            
+              "subnet1Name": {
+                "value": "[variables('vnet1subnet1Name')]"
+              },      
+              "subnet2Name": {
+                "value": "[variables('vnet1subnet2Name')]"
+              },           
+              "vnetName": {
+                "value": "[variables('vnet1Name')]"
+              }, 
+              "osDiskType": {
+                "value": "[parameters('OSDiskType')]"
+              },    
+              "dataDisks": {
+                  "value": [
+                      {
+                          "lun": 0,
+                          "createOption": "attach",
+                          "caching": "ReadOnly",
+                          "writeAcceleratorEnabled": false,
+                          "id": null,
+                          "name": "[concat(variables('sqlname2'),'_DataDisk_0')]",
+                          "storageAccountType": null,
+                          "diskSizeGB": null,
+                          "diskEncryptionSet": null
+                      },
+                      {
+                          "lun": 1,
+                          "createOption": "attach",
+                          "caching": "None",
+                          "writeAcceleratorEnabled": false,
+                          "id": null,
+                          "name": "[concat(variables('sqlname2'),'_DataDisk_1')]",
+                          "storageAccountType": null,
+                          "diskSizeGB": null,
+                          "diskEncryptionSet": null
+                      }
+                  ]
+              },      
+              "dataDiskResources": {
+                  "value": [
+                      {
+                          "name": "[concat(variables('sqlname2'),'_DataDisk_0')]",
+                          "sku": "[parameters('OSDiskType')]",
+                          "properties": {
+                              "diskSizeGB": 1024,
+                              "creationData": {
+                                  "createOption": "empty"
+                              }
+                          }
+                      },
+                      {
+                          "name": "[concat(variables('sqlname2'),'_DataDisk_1')]",
+                          "sku": "[parameters('OSDiskType')]",
+                          "properties": {
+                              "diskSizeGB": 1024,
+                              "creationData": {
+                                  "createOption": "empty"
+                              }
+                          }
+                      }
+                  ]
+              },      
+              "VMSize": {
+                "value": "[parameters('SQLVMSize')]"
+              },                            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },   
+
+              "sqlConnectivityType": {
+                  "value": "Private"
+              },
+              "sqlPortNumber": {
+                  "value": 1433
+              },
+              "sqlStorageWorkloadType": {
+                  "value": "OLTP"
+              },
+              "sqlStorageDisksConfigurationType": {
+                  "value": "NEW"
+              },
+              "sqlAutopatchingDayOfWeek": {
+                  "value": "Sunday"
+              },
+              "sqlAutopatchingStartHour": {
+                  "value": "2"
+              },
+              "sqlAutopatchingWindowDuration": {
+                  "value": "60"
+              },
+              "dataPath": {
+                  "value": "F:\\data"
+              },
+              "dataDisksLUNs": {
+                  "value": [
+                      0
+                  ]
+              },
+              "logPath": {
+                  "value": "G:\\log"
+              },
+              "logDisksLUNs": {
+                  "value": [
+                      1
+                  ]
+              },
+              "tempDbPath": {
+                  "value": "D:\\tempDb"
+              },
+              "rServicesEnabled": {
+                  "value": "false"
+              },                                                                                                                                                                 
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }
+          }
+      }
+    }                                                                                                                                                                                            
   ]
 }
