@@ -71,7 +71,7 @@
         "description": "SQL Availability Group Name"
       }
     },                             
-    "SQLAPname": {
+    "SQLAPName": {
       "type": "string",
       "defaultValue": "KHL-AP",
       "metadata": {
