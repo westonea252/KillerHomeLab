@@ -202,14 +202,6 @@
 
                 # Set Cluster IP Parameters
                 Get-ClusterResource "$using:SQLAPName" | Set-ClusterParameter -Multiple @{"Name"="$using:SQLAPName";"DnsName"="$using:SQLAPName"}
-                }
-
-                # Create IP Address
-                $IP = Get-ClusterResource -Name $SQLAPIPName -ErrorAction 0
-                IF ($IP -eq $Null) {
-                
-                # Stop Role
-                Stop-ClusterResource "$using:SQLAGName"
 
                 # Add Cluster IP
                 Add-ClusterResource -Name $SQLAPIPName -Type "IP Address" -Group "$using:SQLAGName"

@@ -1163,14 +1163,50 @@
               }                                                                            
           }
       }
-    },   
+    },  
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "GrantClusterCNO",
+      "dependsOn": [
+        "CreateWFCSQLVM2"      
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/grantcluster.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('sqlname2')]"
+              },
+              "SQLAPName": {
+                  "value": "[parameters('SQLAPName')]"
+              },   
+              "BaseDN": {
+                  "value": "[variables('BaseDN')]"
+              },               
+              "location": {
+                  "value": "[parameters('Location1')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                            
+          }
+      }
+    },       
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "name": "EnableSQLAlwaysOnSQLVM1",
       "dependsOn": [
         "CreateWFCSQLVM1",
-        "CreateWFCSQLVM2"      
+        "CreateWFCSQLVM2",
+        "GrantClusterCNO"      
       ],      
       "properties": {
           "mode": "Incremental",
