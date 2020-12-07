@@ -1365,22 +1365,13 @@
               "computerName": {
                   "value": "[variables('sqlname1')]"
               },
-              "AvailabilitySetName": {
-                  "value": "[parameters('AvailabilitySetName')]"
-              },   
               "LoadBalancerName": {
                   "value": "[parameters('LoadBalancerName')]"
               },                                                                   
-              "ManagementIP": {
-                  "value": "[variables('sql1mgmtIP')]"
-              },
               "DataIP": {
                   "value": "[variables('sql1dataIP')]"
               },                            
-              "subnet1Name": {
-                "value": "[variables('vnet1subnet1Name')]"
-              },      
-              "subnet2Name": {
+              "subnetName": {
                 "value": "[variables('vnet1subnet2Name')]"
               },           
               "vnetName": {
@@ -1389,108 +1380,6 @@
               "osDiskType": {
                 "value": "[parameters('OSDiskType')]"
               },    
-              "dataDisks": {
-                  "value": [
-                      {
-                          "lun": 0,
-                          "createOption": "attach",
-                          "caching": "ReadOnly",
-                          "writeAcceleratorEnabled": false,
-                          "id": null,
-                          "name": "[concat(variables('sqlname1'),'_DataDisk_0')]",
-                          "storageAccountType": null,
-                          "diskSizeGB": null,
-                          "diskEncryptionSet": null
-                      },
-                      {
-                          "lun": 1,
-                          "createOption": "attach",
-                          "caching": "None",
-                          "writeAcceleratorEnabled": false,
-                          "id": null,
-                          "name": "[concat(variables('sqlname1'),'_DataDisk_1')]",
-                          "storageAccountType": null,
-                          "diskSizeGB": null,
-                          "diskEncryptionSet": null
-                      }
-                  ]
-              },      
-              "dataDiskResources": {
-                  "value": [
-                      {
-                          "name": "[concat(variables('sqlname1'),'_DataDisk_0')]",
-                          "sku": "[parameters('OSDiskType')]",
-                          "properties": {
-                              "diskSizeGB": 1024,
-                              "creationData": {
-                                  "createOption": "empty"
-                              }
-                          }
-                      },
-                      {
-                          "name": "[concat(variables('sqlname1'),'_DataDisk_1')]",
-                          "sku": "[parameters('OSDiskType')]",
-                          "properties": {
-                              "diskSizeGB": 1024,
-                              "creationData": {
-                                  "createOption": "empty"
-                              }
-                          }
-                      }
-                  ]
-              },      
-              "VMSize": {
-                "value": "[parameters('SQLVMSize')]"
-              },                            
-              "adminUsername": {
-                "value": "[parameters('adminUsername')]"
-              },                                                                                                            
-              "adminPassword": {
-                "value": "[parameters('adminPassword')]"
-              },   
-              "sqlConnectivityType": {
-                  "value": "Private"
-              },
-              "sqlPortNumber": {
-                  "value": 1433
-              },
-              "sqlStorageWorkloadType": {
-                  "value": "OLTP"
-              },
-              "sqlStorageDisksConfigurationType": {
-                  "value": "NEW"
-              },
-              "sqlAutopatchingDayOfWeek": {
-                  "value": "Sunday"
-              },
-              "sqlAutopatchingStartHour": {
-                  "value": "2"
-              },
-              "sqlAutopatchingWindowDuration": {
-                  "value": "60"
-              },
-              "dataPath": {
-                  "value": "F:\\data"
-              },
-              "dataDisksLUNs": {
-                  "value": [
-                      0
-                  ]
-              },
-              "logPath": {
-                  "value": "G:\\log"
-              },
-              "logDisksLUNs": {
-                  "value": [
-                      1
-                  ]
-              },
-              "tempDbPath": {
-                  "value": "D:\\tempDb"
-              },
-              "rServicesEnabled": {
-                  "value": "false"
-              },                                                                                                                                                                 
               "location": {
                   "value": "[parameters('Location1')]"
               }
@@ -1514,22 +1403,13 @@
               "computerName": {
                   "value": "[variables('sqlname2')]"
               },
-              "AvailabilitySetName": {
-                  "value": "[parameters('AvailabilitySetName')]"
-              },   
               "LoadBalancerName": {
                   "value": "[parameters('LoadBalancerName')]"
-              },                                          
-              "ManagementIP": {
-                  "value": "[variables('sql2mgmtIP')]"
-              },
+              },                                                                   
               "DataIP": {
                   "value": "[variables('sql2dataIP')]"
               },                            
-              "subnet1Name": {
-                "value": "[variables('vnet1subnet1Name')]"
-              },      
-              "subnet2Name": {
+              "subnetName": {
                 "value": "[variables('vnet1subnet2Name')]"
               },           
               "vnetName": {
@@ -1538,109 +1418,6 @@
               "osDiskType": {
                 "value": "[parameters('OSDiskType')]"
               },    
-              "dataDisks": {
-                  "value": [
-                      {
-                          "lun": 0,
-                          "createOption": "attach",
-                          "caching": "ReadOnly",
-                          "writeAcceleratorEnabled": false,
-                          "id": null,
-                          "name": "[concat(variables('sqlname2'),'_DataDisk_0')]",
-                          "storageAccountType": null,
-                          "diskSizeGB": null,
-                          "diskEncryptionSet": null
-                      },
-                      {
-                          "lun": 1,
-                          "createOption": "attach",
-                          "caching": "None",
-                          "writeAcceleratorEnabled": false,
-                          "id": null,
-                          "name": "[concat(variables('sqlname2'),'_DataDisk_1')]",
-                          "storageAccountType": null,
-                          "diskSizeGB": null,
-                          "diskEncryptionSet": null
-                      }
-                  ]
-              },      
-              "dataDiskResources": {
-                  "value": [
-                      {
-                          "name": "[concat(variables('sqlname2'),'_DataDisk_0')]",
-                          "sku": "[parameters('OSDiskType')]",
-                          "properties": {
-                              "diskSizeGB": 1024,
-                              "creationData": {
-                                  "createOption": "empty"
-                              }
-                          }
-                      },
-                      {
-                          "name": "[concat(variables('sqlname2'),'_DataDisk_1')]",
-                          "sku": "[parameters('OSDiskType')]",
-                          "properties": {
-                              "diskSizeGB": 1024,
-                              "creationData": {
-                                  "createOption": "empty"
-                              }
-                          }
-                      }
-                  ]
-              },      
-              "VMSize": {
-                "value": "[parameters('SQLVMSize')]"
-              },                            
-              "adminUsername": {
-                "value": "[parameters('adminUsername')]"
-              },                                                                                                            
-              "adminPassword": {
-                "value": "[parameters('adminPassword')]"
-              },   
-
-              "sqlConnectivityType": {
-                  "value": "Private"
-              },
-              "sqlPortNumber": {
-                  "value": 1433
-              },
-              "sqlStorageWorkloadType": {
-                  "value": "OLTP"
-              },
-              "sqlStorageDisksConfigurationType": {
-                  "value": "NEW"
-              },
-              "sqlAutopatchingDayOfWeek": {
-                  "value": "Sunday"
-              },
-              "sqlAutopatchingStartHour": {
-                  "value": "2"
-              },
-              "sqlAutopatchingWindowDuration": {
-                  "value": "60"
-              },
-              "dataPath": {
-                  "value": "F:\\data"
-              },
-              "dataDisksLUNs": {
-                  "value": [
-                      0
-                  ]
-              },
-              "logPath": {
-                  "value": "G:\\log"
-              },
-              "logDisksLUNs": {
-                  "value": [
-                      1
-                  ]
-              },
-              "tempDbPath": {
-                  "value": "D:\\tempDb"
-              },
-              "rServicesEnabled": {
-                  "value": "false"
-              },                                                                                                                                                                 
               "location": {
                   "value": "[parameters('Location1')]"
               }
