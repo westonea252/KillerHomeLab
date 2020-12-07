@@ -8,18 +8,30 @@
                 "description": "Computer Name"
             }
         },       
+        "SQLAGName": {
+            "type": "string",
+            "metadata": {
+                "description": "SQL Availability Group Name"
+            }
+        },   
+        "SQLAPName": {
+            "type": "string",
+            "metadata": {
+                "description": "SQL Client Access Point Name"
+            }
+        },                                
+        "SQLAPIP": {
+            "type": "string",
+            "metadata": {
+                "description": "SQL Client Access Point IP"
+            }
+        },                                        
         "SQLNode1": {
             "type": "string",
             "metadata": {
                 "description": "SQL Node1"
             }
         },                
-        "SQLAGName": {
-            "type": "string",
-            "metadata": {
-                "description": "SQL Availability Group Name"
-            }
-        },                        
         "SQLNode2": {
             "type": "string",
             "metadata": {
@@ -125,6 +137,8 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "SQLAGName": "[parameters('SQLAGName')]",
+                            "SQLAPName": "[parameters('SQLAPName')]",                            
+                            "SQLAPIP": "[parameters('SQLAPIP')]",                            
                             "SQLNode1": "[parameters('SQLNode1')]",
                             "SQLNode2": "[parameters('SQLNode2')]",                                                                                            
                             "SQLDBName": "[parameters('SQLDBName')]",                                                                                                                        

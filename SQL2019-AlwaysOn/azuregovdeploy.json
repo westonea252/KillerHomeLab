@@ -1261,7 +1261,13 @@
               },                  
               "SQLAGName": {
                   "value": "[parameters('sqlagname')]"
-              },  
+              }, 
+              "SQLAPName": {
+                  "value": "[parameters('sqlapname')]"
+              },                
+              "SQLAGIP": {
+                  "value": "[variables('sqlapIP')]"
+              },               
               "SQLNode1": {
                   "value": "[variables('sqlname1')]"
               },                     
