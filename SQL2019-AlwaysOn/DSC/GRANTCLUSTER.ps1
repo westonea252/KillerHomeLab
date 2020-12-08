@@ -3,8 +3,11 @@
    param
    (
         [String]$SQLClusterName,
-        [String]$BaseDN
+        [String]$BaseDN,
+        [System.Management.Automation.PSCredential]$Admincreds
     )
+
+    [System.Management.Automation.PSCredential ]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosDomain}\$($Admincreds.UserName)", $Admincreds.Password)
 
     Node localhost
     {
@@ -32,6 +35,7 @@
             }
             GetScript =  { @{} }
             TestScript = { $false}
+            PsDscRunAsCredential = $Dom
         }
 
     }
