@@ -1184,6 +1184,9 @@
               "SQLClusterName": {
                   "value": "[parameters('SqlClusterName')]"
               },   
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },                
               "BaseDN": {
                   "value": "[variables('BaseDN')]"
               },               
