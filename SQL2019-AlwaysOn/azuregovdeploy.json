@@ -1181,8 +1181,8 @@
               "computerName": {
                   "value": "[variables('dcname1')]"
               },
-              "SQLAPName": {
-                  "value": "[parameters('SQLAPName')]"
+              "SQLClusterName": {
+                  "value": "[parameters('SqlClusterName')]"
               },   
               "BaseDN": {
                   "value": "[variables('BaseDN')]"

@@ -8,10 +8,10 @@
                 "description": "Computer Name"
             }
         },
-        "SQLAPName": {
+        "SQLClusterName": {
             "type": "string",
             "metadata": {
-                "description": "SQL Client Access Point Name"
+                "description": "Windows Failover Cluster Name"
             }
         },           
         "BaseDN": {
@@ -58,7 +58,7 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
-                            "SQLAPName": "[parameters('SQLAPName')]",   
+                            "SQLClusterName": "[parameters('SQLClusterName')]",   
                             "BaseDN": "[parameters('BaseDN')]"                                                     
                         }
                 },

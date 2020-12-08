@@ -2,7 +2,7 @@
 {
    param
    (
-        [String]$SQLAPName,
+        [String]$SQLClusterName,
         [String]$BaseDN
     )
 
@@ -12,7 +12,8 @@
         {
             SetScript =
             {
-                $ComputerName = "$using:SQLAPName"+'$'
+                $SQLCLUST = "$using:SQLClusterName"
+                $ComputerName = "$SQLCLUST"+"$"
                 $acl = get-acl "ad:$using:BaseDN"
                 $Computer = Get-ADComputer $ComputerName
 
