@@ -4,6 +4,7 @@
    (
         [String]$SQLClusterName,
         [String]$BaseDN,
+        [String]$NetBiosDomain,
         [System.Management.Automation.PSCredential]$Admincreds
     )
 

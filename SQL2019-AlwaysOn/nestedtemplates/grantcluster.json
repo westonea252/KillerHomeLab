@@ -20,6 +20,12 @@
                 "description": "Base Domain Distiguished Name"
             }
         }, 
+        "NetBiosDomain": {
+            "type": "string",
+            "metadata": {
+                "description": "NetBios Domain Name"
+            }
+        },          
         "location": {
             "type": "string",
           "metadata": {
@@ -70,6 +76,7 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
+                            "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
                             "SQLClusterName": "[parameters('SQLClusterName')]",   
                             "BaseDN": "[parameters('BaseDN')]",
                             "AdminCreds": {
