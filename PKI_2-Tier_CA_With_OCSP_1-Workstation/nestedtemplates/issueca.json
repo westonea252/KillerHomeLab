@@ -13,7 +13,7 @@
             "metadata": {
                 "description": "Domain Naming Convention"
             }
-        },        
+        },         
         "NetBiosDomain": {
             "type": "string",
             "metadata": {
@@ -49,7 +49,21 @@
             "metadata": {
                 "description": "Root CA IP"
             }
-        },                        
+        },     
+        "IssuingCAHashAlgorithm": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Issuing CA Algorithm"
+        }
+        },   
+        "IssuingCAKeyLength": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Issuing CA Key Length"
+        }
+        },                            
         "location": {
             "type": "string",
           "metadata": {
@@ -107,7 +121,9 @@
                             "domainName": "[parameters('domainName')]",                                                        
                             "IssuingCAName": "[parameters('IssuingCAName')]",
                             "RootCAName": "[parameters('RootCAName')]",                            
-                            "RootCAIP": "[parameters('RootCAIP')]",                                                        
+                            "RootCAIP": "[parameters('RootCAIP')]",     
+                            "IssuingCAHashAlgorithm": "[parameters('IssuingCAHashAlgorithm')]",                            
+                            "IssuingCAKeyLength": "[parameters('IssuingCAKeyLength')]",                                                                                                                                       
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"                                                                                   

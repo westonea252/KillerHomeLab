@@ -98,7 +98,51 @@
       "metadata": {
           "description": "Issuing CA Name"
       }
-    },                        
+    },
+    "RootCAHashAlgorithm": {
+      "type": "string",
+      "defaultValue": "SHA256",
+        "allowedValues": [
+          "SHA256",
+          "SHA1"
+        ],
+      "metadata": {
+          "description": "Offline Root CA Algorithm"
+      }
+    },    
+    "RootCAKeyLength": {
+      "type": "string",
+      "defaultValue": "4096",
+        "allowedValues": [
+          "4096",
+          "2048"
+        ],
+      "metadata": {
+          "description": "Offline Root CA Key Length"
+      }
+    },                                
+    "IssuingCAHashAlgorithm": {
+      "type": "string",
+      "defaultValue": "SHA256",
+        "allowedValues": [
+          "SHA256",
+          "SHA1"
+        ],
+      "metadata": {
+          "description": "Issuing CA Algorithm"
+      }
+    },    
+    "IssuingCAKeyLength": {
+      "type": "string",
+      "defaultValue": "4096",
+        "allowedValues": [
+          "4096",
+          "2048"
+        ],
+      "metadata": {
+          "description": "Issuing CA Key Length"
+      }
+    },        
     "DC1OSVersion": {
         "type": "string",
         "defaultValue": "2019-Datacenter",
@@ -673,6 +717,12 @@
               "RootCAName": {
                   "value": "[parameters('RootCAName')]"
               },
+              "RootCAHashAlgorithm": {
+                  "value": "[parameters('RootCAHashAlgorithm')]"
+              },  
+              "RootCAKeyLength": {
+                  "value": "[parameters('RootCAKeyLength')]"
+              },                            
               "RootDomainFQDN": {
                   "value": "[variables('domainName')]"
               },
@@ -862,6 +912,12 @@
               "RootCAIP": {
                   "value": "[variables('rcaIP')]"
               },
+              "IssuingCAHashAlgorithm": {
+                  "value": "[parameters('IssuingCAHashAlgorithm')]"
+              },  
+              "IssuingCAKeyLength": {
+                  "value": "[parameters('IssuingCAKeyLength')]"
+              },                
               "location": {
                   "value": "[parameters('Location1')]"
               },              

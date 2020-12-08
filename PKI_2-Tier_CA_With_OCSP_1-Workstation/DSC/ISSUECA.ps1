@@ -10,6 +10,8 @@ Configuration ISSUECA
         [String]$IssuingCAName,
         [String]$RootCAName,
         [String]$RootCAIP,
+        [String]$IssuingCAHashAlgorithm,
+        [String]$IssuingCAKeyLength,
         [System.Management.Automation.PSCredential]$Admincreds
     )
  
@@ -60,7 +62,8 @@ Configuration ISSUECA
             CACommonName = $IssuingCAName
             CADistinguishedNameSuffix = $Node.CADistinguishedNameSuffix
             OverwriteExistingCAinDS  = $True
-            KeyLength = 4096
+            HashAlgorithmName = $IssuingCAHashAlgorithm
+            KeyLength = $IssuingCAHashAlgorithm
             IsSingleInstance = 'Yes'
             OutputCertRequestFile = "C:\CertEnroll\$IssuingCAName.req"
             DependsOn = '[File]CertEnroll'

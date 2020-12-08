@@ -3,6 +3,8 @@ Configuration ROOTCA
    param
    (
         [String]$RootDomainFQDN,
+        [String]$RootCAHashAlgorithm,
+        [String]$RootCAKeyLength,
         [String]$RootCAName,
         [String]$BaseDN,
         [System.Management.Automation.PSCredential]$Admincreds
@@ -49,8 +51,8 @@ Configuration ROOTCA
             ValidityPeriod = 'Years'
             ValidityPeriodUnits = 20
             CryptoProviderName = 'RSA#Microsoft Software Key Storage Provider'
-            HashAlgorithmName = 'SHA1'
-            KeyLength = 2048
+            HashAlgorithmName = $RootCAHashAlgorithm
+            KeyLength = $RootCAKeyLength
             IsSingleInstance = 'Yes'
             DependsOn = "[WindowsFeature]ADCSCA"
         }
