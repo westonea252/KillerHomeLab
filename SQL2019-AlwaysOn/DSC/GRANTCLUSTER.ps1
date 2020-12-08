@@ -17,6 +17,8 @@
                 $acl = get-acl "ad:$using:BaseDN"
                 $Computer = Get-ADComputer $ComputerName
 
+                Import-Module ActiveDirectory
+
                 # The following object specific ACE is to grant Group permission to change user password on all user objects under OU
                 $objectguid = new-object Guid bf967a86-0de6-11d0-a285-00aa003049e2 # is the rightsGuid for the extended right Create Computer Account
                 $inheritedobjectguid = new-object Guid $Computer.ObjectGUID # is the schemaIDGuid for the user
