@@ -1310,7 +1310,7 @@
               "SQLAPName": {
                   "value": "[parameters('sqlapname')]"
               },                
-              "SQLAGIP": {
+              "SQLAPIP": {
                   "value": "[variables('sqlapIP')]"
               },               
               "SQLNode1": {
