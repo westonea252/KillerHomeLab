@@ -63,7 +63,7 @@ Configuration ISSUECA
             CADistinguishedNameSuffix = $Node.CADistinguishedNameSuffix
             OverwriteExistingCAinDS  = $True
             HashAlgorithmName = $IssuingCAHashAlgorithm
-            KeyLength = $IssuingCAHashAlgorithm
+            KeyLength = $IssuingCAKeyLength
             IsSingleInstance = 'Yes'
             OutputCertRequestFile = "C:\CertEnroll\$IssuingCAName.req"
             DependsOn = '[File]CertEnroll'
