@@ -36,7 +36,7 @@
             }
             GetScript =  { @{} }
             TestScript = { $false}
-            PsDscRunAsCredential = $Dom
+            PsDscRunAsCredential = $DomainCreds
         }
 
     }
