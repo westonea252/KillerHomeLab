@@ -206,12 +206,12 @@
                 # Add Cluster IP
                 Add-ClusterResource -Name $SQLAPIPName -Type "IP Address" -Group "$using:SQLAGName"
 
+                # Set Cluster IP Parameters
+                Get-ClusterResource $SQLAPIPName | Set-ClusterParameter -Multiple @{"Address"="$using:SQLAPIP";"ProbePort"="59999";"SubnetMask"="255.255.255.255";"Network"="Cluster Network 1";"EnableDhcp"=0}
+
                 # Set Dependencies
                 Set-ClusterResourceDependency -Resource "$using:SQLAGName" -Dependency "[$using:SQLAPName]"
                 Set-ClusterResourceDependency -Resource "$using:SQLAPName" -Dependency "[$SQLAPIPName]"
-
-                # Set Cluster IP Parameters
-                Get-ClusterResource $SQLAPIPName | Set-ClusterParameter -Multiple @{"Address"="$using:SQLAPIP";"ProbePort"="59999";"SubnetMask"="255.255.255.255";"Network"="Cluster Network 1";"EnableDhcp"=0}
 
                 # Start Role
                 Start-ClusterResource "$using:SQLAGName"
