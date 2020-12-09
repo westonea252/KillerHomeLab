@@ -198,7 +198,7 @@
                 Stop-ClusterResource "$using:SQLAGName"
 
                 # Add Cluste Network Name
-                Add-ClusterResource -Name "$using:SQLAGName" -Type "Network Name" -Group "$using:SQLAGName"
+                Add-ClusterResource -Name "$using:SQLAPName" -Type "Network Name" -Group "$using:SQLAGName"
 
                 # Set Cluster IP Parameters
                 Get-ClusterResource "$using:SQLAPName" | Set-ClusterParameter -Multiple @{"Name"="$using:SQLAPName";"DnsName"="$using:SQLAPName"}
