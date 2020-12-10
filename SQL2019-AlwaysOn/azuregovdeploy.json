@@ -94,37 +94,37 @@
     },
     "SQLLastAPOctet": {
       "type": "string",
-      "defaultValue": "110",
+      "defaultValue": "10",
       "metadata": {
-        "description": "SQL Access Point Last Octet (Example:  110)"
+        "description": "SQL Access Point Last Octet (Example:  10)"
       }
     },                             
     "SQL1LastMgmtOctet": {
       "type": "string",
-      "defaultValue": "111",
+      "defaultValue": "11",
       "metadata": {
-        "description": "SQL Node1 Last Mgmt Octet (Example:  111)"
+        "description": "SQL Node1 Last Mgmt Octet (Example:  11)"
       }
     },                 
     "SQL2LastMgmtOctet": {
       "type": "string",
-      "defaultValue": "112",
+      "defaultValue": "12",
       "metadata": {
-        "description": "SQL Node2 Last Mgmt Octet (Example:  112)"
+        "description": "SQL Node2 Last Mgmt Octet (Example:  12)"
       }
     },
     "SQL1LastDataOctet": {
       "type": "string",
-      "defaultValue": "111",
+      "defaultValue": "11",
       "metadata": {
-        "description": "SQL Node1 Last Data Octet (Example:  111)"
+        "description": "SQL Node1 Last Data Octet (Example:  11)"
       }
     },        
     "SQL2LastDataOctet": {
       "type": "string",
-      "defaultValue": "112",
+      "defaultValue": "12",
       "metadata": {
-        "description": "SQL Node2 Last Data Octet (Example:  112)"
+        "description": "SQL Node2 Last Data Octet (Example:  12)"
       }
     },        
     "SQL1DGLastDataOctet": {
