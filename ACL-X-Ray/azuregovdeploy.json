@@ -145,7 +145,18 @@
         "metadata": {
             "description": "SQL OS Version"
         }
-    },            
+    },   
+    "ToolsOSVersion": {
+        "type": "string",
+        "defaultValue": "2019-Datacenter",
+        "allowedValues": [
+          "2019-Datacenter",
+          "2016-Datacenter"
+        ],            
+        "metadata": {
+            "description": "Tools OS Version"
+        }
+    },                
     "DC1VMSize": {
         "type": "string",
         "defaultValue": "Standard_D2s_v3",
@@ -166,7 +177,14 @@
         "metadata": {
             "description": "SQL VMSize"
         }
-    },         
+    },
+    "ToolsVMSize": {
+      "type": "string",
+      "defaultValue": "Standard_D2s_v3",
+      "metadata": {
+          "description": "Tools VMSize"
+      }
+    },             
     "SQLNode": {
       "type": "string",
       "defaultValue": "",
@@ -219,11 +237,14 @@
     "ReverseLookup2": "[concat('1.',parameters('ReverseLookup2'))]",        
     "dc1lastoctet": "101",        
     "dc2lastoctet": "101",        
+    "toolslastoctet": "150",            
     "DCDataDisk1Name": "NTDS",            
     "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
     "sqlname": "[concat(parameters('NamingConvention'),'-sql-',parameters('sqlnode'))]",                      
     "sqlIP": "[concat(parameters('vnet1ID'),'.1.',parameters('sqllastoctet'))]",
+    "Toolsname": "[concat(parameters('NamingConvention'),'-tool-01')]",                      
+    "ToolsIP": "[concat(parameters('vnet1ID'),'.2.',variables('toolslastoctet'))]",    
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]"    
   },  
   "resources": [
@@ -1105,6 +1126,126 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
           }
       }
-    }                                                                                                     
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "deployToolsVM",
+      "dependsOn": [
+        "restartdc1"
+      ],                  
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('Toolsname')]"
+              },
+              "computerIP": {
+                  "value": "[variables('ToolsIP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsServer"
+              },
+              "Offer": {
+                  "value": "WindowsServer"
+              },
+              "OSVersion": {
+                "value": "[parameters('ToolsOSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "None"
+              },   
+              "VMSize": {
+                "value": "[parameters('ToolsVMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('vnet1Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('vnet1subnet2Name')]"
+              },            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "DomainJoinToolsVM",
+      "dependsOn": [
+        "deployToolsVM"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/domainjoin.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('Toolsname')]"
+              },
+              "domainName": {
+                  "value": "[variables('domainName')]"
+              },
+              "OUPath": {
+                  "value": "[variables('SRVOUPath')]"
+              },
+              "domainJoinOptions": {
+                  "value": 3
+              },
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                             
+              "location": {
+                  "value": "[parameters('Location1')]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "InstallPowerBiDesktop",
+      "dependsOn": [
+        "DomainJoinToolsVM"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/powerbidesktop.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('Toolsname')]"
+              },           
+              "location": {
+                  "value": "[parameters('Location1')]"
+              },                                          
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+          }
+      }
+    }                                                                                                        
   ]
 }
