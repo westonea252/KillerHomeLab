@@ -806,6 +806,7 @@
       "apiVersion": "2015-01-01",
       "name": "DeploySQL2019AzureVM1",
       "dependsOn": [
+        "createous",        
         "DeploySQLAvailabilitySet"
       ],           
       "properties": {
@@ -952,6 +953,7 @@
       "apiVersion": "2015-01-01",
       "name": "DeploySQL2019AzureVM2",
       "dependsOn": [
+        "createous",
         "DeploySQLAvailabilitySet"     
       ],                 
       "properties": {
