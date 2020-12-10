@@ -14,6 +14,13 @@
         "description": "The password for the Administrator account of the new VM and Domain"
       }
     },
+    "SQLSASUrl": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Enter a valid URL that points to the SQL 2019 or 2017 .ISO"
+      }
+    },        
     "Location1": {
       "type": "string",
       "defaultValue": "USGovVirginia",
@@ -128,13 +135,6 @@
           "description": "Domain Controller2 OS Version"
       }
     },
-    "SQLSASUrl": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Enter a valid URL that points to the SQL 2019 or 2017 .ISO"
-      }
-    },    
     "SQLOSVersion": {
         "type": "string",
         "defaultValue": "2019-Datacenter",
