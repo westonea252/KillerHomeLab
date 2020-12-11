@@ -189,12 +189,14 @@
         {
             SetScript =
             {
-                $SQLAPIPName = "$using:SQLAPName"+'-IP'
                 # Create Client Access Point
+                $SQLAPIPName = "$using:SQLAPName"+'-IP'             
                 $NetworkName = Get-ClusterResource -Name "$using:SQLAPName" -ErrorAction 0
                 IF ($NetworkName -eq $Null) {
                 
                 # Stop Role
+                $Cluster = Get-ClusterNetwork | Where-Object {$_.Role -like 'ClusterAndClient'}
+                $ClusterName = $Cluster.Name
                 Stop-ClusterResource "$using:SQLAGName"
 
                 # Add Cluste Network Name
@@ -207,7 +209,7 @@
                 Add-ClusterResource -Name $SQLAPIPName -Type "IP Address" -Group "$using:SQLAGName"
 
                 # Set Cluster IP Parameters
-                Get-ClusterResource $SQLAPIPName | Set-ClusterParameter -Multiple @{"Address"="$using:SQLAPIP";"ProbePort"="59999";"SubnetMask"="255.255.255.255";"Network"="Cluster Network 2";"EnableDhcp"=0}
+                Get-ClusterResource $SQLAPIPName | Set-ClusterParameter -Multiple @{"Address"="$using:SQLAPIP";"ProbePort"="59999";"SubnetMask"="255.255.255.255";"Network"="$ClusterName";"EnableDhcp"=0}
 
                 # Set Dependencies
                 Set-ClusterResourceDependency -Resource "$using:SQLAGName" -Dependency "[$using:SQLAPName]"

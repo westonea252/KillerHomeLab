@@ -28,16 +28,6 @@
             "description": "Load Balancer Name"
         }
     },
-    "LoadBalancerSku": {
-        "type": "string",
-      "defaultValue": "Standard",
-      "allowedValues": [
-        "Standard"
-      ],
-        "metadata": {
-            "description": "Load Balancer Sku Type"
-        }           
-    },                
     "ServiceAccount": {
         "type": "string",
         "metadata": {
@@ -304,7 +294,8 @@
     "sql2DGdataIP": "[concat(parameters('vnet1ID'),'.2.',parameters('sql2DGlastdataoctet'))]",         
     "Subnet1ID": "[concat(parameters('vnet1ID'),'.1')]",             
     "Subnet2ID": "[concat(parameters('vnet1ID'),'.2')]",             
-    "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]"
+    "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
+    "LoadBalancerSku": "Standard"                
   },  
   "resources": [
     {
@@ -1898,7 +1889,7 @@
                 "value": "[variables('vnet1subnet2Name')]"
               },                         
               "Sku": {
-                  "value": "[parameters('LoadBalancerSku')]"
+                  "value": "[variables('LoadBalancerSku')]"
               },                                          
               "location": {
                   "value": "[parameters('Location1')]"
