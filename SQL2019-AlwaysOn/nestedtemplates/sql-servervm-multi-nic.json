@@ -5,6 +5,12 @@
         "computerName": {
             "type": "string"
         },
+        "licenseType": {
+            "type": "string"
+        }, 
+        "SQLlicenseType": {
+            "type": "string"
+        },                      
         "AvailabilitySetName": {
             "type": "string"
         },        
@@ -229,7 +235,7 @@
                         "provisionVmAgent": true
                     }
                 },
-                "licenseType": "Windows_Server",
+                "licenseType": "[parameters('licenseType')]",
                 "diagnosticsProfile": {
                     "bootDiagnostics": {
                         "enabled": true
@@ -245,7 +251,7 @@
             "properties": {
                 "virtualMachineResourceId": "[resourceId('Microsoft.Compute/virtualMachines', parameters('computerName'))]",
                 "sqlManagement": "Full",
-                "SqlServerLicenseType": "AHUB",
+                "SqlServerLicenseType": "[parameters('SQLLicenseType')]",
                 "AutoPatchingSettings": {
                     "Enable": true,
                     "DayOfWeek": "[parameters('sqlAutopatchingDayOfWeek')]",

@@ -14,7 +14,7 @@
         "description": "The password for the Administrator account of the new VM and Domain"
       }
     },
-    "LicenseType": {
+    "WindowsLicenseType": {
       "type": "string",
       "defaultValue": "None",
       "allowedValues": [
@@ -24,7 +24,19 @@
       "metadata": {
           "description": "Windows OS License Type"
       }
-    },       
+    },  
+    "SQLLicenseType": {
+      "type": "string",
+      "defaultValue": "AHUB",
+      "allowedValues": [
+        "AHUB",
+        "DR",
+        "PAYG"
+      ],      
+      "metadata": {
+          "description": "SQL License Type"
+      }
+    },           
     "AvailabilitySetName": {
         "type": "string",
       "defaultValue": "KHL-SQL-AVS",
@@ -422,7 +434,7 @@
                 "value": "[parameters('DC1OSVersion')]"
               },              
               "LicenseType": {
-                "value": "[parameters('LicenseType')]"
+                "value": "[parameters('WindowsLicenseType')]"
               },            
               "DataDisk1Name": {
                 "value": "[variables('DCDataDisk1Name')]"
@@ -670,7 +682,7 @@
                 "value": "[parameters('ToolOSVersion')]"
               },              
               "LicenseType": {
-                "value": "[parameters('LicenseType')]"
+                "value": "[parameters('WindowsLicenseType')]"
               },            
               "VMSize": {
                 "value": "[parameters('ToolVMSize')]"
@@ -863,6 +875,12 @@
               "computerName": {
                   "value": "[variables('sqlname1')]"
               },
+              "LicenseType": {
+                "value": "[parameters('WindowsLicenseType')]"
+              },       
+              "SQLLicenseType": {
+                "value": "[parameters('SQLLicenseType')]"
+              },                           
               "AvailabilitySetName": {
                   "value": "[parameters('AvailabilitySetName')]"
               },                                                          
@@ -1010,6 +1028,12 @@
               "computerName": {
                   "value": "[variables('sqlname2')]"
               },
+              "LicenseType": {
+                "value": "[parameters('WindowsLicenseType')]"
+              },   
+              "SQLLicenseType": {
+                "value": "[parameters('SQLLicenseType')]"
+              },                               
               "AvailabilitySetName": {
                   "value": "[parameters('AvailabilitySetName')]"
               },                                          
