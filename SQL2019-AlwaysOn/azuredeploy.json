@@ -14,6 +14,17 @@
         "description": "The password for the Administrator account of the new VM and Domain"
       }
     },
+    "LicenseType": {
+      "type": "string",
+      "defaultValue": "None",
+      "allowedValues": [
+        "None",
+        "Windows_Server"
+      ],      
+      "metadata": {
+          "description": "Windows OS License Type"
+      }
+    },       
     "AvailabilitySetName": {
         "type": "string",
       "defaultValue": "KHL-SQL-AVS",
@@ -143,10 +154,21 @@
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
+      "minLength": 1,
+      "maxLength": 6,
       "metadata": {
         "description": "Environment Naming Convention"
       }
     },
+    "StorageAccountPrefix": {
+      "type": "string",
+      "defaultValue": "khl",      
+      "minLength": 3,
+      "maxLength": 11,
+      "metadata": {
+        "description": "Environment Naming Convention"
+      }      
+    },    
     "SubDNSDomain": {
       "type": "string",
       "defaultValue": "",
@@ -272,7 +294,7 @@
     "vnet1subnet2Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet2')]",  
     "vnet1subnet2Prefix": "[concat(parameters('vnet1ID'),'.2.0/24')]",    
     "vnet1BastionsubnetPrefix": "[concat(parameters('vnet1ID'),'.253.0/24')]",                  
-    "StorageAccountName": "[concat(parameters('NamingConvention'),'storage')]",                
+    "StorageAccountName": "[concat(parameters('StorageAccountPrefix'), uniqueString(resourceGroup().id))]",
     "StorageEndpoint": "core.usgovcloudapi.net",                    
     "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]", 
     "dc1IP": "[concat(parameters('vnet1ID'),'.1.',variables('dc1lastoctet'))]",        
@@ -400,7 +422,7 @@
                 "value": "[parameters('DC1OSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
+                "value": "[parameters('LicenseType')]"
               },            
               "DataDisk1Name": {
                 "value": "[variables('DCDataDisk1Name')]"
@@ -648,7 +670,7 @@
                 "value": "[parameters('ToolOSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
+                "value": "[parameters('LicenseType')]"
               },            
               "VMSize": {
                 "value": "[parameters('ToolVMSize')]"

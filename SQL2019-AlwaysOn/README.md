@@ -46,6 +46,7 @@ AD OU Structure:
 Parameters that support changes
 - AdminUsername.  Enter a valid Admin Username
 - AdminPassword.  Enter a valid Admin Password
+- LicenseType.  Choose Windows_Server if you already have a WindowsServer License or None if you don't
 - AvailabilitySetName.  Enter a Availability Set Name
 - LoadBalancerName.  Enter a Load Balanccer Name
 - ServiceAccount.  SQL Service Account Name
