@@ -4,9 +4,13 @@ Click the button below to deploy
 
 [![Deploy To Azure US Gov](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.svg?sanitize=true)](https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2Fmaster%2FSQL2019-AlwaysOn%2Fazuregovdeploy.json)
 
-The Template deploys the folowing:
+This Templates deploys a Single Forest/Domain with a SQL Always On Windows Failover Cluster:
 
+- 1 - Active Directory Forest/Domain
+- 1 - Domain Controller
+- 1 - Domain Joined Tools Machine
 - 1 - Managed Availability Set
+- 1 - Azure Load Balancer
 - 2 - D8s_v3 Domain Joined VM's with SQL Server 2019 Datacenter on Windows Server 2019 Datacenter
 
 The deployment leverages Desired State Configuration scripts to further customize the following:
@@ -16,6 +20,27 @@ Windows Features
 
 SQL Deployment
 - Configures SQL Always On
+
+AD OU Structure:
+- [domain.com]
+- -- Accounts
+- --- End User
+- ---- Office 365
+- ---- Non-Office 365
+- --- Admin
+- --- Service
+- -- Groups
+- --- End User
+- --- Admin
+- -- Servers
+- --- Servers2012R2
+- --- Serverrs2016
+- --- Servers2019
+- -- MaintenanceServers
+- -- MaintenanceWorkstations
+- -- Workstations
+- --- Windows10
+- --- Windows7
 
 Parameters that support changes
 - AdminUsername.  Enter a valid Admin Username
