@@ -163,7 +163,7 @@
     },            
     "NetBiosDomain": {
       "type": "string",
-      "defaultValue": "dir",
+      "defaultValue": "killerhomelab",
       "metadata": {
           "description": "NetBios Parent Domain Name"
       }
