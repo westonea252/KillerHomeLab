@@ -30,12 +30,14 @@
     },
     "ServiceAccount": {
         "type": "string",
+        "defaultValue": "SQLSvc",        
         "metadata": {
             "description": "SQL Service Account Name"
         }
     },    
     "InstallAccount": {
         "type": "string",
+        "defaultValue": "Install",                
         "metadata": {
             "description": "SQL Install Account Name"
         }
