@@ -21,6 +21,17 @@
         "description": "The password for the Administrator account of the new VM and Domain"
       }
     },  
+    "WindowsServerLicenseType": {
+      "type": "string",
+      "defaultValue": "None",
+      "allowedValues": [
+        "None",
+        "Windows_Server"
+      ],      
+      "metadata": {
+          "description": "Windows Server OS License Type"
+      }
+    },      
     "Location1": {
       "type": "string",
       "defaultValue": "EastUS",
@@ -164,8 +175,8 @@
                 "value": "[parameters('EXOSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
-              },     
+                "value": "[parameters('WindowsServerLicenseType')]"
+              },   
               "DataDisk1Name": {
                 "value": "Exchange"
               },            
@@ -262,8 +273,8 @@
                 "value": "[parameters('EXOSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
-              },            
+                "value": "[parameters('WindowsServerLicenseType')]"
+              },           
               "DataDisk1Name": {
                 "value": "Exchange"
               },            
