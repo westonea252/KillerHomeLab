@@ -35,7 +35,9 @@ jobs:
     - name: Create Resource Group
       uses: Azure/powershell@v1
       with:
-        inlineScript: New-AzResourceGroup -Name "${{env.ResourceGroup1Name}}" -Location "${{env.Location1}}"
+        inlineScript:
+          $RGCheck = Get-AzResourceGroup -Name -Name "${{env.ResourceGroup1Name}}" -ErrorAction 0
+          IF ($RGCheck -eq $Null) {New-AzResourceGroup -Name "${{env.ResourceGroup1Name}}" -Location "${{env.Location1}}"}
         azPSVersion: 3.1.0 
 
     - name: 'Deploy VNet'
