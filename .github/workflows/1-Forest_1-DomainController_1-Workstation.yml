@@ -63,7 +63,7 @@ jobs:
         deploymentname: 'DeployBastion1'
         subscriptionId: "${{env.PrdSubScription}}"
         resourceGroupName: "${{env.ResourceGroup1Name}}"
-        template: 1-Forest_1-DomainController_1-Workstation/nestedtemplates/bastion.json   
+        template: 1-Forest_1-DomainController_1-Workstation/nestedtemplates/bastionhost.json   
         parameters:  
           publicIPAddressName="${{env.NamingConvention}}-VNet1-Bastion-pip"
           AllocationMethod="Static"
