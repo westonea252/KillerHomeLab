@@ -3,11 +3,11 @@
 env:
   NamingConvention: "khl"
   ResourceGroup1Name: "1-Forest_1-DomainController_1-Workstation"
-  PrdSubscription: ${{ secrets.GELVADE_PRD }}
-  StgSubscription: ${{ secrets.GELVADE_STG }}  
-  DevSubscription: ${{ secrets.GELVADE_DEV }}
-  LabSubscription: ${{ secrets.GELVADE_LAB }}
-  VdiSubscription: ${{ secrets.GELVADE_VDI }}    
+  PrdSubscription: "7d42fc1c-e7b8-49ec-85c4-403308e76d0b"
+  StgSubscription: "19b978ca-c345-40ac-bf9f-7464f1148690"
+  DevSubscription: "fa46a605-f32d-4d9e-8826-329809cf7a78"
+  LabSubscription: "a87547df-4463-4b74-8832-9c978efe6667"
+  VdiSubscription: "c0755cd6-5e30-4af8-8724-12b63a9a1686"
   Vnet1ID: "10.1"
   Location1:   "EastUS"
 
@@ -48,9 +48,9 @@ jobs:
         parameters:  
           vnetName="${{env.NamingConvention}}-VNet1"
           vnetprefix="${{env.Vnet1ID}}.0.0/16"
-          subnet1Name="${{env.NamingConvention }}-VNet1-Subnet1"
+          subnet1Name="${{env.NamingConvention}}-VNet1-Subnet1"
           subnet1Prefix="${{env.Vnet1ID}}.1.0/24"
-          subnet2Name="${{env.NamingConvention }}-VNet1-Subnet2"
+          subnet2Name="${{env.NamingConvention}}-VNet1-Subnet2"
           subnet2Prefix="${{env.Vnet1ID}}.2.0/24"  
           BastionsubnetPrefix="${{env.Vnet1ID}}.253.0/24"  
           location="${{env.Location1}}"
