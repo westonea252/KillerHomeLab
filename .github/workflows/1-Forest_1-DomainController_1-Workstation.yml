@@ -3,7 +3,11 @@
 env:
   NamingConvention: "khl"
   ResourceGroup1Name: "1-Forest_1-DomainController_1-Workstation"
-  DevSubscription:  "fa46a605-f32d-4d9e-8826-329809cf7a78"
+  PrdSubscription: ${{ secrets.GELVADE_PRD }}
+  StgSubscription: ${{ secrets.GELVADE_STG }}  
+  DevSubscription: ${{ secrets.GELVADE_DEV }}
+  LabSubscription: ${{ secrets.GELVADE_LAB }}
+  VdiSubscription: ${{ secrets.GELVADE_VDI }}    
   Vnet1ID: "10.1"
   Location1:   "EastUS"
 
@@ -28,11 +32,17 @@ jobs:
         creds: ${{ secrets.GELVADE_PRD }}
         enable-AzPSSession: true
 
+    - name: Create Resource Group
+      uses: Azure/powershell@v1
+      with:
+        inlineScript: New-AzResourceGroup -Name "${{env.ResourceGroup1Name}}" -Location -Name "${{env.Location1}}"
+        azPSVersion: 3.1.0 
+
     - name: 'Deploy VNet'
       uses: azure/arm-deploy@v1
       with:
         deploymentname: 'DeployVNet1'
-        subscriptionId: "${{env.DevSubScription}}"
+        subscriptionId: "${{env.PrdSubScription}}"
         resourceGroupName: "${{env.ResourceGroup1Name}}"
         template: 1-Forest_1-DomainController_1-Workstation/nestedtemplates/vnet.json   
         parameters:  
@@ -43,10 +53,18 @@ jobs:
           subnet2Name="${{env.NamingConvention }}-VNet1-Subnet2"
           subnet2Prefix="${{env.Vnet1ID}}.2.0/24"  
           BastionsubnetPrefix="${{env.Vnet1ID}}.253.0/24"  
-          location="${{env.Location1}}"  
-          
-    - name: Azure PowerShell Action
-      uses: Azure/powershell@v1
+          location="${{env.Location1}}"
+
+    - name: 'Deploy Bastion Host1'
+      uses: azure/arm-deploy@v1
       with:
-        inlineScript: Get-AzVM -ResourceGroupName "${{env.ResourceGroup1Name}}"
-        azPSVersion: 3.1.0          
+        deploymentname: 'DeployBastion1'
+        subscriptionId: "${{env.PrdSubScription}}"
+        resourceGroupName: "${{env.ResourceGroup1Name}}"
+        template: 1-Forest_1-DomainController_1-Workstation/nestedtemplates/bastion.json   
+        parameters:  
+          publicIPAddressName="${{env.NamingConvention}}-VNet1-Bastion-pip"
+          AllocationMethod="Static"
+          vnetName="${{env.NamingConvention}}-VNet1"          
+          subnetName="AzureBastion"
+          location="${{env.Location1}}"                     
