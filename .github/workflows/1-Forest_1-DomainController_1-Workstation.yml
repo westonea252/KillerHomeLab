@@ -68,5 +68,5 @@ jobs:
           publicIPAddressName="${{env.NamingConvention}}-VNet1-Bastion-pip"
           AllocationMethod="Static"
           vnetName="${{env.NamingConvention}}-VNet1"          
-          subnetName="AzureBastion"
+          subnetName="AzureBastionSubnet"
           location="${{env.Location1}}"                     
