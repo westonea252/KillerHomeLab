@@ -2081,7 +2081,7 @@
       "apiVersion": "2015-01-01",
       "name": "downloadexchange10s1",
       "dependsOn": [
-        "configex1disk"
+        "restartdc1"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -2113,7 +2113,7 @@
       "apiVersion": "2015-01-01",
       "name": "downloadexchange10s2",
       "dependsOn": [
-        "configex2disk"
+        "restartdc2"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -2227,7 +2227,7 @@
       "apiVersion": "2015-01-01",
       "name": "prepareexchange10s2",
       "dependsOn": [
-        "prepareexchange10s1"
+        "prepareadexchange10"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -2268,7 +2268,7 @@
       "apiVersion": "2015-01-01",
       "name": "grantextrustedsub1",
       "dependsOn": [
-        "prepareexchange10s1"
+        "prepareadexchange10"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -2300,7 +2300,7 @@
       "apiVersion": "2015-01-01",
       "name": "grantextrustedsub2",
       "dependsOn": [
-        "prepareexchange10s2"
+        "prepareadexchange10"
       ],      
       "properties": {
           "mode": "Incremental",
