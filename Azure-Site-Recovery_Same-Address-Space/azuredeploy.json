@@ -20,7 +20,18 @@
       "metadata": {
         "description": "The password for the Administrator account of the new VM and Domain"
       }
-    },    
+    },   
+    "WindowsServerLicenseType": {
+      "type": "string",
+      "defaultValue": "None",
+      "allowedValues": [
+        "None",
+        "Windows_Server"
+      ],      
+      "metadata": {
+          "description": "Windows Server OS License Type"
+      }
+    },        
     "Location1": {
       "type": "string",
       "defaultValue": "EastUS",
@@ -94,13 +105,12 @@
     },             
     "BackupObjectID": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "f40e18f0-6544-45c2-9d24-639a8bb3b41a",
       "allowedValues": [
-        "9a7b9a6d-0996-4d52-889f-46473877d766",
         "f40e18f0-6544-45c2-9d24-639a8bb3b41a"
       ],            
       "metadata": {
-          "description": "Backup Object ID.  For AzureGov Use: 9a7b9a6d-0996-4d52-889f-46473877d766, For Azure Use: f40e18f0-6544-45c2-9d24-639a8bb3b41a"
+          "description": "Backup Object ID."
       }
     },             
     "KeyVault1ID": {
@@ -622,8 +632,8 @@
                 "value": "[parameters('DC1OSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
-              },            
+                "value": "[parameters('WindowsServerLicenseType')]"
+              },                
               "DataDisk1Name": {
                 "value": "[variables('DCDataDisk1Name')]"
               },            
@@ -1174,8 +1184,8 @@
                 "value": "[parameters('DC2OSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
-              },            
+                "value": "[parameters('WindowsServerLicenseType')]"
+              },               
               "DataDisk1Name": {
                 "value": "[variables('DCDataDisk1Name')]"
               },            
@@ -1431,8 +1441,8 @@
                 "value": "[parameters('SRV1OSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
-              },            
+                "value": "[parameters('WindowsServerLicenseType')]"
+              },               
               "VMSize": {
                 "value": "[parameters('SRV1VMSize')]"
               },
@@ -1569,8 +1579,8 @@
                 "value": "[parameters('SRV2OSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
-              },            
+                "value": "[parameters('WindowsServerLicenseType')]"
+              },               
               "VMSize": {
                 "value": "[parameters('SRV2VMSize')]"
               },
