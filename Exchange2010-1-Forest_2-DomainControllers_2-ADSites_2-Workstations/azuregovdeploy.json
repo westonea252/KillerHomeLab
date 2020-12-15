@@ -201,9 +201,9 @@
     },                        
     "EXOSVersion": {
       "type": "string",
-      "defaultValue": "2008-R2-Datacenter",
+      "defaultValue": "2008-R2-SP1",
       "allowedValues": [
-        "2008-R2-Datacenter"
+        "2008-R2-SP1"
       ],      
       "metadata": {
           "description": "Exchange Server OS Version"
