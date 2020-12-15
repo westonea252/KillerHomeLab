@@ -1152,7 +1152,7 @@
           },
           "parameters": {
               "computerName": {
-                  "value": "[variables('dc1name')]"
+                  "value": "[variables('dc2name')]"
               },
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
@@ -2081,7 +2081,7 @@
       "apiVersion": "2015-01-01",
       "name": "downloadexchange10s1",
       "dependsOn": [
-        "restartdc1"
+        "PowerShellExecutionPolicy"
       ],      
       "properties": {
           "mode": "Incremental",
