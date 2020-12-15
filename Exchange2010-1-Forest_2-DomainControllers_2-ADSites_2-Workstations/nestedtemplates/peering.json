@@ -14,12 +14,6 @@
           "description": "Set the remote VNet name"
         }
       },
-      "TargetResourceGroupName": {
-        "type": "string",
-        "metadata": {
-          "description": "Sets the remote VNet Resource group"
-        }
-      },
       "allowVirtualNetworkAccess": {
         "type": "string",
         "metadata": {
