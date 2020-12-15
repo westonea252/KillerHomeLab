@@ -11,7 +11,7 @@ name: '1-Forest_1-DomainController_1-Workstation'
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
 
 jobs:
@@ -25,7 +25,7 @@ jobs:
     - name: Login
       uses: azure/login@v1
       with:
-        creds: ${{ secrets.GELVADE_DEV }}
+        creds: ${{ secrets.GELVADE_PRD }}
         enable-AzPSSession: true
 
     - name: 'Deploy VNet'
