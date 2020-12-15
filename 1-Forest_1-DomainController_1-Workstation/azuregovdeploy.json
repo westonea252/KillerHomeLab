@@ -14,6 +14,28 @@
         "description": "The password for the Administrator account of the new VM and Domain"
       }
     },    
+    "WindowsServerLicenseType": {
+      "type": "string",
+      "defaultValue": "None",
+      "allowedValues": [
+        "None",
+        "Windows_Server"
+      ],      
+      "metadata": {
+          "description": "Windows Server OS License Type"
+      }
+    },    
+    "WindowsClientLicenseType": {
+      "type": "string",
+      "defaultValue": "None",
+      "allowedValues": [
+        "None",
+        "Windows_Client"
+      ],      
+      "metadata": {
+          "description": "Windows Client OS License Type"
+      }
+    },        
     "Location1": {
       "type": "string",
       "defaultValue": "USGovVirginia",
@@ -258,7 +280,7 @@
                 "value": "[parameters('DC1OSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
+                "value": "[parameters('WindowsServerLicenseType')]"
               },            
               "DataDisk1Name": {
                 "value": "[variables('DCDataDisk1Name')]"
@@ -533,8 +555,8 @@
                 "value": "[parameters('WK1OSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
-              },            
+                "value": "[parameters('WindowsClientLicenseType')]"
+              },              
               "VMSize": {
                 "value": "[parameters('WK1VMSize')]"
               },
