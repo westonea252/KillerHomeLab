@@ -1,0 +1,52 @@
+# File: .github/workflows/1-Forest_1-DomainController_1-Workstation.yml
+
+env:
+  NamingConvention: "khl"
+  ResourceGroup1Name: "1-Forest_1-DomainController_1-Workstation"
+  DevSubscription:  "fa46a605-f32d-4d9e-8826-329809cf7a78"
+  Vnet1ID: "10.1"
+  Location1:   "EastUS"
+
+name: '1-Forest_1-DomainController_1-Workstation'
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  infrastructure:
+    name: 'Deploy Infrastructure'
+    runs-on: windows-latest
+    steps:
+    - name: "Checkout"
+      uses: actions/checkout@v2 
+
+    - name: Login
+      uses: elliottfieldsjr/govlogin@main
+      with:
+        creds: ${{ secrets.GELVADE_DEV }}
+        enable-AzPSSession: true
+
+    - name: 'Deploy VNet'
+      uses: azure/arm-deploy@v1
+      with:
+        deploymentname: 'DeployVNet1'
+        subscriptionId: "${{env.DevSubScription}}"
+        resourceGroupName: "${{env.ResourceGroup1Name}}"
+        template: nestedtemplates/vnet.json   
+        parameters:  
+          vnetName="${{env.NamingConvention}}-VNet1"
+          vnetprefix="${{env.Vnet1ID}}.0.0/16"
+          subnet1Name="${{env.NamingConvention }}-VNet1-Subnet1"
+          subnet1Prefix="${{env.Vnet1ID}}.1.0/24"
+          subnet2Name="${{env.NamingConvention }}-VNet1-Subnet2"
+          subnet2Prefix="${{env.Vnet1ID}}.2.0/24"  
+          BastionsubnetPrefix="${{env.Vnet1ID}}.253.0/24"  
+          location="${{env.Location1}}"  
+          
+    - name: Azure PowerShell Action
+      uses: Azure/powershell@v1
+      with:
+        inlineScript: Get-AzVM -ResourceGroupName "${{env.ResourceGroup1Name}}"
+        azPSVersion: 3.1.0          
