@@ -64,7 +64,6 @@ Parameters that support changes
 - sql2lastdataoctet.  Enter the desired last IP octet for SQL VM2's Data NIC (Example:  12).
 - sql1DGlastdataoctet.  Enter the desired last IP octet for SQL VM1's Data NIC'S Default Gateway (Example:  1).
 - sql2DGlastdataoctet.  Enter the desired last IP octet for SQL VM2's Data NIC'S Default Gateway (Example:  1).
-- Location. Enter a Valid Azure Region based on which Cloud (AzureCloud, AzureUSGovernment, etc...) you are using.
 - Naming Convention. Enter a name that will be used as a naming prefix for (Servers, VNets, etc) you are using.
 - SubDNSDomain.  OPTIONALLY, enter a valid DNS Sub Domain. (Example:  sub1. or sub1.sub2.    This entry must end with a DOT )
 - SubDNSBaseDN.  OPTIONALLY, enter a valid DNS Sub Base DN. (Example:  DC=sub1, or DC=sub1,DC=sub2,    This entry must end with a COMMA )
