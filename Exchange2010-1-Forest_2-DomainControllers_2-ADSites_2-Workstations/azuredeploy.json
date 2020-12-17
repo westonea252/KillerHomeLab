@@ -2016,6 +2016,7 @@
       "apiVersion": "2015-01-01",
       "name": "configex1disk",
       "dependsOn": [
+        "PowerShellExecutionPolicy",
         "DomainJoinEX1"
       ],      
       "properties": {
@@ -2045,6 +2046,7 @@
       "apiVersion": "2015-01-01",
       "name": "configex2disk",
       "dependsOn": [
+        "PowerShellExecutionPolicy",        
         "DomainJoinEX2"
       ],      
       "properties": {
