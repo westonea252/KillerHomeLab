@@ -989,7 +989,7 @@
       "apiVersion": "2015-01-01",
       "name": "deployDC2VM",
       "dependsOn": [
-        "PeeringToSite1"
+        "updatevnet2dns"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1164,7 +1164,7 @@
       "apiVersion": "2015-01-01",
       "name": "deployrootca",
       "dependsOn": [
-        "restartdc1"
+        "configdns"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1640,7 +1640,7 @@
       "apiVersion": "2015-01-01",
       "name": "deployfs1",
       "dependsOn": [
-        "configureocsp"
+        "restartdc1"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1731,7 +1731,7 @@
       "apiVersion": "2015-01-01",
       "name": "deployfs2",
       "dependsOn": [
-        "DomainJoinFS1"
+        "restartdc2"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1822,7 +1822,7 @@
       "apiVersion": "2015-01-01",
       "name": "deployex1",
       "dependsOn": [
-        "DomainJoinFS1"
+        "restartdc1"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1919,7 +1919,7 @@
       "apiVersion": "2015-01-01",
       "name": "deployex2",
       "dependsOn": [
-        "DomainJoinFS1"
+        "restartdc2"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -2138,7 +2138,8 @@
       "apiVersion": "2015-01-01",
       "name": "prepareadexchange10",
       "dependsOn": [
-        "downloadexchange10s1"
+        "downloadexchange10s1",
+        "downloadexchange10s2"        
       ],      
       "properties": {
           "mode": "Incremental",
@@ -2179,6 +2180,7 @@
       "apiVersion": "2015-01-01",
       "name": "prepareexchange10s1",
       "dependsOn": [
+        "configex1disk",
         "prepareadexchange10"
       ],      
       "properties": {
@@ -2220,6 +2222,7 @@
       "apiVersion": "2015-01-01",
       "name": "prepareexchange10s2",
       "dependsOn": [
+        "configex2disk",
         "prepareadexchange10"
       ],      
       "properties": {
@@ -2261,6 +2264,7 @@
       "apiVersion": "2015-01-01",
       "name": "grantextrustedsub1",
       "dependsOn": [
+        "DomainJoinFS1",
         "prepareadexchange10"
       ],      
       "properties": {
@@ -2293,6 +2297,7 @@
       "apiVersion": "2015-01-01",
       "name": "grantextrustedsub2",
       "dependsOn": [
+        "DomainJoinFS2",
         "prepareadexchange10"
       ],      
       "properties": {
