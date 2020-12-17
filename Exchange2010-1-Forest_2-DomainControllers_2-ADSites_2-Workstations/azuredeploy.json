@@ -2081,7 +2081,7 @@
       "apiVersion": "2015-01-01",
       "name": "downloadexchange10s1",
       "dependsOn": [
-        "PowerShellExecutionPolicy"
+        "deployDC2VM"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -2113,7 +2113,7 @@
       "apiVersion": "2015-01-01",
       "name": "downloadexchange10s2",
       "dependsOn": [
-        "restartdc2"
+        "deployrootca"
       ],      
       "properties": {
           "mode": "Incremental",
