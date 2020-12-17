@@ -412,7 +412,7 @@
                 "value": "[variables('vnet1BastionsubnetPrefix')]"
               },              
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -482,7 +482,7 @@
                   "value": "AzureBastionSubnet"
               },
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -570,7 +570,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -611,7 +611,7 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                           
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -657,7 +657,7 @@
                 ]
               },                                                                                                            
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -733,7 +733,7 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                                         
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -789,7 +789,7 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                           
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -821,7 +821,7 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                           
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -862,7 +862,7 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                           
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -897,7 +897,7 @@
                 "value": "[variables('BaseDN')]"
               },
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               },
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
@@ -941,7 +941,7 @@
                 "value": "false"
               },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -1207,7 +1207,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -1239,7 +1239,7 @@
                   "value": "[variables('BaseDN')]"
               },
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               },              
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
@@ -1304,7 +1304,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -1342,7 +1342,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                                                                                                                                                             
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -1386,7 +1386,7 @@
                   "value": "[variables('rcaIP')]"
               },
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               },              
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
@@ -1430,7 +1430,7 @@
                   "value": "[parameters('RootCAName')]"
               },
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               },
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
@@ -1474,7 +1474,7 @@
                   "value": "[variables('domainName')]"
               },   
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               },
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
@@ -1539,7 +1539,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -1577,7 +1577,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                                                                                                                                                             
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -1618,7 +1618,7 @@
                   "value": "[parameters('RootCAName')]"
               },
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               },
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
@@ -1683,7 +1683,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -1721,7 +1721,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                                                                                                                                                             
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -1871,7 +1871,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -1909,7 +1909,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                                                                                                                                                             
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -2029,7 +2029,7 @@
                   "value": "[variables('ex1name')]"
               },
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               },          
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
@@ -2090,7 +2090,7 @@
                   "value": "[parameters('ExchangeSP3ISOUrl')]"
               },                        
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               },          
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
@@ -2163,7 +2163,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                                                                                                                                                                                                                 
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               },          
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
@@ -2204,7 +2204,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                                                                                                                                                                                                                 
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               },          
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
@@ -2277,7 +2277,7 @@
                   "value": "[parameters('NetBiosDomain')]"
               },                                        
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               },          
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
@@ -2344,7 +2344,7 @@
                   "value": "[variables('dc1name')]"
               },                                                      
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               },          
               "DBName": {
                   "value": "[variables('db1name')]"
@@ -2427,7 +2427,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                                                                                                                                                                                                                                      
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               },          
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
@@ -2604,7 +2604,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -2642,7 +2642,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                                                                                                                                                             
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
