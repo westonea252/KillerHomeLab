@@ -2299,8 +2299,7 @@
       "apiVersion": "2015-01-01",
       "name": "grantextrustedsub2",
       "dependsOn": [
-        "DomainJoinFS2",
-        "prepareadexchange10"
+        "grantextrustedsub1"
       ],      
       "properties": {
           "mode": "Incremental",
