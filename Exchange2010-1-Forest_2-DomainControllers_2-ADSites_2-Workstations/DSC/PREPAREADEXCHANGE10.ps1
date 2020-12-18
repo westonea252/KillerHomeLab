@@ -38,6 +38,9 @@
                                 
                 C:\MachineConfig\Exchange2010SP3\Setup.com /PrepareSchema
                 C:\MachineConfig\Exchange2010SP3\Setup.com /PrepareAD /on:"$using:ExchangeOrgName"
+
+                repadmin /replicate "$using:Site1DC" "$using:Site2DC" "$using:BaseDN"
+                repadmin /replicate "$using:Site2DC" "$using:Site1DC" "$using:BaseDN"
             }
             GetScript =  { @{} }
             TestScript = { $false}

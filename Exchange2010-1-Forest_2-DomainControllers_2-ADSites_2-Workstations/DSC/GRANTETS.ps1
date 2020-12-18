@@ -10,7 +10,7 @@
         Script IssueCARequest
         {
             SetScript =
-            {
+            {                          
                 Add-LocalGroupMember -Member "$NetBiosDomain\Exchange Trusted Subsystem" -Group Administrators
                 Get-NetFirewallProfile | Set-NetFirewallProfile -Enabled False
             }
