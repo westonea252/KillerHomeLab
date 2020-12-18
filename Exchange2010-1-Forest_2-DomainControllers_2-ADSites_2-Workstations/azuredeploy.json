@@ -2155,7 +2155,16 @@
               },
               "ExchangeOrgName": {
                   "value": "[parameters('ExchangeOrgName')]"
-              },                                      
+              },                                
+              "Site1DC": {
+                  "value": "[variables('dc1name')]"
+              },                                                     
+              "Site2DC": {
+                  "value": "[variables('dc2name')]"
+              },      
+              "BaseDN": {
+                  "value": "[variables('BaseDN')]"
+              },                                                                                                     
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },              
