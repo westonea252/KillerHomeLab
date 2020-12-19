@@ -72,12 +72,11 @@ Exchange
 - DAG Creation and Adding both Exchange Servers
 
 Parameters that support changes
+- Location2. Enter a Valid Azure Region based on which Cloud (AzureCloud, AzureUSGovernment, etc...) you are using.
 - Exchange Org Name. Enter a name that will be used for your Exchange Organization Name.
 - ExchangeSP3ISOUrl.  You must enter a URL or created SAS URL that points to an Exchange 2010 ISO for this installation to be successful.
 - Admin Username.  Enter a valid Admin Username
 - Admin Password.  Enter a valid Admin Password
-- Location1. Enter a Valid Azure Region based on which Cloud (AzureCloud, AzureUSGovernment, etc...) you are using.
-- Location2. Enter a Valid Azure Region based on which Cloud (AzureCloud, AzureUSGovernment, etc...) you are using.
 - Naming Convention. Enter a name that will be used as a naming prefix for (Servers, VNets, etc) you are using.
 - Net Bios Domain.  Enter a valid Net Bios Domain Name (Example:  killerhomelab).
 - TLD.  Select a valid Top-Level Domain using the Pull-Down Menu.
