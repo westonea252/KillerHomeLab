@@ -36,11 +36,12 @@
       }
     }, 
     "ToEmail": {
-        "type": "string",
-        "metadata": {
-            "description": "Enter an Email Address to send the Trusted CA Certificates"
-        }
-    },    
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Enter Email Address to send completed status"
+      }
+    },
     "WindowsServerLicenseType": {
       "type": "string",
       "defaultValue": "None",
