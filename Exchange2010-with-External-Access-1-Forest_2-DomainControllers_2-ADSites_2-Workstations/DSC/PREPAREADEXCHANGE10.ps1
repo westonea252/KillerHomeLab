@@ -4,6 +4,9 @@
    (
         [String]$ExchangeOrgName,
         [String]$NetBiosDomain,
+        [String]$Site1DC,
+        [String]$Site2DC,
+        [String]$BaseDN,
         [System.Management.Automation.PSCredential]$Admincreds
 
     )
@@ -30,8 +33,14 @@
         {
             SetScript =
             {
-                I:\Setup.com /PrepareSchema
-                I:\Setup.com /PrepareAD /on:"$using:ExchangeOrgName"
+                repadmin /replicate "$using:Site1DC" "$using:Site2DC" "$using:BaseDN"
+                repadmin /replicate "$using:Site2DC" "$using:Site1DC" "$using:BaseDN"
+                                
+                C:\MachineConfig\Exchange2010SP3\Setup.com /PrepareSchema
+                C:\MachineConfig\Exchange2010SP3\Setup.com /PrepareAD /on:"$using:ExchangeOrgName"
+
+                repadmin /replicate "$using:Site1DC" "$using:Site2DC" "$using:BaseDN"
+                repadmin /replicate "$using:Site2DC" "$using:Site1DC" "$using:BaseDN"
             }
             GetScript =  { @{} }
             TestScript = { $false}

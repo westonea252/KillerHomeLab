@@ -13,7 +13,25 @@
             "metadata": {
                 "description": "Exchange Organization Name"
             }
-        },                
+        },
+        "Site1DC": {
+            "type": "string",
+            "metadata": {
+                "description": "Site 2 Domain Controller Name"
+            }
+        },
+        "Site2DC": {
+            "type": "string",
+            "metadata": {
+                "description": "Site 2 Domain Controller Name"
+            }
+        },
+        "BaseDN": {
+            "type": "string",
+            "metadata": {
+                "description": "Base Domain Distiguished Name"
+            }
+        },                                
         "NetBiosDomain": {
             "type": "string",
             "metadata": {
@@ -71,7 +89,10 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "ExchangeOrgName": "[parameters('ExchangeOrgName')]",                            
-                            "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
+                            "NetBiosDomain": "[parameters('NetBiosDomain')]",  
+                            "Site1DC": "[parameters('Site1DC')]",
+                            "Site2DC": "[parameters('Site2DC')]", 
+                            "BaseDN": "[parameters('BaseDN')]",                                                                                                                                          
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"
