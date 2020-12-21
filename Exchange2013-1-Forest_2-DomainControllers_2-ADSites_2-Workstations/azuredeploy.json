@@ -2,6 +2,13 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "Location2": {
+      "type": "string",
+      "defaultValue": "WestUS",
+      "metadata": {
+        "description": "Choose Region (Example:  WestUS)"
+      }
+    },    
     "ExchangeOrgName": {
       "type": "string",
       "defaultValue": "49ers",
@@ -35,13 +42,28 @@
         "description": "The password for the Administrator account of the new VM and Domain"
       }
     }, 
-    "Location2": {
+    "WindowsServerLicenseType": {
       "type": "string",
-      "defaultValue": "WestUS",
+      "defaultValue": "None",
+      "allowedValues": [
+        "None",
+        "Windows_Server"
+      ],      
       "metadata": {
-        "description": "Choose Region (Example:  WestUS)"
+          "description": "Windows Server OS License Type"
       }
-    },           
+    },    
+    "WindowsClientLicenseType": {
+      "type": "string",
+      "defaultValue": "None",
+      "allowedValues": [
+        "None",
+        "Windows_Client"
+      ],      
+      "metadata": {
+          "description": "Windows Client OS License Type"
+      }
+    },                 
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
@@ -532,7 +554,7 @@
                 "value": "[parameters('DC1OSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
+                "value": "[parameters('WindowsServerLicenseType')]"
               },            
               "DataDisk1Name": {
                 "value": "[variables('DCDataDisk1Name')]"
@@ -956,7 +978,7 @@
                 "value": "[parameters('DC2OSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
+                "value": "[parameters('WindowsServerLicenseType')]"
               },            
               "DataDisk1Name": {
                 "value": "[variables('DCDataDisk1Name')]"
@@ -1131,7 +1153,7 @@
                 "value": "[parameters('rcaOSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
+                "value": "[parameters('WindowsServerLicenseType')]"
               },            
               "VMSize": {
                 "value": "[parameters('rcaVMSize')]"
@@ -1228,7 +1250,7 @@
                 "value": "[parameters('icaOSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
+                "value": "[parameters('WindowsServerLicenseType')]"
               },            
               "VMSize": {
                 "value": "[parameters('icaVMSize')]"
@@ -1463,7 +1485,7 @@
                 "value": "[parameters('OCSPOSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
+                "value": "[parameters('WindowsServerLicenseType')]"
               },            
               "VMSize": {
                 "value": "[parameters('ocspVMSize')]"
@@ -1607,7 +1629,7 @@
                 "value": "[parameters('FSOSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
+                "value": "[parameters('WindowsServerLicenseType')]"
               },            
               "VMSize": {
                 "value": "[parameters('fs1VMSize')]"
@@ -1698,7 +1720,7 @@
                 "value": "[parameters('FSOSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
+                "value": "[parameters('WindowsServerLicenseType')]"
               },            
               "VMSize": {
                 "value": "[parameters('fs2VMSize')]"
@@ -1789,7 +1811,7 @@
                 "value": "[parameters('EXOSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
+                "value": "[parameters('WindowsServerLicenseType')]"
               },     
               "DataDisk1Name": {
                 "value": "Exchange"
@@ -1886,7 +1908,7 @@
                 "value": "[parameters('EXOSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
+                "value": "[parameters('WindowsServerLicenseType')]"
               },            
               "DataDisk1Name": {
                 "value": "Exchange"
@@ -2493,7 +2515,7 @@
                 "value": "[parameters('WK1OSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
+                "value": "[parameters('WindowsClientLicenseType')]"
               },            
               "VMSize": {
                 "value": "[parameters('WK1VMSize')]"
@@ -2584,7 +2606,7 @@
                 "value": "[parameters('WK2OSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
+                "value": "[parameters('WindowsClientLicenseType')]"
               },            
               "VMSize": {
                 "value": "[parameters('WK2VMSize')]"

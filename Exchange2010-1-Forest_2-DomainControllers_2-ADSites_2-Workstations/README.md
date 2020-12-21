@@ -77,6 +77,8 @@ Parameters that support changes
 - ExchangeSP3ISOUrl.  You must enter a URL or created SAS URL that points to an Exchange 2010 ISO for this installation to be successful.
 - Admin Username.  Enter a valid Admin Username
 - Admin Password.  Enter a valid Admin Password
+- WindowsServerLicenseType.  Choose Windows_Server if you already have a WindowsServer License or None if you don't
+- WindowsClientLicenseType.  Choose Windows_Server if you already have a WindowsClient License or None if you don't
 - Naming Convention. Enter a name that will be used as a naming prefix for (Servers, VNets, etc) you are using.
 - Net Bios Domain.  Enter a valid Net Bios Domain Name (Example:  killerhomelab).
 - TLD.  Select a valid Top-Level Domain using the Pull-Down Menu.
