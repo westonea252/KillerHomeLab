@@ -25,14 +25,12 @@
             SetScript =
             {
                 # Create Exchange AD Deployment
-                repadmin /replicate "$using:DC1name" "$using:DC2name" "$using:BaseDN"
-                repadmin /replicate "$using:DC2name" "$using:DC1name" "$using:BaseDN"
+                (Get-ADDomainController -Filter *).Name | Foreach-Object { repadmin /syncall $_ (Get-ADDomain).DistinguishedName /AdeP }
 
                 K:\Setup.exe /PrepareSchema /DomainController:"$using:dc1Name" /IAcceptExchangeServerLicenseTerms
                 K:\Setup.exe /PrepareAD /on:"$using:ExchangeOrgName" /DomainController:"$using:dc1Name" /IAcceptExchangeServerLicenseTerms
 
-                repadmin /replicate "$using:DC1name" "$using:DC2name" "$using:BaseDN"
-                repadmin /replicate "$using:DC2name" "$using:DC1name" "$using:BaseDN"
+                (Get-ADDomainController -Filter *).Name | Foreach-Object { repadmin /syncall $_ (Get-ADDomain).DistinguishedName /AdeP }
             }
             GetScript =  { @{} }
             TestScript = { $false}
