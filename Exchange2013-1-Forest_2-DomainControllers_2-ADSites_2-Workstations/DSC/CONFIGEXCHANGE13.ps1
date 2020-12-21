@@ -118,6 +118,9 @@
                 $InternetSendConnector = Get-SendConnector "$using:Site Internet" -ErrorAction 0
                 IF ($InternetSendConnector -eq $Null) {
                 New-SendConnector "$using:Site Internet" -AddressSpaces * -SourceTransportServers "$using:computerName"
+
+                repadmin /replicate "$using:Site1DC" "$using:Site2DC" "$using:BaseDN"
+                repadmin /replicate "$using:Site2DC" "$using:Site1DC" "$using:BaseDN"
                 }
             }
             GetScript =  { @{} }

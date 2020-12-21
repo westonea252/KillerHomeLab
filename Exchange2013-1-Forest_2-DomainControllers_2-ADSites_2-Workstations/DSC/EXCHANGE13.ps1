@@ -30,8 +30,11 @@
         {
             SetScript =
             {
+                $Install = Get-ChildItem -Path S:\ExchangeInstall\DeployExchange.cmd -ErrorAction 0
+                IF ($Install -eq $null) {                
                 Set-Content -Path S:\ExchangeInstall\DeployExchange.cmd -Value "K:\Setup.exe /Iacceptexchangeserverlicenseterms /Mode:Install /Role:MB,CA,MT /DbFilePath:M:\$using:DBName\$using:DBName.edb /LogFolderPath:M:\$using:DBName /MdbName:$using:DBName /dc:$using:SetupDC"
                 S:\ExchangeInstall\DeployExchange.cmd
+                }
             }
             GetScript =  { @{} }
             TestScript = { $false}
