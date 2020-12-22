@@ -2155,6 +2155,7 @@
       "apiVersion": "2015-01-01",
       "name": "prepareadexchange13",
       "dependsOn": [
+        "ReplicateAD",        
         "restartex1"
       ],      
       "properties": {
