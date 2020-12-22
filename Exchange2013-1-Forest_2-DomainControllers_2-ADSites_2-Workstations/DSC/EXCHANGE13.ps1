@@ -9,6 +9,7 @@
     )
     Import-DscResource -Module xPSDesiredStateConfiguration # Used for xRemoteFile
     Import-DscResource -Module ComputerManagementDsc # Used for TimeZone
+    Import-DscResource -Module xStorage # Used by Disk
 
     [System.Management.Automation.PSCredential ]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosDomain}\$($Admincreds.UserName)", $Admincreds.Password)
 
@@ -19,11 +20,33 @@
             RebootNodeIfNeeded = $true
         }
 
+        Script DismountISO
+        {
+      	    SetScript = {
+                Dismount-DiskImage "S:\ExchangeInstall\Exchange2013.iso" -ErrorAction 0
+            }
+            GetScript =  { @{} }
+            TestScript = { $false }
+        }
+
         File ExchangeInstall
         {
             Type = 'Directory'
             DestinationPath = 'S:\ExchangeInstall'
             Ensure = "Present"
+        }
+
+        xMountImage MountExchangeISO
+        {
+            ImagePath   = 'S:\ExchangeInstall\Exchange2013.iso'
+            DriveLetter = 'K'
+        }
+
+        xWaitForVolume WaitForISO
+        {
+            DriveLetter      = 'K'
+            RetryIntervalSec = 5
+            RetryCount       = 10
         }
 
         Script InstallExchange2013
@@ -39,6 +62,7 @@
             GetScript =  { @{} }
             TestScript = { $false}
             PsDscRunAsCredential = $DomainCreds
+            DependsOn = '[xWaitForVolume]WaitForISO'
         }
 
     }
