@@ -10,6 +10,7 @@
         [System.Management.Automation.PSCredential]$Admincreds
     )
     Import-DscResource -Module xPSDesiredStateConfiguration # Used for xRemoteFile
+    Import-DscResource -Module xStorage # Used by Disk
 
     [System.Management.Automation.PSCredential ]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosDomain}\$($Admincreds.UserName)", $Admincreds.Password)
 
@@ -18,6 +19,19 @@
         LocalConfigurationManager
         {
             RebootNodeIfNeeded = $true
+        }
+
+        xMountImage MountExchangeISO
+        {
+            ImagePath   = 'S:\ExchangeInstall\Exchange2013.iso'
+            DriveLetter = 'K'
+        }
+
+        xWaitForVolume WaitForISO
+        {
+            DriveLetter      = 'K'
+            RetryIntervalSec = 5
+            RetryCount       = 10
         }
 
         Script PrepareExchange2013AD
@@ -35,6 +49,7 @@
             GetScript =  { @{} }
             TestScript = { $false}
             PsDscRunAsCredential = $DomainCreds
+            DependsOn = '[xWaitForVolume]WaitForISO'
         }
     }
 }
