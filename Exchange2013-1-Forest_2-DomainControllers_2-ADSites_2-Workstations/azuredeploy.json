@@ -1615,7 +1615,10 @@
           "parameters": {
               "computerName": {
                   "value": "[variables('dc1name')]"
-              },                            
+              },
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },                                          
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
               },                                                                                                            
