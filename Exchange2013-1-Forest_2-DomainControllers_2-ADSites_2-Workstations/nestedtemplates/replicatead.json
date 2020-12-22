@@ -64,7 +64,6 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
-                            "ComputerName": "[parameters('ComputerName')]",
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                                                        
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
