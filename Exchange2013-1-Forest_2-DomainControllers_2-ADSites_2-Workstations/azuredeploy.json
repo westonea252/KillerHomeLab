@@ -1122,7 +1122,7 @@
               }
           }
       }
-    },     
+    },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
@@ -1598,7 +1598,42 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
           }
       }
-    },   
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "ReplicateAD",
+      "dependsOn": [
+        "configureocsp"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/replicatead.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('dc1name')]"
+              },                            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                                                                                                      
+              "location": {
+                  "value": "[resourceGroup().location]"
+              },          
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+          }
+      }
+    },                
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
@@ -2236,7 +2271,9 @@
       "apiVersion": "2015-01-01",
       "name": "installexchange1",
       "dependsOn": [        
-        "prepareadexchange13"
+        "prepareadexchange13",
+        "DomainJoinEX1",
+        "prepareexchange13s1"        
       ],      
       "properties": {
           "mode": "Incremental",
@@ -2348,6 +2385,9 @@
       "apiVersion": "2015-01-01",
       "name": "installexchange2",
       "dependsOn": [
+        "prepareadexchange13",
+        "DomainJoinEX2",
+        "prepareexchange13s2",                
         "configexchange1"
       ],      
       "properties": {
