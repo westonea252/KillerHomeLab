@@ -33,30 +33,20 @@
             DependsOn = '[xRemoteFile]DownloadExchangeCU'
         }
 
-        Script ExtractExchangeCU
-        {
-            SetScript =
-            {
-                # Create Exchange Extraction
-                Set-Content -Path S:\ExchangeInstall\ExtractExchangeCU.cmd -Value "S:\ExchangeInstall\Exchange.exe /extract:S:\ExchangeInstall\ExchangeCU /q"
-                S:\ExchangeInstall\ExtractExchangeCU.cmd
-            }
-            GetScript =  { @{} }
-            TestScript = { $false}
-            DependsOn = '[File]ExchangeCU'
-        }
-
         Script InstallExchangeCU
         {
             SetScript =
             {
-                Set-Content -Path S:\ExchangeInstall\DeployExchangeCU.cmd -Value "S:\ExchangeInstall\ExchangeCU\Setup.exe /Iacceptexchangeserverlicenseterms /Mode:Upgrade /dc:$using:SetupDC"
+                $Install = Get-ChildItem -Path S:\ExchangeInstall\DeployExchangeCU.cmd -ErrorAction 0
+                IF ($Install -eq $null) {                
+                Set-Content -Path S:\ExchangeInstall\DeployExchangeCU.cmd -Value "S:\ExchangeInstall\Exchange.exe /extract:S:\ExchangeInstall\ExchangeCU /q"
+                Add-Content -Path S:\ExchangeInstall\DeployExchangeCU.cmd -Value "S:\ExchangeInstall\ExchangeCU\Setup.exe /Iacceptexchangeserverlicenseterms /Mode:Upgrade /dc:$using:SetupDC"
                 S:\ExchangeInstall\DeployExchangeCU.cmd
+                }
             }
             GetScript =  { @{} }
             TestScript = { $false}
             PsDscRunAsCredential = $DomainCreds
-            DependsOn = '[Script]ExtractExchangeCU'
         }
 
     }
