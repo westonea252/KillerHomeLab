@@ -42,7 +42,7 @@ Configuration ENTERPRISECA
         ADCSCertificationAuthority CertificateAuthority
         {
             Ensure = 'Present'
-	        Credential = $Creds	
+	        Credential = $DomainCreds
             CAType = 'EnterpriseRootCA'
             CACommonName = $EnterpriseCAName
             CADistinguishedNameSuffix = $Node.CADistinguishedNameSuffix
