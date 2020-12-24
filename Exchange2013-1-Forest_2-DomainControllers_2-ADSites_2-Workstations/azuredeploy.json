@@ -1960,7 +1960,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "restartex1",
+      "name": "restartex1-1",
       "dependsOn": [
         "prepareexchange13s1"
       ],            
@@ -2127,7 +2127,7 @@
         {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "restartex2",
+      "name": "restartex2-1",
       "dependsOn": [
         "prepareexchange13s2"
       ],            
@@ -2159,7 +2159,7 @@
       "name": "prepareadexchange13",
       "dependsOn": [
         "ReplicateAD",        
-        "restartex1"
+        "restartex1-1"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -2315,13 +2315,42 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
           }
       }
-    }, 
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "restartex1-2",
+      "dependsOn": [
+        "installexchange1"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/restartvm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ex1name')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                                                         
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },       
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "name": "installexchange1cu",
       "dependsOn": [
-        "installexchange1"        
+        "restartex1-2"        
       ],      
       "properties": {
           "mode": "Incremental",
@@ -2359,13 +2388,42 @@
               }          
           }
       }
-    },                                                                                                                                  
+    },   
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "restartex1-3",
+      "dependsOn": [
+        "installexchange1cu"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/restartvm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ex1name')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                                                         
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },                                                                                                                                     
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "name": "configexchange1",
       "dependsOn": [
-        "installexchange1cu"
+        "restartex1-3"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -2427,36 +2485,7 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
           }
       }
-    }, 
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "name": "restartex1-2",
-      "dependsOn": [
-        "configexchange1"
-      ],            
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/restartvm.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "computerName": {
-                  "value": "[variables('ex1name')]"
-              },
-              "_artifactsLocation": {
-                "value": "[parameters('_artifactsLocation')]"
-              },                                                                                                            
-              "_artifactsLocationSasToken": {
-                "value": "[parameters('_artifactsLocationSasToken')]"
-              },                                                                                                                                                                                                                                                                                                                         
-              "location": {
-                  "value": "[resourceGroup().location]"
-              }
-          }
-      }
-    },        
+    },       
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
@@ -2465,8 +2494,8 @@
         "prepareadexchange13",
         "DomainJoinEX2",
         "prepareexchange13s2",                
-        "configexchange1",
-        "restartex1-2"
+        "restartex1-3",        
+        "configexchange1"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -2504,13 +2533,42 @@
               }          
           }
       }
-    },      
+    },  
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "restartex2-2",
+      "dependsOn": [
+        "installexchange2"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/restartvm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ex2name')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                                                         
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },                    
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "name": "installexchange2cu",
       "dependsOn": [
-        "installexchange2"      
+        "restartex2-2"      
       ],      
       "properties": {
           "mode": "Incremental",
@@ -2548,13 +2606,42 @@
               }          
           }
       }
-    },                                                                                                                                      
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "restartex2-3",
+      "dependsOn": [
+        "installexchange2cu"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/restartvm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ex2name')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                                                         
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },                                                                                                                                          
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "name": "configexchange2",
       "dependsOn": [
-        "installexchange2cu"
+        "restartex2-3"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -2616,36 +2703,7 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
           }
       }
-    },    
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "name": "restartex2-2",
-      "dependsOn": [
-        "configexchange2"
-      ],            
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/restartvm.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "computerName": {
-                  "value": "[variables('ex2name')]"
-              },
-              "_artifactsLocation": {
-                "value": "[parameters('_artifactsLocation')]"
-              },                                                                                                            
-              "_artifactsLocationSasToken": {
-                "value": "[parameters('_artifactsLocationSasToken')]"
-              },                                                                                                                                                                                                                                                                                                                         
-              "location": {
-                  "value": "[parameters('Location2')]"
-              }
-          }
-      }
-    },            
+    },                
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
