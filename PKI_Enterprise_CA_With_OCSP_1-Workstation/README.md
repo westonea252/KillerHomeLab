@@ -58,8 +58,7 @@ Parameters that support changes
 - Vnet2ID.  Enter first 2 octets of your desired Address Space for Virtual Network 2 (Example:  10.2)
 - Reverse Lookup1.  Enter first 2 octets of your desired Address Space in Reverse (Example:  1.10)
 - Reverse Lookup2.  Enter first 2 octets of your desired Address Space in Reverse (Example:  2.10)
-- Root CA Name.  Enter a Name for your Root Certificate Authority
-- Issuing CA Name.  Enter a Name for your Issuing Certificate Authority
+- Enterprise CA Name.  Enter a Name for your Enterprise Certificate Authority
 - DC1OSVersion.  Select 2016-Datacenter (Windows 2016) or 2019-Datacenter (Windows 2019) Domain Controller 1 OS Version
 - ECAOSVersion.  Select 2016-Datacenter (Windows 2016) or 2019-Datacenter (Windows 2019) Enterprise CA OS Version
 - OCSPOSVersion.  Select 2016-Datacenter (Windows 2016) or 2019-Datacenter (Windows 2019) OCSP OS Version
