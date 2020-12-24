@@ -716,21 +716,7 @@
       "apiVersion": "2015-01-01",
       "name": "deployocsp",
       "dependsOn": [
-        "VNet1",
-        "BastionHost1",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "deployrootca",
-        "configurerootca",
-        "deployissuingca",
-        "DomainJoinIssuingCA",
-        "configureissueca",
-        "grantcarequest",
-        "finalizeca"
+        "configureenterpriseca"    
       ],      
       "properties": {
           "mode": "Incremental",
@@ -789,21 +775,6 @@
       "apiVersion": "2015-01-01",
       "name": "DomainJoinOCSP",
       "dependsOn": [
-        "VNet1",
-        "BastionHost1",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "deployrootca",
-        "configurerootca",
-        "deployissuingca",
-        "DomainJoinIssuingCA",
-        "configureissueca",
-        "grantcarequest",
-        "finalizeca",
         "deployocsp"
       ],      
       "properties": {
@@ -842,22 +813,6 @@
       "apiVersion": "2015-01-01",
       "name": "configureocsp",
       "dependsOn": [
-        "VNet1",
-        "BastionHost1",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "deployrootca",
-        "configurerootca",
-        "deployissuingca",
-        "DomainJoinIssuingCA",
-        "configureissueca",
-        "grantcarequest",
-        "finalizeca",
-        "deployocsp",
         "DomainJoinOCSP"
       ],      
       "properties": {
@@ -882,12 +837,9 @@
               "RootDomainFQDN": {
                   "value": "[variables('domainName')]"
               },   
-              "IssuingCAName": {
-                  "value": "[parameters('IssuingCAName')]"
+              "EnterpriseCAName": {
+                  "value": "[parameters('EnterpriseCAName')]"
               },              
-              "RootCAName": {
-                  "value": "[parameters('RootCAName')]"
-              },
               "location": {
                   "value": "[resourceGroup().location]"
               },
@@ -911,23 +863,6 @@
       "apiVersion": "2015-01-01",
       "name": "deployWK1VM",
       "dependsOn": [
-        "VNet1",
-        "BastionHost1",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "deployrootca",
-        "configurerootca",
-        "deployissuingca",
-        "DomainJoinIssuingCA",
-        "configureissueca",
-        "grantcarequest",
-        "finalizeca",
-        "deployocsp",
-        "DomainJoinOCSP",
         "configureocsp"
       ],      
       "properties": {
@@ -987,24 +922,6 @@
       "apiVersion": "2015-01-01",
       "name": "DomainJoinWK1VM",
       "dependsOn": [
-        "VNet1",
-        "BastionHost1",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "deployrootca",
-        "configurerootca",
-        "deployissuingca",
-        "DomainJoinIssuingCA",
-        "configureissueca",
-        "grantcarequest",
-        "finalizeca",
-        "deployocsp",
-        "DomainJoinOCSP",
-        "configureocsp",
         "DeployWK1VM"
       ],      
       "properties": {
