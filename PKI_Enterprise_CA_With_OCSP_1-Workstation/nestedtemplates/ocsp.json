@@ -32,10 +32,10 @@
                 "description": "Root Domain Name FQDN"
             }
         },
-        "IssuingCAName": {
+        "EnterpriseCAName": {
             "type": "string",
             "metadata": {
-                "description": "Issuing CA Name"
+                "description": "Enterprise CA Name"
             }
         },
         "RootCAName": {
@@ -99,7 +99,7 @@
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                                                        
                             "domainName": "[parameters('domainName')]",                            
                             "RootDomainFQDN": "[parameters('RootDomainFQDN')]",
-                            "IssuingCAName": "[parameters('IssuingCAName')]",
+                            "EnterpriseCAName": "[parameters('EnterpriseCAName')]",
                             "RootCAName": "[parameters('RootCAName')]",                            
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
