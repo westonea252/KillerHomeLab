@@ -37,13 +37,7 @@
             "metadata": {
                 "description": "Enterprise CA Name"
             }
-        },
-        "RootCAName": {
-            "type": "string",
-            "metadata": {
-                "description": "Root CA Name"
-            }
-        },        
+        },     
         "location": {
             "type": "string",
           "metadata": {
@@ -100,7 +94,6 @@
                             "domainName": "[parameters('domainName')]",                            
                             "RootDomainFQDN": "[parameters('RootDomainFQDN')]",
                             "EnterpriseCAName": "[parameters('EnterpriseCAName')]",
-                            "RootCAName": "[parameters('RootCAName')]",                            
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"                                                                                   
