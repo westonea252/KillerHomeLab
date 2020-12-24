@@ -518,7 +518,7 @@
                 "value": "[variables('dc1lastoctet')]"
               },    
               "ISSUINGCAIP": {
-                "value": "[variables('icaIP')]"
+                "value": "[variables('ecaIP')]"
               },                                                                                                                          
               "OCSPIP": {
                 "value": "[variables('ocspIP')]"
