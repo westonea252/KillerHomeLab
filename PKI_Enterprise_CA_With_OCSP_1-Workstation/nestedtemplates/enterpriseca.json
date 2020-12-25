@@ -8,6 +8,12 @@
                 "description": "Computer Name"
             }
         },
+        "NetBiosDomain": {
+            "type": "string",
+            "metadata": {
+                "description": "NetBios Domain Name"
+            }
+        },        
         "RootDomainFQDN": {
             "type": "string",
             "metadata": {
@@ -84,6 +90,7 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
+                            "NetBiosDomain": "[parameters('NetBiosDomain')]",
                             "RootDomainFQDN": "[parameters('RootDomainFQDN')]",
                             "EnterpriseCAName": "[parameters('EnterpriseCAName')]",
                             "EnterpriseCAHashAlgorithm": "[parameters('EnterpriseCAHashAlgorithm')]",                            

@@ -2,6 +2,7 @@ Configuration ENTERPRISECA
 {
    param
    (
+        [String]$NetBiosDomain,
         [String]$rootdomainfqdn,
         [String]$EnterpriseCAHashAlgorithm,
         [String]$EnterpriseCAKeyLength,

@@ -681,6 +681,9 @@
               "computerName": {
                   "value": "[variables('ecaname')]"
               },
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },              
               "RootDomainFQDN": {
                   "value": "[variables('domainName')]"
               },          
