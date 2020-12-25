@@ -38,7 +38,7 @@ Configuration ENTERPRISECA
             Ensure = "Present"
         }
 
-        # Configure the CA as Standalone Root CA
+        # Configure the CA as Enterprise Root CA
         ADCSCertificationAuthority CertificateAuthority
         {
             Ensure = 'Present'
