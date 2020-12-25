@@ -12,13 +12,12 @@ Configuration ENTERPRISECA
  
     Import-DscResource -Module ComputerManagementDsc
     Import-DscResource -Module ActiveDirectoryCSDsc
+    Import-DscResource -Module xPSDesiredStateConfiguration # Used for xRemoteFile
 
     [System.Management.Automation.PSCredential ]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosDomain}\$($AdminCreds.UserName)", $AdminCreds.Password)
  
     Node localhost
     {
-        # Assemble the Local Admin Credentials
-        # Install the ADCS Certificate Authority
         WindowsFeature ADCSCA 
         {
             Name = 'ADCS-Cert-Authority'
@@ -92,10 +91,29 @@ Configuration ENTERPRISECA
             TimeZone         = 'Eastern Standard Time'
         }
 
-        Script ConfigureRootCA
+        File CopyEnterpriseCACRl
+        {
+            Ensure = "Present"
+            Type = "File"
+            SourcePath = "C:\Windows\System32\certsrv\CertEnroll\$EnterpriseCAName.crl"
+            DestinationPath = "C:\CertEnroll\$EnterpriseCAName.crl"
+            Credential = $DomainCreds
+            DependsOn = '[AdcsCertificationAuthority]CertificateAuthority'
+        }
+
+        xRemoteFile DownloadCreateCATemplates
+        {
+            DestinationPath = "C:\CertEnroll\Create_CA_Templates.ps1"
+            Uri             = "https://raw.githubusercontent.com/elliottfieldsjr/KillerHomeLab/master/PKI_Enterprise_CA_With_OCSP_1-Workstation/Scripts/Create_CA_Templates.ps1"
+            UserAgent       = "[Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer"
+        }
+
+        Script ConfigureEnterpriseCA
         {
             SetScript =
             {
+                C:\Windows\system32\inetsrv\appcmd.exe set config /section:requestfiltering /allowdoubleescaping:true
+
                 # Remove All Default CDP Locations
                 Get-CACrlDistributionPoint | Where-Object {$_.Uri -like 'ldap*'} | Remove-CACrlDistributionPoint -Force
                 Get-CACrlDistributionPoint | Where-Object {$_.Uri -like 'http*'} | Remove-CACrlDistributionPoint -Force
@@ -121,12 +139,33 @@ Configuration ENTERPRISECA
                 # Check for and if not present add HTTP AIA Location
                 $HTTPAIAURI = Get-CAAuthorityInformationaccess | Where-object {$_.uri -like "http://crl"+"*"}
                 IF ($HTTPAIAURI.uri -eq $null){Add-CAAuthorityInformationaccess -Uri "http://ocsp.$rootdomainfqdn/ocsp" -AddToCertificateOcsp -Force}
-
                 Restart-Service -Name CertSvc 
             }
             GetScript =  { @{} }
             TestScript = { $false}
-            DependsOn = '[AdcsCertificationAuthority]CertificateAuthority'
+            DependsOn = '[File]CopyEnterpriseCACRl'
+        }
+
+        Script CreateCATemplates
+        {
+            SetScript =
+            {
+                $Load = "$using:DomainCreds"
+                $Domain = $DomainCreds.GetNetworkCredential().Domain
+                $Username = $DomainCreds.GetNetworkCredential().UserName
+                $Password = $DomainCreds.GetNetworkCredential().Password 
+
+                # Create CA Templates
+                $scheduledtask = Get-ScheduledTask "Create CA Templates" -ErrorAction 0
+                $action = New-ScheduledTaskAction -Execute Powershell -Argument '.\Create_CA_Templates.ps1' -WorkingDirectory 'C:\CertEnroll'
+                IF ($scheduledtask -eq $null) {
+                Register-ScheduledTask -Action $action -TaskName "Create CA Templates" -Description "Create Web Server & OCSP CA Templates" -User $Domain\$Username -Password $Password
+                Start-ScheduledTask "Create CA Templates"
+                }
+            }
+            GetScript =  { @{} }
+            TestScript = { $false}
+            DependsOn = '[xRemoteFile]DownloadCreateCATemplates', '[Script]ConfigureEnterpriseCA'
         }
    
      }
