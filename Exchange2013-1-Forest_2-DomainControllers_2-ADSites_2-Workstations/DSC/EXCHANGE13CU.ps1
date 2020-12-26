@@ -39,7 +39,7 @@
             {
                 $Install = Get-ChildItem -Path S:\ExchangeInstall\DeployExchangeCU.cmd -ErrorAction 0
                 IF ($Install -eq $null) {                
-                Set-Content -Path S:\ExchangeInstall\DeployExchangeCU.cmd -Value "S:\ExchangeInstall\Exchange.exe /extract:S:\ExchangeInstall\ExchangeCU /q"
+                Set-Content -Path S:\ExchangeInstall\DeployExchangeCU.cmd -Value "start /wait S:\ExchangeInstall\Exchange.exe /extract:S:\ExchangeInstall\ExchangeCU /q"
                 Add-Content -Path S:\ExchangeInstall\DeployExchangeCU.cmd -Value "S:\ExchangeInstall\ExchangeCU\Setup.exe /Iacceptexchangeserverlicenseterms /Mode:Upgrade /dc:$using:SetupDC"
                 S:\ExchangeInstall\DeployExchangeCU.cmd
                 }
