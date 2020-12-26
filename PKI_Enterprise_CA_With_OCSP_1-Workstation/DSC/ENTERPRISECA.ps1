@@ -24,6 +24,30 @@ Configuration ENTERPRISECA
             Ensure = 'Present'
         }
 
+        WindowsFeature WebEnrollmentCA
+        {
+            Name = 'ADCS-Web-Enrollment'
+            Ensure = 'Present'
+        }
+
+        WindowsFeature RSAT-ADCS 
+        { 
+            Ensure = 'Present' 
+            Name = 'RSAT-ADCS' 
+        } 
+
+        WindowsFeature Web-Mgmt-Console
+        { 
+            Ensure = 'Present' 
+            Name = 'Web-Mgmt-Console' 
+        }
+
+        WindowsFeature RSAT-ADCS-Mgmt 
+        { 
+            Ensure = 'Present' 
+            Name = 'RSAT-ADCS-Mgmt' 
+        }
+
         File CertEnroll
         {
             Type = 'Directory'
@@ -31,14 +55,6 @@ Configuration ENTERPRISECA
             Ensure = "Present"
         }
 
-        File MachineConfig
-        {
-            Type = 'Directory'
-            DestinationPath = 'C:\MachineConfig'
-            Ensure = "Present"
-        }
-
-        # Configure the CA as Enterprise Root CA
         ADCSCertificationAuthority CertificateAuthority
         {
             Ensure = 'Present'
@@ -52,37 +68,15 @@ Configuration ENTERPRISECA
             HashAlgorithmName = $EnterpriseCAHashAlgorithm
             KeyLength = $EnterpriseCAKeyLength
             IsSingleInstance = 'Yes'
-            DependsOn = "[WindowsFeature]ADCSCA"
+            DependsOn = '[WindowsFeature]ADCSCA','[WindowsFeature]WebEnrollmentCA'
         }
 
-        # Configure the Web Enrollment Feature
         ADCSWebEnrollment ConfigWebEnrollment
         {
             Ensure = 'Present'
             Credential = $DomainCreds
             IsSingleInstance = 'Yes'
-            DependsOn = '[AdcsCertificationAuthority]CertificateAuthority'
-        }
-
-        WindowsFeature RSAT-ADCS 
-        { 
-            Ensure = 'Present' 
-            Name = 'RSAT-ADCS' 
-            DependsOn = '[AdcsWebEnrollment]ConfigWebEnrollment'
-        } 
-
-        WindowsFeature Web-Mgmt-Console
-        { 
-            Ensure = 'Present' 
-            Name = 'Web-Mgmt-Console' 
-            DependsOn = '[AdcsWebEnrollment]ConfigWebEnrollment'
-        }
-
-        WindowsFeature RSAT-ADCS-Mgmt 
-        { 
-            Ensure = 'Present' 
-            Name = 'RSAT-ADCS-Mgmt' 
-            DependsOn = '[AdcsCertificationAuthority]CertificateAuthority'
+            DependsOn = '[WindowsFeature]ADCSCA','[WindowsFeature]WebEnrollmentCA','[AdcsCertificationAuthority]CertificateAuthority'
         }
 
         TimeZone SetTimeZone
@@ -98,7 +92,7 @@ Configuration ENTERPRISECA
             SourcePath = "C:\Windows\System32\certsrv\CertEnroll\$EnterpriseCAName.crl"
             DestinationPath = "C:\CertEnroll\$EnterpriseCAName.crl"
             Credential = $DomainCreds
-            DependsOn = '[AdcsCertificationAuthority]CertificateAuthority'
+            DependsOn = '[File]CertEnroll', '[AdcsCertificationAuthority]CertificateAuthority'
         }
 
         xRemoteFile DownloadCreateCATemplates
