@@ -22,14 +22,7 @@
       "metadata": {
         "description": "Enter a valid URL that points to the Exchange 2013 SP1 .ISO"
       }
-    },
-    "Exchange2013CUEXEUrl": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Enter a valid URL that points to the Exchange 2013 CU .EXE"
-      }
-    },    
+    },   
     "adminUsername": {
         "type": "string",
         "metadata": {
