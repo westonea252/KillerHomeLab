@@ -8,24 +8,18 @@
                 "description": "Computer Name"
             }
         },
-        "ExchangeCUSASUrl": {
+        "location": {
             "type": "string",
-            "metadata": {
-                "description": "Exchange CU SAS Url"
-            }
-        },        
+          "metadata": {
+            "description": "Region of Resources"
+          }
+        }, 
         "NetBiosDomain": {
             "type": "string",
             "metadata": {
                 "description": "NetBios Domain Name"
             }
         },
-        "SetupDC": {
-            "type": "string",
-            "metadata": {
-                "description": "Domain Controller used for Exchange Setup"
-            }
-        },                            
         "adminUsername": {
             "type": "string",
             "metadata": {
@@ -37,13 +31,7 @@
           "metadata": {
             "description": "The password for the Administrator account of the new VM and Domain"
           }
-        },                
-        "location": {
-            "type": "string",
-          "metadata": {
-            "description": "Region of Resources"
-          }
-        }, 
+        },                        
         "_artifactsLocation": {
             "type": "string",
             "metadata": {
@@ -58,8 +46,8 @@
         }                
     },
     "variables": {
-        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/EXCHANGE13CU.zip', parameters('_artifactsLocationSasToken')))]",
-        "ConfigurationFunction": "EXCHANGE13CU.ps1\\EXCHANGE13CU"
+        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/REPLICATEAD.zip', parameters('_artifactsLocationSasToken')))]",
+        "ConfigurationFunction": "REPLICATEAD.ps1\\REPLICATEAD"
     },
     "resources": [
         {
@@ -76,9 +64,7 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
-                            "ExchangeCUSASUrl": "[parameters('ExchangeCUSASUrl')]",                                                                                                                                                              
-                            "NetBiosDomain": "[parameters('NetBiosdomain')]",          
-                            "SetupDC": "[parameters('SetupDC')]",  
+                            "NetBiosDomain": "[parameters('NetBiosDomain')]",                                                        
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"
