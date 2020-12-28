@@ -2794,7 +2794,7 @@
                 "value": "[parameters('OCSPOSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
+                "value": "[parameters('WindowsServerLicenseType')]"
               },            
               "VMSize": {
                 "value": "[parameters('ocspVMSize')]"
@@ -2906,7 +2906,7 @@
                 "value": "[parameters('EXOSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
+                "value": "[parameters('WindowsServerLicenseType')]"
               },     
               "DataDisk1Name": {
                 "value": "Exchange"
