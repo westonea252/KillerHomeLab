@@ -4,9 +4,9 @@
   "parameters": {
     "Location2": {
       "type": "string",
-      "defaultValue": "USGovTexas",
+      "defaultValue": "WestUS",
       "metadata": {
-        "description": "Choose Region (Example:  USGovTexas)"
+        "description": "Choose Region (Example:  WestUS)"
       }
     },    
     "ExchangeOrgName": {
@@ -20,7 +20,7 @@
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Enter a valid URL that points to the Exchange 2013 SP1 .ISO"
+        "description": "Enter a valid URL that points to the Exchange 2013.ISO"
       }
     },   
     "adminUsername": {
