@@ -2268,9 +2268,9 @@
       "apiVersion": "2015-01-01",
       "name": "installexchange1",
       "dependsOn": [        
-        "prepareadexchange13",
         "DomainJoinEX1",
-        "prepareexchange13s1"        
+        "prepareexchange13s1",
+        "prepareadexchange13"   
       ],      
       "properties": {
           "mode": "Incremental",
@@ -2382,9 +2382,9 @@
       "apiVersion": "2015-01-01",
       "name": "installexchange2",
       "dependsOn": [
-        "prepareadexchange13",
         "DomainJoinEX2",
         "prepareexchange13s2",                 
+        "prepareadexchange13",                
         "configexchange1"
       ],      
       "properties": {

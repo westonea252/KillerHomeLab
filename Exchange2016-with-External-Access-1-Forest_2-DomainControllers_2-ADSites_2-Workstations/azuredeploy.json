@@ -429,10 +429,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "VNet2",
-      "dependsOn": [
-        "VNet1"
-      ],      
+      "name": "VNet2",     
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -2282,9 +2279,9 @@
       "apiVersion": "2015-01-01",
       "name": "installexchange1",
       "dependsOn": [
-        "prepareadexchange16",        
         "DomainJoinEX1",
-        "prepareexchange16s1"
+        "prepareexchange16s1",
+        "prepareadexchange16"        
       ],      
       "properties": {
           "mode": "Incremental",
@@ -2396,9 +2393,9 @@
       "apiVersion": "2015-01-01",
       "name": "installexchange2",
       "dependsOn": [
-        "prepareadexchange16",
         "DomainJoinEX2",
         "prepareexchange16s2",        
+        "prepareadexchange16",        
         "configexchange1"
       ],      
       "properties": {

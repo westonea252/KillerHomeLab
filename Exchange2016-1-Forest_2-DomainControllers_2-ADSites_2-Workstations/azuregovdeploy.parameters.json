@@ -7,9 +7,6 @@
       },
       "adminPassword": {
         "value": "GEN-PASSWORD"
-      },
-      "ToEmail": {
-        "value": "GEN-UNIQUE"
       }
     }
   }
