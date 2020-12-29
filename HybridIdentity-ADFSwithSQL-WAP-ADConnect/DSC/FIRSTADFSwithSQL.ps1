@@ -183,8 +183,12 @@
                 Get-AdfsCertificate | Where-Object {$_.CertificateType -eq 'Token-Signing'} | Where-Object {$_.IsPrimary -ne 'True'} | Remove-AdfsCertificate
 
                 # Enable Certificate Copy
-                $firewall = Get-NetFirewallRule "FPS-SMB-In-TCP" -ErrorAction 0
-                IF ($firewall -ne $null) {Enable-NetFirewallRule -Name "FPS-SMB-In-TCP"}
+                $EnableSMB = Get-NetFirewallRule "FPS-SMB-In-TCP" -ErrorAction 0
+                IF ($EnableSMB -ne $null) {Enable-NetFirewallRule -Name "FPS-SMB-In-TCP"}
+
+                $EnableSQL = Get-NetFirewallRule "SQL-In-TCP" -ErrorAction 0
+                IF ($EnableSQL -eq $null) {New-NetFirewallRule -DisplayName "SQL-In-TCP" -Direction Inbound -LocalPort 1433 -Protocol TCP -Action Allow}
+
             }
             GetScript =  { @{} }
             TestScript = { $false}
