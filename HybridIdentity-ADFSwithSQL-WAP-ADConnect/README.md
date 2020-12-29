@@ -33,6 +33,7 @@ WAP
 
 Parameters that support changes
 - Location2. Enter a Valid Azure Region based on which Cloud (AzureCloud, AzureUSGovernment, etc...) you are using.
+- SQLHost.  Name of SQL Host (Example:  KHL-SQL-01)
 - Admin Username.  Enter a valid Admin Username
 - Admin Password.  Enter a valid Admin Password
 - WindowsServerLicenseType.  Choose Windows Server License Type (Example:  Windows_Server or None)
