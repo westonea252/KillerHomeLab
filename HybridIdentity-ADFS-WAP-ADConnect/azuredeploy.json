@@ -2,6 +2,13 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "Location2": {
+      "type": "string",
+      "defaultValue": "WestUS",
+      "metadata": {
+        "description": "Choose Region (Example: WestUS)"
+      }
+    }, 
     "adminUsername": {
         "type": "string",
         "metadata": {
@@ -14,27 +21,24 @@
         "description": "The password for the Administrator account of the new VM and Domain"
       }
     },
+    "WindowsServerLicenseType": {
+      "type": "string",
+      "defaultValue": "None",
+      "allowedValues": [
+        "None",
+        "Windows_Server"
+      ],      
+      "metadata": {
+          "description": "Windows Server OS License Type"
+      }
+    },     
     "AzureADConnectDownloadUrl": {
       "type": "string",
-      "defaultValue": "https://download.microsoft.com/download/B/0/0/B00291D0-5A83-4DE7-86F5-980BC00DE05A/AzureADConnect.msi",
+      "defaultValue": "https://download.microsoft.com/download/B/0/0/B00291D0-5A83-4DE7-86F5-980BC00DE05A/AzureADConnect.msi",      
       "metadata": {
         "description": "Download Location of Latest Azure AD Connect"
       }
-    },         
-    "Location1": {
-      "type": "string",
-      "defaultValue": "EastUS",
-      "metadata": {
-        "description": "Choose Region (Example:  EastUS)"
-      }
-    },
-    "Location2": {
-      "type": "string",
-      "defaultValue": "WestUS",
-      "metadata": {
-        "description": "Choose Region (Example: WestUS)"
-      }
-    },           
+    },                   
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
@@ -231,7 +235,7 @@
                   "value": "[variables('domainName')]"
               },
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               },                                          
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
@@ -245,10 +249,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "deployADCVM",
-      "dependsOn": [
-        "createfsgmsa"
-      ],      
+      "name": "deployADCVM",  
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -272,7 +273,7 @@
                 "value": "[parameters('ADCOSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
+                "value": "[parameters('WindowsServerLicenseType')]"
               },            
               "VMSize": {
                 "value": "[parameters('ADCVMSize')]"
@@ -290,7 +291,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -300,7 +301,6 @@
       "apiVersion": "2015-01-01",
       "name": "DomainJoinADC",
       "dependsOn": [
-        "createFSGMSA",
         "deployADCVM"
       ],      
       "properties": {
@@ -329,7 +329,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                                                                                                                                                             
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -339,8 +339,6 @@
       "apiVersion": "2015-01-01",
       "name": "downloadaaddc",
       "dependsOn": [
-        "createFSGMSA",
-        "deployADCVM",
         "DomainJoinADC"
       ],      
       "properties": {
@@ -357,7 +355,7 @@
                   "value": "[parameters('AzureADConnectDownloadUrl')]"
               },                            
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               },                                          
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
@@ -377,13 +375,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "deployADFS1VM",
-      "dependsOn": [
-        "createfsgmsa",
-        "deployADCVM",
-        "DomainJoinADC",
-        "downloadaaddc"
-      ],      
+      "name": "deployADFS1VM",    
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -407,7 +399,7 @@
                 "value": "[parameters('ADFSOSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
+                "value": "[parameters('WindowsServerLicenseType')]"
               },            
               "VMSize": {
                 "value": "[parameters('ADFS1VMSize')]"
@@ -425,7 +417,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -435,10 +427,6 @@
       "apiVersion": "2015-01-01",
       "name": "DomainJoinADFS1",
       "dependsOn": [
-        "createFSGMSA",
-        "deployADCVM",
-        "DomainJoinADC",
-        "downloadaaddc",
         "deployADFS1VM"
       ],      
       "properties": {
@@ -467,7 +455,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                                                                                                                                                             
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -478,10 +466,6 @@
       "name": "configurefirstadfs",
       "dependsOn": [
         "createFSGMSA",
-        "deployADCVM",
-        "DomainJoinADC",
-        "downloadaaddc",
-        "deployADFS1VM",
         "DomainJoinADFS1"
       ],      
       "properties": {
@@ -513,7 +497,7 @@
                 "value": "[parameters('adminPassword')]"
               },
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               },                            
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
@@ -527,16 +511,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "deployADFS2VM",
-      "dependsOn": [
-        "createfsgmsa",
-        "deployADCVM",
-        "DomainJoinADC",
-        "downloadaaddc",
-        "deployADFS1VM",
-        "DomainJoinADFS1",
-        "configurefirstadfs"        
-      ],      
+      "name": "deployADFS2VM",     
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -560,7 +535,7 @@
                 "value": "[parameters('ADFSOSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
+                "value": "[parameters('WindowsServerLicenseType')]"
               },            
               "VMSize": {
                 "value": "[parameters('ADFS2VMSize')]"
@@ -588,13 +563,6 @@
       "apiVersion": "2015-01-01",
       "name": "DomainJoinADFS2",
       "dependsOn": [
-        "createFSGMSA",
-        "deployADCVM",
-        "DomainJoinADC",
-        "downloadaaddc",
-        "deployADFS1VM",
-        "DomainJoinADFS1",
-        "configurefirstadfs",
         "deployADFS2VM"        
       ],      
       "properties": {
@@ -634,13 +602,7 @@
       "name": "configureotheradfs",
       "dependsOn": [
         "createFSGMSA",
-        "deployADCVM",
-        "DomainJoinADC",
-        "downloadaaddc",
-        "deployADFS1VM",
-        "DomainJoinADFS1",
         "configurefirstadfs",
-        "deployADFS2VM",
         "DomainJoinADFS2"        
       ],      
       "properties": {
@@ -692,19 +654,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "deployWAP1VM",
-      "dependsOn": [
-        "createfsgmsa",
-        "deployADCVM",
-        "DomainJoinADC",
-        "downloadaaddc",
-        "deployADFS1VM",
-        "DomainJoinADFS1",
-        "configurefirstadfs",
-        "deployADFS2VM",
-        "DomainJoinADFS2",
-        "configureotheradfs"        
-      ],      
+      "name": "deployWAP1VM",     
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -728,7 +678,7 @@
                 "value": "[parameters('WAPOSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
+                "value": "[parameters('WindowsServerLicenseType')]"
               },            
               "VMSize": {
                 "value": "[parameters('WAP1VMSize')]"
@@ -746,7 +696,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -756,15 +706,6 @@
       "apiVersion": "2015-01-01",
       "name": "configurefirstwap",
       "dependsOn": [
-        "createFSGMSA",
-        "deployADCVM",
-        "DomainJoinADC",
-        "downloadaaddc",
-        "deployADFS1VM",
-        "DomainJoinADFS1",
-        "configurefirstadfs",
-        "deployADFS2VM",
-        "DomainJoinADFS2",
         "configureotheradfs",                
         "deployWAP1VM"
       ],      
@@ -794,7 +735,7 @@
                   "value": "[parameters('RootCAName')]"
               },
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               },                                          
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
@@ -815,20 +756,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "name": "deployWAP2VM",
-      "dependsOn": [
-        "createfsgmsa",
-        "deployADCVM",
-        "DomainJoinADC",
-        "downloadaaddc",
-        "deployADFS1VM",
-        "DomainJoinADFS1",
-        "configurefirstadfs",
-        "deployADFS2VM",
-        "DomainJoinADFS2",
-        "configureotheradfs",
-        "deployWAP1VM",
-        "configurefirstwap"        
-      ],      
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -852,7 +779,7 @@
                 "value": "[parameters('WAPOSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
+                "value": "[parameters('WindowsServerLicenseType')]"
               },            
               "VMSize": {
                 "value": "[parameters('WAP2VMSize')]"
@@ -880,18 +807,6 @@
       "apiVersion": "2015-01-01",
       "name": "configureotherwap",
       "dependsOn": [
-        "createFSGMSA",
-        "deployADCVM",
-        "DomainJoinADC",
-        "downloadaaddc",
-        "deployADFS1VM",
-        "DomainJoinADFS1",
-        "configurefirstadfs",
-        "deployADFS2VM",
-        "DomainJoinADFS2",
-        "configureotheradfs",                
-        "deployWAP1VM",
-        "configurefirstwap",
         "deployWAP2VM"
       ],      
       "properties": {
@@ -941,21 +856,9 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "name": "createpublicdns",
-      "dependsOn": [
-        "createFSGMSA",
-        "deployADCVM",
-        "DomainJoinADC",
-        "downloadaaddc",
-        "deployADFS1VM",
-        "DomainJoinADFS1",
-        "configurefirstadfs",
-        "deployADFS2VM",
-        "DomainJoinADFS2",
-        "configureotheradfs",                
+      "dependsOn": [              
         "deployWAP1VM",
-        "configurefirstwap",
-        "deployWAP2VM",
-        "configureotherwap"
+        "deployWAP2VM"
       ],            
       "properties": {
           "mode": "Incremental",
