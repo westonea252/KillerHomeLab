@@ -56,7 +56,7 @@
                 IF ($Install -eq $null) {   
                 Set-Content -Path S:\ExchangeInstall\DeployExchange.cmd -Value "J:\Setup.exe /Iacceptexchangeserverlicenseterms /Mode:Install /Role:Mailbox /DbFilePath:M:\$using:DBName\$using:DBName.edb /LogFolderPath:M:\$using:DBName /MdbName:$using:DBName /dc:$using:SetupDC"
                 S:\ExchangeInstall\DeployExchange.cmd
-		}
+		        }
             }
             GetScript =  { @{} }
             TestScript = { $false}
