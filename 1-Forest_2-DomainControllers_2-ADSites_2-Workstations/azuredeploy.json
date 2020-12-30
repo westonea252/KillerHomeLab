@@ -2,6 +2,13 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "Location2": {
+      "type": "string",
+      "defaultValue": "WestUS",
+      "metadata": {
+        "description": "Choose Region (Example: WestUS)"
+      }
+    },       
     "adminUsername": {
         "type": "string",
         "metadata": {
@@ -35,21 +42,7 @@
       "metadata": {
           "description": "Windows Client OS License Type"
       }
-    },    
-    "Location1": {
-      "type": "string",
-      "defaultValue": "EastUS",
-      "metadata": {
-        "description": "Choose Region (Example: EastUS)"
-      }
-    },
-    "Location2": {
-      "type": "string",
-      "defaultValue": "WestUS",
-      "metadata": {
-        "description": "Choose Region (Example: WestUS)"
-      }
-    },        
+    },     
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
@@ -73,7 +66,7 @@
     },          
     "NetBiosDomain": {
       "type": "string",
-      "defaultValue": "dir",
+      "defaultValue": "killerhomelab",
       "metadata": {
           "description": "NetBios Parent Domain Name"
       }
@@ -281,7 +274,7 @@
                 "value": "[variables('vnet1BastionsubnetPrefix')]"
               },              
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -289,10 +282,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "VNet2",
-      "dependsOn": [
-        "VNet1"
-      ],      
+      "name": "VNet2",      
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -332,8 +322,7 @@
       "apiVersion": "2015-01-01",
       "name": "BastionHost1",
       "dependsOn": [
-        "VNet1",
-        "VNet2"
+        "VNet1"
       ],
       "properties": {
           "mode": "Incremental",
@@ -355,7 +344,7 @@
                   "value": "AzureBastionSubnet"
               },
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -365,9 +354,7 @@
       "apiVersion": "2015-01-01",
       "name": "BastionHost2",
       "dependsOn": [
-        "VNet1",
-        "VNet2",
-        "BastionHost1"
+        "VNet2"
       ],
       "properties": {
           "mode": "Incremental",
@@ -399,10 +386,7 @@
       "apiVersion": "2015-01-01",
       "name": "deployDC1VM",
       "dependsOn": [
-        "VNet1",
-        "VNet2",
-        "BastionHost1",
-        "BastionHost2"
+        "VNet1"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -454,7 +438,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -464,10 +448,6 @@
       "apiVersion": "2015-01-01",
       "name": "promotedc1",
       "dependsOn": [
-        "VNet1",
-        "VNet2",
-        "BastionHost1",
-        "BastionHost2",
         "DeployDC1VM"
       ],            
       "properties": {
@@ -499,7 +479,7 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                           
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -509,11 +489,6 @@
       "apiVersion": "2015-01-01",
       "name": "updatevnet1dns",
       "dependsOn": [
-        "VNet1",
-        "VNet2",
-        "BastionHost1",
-        "BastionHost2",        
-        "DeployDC1VM",
         "promotedc1"
       ],            
       "properties": {
@@ -550,7 +525,7 @@
                 ]
               },                                                                                                            
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -560,13 +535,7 @@
       "apiVersion": "2015-01-01",
       "name": "updatevnet2dns",
       "dependsOn": [
-        "VNet1",
-        "VNet2",
-        "BastionHost1",
-        "BastionHost2",        
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns"
+        "promotedc1"
       ],            
       "properties": {
           "mode": "Incremental",
@@ -612,14 +581,7 @@
       "apiVersion": "2015-01-01",
       "name": "restartdc1",
       "dependsOn": [
-        "VNet1",
-        "VNet2",
-        "BastionHost1",
-        "BastionHost2",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns"
+        "updatevnet1dns"
       ],            
       "properties": {
           "mode": "Incremental",
@@ -638,7 +600,7 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                                         
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -648,14 +610,6 @@
       "apiVersion": "2015-01-01",
       "name": "configdns",
       "dependsOn": [
-        "VNet1",
-        "VNet2",
-        "BastionHost1",
-        "BastionHost2",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
         "restartdc1"
       ],            
       "properties": {
@@ -690,7 +644,7 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                           
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -700,15 +654,6 @@
       "apiVersion": "2015-01-01",
       "name": "createous",
       "dependsOn": [
-        "VNet1",
-        "VNet2",
-        "BastionHost1",
-        "BastionHost2",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
         "configdns"
       ],            
       "properties": {
@@ -731,7 +676,7 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                           
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -741,16 +686,6 @@
       "apiVersion": "2015-01-01",
       "name": "createsites",
       "dependsOn": [
-        "VNet1",
-        "VNet2",
-        "BastionHost1",
-        "BastionHost2",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
         "createous"
       ],            
       "properties": {
@@ -782,7 +717,7 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                           
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -792,17 +727,6 @@
       "apiVersion": "2015-01-01",
       "name": "PeeringToSite2",
       "dependsOn": [
-        "VNet1",
-        "VNet2",
-        "BastionHost1",
-        "BastionHost2",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
         "createsites"
       ],            
       "properties": {
@@ -831,7 +755,7 @@
                 "value": "false"
               },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -841,18 +765,6 @@
       "apiVersion": "2015-01-01",
       "name": "PeeringToSite1",
       "dependsOn": [
-        "VNet1",
-        "VNet2",
-        "BastionHost1",
-        "BastionHost2",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
         "PeeringToSite2"
       ],            
       "properties": {
@@ -891,18 +803,6 @@
       "apiVersion": "2015-01-01",
       "name": "deployDC2VM",
       "dependsOn": [
-        "VNet1",
-        "VNet2",
-        "BastionHost1",
-        "BastionHost2",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
         "PeeringToSite2",
         "PeeringToSite1"
       ],      
@@ -966,20 +866,6 @@
       "apiVersion": "2015-01-01",
       "name": "promotedc2",
       "dependsOn": [
-        "VNet1",
-        "VNet2",
-        "BastionHost1",
-        "BastionHost2",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
-        "PeeringToSite2",
-        "PeeringToSite1",
         "deployDC2VM"
       ],      
       "properties": {
@@ -1024,21 +910,6 @@
       "apiVersion": "2015-01-01",
       "name": "updatevnet2dns-2",
       "dependsOn": [
-        "VNet1",
-        "VNet2",
-        "BastionHost1",
-        "BastionHost2",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
-        "PeeringToSite2",
-        "PeeringToSite1",
-        "deployDC2VM",
         "promotedc2"
       ],            
       "properties": {
@@ -1085,22 +956,6 @@
       "apiVersion": "2015-01-01",
       "name": "restartdc2",
       "dependsOn": [
-        "VNet1",
-        "VNet2",
-        "BastionHost1",
-        "BastionHost2",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
-        "PeeringToSite2",
-        "PeeringToSite1",
-        "deployDC2VM",
-        "promotedc2",
         "updatevnet2dns-2"
       ],            
       "properties": {
@@ -1120,7 +975,7 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                                         
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -1130,23 +985,6 @@
       "apiVersion": "2015-01-01",
       "name": "deployWK1VM",
       "dependsOn": [
-        "VNet1",
-        "VNet2",
-        "BastionHost1",
-        "BastionHost2",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
-        "PeeringToSite2",
-        "PeeringToSite1",
-        "deployDC2VM",
-        "promotedc2",
-        "updatevnet2dns-2",
         "restartdc2"
       ],      
       "properties": {
@@ -1196,7 +1034,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -1206,24 +1044,6 @@
       "apiVersion": "2015-01-01",
       "name": "DomainJoinWK1VM",
       "dependsOn": [
-        "VNet1",
-        "VNet2",
-        "BastionHost1",
-        "BastionHost2",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
-        "PeeringToSite2",
-        "PeeringToSite1",
-        "deployDC2VM",
-        "promotedc2",
-        "updatevnet2dns-2",
-        "restartdc2",
         "DeployWK1VM"
       ],      
       "properties": {
@@ -1252,7 +1072,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                                                                                                                                                             
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -1262,26 +1082,7 @@
       "apiVersion": "2015-01-01",
       "name": "deployWK2VM",
       "dependsOn": [
-        "VNet1",
-        "VNet2",
-        "BastionHost1",
-        "BastionHost2",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
-        "PeeringToSite2",
-        "PeeringToSite1",
-        "deployDC2VM",
-        "promotedc2",
-        "updatevnet2dns-2",
-        "restartdc2",
-        "deployWK1VM",
-        "DomainJoinWK1VM"
+        "restartdc1"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1340,26 +1141,6 @@
       "apiVersion": "2015-01-01",
       "name": "DomainJoinWK2VM",
       "dependsOn": [
-        "VNet1",
-        "VNet2",
-        "BastionHost1",
-        "BastionHost2",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
-        "PeeringToSite2",
-        "PeeringToSite1",
-        "deployDC2VM",
-        "promotedc2",
-        "updatevnet2dns-2",
-        "restartdc2",
-        "DeployWK1VM",
-        "DomainJoinWK1VM",
         "DeployWK2VM"
       ],      
       "properties": {
