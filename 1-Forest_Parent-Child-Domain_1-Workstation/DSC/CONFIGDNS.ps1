@@ -17,7 +17,7 @@
             Name             = "$ReverseLookup1.in-addr.arpa"
             DynamicUpdate = 'Secure'
             Ensure           = 'Present'
-            ReplicationScope = 'Domain'
+            ReplicationScope = 'Forest'
         }
 
         xDnsRecord DC1PtrRecord
