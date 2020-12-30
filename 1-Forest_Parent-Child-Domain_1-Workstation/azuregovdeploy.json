@@ -100,7 +100,14 @@
       "metadata": {
           "description": "DNS Reverse Lookup Zone1 Prefix"
       }
-    },                                                    
+    },  
+    "ReverseLookup2": {
+      "type": "string",
+      "defaultValue": "2.10",
+      "metadata": {
+          "description": "DNS Reverse Lookup Zone1 Prefix"
+      }
+    },                                                        
     "DC1OSVersion": {
         "type": "string",
         "defaultValue": "2019-Datacenter",
@@ -219,7 +226,8 @@
     "ChilddomainName": "[concat(parameters('ChildNetBiosDomain'),'.',variables('domainName'))]",    
     "BaseDN": "[concat('DC=',parameters('NetBiosDomain'),',DC=',parameters('TLD'))]",
     "ChildBaseDN": "[concat('DC=',parameters('ChildNetBiosDomain'),',',variables('BaseDN'))]",    
-    "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('ChildBaseDN'))]"
+    "ParentWKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
+    "ChildWKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('ChildBaseDN'))]"
   },  
   "resources": [
     {
@@ -1070,7 +1078,7 @@
                   "value": "[variables('domainName')]"
               },
               "OUPath": {
-                  "value": "[variables('WKOUPath')]"
+                  "value": "[variables('ParentWKOUPath')]"
               },
               "domainJoinOptions": {
                   "value": 3
@@ -1167,7 +1175,7 @@
                   "value": "[variables('ChilddomainName')]"
               },
               "OUPath": {
-                  "value": "[variables('WKOUPath')]"
+                  "value": "[variables('ChildWKOUPath')]"
               },
               "domainJoinOptions": {
                   "value": 3
