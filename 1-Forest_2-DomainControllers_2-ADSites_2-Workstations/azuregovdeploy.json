@@ -4,9 +4,9 @@
   "parameters": {
     "Location2": {
       "type": "string",
-      "defaultValue": "USGovTexas",
+      "defaultValue": "WestUS",
       "metadata": {
-        "description": "Choose Region (Example: USgovTexas)"
+        "description": "Choose Region (Example: WestUS)"
       }
     },       
     "adminUsername": {
