@@ -98,9 +98,16 @@
       "type": "string",
       "defaultValue": "1.10",
       "metadata": {
-          "description": "DNS Reverse Lookup Zone1 Prefix"
+          "description": "DNS Parent Reverse Lookup Zone Prefix"
       }
-    },                                                    
+    },  
+    "ReverseLookup2": {
+      "type": "string",
+      "defaultValue": "2.10",
+      "metadata": {
+          "description": "DNS Child Reverse Lookup Zone Prefix"
+      }
+    },                                                        
     "DC1OSVersion": {
         "type": "string",
         "defaultValue": "2019-Datacenter",
@@ -206,6 +213,7 @@
     "dc2name": "[concat(parameters('ChildNetBiosDomain'),'-dc-01')]",           
     "dc2IP": "[concat(parameters('vnet2ID'),'.1.',variables('dc2lastoctet'))]",            
     "ReverseLookup1": "[concat('1.',parameters('ReverseLookup1'))]",    
+    "ReverseLookup2": "[concat('1.',parameters('ReverseLookup2'))]",        
     "dc1lastoctet": "101",        
     "dc2lastoctet": "101",        
     "wk1lastoctet": "201",            
@@ -219,7 +227,8 @@
     "ChilddomainName": "[concat(parameters('ChildNetBiosDomain'),'.',variables('domainName'))]",    
     "BaseDN": "[concat('DC=',parameters('NetBiosDomain'),',DC=',parameters('TLD'))]",
     "ChildBaseDN": "[concat('DC=',parameters('ChildNetBiosDomain'),',',variables('BaseDN'))]",    
-    "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('ChildBaseDN'))]"
+    "ParentWKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
+    "ChildWKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('ChildBaseDN'))]"
   },  
   "resources": [
     {
@@ -992,6 +1001,43 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
+      "name": "configdns-2",
+      "dependsOn": [
+        "createous-2"      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/configdns.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('dc2name')]"
+              },
+              "DomainName": {
+                "value": "[variables('ChildDomainName')]"
+              },              
+              "ReverseLookup1": {
+                "value": "[variables('ReverseLookup2')]"
+              },                                                                                                            
+              "dc1lastoctet": {
+                "value": "[variables('dc2lastoctet')]"
+              },                                                                                                                          
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                                           
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
       "name": "deployWK1VM",
       "dependsOn": [
         "PeeringToSite2",
@@ -1070,7 +1116,7 @@
                   "value": "[variables('domainName')]"
               },
               "OUPath": {
-                  "value": "[variables('WKOUPath')]"
+                  "value": "[variables('ParentWKOUPath')]"
               },
               "domainJoinOptions": {
                   "value": 3
@@ -1092,7 +1138,7 @@
       "apiVersion": "2015-01-01",
       "name": "deployWK2VM",
       "dependsOn": [
-        "createous-2"
+        "configdns-2"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1167,7 +1213,7 @@
                   "value": "[variables('ChilddomainName')]"
               },
               "OUPath": {
-                  "value": "[variables('WKOUPath')]"
+                  "value": "[variables('ChildWKOUPath')]"
               },
               "domainJoinOptions": {
                   "value": 3

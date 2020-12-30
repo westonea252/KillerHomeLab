@@ -46,9 +46,10 @@ Parameters that support changes
 - Net Bios Domain.  Enter a valid Net Bios Domain Name (Example: killerhomelab).
 - Child Net Bios Domain.  Enter a valid Net Bios Domain Name (Example: it).
 - TLD.  Select a valid Top-Level Domain using the Pull-Down Menu.
-- Vnet1ID.  Enter first 2 octets of your desired Address Space for Virtual Network 1 (Example:  10.1)
-- Vnet2ID.  Enter first 2 octets of your desired Address Space for Virtual Network 2 (Example:  10.2)
-- Reverse Lookup1.  Enter first 2 octets of your desired Address Space in Reverse (Example:  1.10)
+- Vnet1ID.  Enter first 2 octets of your desired Address Space for Virtual Network 1 Parent Domain (Example:  10.1)
+- Vnet2ID.  Enter first 2 octets of your desired Address Space for Virtual Network 2 Child Domain(Example:  10.2)
+- Reverse Lookup1.  Enter first 2 octets of your desired Address Space in Reverse for your Parent Domain (Example:  1.10)
+- Reverse Lookup2.  Enter first 2 octets of your desired Address Space in Reverse for your Child Domain (Example:  2.10)
 - DC1OSVersion.  Select 2016-Datacenter (Windows 2016) or 2019-Datacenter (Windows 2019) Domain Controller 1 OS Version
 - DC2OSVersion.  Select 2016-Datacenter (Windows 2016) or 2019-Datacenter (Windows 2019) Domain Controller 2 OS Version
 - WK1OSVersion.  Workstation1 OS Version is not configurable and set to 19h1-pro (Windows 10).
