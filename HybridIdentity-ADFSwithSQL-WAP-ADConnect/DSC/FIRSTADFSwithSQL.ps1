@@ -160,7 +160,7 @@
                 $signthumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=adfs-signing.$using:RootDomainFQDN"}).Thumbprint
 
                 Import-Module ADFS
-                Install-AdfsFarm -CertificateThumbprint $thumbprint -FederationServiceName "adfs.$using:RootDomainFQDN" -GroupServiceAccountIdentifier "$using:NetBiosDomain\FsGmsa$" -SQLConnectionString "Data Source=$using:SQLHost;InitialCatalog=ADFSConfiguration;Integrated Security=True;Min Pool Size=20"
+                Install-AdfsFarm -CertificateThumbprint $thumbprint -FederationServiceName "adfs.$using:RootDomainFQDN" -GroupServiceAccountIdentifier "$using:NetBiosDomain\FsGmsa$" -SQLConnectionString "Data Source=$using:SQLHost;Initial Catalog=ADFSConfiguration;Integrated Security=True;Min Pool Size=20"
                 
                 # Create Relying Pary Trust Script
                 [string]$IssuanceAuthorizationRules=Get-Content -Path C:\MachineConfig\IssuanceAuthorizationRules.txt
