@@ -1067,7 +1067,7 @@
                   "value": "[variables('wk1name')]"
               },
               "domainName": {
-                  "value": "[variables('domainName')]"
+                  "value": "[variables('ChilddomainName')]"
               },
               "OUPath": {
                   "value": "[variables('WKOUPath')]"
