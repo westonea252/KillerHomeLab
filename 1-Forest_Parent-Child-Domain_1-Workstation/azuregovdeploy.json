@@ -209,7 +209,7 @@
     "dc1lastoctet": "101",        
     "dc2lastoctet": "101",        
     "wk1lastoctet": "201",            
-    "wk1name": "[concat(parameters('NamingConvention'),'-wk-01')]",           
+    "wk1name": "[concat(parameters('ChildNetBiosDomain'),'-wk-01')]",           
     "wk1IP": "[concat(parameters('vnet1ID'),'.2.',variables('wk1lastoctet'))]",        
     "wk2lastoctet": "201",            
     "wk2name": "[concat(parameters('NamingConvention'),'-wk-02')]",           
@@ -1067,7 +1067,7 @@
                   "value": "[variables('wk1name')]"
               },
               "domainName": {
-                  "value": "[variables('ChilddomainName')]"
+                  "value": "[variables('domainName')]"
               },
               "OUPath": {
                   "value": "[variables('WKOUPath')]"
@@ -1164,7 +1164,7 @@
                   "value": "[variables('wk2name')]"
               },
               "domainName": {
-                  "value": "[variables('domainName')]"
+                  "value": "[variables('ChilddomainName')]"
               },
               "OUPath": {
                   "value": "[variables('WKOUPath')]"
