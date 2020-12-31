@@ -525,7 +525,7 @@
           },
           "parameters": {
               "PrincipalID": {
-                  "value": "[variables('ManagedIDName')]"
+                  "value": "[reference('CreateManagedID').outputs.manageduseridentity.value]"
               },
               "RoleDefinitionID": {
                   "value": "[variables('Contributor')]"
