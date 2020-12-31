@@ -18,7 +18,7 @@
 "resources": [
     {
       "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2015-07-01",
+      "apiVersion": "2018-09-01-preview",
       "name": "b24988ac-6180-42a0-ab88-20f7382dd24c",
       "properties": {
         "roleDefinitionId": "[parameters('RoleDefinitionId')]",
