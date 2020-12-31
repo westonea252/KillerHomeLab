@@ -513,7 +513,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "AssignManagedIDContributor",
+      "name": "GrantContributor",
       "dependsOn": [
         "CreateManagedID"
       ],                  
@@ -544,7 +544,7 @@
         "DeployNPM",
         "deployVNet1VM",
         "CreateManagedID",
-        "AssignManagedIDContributor"
+        "GrantContributor"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -582,7 +582,7 @@
         "DeployNPM",
         "deployVNet2VM",        
         "CreateManagedID",
-        "AssignManagedIDContributor"              
+        "GrantContributor"              
       ],      
       "properties": {
           "mode": "Incremental",
