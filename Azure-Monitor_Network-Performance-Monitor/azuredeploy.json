@@ -541,7 +541,7 @@
         "DeployNPM",
         "deployVNet1VM",
         "CreateManagedID",
-        "GrantContributor"
+        "CreateManagedID2"        
       ],      
       "properties": {
           "mode": "Incremental",
@@ -579,7 +579,7 @@
         "DeployNPM",
         "deployVNet2VM",        
         "CreateManagedID",
-        "GrantContributor"              
+        "CreateManagedID2"              
       ],      
       "properties": {
           "mode": "Incremental",
