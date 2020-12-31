@@ -16,8 +16,10 @@
     }
 },
 "variables": {
-  "bootstrapRoleAssignmentId": "[guid(concat(resourceGroup().id, 'contributor'))]",
-  "contributorRoleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"
+  "PrincipalID": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('ManagedIDName')).principalId]",    
+  "RoleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+  "roleAssignmentName": "[guid(variables('principalId'), variables('roleDefinitionID'), resourceGroup().id)]"
+
 },
 "resources": [
     {
@@ -28,14 +30,14 @@
     },
     {
       "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2017-09-01",
-      "name": "[variables('bootstrapRoleAssignmentId')]",
+      "apiVersion": "2020-04-01-preview",
+      "name": "[variables('roleAssignmentName')]",
         "dependsOn": [
           "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('ManagedIDName'))]"
         ],
       "properties": {
-        "roleDefinitionId": "[variables('contributorRoleDefinitionId')]",
-        "principalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('ManagedIDName')), '2018-11-30').principalId]",
+        "roleDefinitionId": "[variables('RoleDefinitionId')]",
+        "principalId": "[variables('PrincipalID')]",
         "scope": "[resourceGroup().id]",
         "principalType": "ServicePrincipal"
       }
