@@ -580,7 +580,7 @@
         "deployVNet2VM",        
         "CreateManagedID",
         "AssignManagedID",
-        "ConnectVM2"
+        "ConnectVM1"
       ],      
       "properties": {
           "mode": "Incremental",
