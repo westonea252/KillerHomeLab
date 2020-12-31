@@ -513,10 +513,10 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "GrantContributor",
+      "name": "CreateManagedID2",
       "dependsOn": [
         "CreateManagedID"
-      ],                  
+      ],        
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -525,14 +525,14 @@
           },
           "parameters": {
               "PrincipalID": {
-                  "value": "[reference('CreateManagedID').outputs.manageduseridentity.value]"
-                  }
+                  "value": "[variables('ManagedIDName')]"
               },
               "RoleDefinitionID": {
                   "value": "[variables('Contributor')]"
-                  }                     
-            }              
-    },
+              }
+          }
+      }
+    },    
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
