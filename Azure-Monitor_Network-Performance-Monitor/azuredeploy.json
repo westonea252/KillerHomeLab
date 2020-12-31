@@ -88,7 +88,14 @@
       "metadata": {
           "description": "VM2 VMSize"
       }
-    },                
+    },
+    "roleNameGuid": {
+        "type": "string",
+        "defaultValue": "[newGuid()]",
+        "metadata": {
+            "description": "A new GUID used to identify the role assignment"
+        }
+    },                   
     "_artifactsLocation": {
       "type": "string",
       "metadata": {
@@ -530,8 +537,11 @@
               },
               "RoleDefinitionID": {
                   "value": "[variables('Contributor')]"
-                  }          
-              }
+                  },          
+              "roleNameGuid": {
+                  "value": "[parameters('roleNameGuid')]"
+                  }                            
+            }              
     },
     {
       "type": "Microsoft.Resources/deployments",

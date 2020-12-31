@@ -13,16 +13,19 @@
       "metadata": {
         "description": "Managed ID Name"
       }
-    }    
-},
-"variables": {
-    "roleNameGuid": "[newGuid()]"
     },
+    "RoleNameGuid": {
+      "type": "string",
+      "metadata": {
+        "description": "Managed ID Name"
+      }
+    }        
+},
 "resources": [
     {
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2020-04-01-preview",
-      "name": "[variables('roleNameGuid')]",
+      "name": "[parameters('roleNameGuid')]",
       "properties": {
         "roleDefinitionId": "[parameters('RoleDefinitionId')]",
         "principalId": "[parameters('PrincipalID')]",
