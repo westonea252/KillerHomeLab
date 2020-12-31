@@ -513,7 +513,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "CreateManagedID2",
+      "name": "AssignManagedID",
       "dependsOn": [
         "CreateManagedID"
       ],        
@@ -541,7 +541,7 @@
         "DeployNPM",
         "deployVNet1VM",
         "CreateManagedID",
-        "CreateManagedID2"        
+        "AssignManagedID"        
       ],      
       "properties": {
           "mode": "Incremental",
@@ -579,7 +579,8 @@
         "DeployNPM",
         "deployVNet2VM",        
         "CreateManagedID",
-        "CreateManagedID2"              
+        "AssignManagedID",
+        "ConnectVM2"
       ],      
       "properties": {
           "mode": "Incremental",
