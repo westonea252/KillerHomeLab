@@ -543,7 +543,7 @@
               "RoleDefinitionID": {
                   "value": "[variables(parameters('RoleDefinitionID'))]"
               }          
-      }
+          }
     },
     {
       "type": "Microsoft.Resources/deployments",
@@ -552,7 +552,8 @@
       "dependsOn": [
         "DeployNPM",
         "deployVNet1VM",
-        "CreateManagedID"
+        "CreateManagedID",
+        "AssignManagedIDContributor"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -589,7 +590,8 @@
       "dependsOn": [
         "DeployNPM",
         "deployVNet2VM",        
-        "CreateManagedID"        
+        "CreateManagedID",
+        "AssignManagedIDContributor"              
       ],      
       "properties": {
           "mode": "Incremental",
