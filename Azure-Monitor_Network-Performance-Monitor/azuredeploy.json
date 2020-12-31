@@ -605,7 +605,7 @@
                   "value": "[variables('ManagedIDName')]"
               },                            
               "Location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[parameters('Location2')]"
               }                            
           }
       }
