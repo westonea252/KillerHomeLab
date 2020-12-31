@@ -128,7 +128,7 @@
     "vm2lastoctet": "101",        
     "WorkSpaceName": "[concat(parameters('NamingConvention'),'-LAW-',uniqueString(resourceGroup().id))]",
     "SubscriptionID": "[subscription().SubscriptionId]",
-    "ManagedIDName": "[concat(parameters('NamingConvention'),'-ManagedID')]"
+    "ManagedIDName": "[concat(parameters('NamingConvention'),'-ManagedID-',uniqueString(resourceGroup().id))]",
   },  
   "resources": [
     {
