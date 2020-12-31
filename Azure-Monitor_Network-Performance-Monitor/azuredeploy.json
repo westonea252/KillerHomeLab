@@ -2,18 +2,25 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "LAWID": {
+    "Location2": {
       "type": "string",
+      "defaultValue": "WestUS",
       "metadata": {
-        "description": "Unique identifier for Log Analytics Workspace"
+        "description": "Choose Region (Example: WestUS)"
       }
-    },
+    },        
     "adminUsername": {
       "type": "string",
       "metadata": {
         "description": "The name of the Administrator of the new VM and Domain"
       }
     },
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The password for the Administrator account of the new VM and Domain"
+      }
+    },    
 
     "WindowsServerLicenseType": {
       "type": "string",
@@ -26,26 +33,6 @@
           "description": "Windows Server OS License Type"
       }
     },      
-    "adminPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "The password for the Administrator account of the new VM and Domain"
-      }
-    },    
-    "Location1": {
-      "type": "string",
-      "defaultValue": "EastUS",
-      "metadata": {
-        "description": "Choose Region (Example: EastUS)"
-      }
-    },
-    "Location2": {
-      "type": "string",
-      "defaultValue": "WestUS",
-      "metadata": {
-        "description": "Choose Region (Example: WestUS)"
-      }
-    },        
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
@@ -118,8 +105,7 @@
         "defaultValue": ""
     }
   },
-  "variables": {
-    "ResourceGroup": "[resourceGroup().Name]",    
+  "variables": { 
     "vnet1Name": "[concat(parameters('NamingConvention'),'-VNet1')]",
     "vnet1Prefix": "[concat(parameters('vnet1ID'),'.0.0/16')]",
     "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet1')]",    
@@ -140,7 +126,7 @@
     "vm2IP": "[concat(parameters('vnet2ID'),'.1.',variables('vm2lastoctet'))]",            
     "vm1lastoctet": "101",        
     "vm2lastoctet": "101",        
-    "WorkSpaceName": "[concat(parameters('NamingConvention'),'-LAW',parameters('LAWID'))]",
+    "WorkSpaceName": "[concat(parameters('NamingConvention'),'-LAW-',uniqueString(resourceGroup().id))]",
     "SubscriptionID": "[subscription().SubscriptionId]",
     "ManagedIDName": "[concat(parameters('NamingConvention'),'-ManagedID')]"
   },  
@@ -157,7 +143,7 @@
           },
           "parameters": {
               "resourceGroupName": {
-                  "value": "[variables('ResourceGroup')]"
+                  "value": "[resourceGroup().Name]"
               },
               "workspaceName": {
                   "value": "[variables('WorkSpaceName')]"
@@ -169,7 +155,7 @@
                   "value": "[variables('SubscriptionID')]"
               },
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               },
               "sku": {
                   "value": "Free"
@@ -181,9 +167,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "VNet1",
-      "dependsOn": [
-        "DeployNPM"        
-      ],
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -213,7 +196,7 @@
                 "value": "[variables('vnet1BastionsubnetPrefix')]"
               },              
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -221,11 +204,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "VNet2",
-      "dependsOn": [
-        "DeployNPM",
-        "VNet1"
-      ],      
+      "name": "VNet2",    
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -265,9 +244,7 @@
       "apiVersion": "2019-10-01",
       "name": "BastionHost1",
       "dependsOn": [
-        "DeployNPM",
-        "VNet1",
-        "VNet2"
+        "VNet1"
       ],
       "properties": {
           "mode": "Incremental",
@@ -289,7 +266,7 @@
                   "value": "AzureBastionSubnet"
               },
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -299,10 +276,7 @@
       "apiVersion": "2019-10-01",
       "name": "BastionHost2",
       "dependsOn": [
-        "DeployNPM",
-        "VNet1",
-        "VNet2",
-        "BastionHost1"
+        "VNet2"
       ],
       "properties": {
           "mode": "Incremental",
@@ -334,11 +308,7 @@
       "apiVersion": "2019-10-01",
       "name": "deployVNet1VM",
       "dependsOn": [
-        "DeployNPM",
-        "VNet1",
-        "VNet2",
-        "BastionHost1",
-        "BastionHost2"
+        "VNet1"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -381,7 +351,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -391,12 +361,7 @@
       "apiVersion": "2019-10-01",
       "name": "deployVNet2VM",
       "dependsOn": [
-        "DeployNPM",
-        "VNet1",
-        "VNet2",
-        "BastionHost1",
-        "BastionHost2",
-        "deployVNet1VM"        
+        "VNet2"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -421,7 +386,7 @@
                 "value": "[parameters('VM2OSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
+                "value": "[parameters('WindowsServerLicenseType')]"
               },            
               "VMSize": {
                 "value": "[parameters('VM2VMSize')]"
@@ -449,13 +414,8 @@
       "apiVersion": "2019-10-01",
       "name": "PeeringToSite2",
       "dependsOn": [
-        "DeployNPM",
         "VNet1",
-        "VNet2",
-        "BastionHost1",
-        "BastionHost2",
-        "deployVNet1VM",
-        "deployVNet2VM"        
+        "VNet2"
       ],            
       "properties": {
           "mode": "Incremental",
@@ -483,7 +443,7 @@
                 "value": "false"
               },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -493,13 +453,8 @@
       "apiVersion": "2019-10-01",
       "name": "PeeringToSite1",
       "dependsOn": [
-        "DeployNPM",
         "VNet1",
-        "VNet2",
-        "BastionHost1",
-        "BastionHost2",
-        "deployVNet1VM",
-        "deployVNet2VM",        
+        "VNet2",        
         "PeeringToSite2"
       ],            
       "properties": {
@@ -537,17 +492,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "CreateManagedID",
-      "dependsOn": [
-        "DeployNPM",
-        "VNet1",
-        "VNet2",
-        "BastionHost1",
-        "BastionHost2",
-        "deployVNet1VM",
-        "deployVNet2VM",        
-        "PeeringToSite2",
-        "PeeringToSite1"        
-      ],      
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -559,7 +503,7 @@
                   "value": "[variables('ManagedIDName')]"
               },
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -570,14 +514,7 @@
       "name": "ConnectVM1",
       "dependsOn": [
         "DeployNPM",
-        "VNet1",
-        "VNet2",
-        "BastionHost1",
-        "BastionHost2",
         "deployVNet1VM",
-        "deployVNet2VM",        
-        "PeeringToSite2",
-        "PeeringToSite1",
         "CreateManagedID"
       ],      
       "properties": {
@@ -594,16 +531,16 @@
                   "value": "[variables('WorkSpaceName')]"
               },
               "VMResourceGroupName": {
-                  "value": "[variables('ResourceGroup')]"
+                  "value": "[resourceGroup().Name]"
               },       
               "WorkspaceResourceGroup": {
-                  "value": "[variables('ResourceGroup')]"
+                  "value": "[resourceGroup().Name]"
               },              
               "ManagedIDName": {
                   "value": "[variables('ManagedIDName')]"
               },                            
               "Location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }                            
           }
       }
@@ -614,16 +551,8 @@
       "name": "ConnectVM2",
       "dependsOn": [
         "DeployNPM",
-        "VNet1",
-        "VNet2",
-        "BastionHost1",
-        "BastionHost2",
-        "deployVNet1VM",
         "deployVNet2VM",        
-        "PeeringToSite2",
-        "PeeringToSite1",
-        "CreateManagedID",
-        "ConnectVM1"        
+        "CreateManagedID"        
       ],      
       "properties": {
           "mode": "Incremental",
@@ -639,16 +568,16 @@
                   "value": "[variables('WorkSpaceName')]"
               },
               "VMResourceGroupName": {
-                  "value": "[variables('ResourceGroup')]"
+                  "value": "[resourceGroup().Name]"
               },       
               "WorkspaceResourceGroup": {
-                  "value": "[variables('ResourceGroup')]"
+                  "value": "[resourceGroup().Name]"
               },
               "ManagedIDName": {
                   "value": "[variables('ManagedIDName')]"
               },                            
               "Location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }                            
           }
       }
