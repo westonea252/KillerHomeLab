@@ -7,21 +7,25 @@
       "metadata": {
         "description": "Managed ID Name"
       }
-    }
+    },
+    "RoleDefinitionID": {
+      "type": "string",
+      "metadata": {
+        "description": "Managed ID Name"
+      }
+    }    
 },
 "variables": {
-  "RoleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"
-
-},
+    "roleNameGuid": "[newGuid()]"
+    },
 "resources": [
     {
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2020-04-01-preview",
-      "name": "b24988ac-6180-42a0-ab88-20f7382dd24c",
+      "name": "[variables('roleNameGuid')]",
       "properties": {
-        "roleDefinitionId": "[variables('RoleDefinitionId')]",
+        "roleDefinitionId": "[parameters('RoleDefinitionId')]",
         "principalId": "[parameters('PrincipalID')]",
-        "scope": "[subscription().subscriptionId]",
         "principalType": "ServicePrincipal"
       }
     }

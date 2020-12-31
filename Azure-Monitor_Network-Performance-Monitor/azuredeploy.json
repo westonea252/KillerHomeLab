@@ -21,7 +21,17 @@
         "description": "The password for the Administrator account of the new VM and Domain"
       }
     },    
-
+    "RoleDefinitionID": {
+        "type": "string",
+      "defaultValue": "Owner",        
+        "allowedValues": [
+            "Owner",
+            "Contributor"
+        ],
+        "metadata": {
+            "description": "Built-in role to assign"
+        }
+    },
     "WindowsServerLicenseType": {
       "type": "string",
       "defaultValue": "None",
@@ -128,7 +138,11 @@
     "vm2lastoctet": "101",        
     "WorkSpaceName": "[concat(parameters('NamingConvention'),'-LAW-',uniqueString(resourceGroup().id))]",
     "SubscriptionID": "[subscription().SubscriptionId]",
-    "ManagedIDName": "[concat(parameters('NamingConvention'),'-ManagedID-',uniqueString(resourceGroup().id))]"
+    "ManagedIDName": "[concat(parameters('NamingConvention'),'-ManagedID-',uniqueString(resourceGroup().id))]",
+    "Owner": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
+    "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"
+    
+    
   },  
   "resources": [
     {
@@ -525,7 +539,10 @@
               "PrincipalID": {
                   "value": "[reference('CreateManagedID').outputs.manageduseridentity.value]"
               }
-          }
+          },
+              "RoleDefinitionID": {
+                  "value": "[variables(parameters('RoleDefinitionID'))]"
+              }          
       }
     },
     {
