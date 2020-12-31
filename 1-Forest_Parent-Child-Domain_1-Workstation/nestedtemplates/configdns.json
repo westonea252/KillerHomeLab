@@ -8,6 +8,18 @@
                 "description": "Computer Name"
             }
         },
+        "DC1Name": {
+            "type": "string",
+            "metadata": {
+                "description": "DC1 Name"
+            }
+        },        
+        "DC2Name": {
+            "type": "string",
+            "metadata": {
+                "description": "DC2 Name"
+            }
+        },                
         "domainName": {
             "type": "string",
           "metadata": {
@@ -20,12 +32,24 @@
                 "description": "The name of Reverse Lookup Zone 1 Network ID"
             }
         },
+        "ReverseLookup2": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of Reverse Lookup Zone 2 Network ID"
+            }
+        },        
         "dc1lastoctet": {
             "type": "string",
             "metadata": {
                 "description": "DC1 Last IP Octet"
             }
         },        
+        "dc2lastoctet": {
+            "type": "string",
+            "metadata": {
+                "description": "DC2 Last IP Octet"
+            }
+        },                
         "location": {
             "type": "string",
           "metadata": {
@@ -64,10 +88,13 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
-                            "computerName": "[parameters('computerName')]",
+                            "DC1Name": "[parameters('DC1Name')]",
+                            "DC2Name": "[parameters('DC2Name')]",                            
                             "domainName": "[parameters('domainName')]",                                                        
                             "ReverseLookup1": "[parameters('ReverseLookup1')]",
-                            "dc1lastoctet": "[parameters('dc1lastoctet')]"
+                            "ReverseLookup2": "[parameters('ReverseLookup2')]",                            
+                            "dc1lastoctet": "[parameters('dc1lastoctet')]",
+                            "dc2lastoctet": "[parameters('dc2lastoctet')]"                            
                         }
                     },
                     "protectedSettings": {
