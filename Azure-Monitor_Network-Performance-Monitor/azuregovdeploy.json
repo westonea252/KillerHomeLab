@@ -2,13 +2,6 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "Location2": {
-      "type": "string",
-      "defaultValue": "USGovTexas",
-      "metadata": {
-        "description": "Choose Region (Example: USGovTexas)"
-      }
-    },
     "WorkspaceLocation": {
       "type": "string",
       "defaultValue": "USGovVirginia",
@@ -146,7 +139,8 @@
     "WorkSpaceName": "[concat(parameters('NamingConvention'),'-LAW-',uniqueString(resourceGroup().id))]",
     "SubscriptionID": "[subscription().SubscriptionId]",
     "ManagedIDName": "[concat(parameters('NamingConvention'),'-ManagedID-',uniqueString(resourceGroup().id))]",
-    "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"
+    "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+    "Location2": "[resourceGroup().location]"
     
     
   },  
@@ -217,6 +211,7 @@
               },              
               "location": {
                   "value": "[resourceGroup().location]"
+                  
               }
           }
       }
@@ -254,7 +249,7 @@
                 "value": "[variables('vnet2BastionsubnetPrefix')]"
               },              
               "location": {
-                  "value": "[parameters('Location2')]"
+                  "value": "[if(equals(variables('Location2'), 'USGovVirginia'), 'USGovTexas','USgovTexas')]"
               }
           }
       }
@@ -318,7 +313,7 @@
                   "value": "AzureBastionSubnet"
               },
               "location": {
-                  "value": "[parameters('Location2')]"
+                  "value": "[if(equals(variables('Location2'), 'USGovVirginia'), 'USGovTexas','USgovTexas')]"
               }
           }
       }
@@ -424,7 +419,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[parameters('Location2')]"
+                  "value": "[if(equals(variables('Location2'), 'USGovVirginia'), 'USGovTexas','USgovTexas')]"
               }
           }
       }
@@ -503,7 +498,7 @@
                 "value": "false"
               },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
               "location": {
-                  "value": "[parameters('Location2')]"
+                  "value": "[if(equals(variables('Location2'), 'USGovVirginia'), 'USGovTexas','USgovTexas')]"
               }
           }
       }
@@ -626,7 +621,7 @@
                   "value": "[variables('ManagedIDName')]"
               },                            
               "Location": {
-                  "value": "[parameters('Location2')]"
+                  "value": "[if(equals(variables('Location2'), 'USGovVirginia'), 'USGovTexas','USgovTexas')]"
               }                            
           }
       }
