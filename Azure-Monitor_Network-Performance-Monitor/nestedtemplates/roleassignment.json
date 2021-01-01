@@ -13,13 +13,19 @@
       "metadata": {
         "description": "Managed ID Name"
       }
-    }     
+    },
+    "roleAssignmentGuid": {
+      "type": "string",
+      "metadata": {
+        "description": "A new GUID used to identify the role assignment"
+      }
+    }         
 },
 "resources": [
     {
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2018-09-01-preview",
-      "name": "b24988ac-6180-42a0-ab88-20f7382dd24c",
+      "name": "[parameters('roleAssignmentGuid')]",
       "properties": {
         "roleDefinitionId": "[parameters('RoleDefinitionId')]",
         "principalId": "[parameters('PrincipalID')]",
