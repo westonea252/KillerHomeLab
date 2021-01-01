@@ -29,7 +29,8 @@
       "properties": {
         "roleDefinitionId": "[parameters('RoleDefinitionId')]",
         "principalId": "[parameters('PrincipalID')]",
-        "principalType": "ServicePrincipal"
+        "principalType": "ServicePrincipal",
+        "Scope": "[concat('/subscriptions/', subscription().subscriptionId)]"
       }
     }
   ]
