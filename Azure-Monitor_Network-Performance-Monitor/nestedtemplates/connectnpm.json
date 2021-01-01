@@ -37,17 +37,18 @@
       "metadata": {
         "description": "Region of Resources"
       }
-    }     
+    }
 },
 "variables": {
-    "ScriptURL": "https://raw.githubusercontent.com/elliottfieldsjr/KillerHomeLab/master/Azure-Monitor_Network-Performance-Monitor/Scripts/ConnectToWorkspace.ps1"
+    "ScriptURL": "https://raw.githubusercontent.com/elliottfieldsjr/KillerHomeLab/master/Azure-Monitor_Network-Performance-Monitor/Scripts/ConnectToWorkspace.ps1",
+    "ScriptLocation": "USGovVirginia"
 },
 "resources": [
     {
       "type": "Microsoft.Resources/deploymentScripts",
       "apiVersion": "2019-10-01-preview",
       "name": "ConnectToWorkspace",
-      "location": "[resourceGroup().location]",
+      "location": "[variables('ScriptLocation')]",
       "kind": "AzurePowerShell",      
       "identity": {
         "type": "UserAssigned",
