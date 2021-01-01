@@ -32,6 +32,12 @@
         "description": "ManagedID"
       }
     },
+    "ScriptLocation": {
+        "type": "string",
+      "metadata": {
+        "description": "Region of Resources"
+      }
+    },    
     "location": {
         "type": "string",
       "metadata": {
@@ -40,15 +46,14 @@
     }
 },
 "variables": {
-    "ScriptURL": "https://raw.githubusercontent.com/elliottfieldsjr/KillerHomeLab/master/Azure-Monitor_Network-Performance-Monitor/Scripts/ConnectToWorkspace.ps1",
-    "ScriptLocation": "USGovVirginia"
+    "ScriptURL": "https://raw.githubusercontent.com/elliottfieldsjr/KillerHomeLab/master/Azure-Monitor_Network-Performance-Monitor/Scripts/ConnectToWorkspace.ps1"
 },
 "resources": [
     {
       "type": "Microsoft.Resources/deploymentScripts",
       "apiVersion": "2019-10-01-preview",
       "name": "ConnectToWorkspace",
-      "location": "[variables('ScriptLocation')]",
+      "location": "[parameters('ScriptLocation')]",
       "kind": "AzurePowerShell",      
       "identity": {
         "type": "UserAssigned",

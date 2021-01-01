@@ -582,6 +582,9 @@
               "ManagedIDName": {
                   "value": "[variables('ManagedIDName')]"
               },                            
+              "ScriptLocation": {
+                  "value": "[resourceGroup().location]"
+              },                                          
               "Location": {
                   "value": "[resourceGroup().location]"
               }                            
@@ -620,7 +623,10 @@
               },
               "ManagedIDName": {
                   "value": "[variables('ManagedIDName')]"
-              },                            
+              },
+              "ScriptLocation": {
+                  "value": "[parameters('Location2')]"
+              },                                         
               "Location": {
                   "value": "[parameters('Location2')]"
               }                            

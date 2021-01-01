@@ -585,7 +585,10 @@
               },              
               "ManagedIDName": {
                   "value": "[variables('ManagedIDName')]"
-              },                            
+              }, 
+              "ScriptLocation": {
+                  "value": "USGovVirginia"
+              },                                           
               "Location": {
                   "value": "[resourceGroup().location]"
               }                            
@@ -624,7 +627,10 @@
               },
               "ManagedIDName": {
                   "value": "[variables('ManagedIDName')]"
-              },                            
+              },   
+              "ScriptLocation": {
+                  "value": "USGovVirginia"
+              },                                          
               "Location": {
                   "value": "[parameters('Location2')]"
               }                            
