@@ -625,7 +625,7 @@
                   "value": "[variables('ManagedIDName')]"
               },
               "ScriptLocation": {
-                  "value": "[parameters('Location2')]"
+                  "value": "[resourceGroup().location]"
               },                                         
               "Location": {
                   "value": "[parameters('Location2')]"
