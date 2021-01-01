@@ -2,6 +2,7 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+  
     "WorkspaceLocation": {
       "type": "string",
       "defaultValue": "USGovVirginia",
@@ -140,8 +141,12 @@
     "SubscriptionID": "[subscription().SubscriptionId]",
     "ManagedIDName": "[concat(parameters('NamingConvention'),'-ManagedID-',uniqueString(resourceGroup().id))]",
     "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
-    "Location2": "[resourceGroup().location]"
-    
+    "Location1": "[resourceGroup().location]",
+    "USGovVirginia": "USGovTexas",
+    "USGovTexas": "USGovVirginia",
+    "USDoDEast":  "USDoDCentral",
+    "USDoDCentral": "USDoDEast",
+    "RemoteLocation": "[variables(variables('Location1'))]"
     
   },  
   "resources": [
@@ -249,7 +254,7 @@
                 "value": "[variables('vnet2BastionsubnetPrefix')]"
               },              
               "location": {
-                  "value": "[if(equals(variables('Location2'), 'USGovVirginia'), 'USGovTexas','USgovTexas')]"
+                  "value": "[variables('RemoteLocation')]"
               }
           }
       }
@@ -313,7 +318,7 @@
                   "value": "AzureBastionSubnet"
               },
               "location": {
-                  "value": "[if(equals(variables('Location2'), 'USGovVirginia'), 'USGovTexas','USgovTexas')]"
+                  "value": "[variables('RemoteLocation')]"
               }
           }
       }
@@ -419,7 +424,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[if(equals(variables('Location2'), 'USGovVirginia'), 'USGovTexas','USgovTexas')]"
+                  "value": "[variables('RemoteLocation')]"
               }
           }
       }
@@ -498,7 +503,7 @@
                 "value": "false"
               },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
               "location": {
-                  "value": "[if(equals(variables('Location2'), 'USGovVirginia'), 'USGovTexas','USgovTexas')]"
+                  "value": "[variables('RemoteLocation')]"
               }
           }
       }
@@ -621,7 +626,7 @@
                   "value": "[variables('ManagedIDName')]"
               },                            
               "Location": {
-                  "value": "[if(equals(variables('Location2'), 'USGovVirginia'), 'USGovTexas','USgovTexas')]"
+                  "value": "[variables('RemoteLocation')]"
               }                            
           }
       }
