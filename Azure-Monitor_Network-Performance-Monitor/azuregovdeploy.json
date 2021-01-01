@@ -88,7 +88,14 @@
       "metadata": {
           "description": "VM2 VMSize"
       }
-    },               
+    },   
+    "roleAssignmentGuid": {
+        "type": "string",
+        "defaultValue": "[newGuid()]",
+        "metadata": {
+            "description": "A new GUID used to identify the role assignment"
+        }
+    },                
     "_artifactsLocation": {
       "type": "string",
       "metadata": {
@@ -529,7 +536,10 @@
               },
               "RoleDefinitionID": {
                   "value": "[variables('Contributor')]"
-              }
+              },
+              "roleAssignmentGuid": {
+                  "value": "[parameters('roleAssignmentGuid')]"
+              }              
           }
       }
     },    
