@@ -8,6 +8,13 @@
       "metadata": {
         "description": "Choose Region (Example: WestUS)"
       }
+    },    
+    "WorkspaceLocation": {
+      "type": "string",
+      "defaultValue": "EastUS",
+      "metadata": {
+        "description": "Choose a Log Analytics Workspace Location"
+      }
     },        
     "adminUsername": {
       "type": "string",
@@ -164,7 +171,7 @@
                   "value": "[variables('SubscriptionID')]"
               },
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[parameters('WorkspaceLocation')]"
               },
               "sku": {
                   "value": "Free"

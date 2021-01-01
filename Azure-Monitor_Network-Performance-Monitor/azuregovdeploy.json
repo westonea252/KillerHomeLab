@@ -2,7 +2,13 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-  
+    "Location2": {
+      "type": "string",
+      "defaultValue": "USGovTexas", 
+      "metadata": {
+        "description": "Choose Region (Example: USGovTexas)"
+      }
+    },
     "WorkspaceLocation": {
       "type": "string",
       "defaultValue": "USGovVirginia",
@@ -140,13 +146,7 @@
     "WorkSpaceName": "[concat(parameters('NamingConvention'),'-LAW-',uniqueString(resourceGroup().id))]",
     "SubscriptionID": "[subscription().SubscriptionId]",
     "ManagedIDName": "[concat(parameters('NamingConvention'),'-ManagedID-',uniqueString(resourceGroup().id))]",
-    "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
-    "Location1": "[resourceGroup().location]",
-    "USGovVirginia": "USGovTexas",
-    "USGovTexas": "USGovVirginia",
-    "USDoDEast":  "USDoDCentral",
-    "USDoDCentral": "USDoDEast",
-    "RemoteLocation": "[variables(variables('Location1'))]"
+    "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"
     
   },  
   "resources": [
@@ -254,7 +254,7 @@
                 "value": "[variables('vnet2BastionsubnetPrefix')]"
               },              
               "location": {
-                  "value": "[variables('RemoteLocation')]"
+                  "value": "[parameters('Location2')]"
               }
           }
       }
@@ -318,7 +318,7 @@
                   "value": "AzureBastionSubnet"
               },
               "location": {
-                  "value": "[variables('RemoteLocation')]"
+                  "value": "[parameters('Location2')]"
               }
           }
       }
@@ -424,7 +424,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[variables('RemoteLocation')]"
+                  "value": "[parameters('Location2')]"
               }
           }
       }
@@ -503,7 +503,7 @@
                 "value": "false"
               },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
               "location": {
-                  "value": "[variables('RemoteLocation')]"
+                  "value": "[parameters('Location2')]"
               }
           }
       }
@@ -626,7 +626,7 @@
                   "value": "[variables('ManagedIDName')]"
               },                            
               "Location": {
-                  "value": "[variables('RemoteLocation')]"
+                  "value": "[parameters('Location2')]"
               }                            
           }
       }

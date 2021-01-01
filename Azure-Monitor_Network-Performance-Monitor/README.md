@@ -14,6 +14,7 @@ This Template deploys a the following:
 
 Parameters that support changes
 - Location2. Enter a Valid Azure Region based on which Cloud (AzureCloud, AzureUSGovernment, etc...) you are using.
+- WorkspaceLocation. Enter a Valid Azure Region for your Log Analytics Workspace based on which Cloud (AzureCloud, AzureUSGovernment, etc...) you are using.
 - Admin Username.  Enter a valid Admin Username
 - Admin Password.  Enter a valid Admin Password
 - WindowsServerLicenseType.  Choose Windows Server License Type (Example:  Windows_Server or None)
