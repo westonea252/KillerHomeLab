@@ -1479,7 +1479,7 @@
                   "value": "[variables('ManagedIDName')]"
               },
               "KeyVaultName": {
-                  "value": "[variables('KeyVault2Name')]"
+                  "value": "[variables('KeyVault1Name')]"
               },
               "ScriptLocation": {
                   "value": "[resourceGroup().location]"
