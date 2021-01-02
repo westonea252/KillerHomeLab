@@ -896,7 +896,7 @@
                 "value": "[variables('vnet2Name')]"
               },              
               "TargetVNetResourceGroup": {
-                "value": "[variables('ResourceGroup2')]"
+                "value": "[resourceGroup().Name]"
               },                            
               "allowVirtualNetworkAccess": {
                 "value": "true"
@@ -937,7 +937,7 @@
                 "value": "[variables('vnet1Name')]"
               },              
               "TargetVNetResourceGroup": {
-                "value": "[variables('ResourceGroup1')]"
+                "value": "[resourceGroup().Name]"
               },              
               "allowVirtualNetworkAccess": {
                 "value": "true"
@@ -1543,7 +1543,7 @@
                   "value": "[variables('KeyVault1Name')]"
               },
               "ResourceGroupName": {
-                  "value": "[variables('ResourceGroup1')]"
+                  "value": "[resourceGroup().Name]"
               },              
               "Location": {
                   "value": "[resourceGroup().location]"
@@ -1574,7 +1574,7 @@
                   "value": "[variables('KeyVault2Name')]"
               },
               "ResourceGroupName": {
-                  "value": "[variables('ResourceGroup2')]"
+                  "value": "[resourceGroup().Name]"
               },              
               "Location": {
                   "value": "[parameters('Location2')]"
