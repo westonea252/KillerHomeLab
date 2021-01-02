@@ -14,12 +14,18 @@
         "description": "Managed ID Name"
       }
     },
+    "ScriptName": {
+        "type": "string",
+      "metadata": {
+        "description": "Script Name"
+      }
+    },    
     "ScriptLocation": {
         "type": "string",
       "metadata": {
-        "description": "Region of Resources"
+        "description": "Script Locatino"
       }
-    }    
+    } 
 },
 "variables": {
     "KeyName": "[concat(parameters('KeyVaultName'),'-HSM')]",
@@ -31,7 +37,7 @@
     {
       "type": "Microsoft.Resources/deploymentScripts",
       "apiVersion": "2019-10-01-preview",
-      "name": "createhsmkey",
+      "name": "[parameters('ScriptName')]",
       "location": "[parameters('ScriptLocation')]",
       "kind": "AzurePowerShell",      
       "identity": {

@@ -251,6 +251,9 @@
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
     "BackupObjectID": "f40e18f0-6544-45c2-9d24-639a8bb3b41a",
+    "HSMScriptName": "[concat(parameters('NamingConvention'),'-hsm')]",            
+    "DESScriptName": "[concat(parameters('NamingConvention'),'-des')]",                
+    "ENCScriptName": "[concat(parameters('NamingConvention'),'-enc')]",                    
     "KeyVault1Name": "[concat(parameters('NamingConvention'),'-kv1-',uniqueString(resourceGroup().id))]",            
     "KeyVault2Name": "[concat(parameters('NamingConvention'),'-kv2-',uniqueString(resourceGroup().id))]",            
     "RSVault1Name": "[concat(parameters('NamingConvention'),'-rv1-',uniqueString(resourceGroup().id))]",                        
@@ -1481,6 +1484,9 @@
               "KeyVaultName": {
                   "value": "[variables('KeyVault1Name')]"
               },
+              "ScriptName": {
+                  "value": "[concat(variables('HSMScriptName'),'-01')]"           
+              },                   
               "ScriptLocation": {
                   "value": "[resourceGroup().location]"
               }              
@@ -1508,6 +1514,9 @@
               "KeyVaultName": {
                   "value": "[variables('KeyVault2Name')]"
               },
+              "ScriptName": {
+                  "value": "[concat(variables('HSMScriptName'),'-02')]"           
+              },               
               "ScriptLocation": {
                   "value": "[parameters('Location2')]"
               }              
@@ -1542,6 +1551,9 @@
               "Location": {
                   "value": "[resourceGroup().location]"
               },
+              "ScriptName": {
+                  "value": "[concat(variables('DESScriptName'),'-01')]"           
+              },                                 
               "ScriptLocation": {
                   "value": "[resourceGroup().location]"
               }                                                        
@@ -1576,6 +1588,9 @@
               "Location": {
                   "value": "[parameters('Location2')]"
               },
+              "ScriptName": {
+                  "value": "[concat(variables('DESScriptName'),'-02')]"           
+              },                                               
               "ScriptLocation": {
                   "value": "[parameters('Location2')]"
               }                                                        
@@ -1682,6 +1697,9 @@
               "ResourceGroupName": {
                   "value": "[resourceGroup().Name]"
               },
+              "ScriptName": {
+                  "value": "[concat(variables('ENCScriptName'),'-01')]"           
+              },                              
               "ScriptLocation": {
                   "value": "[resourceGroup().location]"
               }                 
@@ -1714,6 +1732,9 @@
               "ResourceGroupName": {
                   "value": "[resourceGroup().Name]"
               },
+              "ScriptName": {
+                  "value": "[concat(variables('ENCScriptName'),'-02')]"           
+              },                              
               "ScriptLocation": {
                   "value": "[parameters('Location2')]"
               }                                                    
@@ -1746,6 +1767,9 @@
               "ResourceGroupName": {
                   "value": "[resourceGroup().Name]"
               },
+              "ScriptName": {
+                  "value": "[concat(variables('ENCScriptName'),'-03')]"           
+              },                
               "ScriptLocation": {
                   "value": "[resourceGroup().location]"
               }                 
@@ -1778,6 +1802,9 @@
               "ResourceGroupName": {
                   "value": "[resourceGroup().Name]"
               },
+              "ScriptName": {
+                  "value": "[concat(variables('ENCScriptName'),'-04')]"           
+              },                              
               "ScriptLocation": {
                   "value": "[parameters('Location2')]"
               }                                                    
