@@ -251,11 +251,11 @@
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
     "BackupObjectID": "f40e18f0-6544-45c2-9d24-639a8bb3b41a",
-    "KeyVault1Name": "[concat(parameters('NamingConvention'),uniqueString(resourceGroup().id))]",            
-    "KeyVault2Name": "[concat(parameters('NamingConvention'),uniqueString(resourceGroup().id))]",            
-    "RSVault1Name": "[concat(parameters('NamingConvention'),uniqueString(resourceGroup().id))]",                        
-    "RSVault2Name": "[concat(parameters('NamingConvention'),uniqueString(resourceGroup().id))]",            
-    "ManagedIDName": "[concat(parameters('NamingConvention'),uniqueString(resourceGroup().id))]",
+    "KeyVault1Name": "[concat(parameters('NamingConvention'),'-kv1-',uniqueString(resourceGroup().id))]",            
+    "KeyVault2Name": "[concat(parameters('NamingConvention'),'-kv2-',uniqueString(resourceGroup().id))]",            
+    "RSVault1Name": "[concat(parameters('NamingConvention'),'-rv1-',uniqueString(resourceGroup().id))]",                        
+    "RSVault2Name": "[concat(parameters('NamingConvention'),'-rv2-',uniqueString(resourceGroup().id))]",            
+    "ManagedIDName": "[concat(parameters('NamingConvention'),'-mi-',uniqueString(resourceGroup().id))]",
     "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"              
   },  
   "resources": [
