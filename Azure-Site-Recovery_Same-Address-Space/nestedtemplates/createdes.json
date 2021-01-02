@@ -89,7 +89,7 @@
 "outputs": {
     "DiskEncryptionSet": {
         "type": "string",
-        "value": "[reference(parameters('ScriptName').outputs.text)]"
+        "value": "[reference(parameters('ScriptName')).outputs.text]"
     }
   }      
 }
