@@ -1,0 +1,89 @@
+{
+"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+"contentVersion": "1.0.0.0",
+"parameters": {
+    "ManagedIDName": {
+      "type": "string",
+      "metadata": {
+        "description": "Managed ID Name"
+      }
+    },
+    "KeyVaultName": {
+      "type": "string",
+      "metadata": {
+        "description": "Managed ID Name"
+      }
+    },
+    "ResourceGroupName": {
+      "type": "string",
+      "metadata": {
+        "description": "ResourceGroupName"
+      }
+    },
+    "ScriptLocation": {
+        "type": "string",
+      "metadata": {
+        "description": "Script Location"
+      }
+    },          
+    "location": {
+        "type": "string",
+      "metadata": {
+        "description": "Region of Resources"
+      }
+    }     
+},
+"variables": {
+    "KeyName": "[concat(parameters('KeyVaultName'),'-HSM')]",
+    "DESName": "[concat(parameters('KeyVaultName'),'-DES')]"
+},
+"resources": [
+    {
+      "type": "Microsoft.Resources/deploymentScripts",
+      "apiVersion": "2019-10-01-preview",
+      "name": "createdes2",
+      "location": "[parameters('ScriptLocation')]",
+      "kind": "AzurePowerShell",      
+      "identity": {
+        "type": "UserAssigned",
+        "userAssignedIdentities": {
+          "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('ManagedIDName'))]": {
+          }
+        }
+      },
+      "properties": {
+        "azPowerShellVersion": "3.0",
+        "timeout": "PT1H",
+        "arguments": "[format(' -vaultName {0} -KeyName {1} -DESName {2} -ResourceGroupName {3} -Location {4}', parameters('keyVaultName'), variables('KeyName'), variables('DESName'), parameters('ResourceGroupName'), parameters('location'))]", // can pass an argument string, double quotes must be escaped
+        "scriptContent": "
+          param(
+          [string] [Parameter(Mandatory=$true)] $vaultName,
+          [string] [Parameter(Mandatory=$true)] $KeyName,
+          [string] [Parameter(Mandatory=$true)] $DESName,
+          [string] [Parameter(Mandatory=$true)] $ResourceGroupName,
+          [string] [Parameter(Mandatory=$true)] $Location    
+          )
+
+          $KeyVault = Get-AzKeyVault -VaultName $vaultName
+          $Key = Get-AzKeyVaultKey -VaultName $KeyVault.VaultName -Name $KeyName
+
+          $desConfig = New-AzDiskEncryptionSetConfig -Location $Location -SourceVaultId $KeyVault.ResourceId -KeyUrl $key.Key.Kid -IdentityType SystemAssigned
+
+          $des = New-AzDiskEncryptionSet -Name $DESName -ResourceGroupName $ResourceGroupName -InputObject $desConfig
+          $output = $des.Identity.PrincipalId
+          Write-Output $output
+          $DeploymentScriptOutputs = @{}
+          $DeploymentScriptOutputs['text'] = $output
+        ",
+        "cleanupPreference": "OnSuccess",
+        "retentionInterval": "P1D"
+      }
+    }
+  ],
+"outputs": {
+    "DiskEncryptionSet": {
+        "type": "string",
+        "value": "[reference('createdes2').outputs.text]"
+    }
+  }      
+}
