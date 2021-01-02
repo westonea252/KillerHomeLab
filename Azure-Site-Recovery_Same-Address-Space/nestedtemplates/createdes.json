@@ -19,11 +19,17 @@
       "metadata": {
         "description": "ResourceGroupName"
       }
-    },   
+    },
+    "ScriptName": {
+        "type": "string",
+      "metadata": {
+        "description": "Script Name"
+      }
+    },           
     "ScriptLocation": {
         "type": "string",
       "metadata": {
-        "description": "Region of Resources"
+        "description": "Script Location"
       }
     },          
     "location": {
@@ -41,7 +47,7 @@
     {
       "type": "Microsoft.Resources/deploymentScripts",
       "apiVersion": "2019-10-01-preview",
-      "name": "createdes",
+      "name": "[parameters('ScriptName')]",
       "location": "[parameters('ScriptLocation')]",
       "kind": "AzurePowerShell",      
       "identity": {
@@ -83,7 +89,7 @@
 "outputs": {
     "DiskEncryptionSet": {
         "type": "string",
-        "value": "[reference('createdes').outputs.text]"
+        "value": "[reference(parameters('ScriptName').outputs.text)]"        
     }
   }      
 }
