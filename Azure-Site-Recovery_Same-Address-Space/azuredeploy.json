@@ -1680,7 +1680,7 @@
                   "value": "[variables('dc1name')]"
               },              
               "ResourceGroupName": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[resourceGroup().Name]"
               }
           }
       }
@@ -1709,7 +1709,7 @@
                   "value": "[variables('dc2name')]"
               },              
               "ResourceGroupName": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[resourceGroup().Name]"
               }
           }
       }
@@ -1738,7 +1738,7 @@
                   "value": "[variables('srv1name')]"
               },              
               "ResourceGroupName": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[resourceGroup().Name]"
               }
           }
       }
@@ -1767,7 +1767,7 @@
                   "value": "[variables('srv2name')]"
               },              
               "ResourceGroupName": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[resourceGroup().Name]"
               }
           }
       }
