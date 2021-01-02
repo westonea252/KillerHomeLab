@@ -1669,7 +1669,8 @@
       "apiVersion": "2019-10-01",
       "name": "EncryptDC1",
       "dependsOn": [
-        "UpdateKeyVault1"        
+        "UpdateKeyVault1",
+        "DomainJoinSRV1VM"          
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1704,7 +1705,8 @@
       "apiVersion": "2019-10-01",
       "name": "EncryptDC2",
       "dependsOn": [
-        "UpdateKeyVault2"        
+        "UpdateKeyVault2",
+        "DomainJoinSRV2VM"                
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1739,7 +1741,8 @@
       "apiVersion": "2019-10-01",
       "name": "EncryptSRV1",
       "dependsOn": [
-        "UpdateKeyVault1"
+        "UpdateKeyVault1",
+        "DomainJoinSRV1VM"        
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1774,7 +1777,8 @@
       "apiVersion": "2019-10-01",
       "name": "EncryptSRV2",
       "dependsOn": [
-        "UpdateKeyVault1"
+        "UpdateKeyVault1",
+        "DomainJoinSRV2VM"        
       ],      
       "properties": {
           "mode": "Incremental",
