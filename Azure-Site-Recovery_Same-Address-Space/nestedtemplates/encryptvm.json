@@ -20,6 +20,12 @@
         "description": "VM Name"
       }
     },
+    "ScriptLocation": {
+        "type": "string",
+      "metadata": {
+        "description": "Region of Resources"
+      }
+    },    
     "ResourceGroupName": {
       "type": "string",
       "metadata": {
@@ -37,7 +43,7 @@
       "type": "Microsoft.Resources/deploymentScripts",
       "apiVersion": "2019-10-01-preview",
       "name": "encryptvms",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('ScriptLocation')]",
       "kind": "AzurePowerShell",      
       "identity": {
         "type": "UserAssigned",

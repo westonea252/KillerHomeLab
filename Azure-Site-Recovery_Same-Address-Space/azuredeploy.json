@@ -212,8 +212,6 @@
     }
   },
   "variables": {
-    "ResourceGroup1": "[concat(parameters('NamingConvention'),'-Site1')]",
-    "ResourceGroup2": "[concat(parameters('NamingConvention'),'-Site2')]",    
     "vnet1Name": "[concat(parameters('NamingConvention'),'-VNet1')]",
     "vnet1NameR": "[concat(parameters('NamingConvention'),'-Recovery-VNet1')]",    
     "vnet1Prefix": "[concat(parameters('vnet1ID'),'.0.0/16')]",
@@ -265,7 +263,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "VNet1",
-      "resourceGroup": "[variables('ResourceGroup1')]",
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -304,7 +301,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "VNet1R",
-      "resourceGroup": "[variables('ResourceGroup2')]",      
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -343,7 +339,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "VNet2",
-      "resourceGroup": "[variables('ResourceGroup2')]",      
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -382,7 +377,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "VNet2R",
-      "resourceGroup": "[variables('ResourceGroup1')]",      
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -421,7 +415,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "BastionHost1",
-      "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
         "VNet1"
       ],
@@ -454,7 +447,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "BastionHost1R",
-      "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
         "VNet1R"
       ],
@@ -487,7 +479,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "BastionHost2",
-      "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
         "VNet2"
       ],
@@ -520,7 +511,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "BastionHost2R",
-      "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
         "VNet2R"
       ],
@@ -553,7 +543,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "deployDC1VM",
-      "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
         "VNet1"
       ],      
@@ -610,7 +599,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "promotedc1",
-      "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
         "DeployDC1VM"
       ],            
@@ -652,7 +640,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "updatevnet1dns",
-      "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
         "promotedc1"
       ],            
@@ -699,7 +686,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "updatevnet2dns",
-      "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
         "promotedc1"
       ],            
@@ -746,7 +732,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "restartdc1",
-      "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
         "updatevnet1dns",
         "updatevnet2dns"
@@ -777,7 +762,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "configdns",
-      "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
         "restartdc1"
       ],            
@@ -822,7 +806,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "createous",
-      "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
         "configdns"
       ],            
@@ -855,7 +838,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "createsites",
-      "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
         "createous"
       ],            
@@ -897,7 +879,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "PeeringToSite2",
-      "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
         "createsites"
       ],            
@@ -939,7 +920,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "PeeringToSite1",
-      "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
         "PeeringToSite2"
       ],            
@@ -981,7 +961,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "deployDC2VM",
-      "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
         "updatevnet2dns"
       ],      
@@ -1038,7 +1017,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "promotedc2",
-      "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
         "PeeringToSite2",
         "PeeringToSite1",
@@ -1085,7 +1063,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "updatevnet2dns-2",
-      "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
         "promotedc2"
       ],            
@@ -1132,7 +1109,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "restartdc2",
-      "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
         "updatevnet2dns-2"
       ],            
@@ -1162,7 +1138,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "deploySRV1VM",
-      "resourceGroup": "[variables('ResourceGroup1')]",            
       "dependsOn": [
         "createsites"
       ],      
@@ -1216,7 +1191,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DomainJoinSRV1VM",
-      "resourceGroup": "[variables('ResourceGroup1')]",            
       "dependsOn": [
         "DeploySRV1VM"
       ],      
@@ -1255,7 +1229,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "deploySRV2VM",
-      "resourceGroup": "[variables('ResourceGroup2')]",            
       "dependsOn": [
         "restartdc2"
       ],      
@@ -1309,7 +1282,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DomainJoinSRV2VM",
-      "resourceGroup": "[variables('ResourceGroup2')]",            
       "dependsOn": [
         "DeploySRV2VM"
       ],      
@@ -1348,7 +1320,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DeployRSVault1",
-      "resourceGroup": "[variables('ResourceGroup1')]",            
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -1369,7 +1340,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DeployRSVault2",
-      "resourceGroup": "[variables('ResourceGroup2')]",            
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -1390,7 +1360,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "CreateManagedID",
-      "resourceGroup": "[variables('ResourceGroup2')]",            
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -1437,7 +1406,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DeployKeyVault1",
-      "resourceGroup": "[variables('ResourceGroup1')]",            
       "dependsOn": [
         "CreateManagedID"        
       ],      
@@ -1470,7 +1438,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DeployKeyVault2",
-      "resourceGroup": "[variables('ResourceGroup2')]",            
       "dependsOn": [
         "CreateManagedID"
       ],      
@@ -1503,7 +1470,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "CreateHSMKey1",
-      "resourceGroup": "[variables('ResourceGroup1')]",                  
       "dependsOn": [
         "CreateManagedID",        
         "DeployKeyVault1"         
@@ -1531,7 +1497,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "CreateHSMKey2",
-      "resourceGroup": "[variables('ResourceGroup2')]",                  
       "dependsOn": [
         "CreateManagedID",        
         "DeployKeyVault2"         
@@ -1559,7 +1524,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "CreateDES1",
-      "resourceGroup": "[variables('ResourceGroup1')]",                  
       "dependsOn": [
         "CreateManagedID",        
         "DeployKeyVault1",
@@ -1591,7 +1555,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "CreateDES2",
-      "resourceGroup": "[variables('ResourceGroup2')]",                  
       "dependsOn": [
         "CreateManagedID",        
         "DeployKeyVault2",
@@ -1623,7 +1586,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "UpdateKeyVault1",
-      "resourceGroup": "[variables('ResourceGroup2')]",            
       "dependsOn": [
         "DeployKeyVault1",
         "CreateHSMKey1",
@@ -1661,7 +1623,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "UpdateKeyVault2",
-      "resourceGroup": "[variables('ResourceGroup2')]",            
       "dependsOn": [
         "DeployKeyVault2",
         "CreateHSMKey2",
@@ -1699,7 +1660,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "EncryptDC1",
-      "resourceGroup": "[variables('ResourceGroup2')]",            
       "dependsOn": [
         "UpdateKeyVault1"        
       ],      
@@ -1720,7 +1680,7 @@
                   "value": "[variables('dc1name')]"
               },              
               "ResourceGroupName": {
-                  "value": "[variables('ResourceGroup1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -1729,7 +1689,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "EncryptDC2",
-      "resourceGroup": "[variables('ResourceGroup2')]",            
       "dependsOn": [
         "UpdateKeyVault2"        
       ],      
@@ -1750,7 +1709,7 @@
                   "value": "[variables('dc2name')]"
               },              
               "ResourceGroupName": {
-                  "value": "[variables('ResourceGroup2')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -1759,7 +1718,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "EncryptSRV1",
-      "resourceGroup": "[variables('ResourceGroup2')]",            
       "dependsOn": [
         "UpdateKeyVault1"
       ],      
@@ -1780,7 +1738,7 @@
                   "value": "[variables('srv1name')]"
               },              
               "ResourceGroupName": {
-                  "value": "[variables('ResourceGroup1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -1789,7 +1747,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "EncryptSRV2",
-      "resourceGroup": "[variables('ResourceGroup2')]",            
       "dependsOn": [
         "UpdateKeyVault1"
       ],      
@@ -1810,7 +1767,7 @@
                   "value": "[variables('srv2name')]"
               },              
               "ResourceGroupName": {
-                  "value": "[variables('ResourceGroup2')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
