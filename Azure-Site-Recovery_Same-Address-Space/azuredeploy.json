@@ -1681,7 +1681,10 @@
               },              
               "ResourceGroupName": {
                   "value": "[resourceGroup().Name]"
-              }
+              },
+              "ScriptLocation": {
+                  "value": "[resourceGroup().location]"
+              }                 
           }
       }
     },
@@ -1710,7 +1713,10 @@
               },              
               "ResourceGroupName": {
                   "value": "[resourceGroup().Name]"
-              }
+              },
+              "ScriptLocation": {
+                  "value": "[parameters('Location2')]"
+              }                                                    
           }
       }
     },    
@@ -1739,7 +1745,10 @@
               },              
               "ResourceGroupName": {
                   "value": "[resourceGroup().Name]"
-              }
+              },
+              "ScriptLocation": {
+                  "value": "[resourceGroup().location]"
+              }                 
           }
       }
     },          
@@ -1768,7 +1777,10 @@
               },              
               "ResourceGroupName": {
                   "value": "[resourceGroup().Name]"
-              }
+              },
+              "ScriptLocation": {
+                  "value": "[parameters('Location2')]"
+              }                                                    
           }
       }
     }              
