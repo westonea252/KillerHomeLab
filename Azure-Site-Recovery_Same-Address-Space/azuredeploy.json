@@ -1541,7 +1541,10 @@
               },              
               "Location": {
                   "value": "[resourceGroup().location]"
-              }                            
+              },
+              "ScriptLocation": {
+                  "value": "[resourceGroup().location]"
+              }                                                        
           }
       }
     },
@@ -1572,7 +1575,10 @@
               },              
               "Location": {
                   "value": "[parameters('Location2')]"
-              }                            
+              },
+              "ScriptLocation": {
+                  "value": "[parameters('Location2')]"
+              }                                                        
           }
       }
     },    
