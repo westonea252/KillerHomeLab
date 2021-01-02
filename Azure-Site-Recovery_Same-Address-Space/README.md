@@ -14,6 +14,8 @@ This Templates deploys a Single Forest/Domain:
 - 2 - Azure Key Vaults (1 within each Region)
 - 2 - Recovery Services Vaults (1 within each Region)
 
+!!!Note:  In order to successfully deploy this lab, you will need the Object ID of the account that will accessing your KeyVault
+
 The deployment leverages Desired State Configuration scripts to further customize the following:
 
 AD OU Structure:
@@ -38,23 +40,21 @@ AD OU Structure:
 - --- Windows7
 
 Parameters that support changes
+- Location2. Enter a Valid Azure Region based on which Cloud (AzureCloud, AzureUSGovernment, etc...) you are using.
 - Admin Object ID. Enter the Object ID for the Admin Account that will need access the Azure KeyVaults and Recovery Services Vaults.
 - Admin Username.  Enter a valid Admin Username
 - Admin Password.  Enter a valid Admin Password
-- Location1. Enter a Valid Azure Region based on which Cloud (AzureCloud, AzureUSGovernment, etc...) you are using.
-- Location2. Enter a Valid Azure Region based on which Cloud (AzureCloud, AzureUSGovernment, etc...) you are using.
+- WindowsServerLicenseType.  Choose Windows Server License Type (Example:  Windows_Server or None)
 - Naming Convention. Enter a name that will be used as a naming prefix for (Servers, VNets, etc) you are using.
+- Sub DNS Domain.  OPTIONALLY, enter a valid DNS Sub Domain. (Example:  sub1. or sub1.sub2.    This entry must end with a DOT )
+- Sub DNS BaseDN.  OPTIONALLY, enter a valid DNS Sub Base DN. (Example:  DC=sub1, or DC=sub1,DC=sub2,    This entry must end with a COMMA )
 - Net Bios Domain.  Enter a valid Net Bios Domain Name (Example:  killerhomelab).
+- Internal Domain.  Enter a valid Internal Domain (Exmaple:  killerhomelab)
 - TLD.  Select a valid Top-Level Domain using the Pull-Down Menu.
 - Vnet1ID.  Enter first 2 octets of your desired Address Space for Virtual Network 1 (Example:  10.1)
 - Vnet2ID.  Enter first 2 octets of your desired Address Space for Virtual Network 2 (Example:  10.2)
 - Reverse Lookup1.  Enter first 2 octets of your desired Address Space in Reverse (Example:  1.10)
 - Reverse Lookup2.  Enter first 2 octets of your desired Address Space in Reverse (Example:  2.10)
-- Backup Object ID.  Choose "9a7b9a6d-0996-4d52-889f-46473877d766" for Azure Gov and "f40e18f0-6544-45c2-9d24-639a8bb3b41a" for Azure Commercial
-- Key Vault1ID.  Enter a number make your KeyVault Unique (Example:  01)
-- Key Vault2ID.  Enter a number make your KeyVault Unique (Example:  02)
-- RS Vault1ID.  Enter a number make your Recovery Services Vault Unique (Example:  01)
-- RS Vault2ID.  Enter a number make your Recovery Services Vault Unique (Example:  02)
 - DC1OSVersion.  Select 2016-Datacenter (Windows 2016) or 2019-Datacenter (Windows 2019) Domain Controller 1 OS Version
 - DC2OSVersion.  Select 2016-Datacenter (Windows 2016) or 2019-Datacenter (Windows 2019) Domain Controller 2 OS Version
 - SRV1OSVersion.  Select 2016-Datacenter (Windows 2016) or 2019-Datacenter (Windows 2019) Root CA OS Version

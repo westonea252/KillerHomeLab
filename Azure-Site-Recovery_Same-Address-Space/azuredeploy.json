@@ -2,6 +2,13 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "Location2": {
+      "type": "string",
+      "defaultValue": "WestUS",
+      "metadata": {
+        "description": "Choose Region (Example: WestUS)"
+      }
+    },        
     "AdminObjectID": {
       "type": "string",
       "defaultValue": "",
@@ -32,20 +39,6 @@
           "description": "Windows Server OS License Type"
       }
     },        
-    "Location1": {
-      "type": "string",
-      "defaultValue": "EastUS",
-      "metadata": {
-        "description": "Choose Region (Example: EastUS)"
-      }
-    },
-    "Location2": {
-      "type": "string",
-      "defaultValue": "WestUS",
-      "metadata": {
-        "description": "Choose Region (Example: WestUS)"
-      }
-    },        
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
@@ -53,13 +46,34 @@
         "description": "Environment Naming Convention"
       }
     },
+    "SubDNSDomain": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+          "description": "Sub DNS Domain Name Example:  sub1. must include a DOT AT END"
+      }
+    },     
+    "SubDNSBaseDN": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+          "description": "Sub DNS Domain Name Example:  DC=sub2,DC=sub1, must include COMMA AT END"
+      }
+    },                
     "NetBiosDomain": {
       "type": "string",
       "defaultValue": "killerhomelab",
       "metadata": {
           "description": "NetBios Domain Name"
       }
-    },    
+    },   
+    "InternalDomain": {
+      "type": "string",
+      "defaultValue": "killerhomelab",
+      "metadata": {
+          "description": "NetBios Domain Name"
+      }
+    },       
     "TLD": {
       "type": "string",
       "defaultValue": "com",
@@ -102,45 +116,7 @@
       "metadata": {
           "description": "DNS Reverse Lookup Zone2 Prefix"
       }
-    },             
-    "BackupObjectID": {
-      "type": "string",
-      "defaultValue": "f40e18f0-6544-45c2-9d24-639a8bb3b41a",
-      "allowedValues": [
-        "f40e18f0-6544-45c2-9d24-639a8bb3b41a"
-      ],            
-      "metadata": {
-          "description": "Backup Object ID."
-      }
-    },             
-    "KeyVault1ID": {
-      "type": "string",
-      "defaultValue": "01",
-      "metadata": {
-        "description": "KeyVault 1 Name"
-      }
-    },
-    "KeyVault2ID": {
-      "type": "string",
-      "defaultValue": "02",
-      "metadata": {
-        "description": "KeyVault 2 Name"
-      }
-    },    
-    "RSVault1ID": {
-      "type": "string",
-      "defaultValue": "01",
-      "metadata": {
-        "description": "Recovery Services Vault 1 Name"
-      }
-    },    
-    "RSVault2ID": {
-      "type": "string",
-      "defaultValue": "02",
-      "metadata": {
-        "description": "Recovery Services Vault 2 Name"
-      }
-    },                
+    },                       
     "DC1OSVersion": {
         "type": "string",
         "defaultValue": "2019-Datacenter",
@@ -213,6 +189,13 @@
           "description": "Server2 VMSize"
       }
     },                
+    "roleAssignmentGuid": {
+        "type": "string",
+        "defaultValue": "[newGuid()]",
+        "metadata": {
+            "description": "A new GUID used to identify the role assignment"
+        }
+    },                    
     "_artifactsLocation": {
       "type": "string",
       "metadata": {
@@ -266,14 +249,16 @@
     "srv2name": "[concat(parameters('NamingConvention'),'-srv-02')]",           
     "srv2IP": "[concat(parameters('vnet2ID'),'.2.',variables('srv2lastoctet'))]",        
     "DCDataDisk1Name": "NTDS",            
-    "domainName": "[concat(parameters('NetBiosDomain'),'.',parameters('TLD'))]",
-    "BaseDN": "[concat('DC=',parameters('NetBiosDomain'),',DC=',parameters('TLD'))]",
+    "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
+    "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
-    "KeyVault1Name": "[concat(parameters('NamingConvention'),'-KeyVault',parameters('KeyVault1ID'))]",            
-    "KeyVault2Name": "[concat(parameters('NamingConvention'),'-KeyVault',parameters('KeyVault2ID'))]",            
-    "RSVault1Name": "[concat(parameters('NamingConvention'),'-RSVault',parameters('RSVault1ID'))]",            
-    "RSVault2Name": "[concat(parameters('NamingConvention'),'-RSVault',parameters('RSVault2ID'))]",
-    "ManagedIDName": "[concat(parameters('NamingConvention'),'-ManagedID')]"
+    "BackupObjectID": "f40e18f0-6544-45c2-9d24-639a8bb3b41a",
+    "KeyVault1Name": "[concat(parameters('NamingConvention'),'-KV-Site1',uniqueString(resourceGroup().id))]",            
+    "KeyVault2Name": "[concat(parameters('NamingConvention'),'-KV-Site2',uniqueString(resourceGroup().id))]",            
+    "RSVault1Name": "[concat(parameters('NamingConvention'),'-RV-Site1',uniqueString(resourceGroup().id))]",                        
+    "RSVault2Name": "[concat(parameters('NamingConvention'),'-RV-Site2',uniqueString(resourceGroup().id))]",            
+    "ManagedIDName": "[concat(parameters('NamingConvention'),'-ManagedID-',uniqueString(resourceGroup().id))]",
+    "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"              
   },  
   "resources": [
     {
@@ -310,7 +295,7 @@
                 "value": "[variables('vnet1BastionsubnetPrefix')]"
               },              
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().Name]"
               }
           }
       }
@@ -320,9 +305,6 @@
       "apiVersion": "2019-10-01",
       "name": "VNet1R",
       "resourceGroup": "[variables('ResourceGroup2')]",      
-      "dependsOn": [
-        "VNet1"        
-      ],
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -362,10 +344,6 @@
       "apiVersion": "2019-10-01",
       "name": "VNet2",
       "resourceGroup": "[variables('ResourceGroup2')]",      
-      "dependsOn": [
-        "VNet1",
-        "VNet1R"
-      ],      
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -405,11 +383,6 @@
       "apiVersion": "2019-10-01",
       "name": "VNet2R",
       "resourceGroup": "[variables('ResourceGroup1')]",      
-      "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2"
-      ],      
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -439,7 +412,7 @@
                 "value": "[variables('vnet2BastionsubnetPrefix')]"
               },              
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().Name]"
               }
           }
       }
@@ -450,10 +423,7 @@
       "name": "BastionHost1",
       "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R"
+        "VNet1"
       ],
       "properties": {
           "mode": "Incremental",
@@ -475,7 +445,7 @@
                   "value": "AzureBastionSubnet"
               },
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().Name]"
               }
           }
       }
@@ -486,11 +456,7 @@
       "name": "BastionHost1R",
       "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1"
+        "VNet1R"
       ],
       "properties": {
           "mode": "Incremental",
@@ -523,12 +489,7 @@
       "name": "BastionHost2",
       "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1",
-        "BastionHost1R"
+        "VNet2"
       ],
       "properties": {
           "mode": "Incremental",
@@ -561,13 +522,7 @@
       "name": "BastionHost2R",
       "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1",
-        "BastionHost1R",
-        "BastionHost2"
+        "VNet2R"
       ],
       "properties": {
           "mode": "Incremental",
@@ -589,7 +544,7 @@
                   "value": "AzureBastionSubnet"
               },
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().Name]"
               }
           }
       }
@@ -600,14 +555,7 @@
       "name": "deployDC1VM",
       "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1",
-        "BastionHost1R",
-        "BastionHost2",
-        "BastionHost2R"
+        "VNet1"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -653,7 +601,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().Name]"
               }
           }
       }
@@ -664,14 +612,6 @@
       "name": "promotedc1",
       "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1",
-        "BastionHost1R",
-        "BastionHost2",
-        "BastionHost2R",
         "DeployDC1VM"
       ],            
       "properties": {
@@ -703,7 +643,7 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                           
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().Name]"
               }
           }
       }
@@ -714,15 +654,6 @@
       "name": "updatevnet1dns",
       "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1",
-        "BastionHost1R",
-        "BastionHost2",
-        "BastionHost2R",
-        "DeployDC1VM",
         "promotedc1"
       ],            
       "properties": {
@@ -759,7 +690,7 @@
                 ]
               },                                                                                                            
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().Name]"
               }
           }
       }
@@ -770,17 +701,7 @@
       "name": "updatevnet2dns",
       "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1",
-        "BastionHost1R",
-        "BastionHost2",
-        "BastionHost2R",        
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns"
+        "promotedc1"
       ],            
       "properties": {
           "mode": "Incremental",
@@ -827,16 +748,6 @@
       "name": "restartdc1",
       "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1",
-        "BastionHost1R",
-        "BastionHost2",
-        "BastionHost2R",
-        "DeployDC1VM",
-        "promotedc1",
         "updatevnet1dns",
         "updatevnet2dns"
       ],            
@@ -857,7 +768,7 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                                         
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().Name]"
               }
           }
       }
@@ -868,18 +779,6 @@
       "name": "configdns",
       "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1",
-        "BastionHost1R",
-        "BastionHost2",
-        "BastionHost2R",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
         "restartdc1"
       ],            
       "properties": {
@@ -914,7 +813,7 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                           
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().Name]"
               }
           }
       }
@@ -925,19 +824,6 @@
       "name": "createous",
       "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1",
-        "BastionHost1R",
-        "BastionHost2",
-        "BastionHost2R",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
         "configdns"
       ],            
       "properties": {
@@ -960,7 +846,7 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                           
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().Name]"
               }
           }
       }
@@ -971,20 +857,6 @@
       "name": "createsites",
       "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1",
-        "BastionHost1R",
-        "BastionHost2",
-        "BastionHost2R",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
         "createous"
       ],            
       "properties": {
@@ -1016,7 +888,7 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                           
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().Name]"
               }
           }
       }
@@ -1027,21 +899,6 @@
       "name": "PeeringToSite2",
       "resourceGroup": "[variables('ResourceGroup1')]",      
       "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1",
-        "BastionHost1R",
-        "BastionHost2",
-        "BastionHost2R",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
         "createsites"
       ],            
       "properties": {
@@ -1073,7 +930,7 @@
                 "value": "false"
               },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().Name]"
               }
           }
       }
@@ -1084,22 +941,6 @@
       "name": "PeeringToSite1",
       "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1",
-        "BastionHost1R",
-        "BastionHost2",
-        "BastionHost2R",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
         "PeeringToSite2"
       ],            
       "properties": {
@@ -1142,24 +983,7 @@
       "name": "deployDC2VM",
       "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1",
-        "BastionHost1R",
-        "BastionHost2",
-        "BastionHost2R",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
-        "PeeringToSite2",
-        "PeeringToSite1"
+        "updatevnet2dns"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1216,22 +1040,6 @@
       "name": "promotedc2",
       "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1",
-        "BastionHost1R",
-        "BastionHost2",
-        "BastionHost2R",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
         "PeeringToSite2",
         "PeeringToSite1",
         "deployDC2VM"
@@ -1279,25 +1087,6 @@
       "name": "updatevnet2dns-2",
       "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1",
-        "BastionHost1R",
-        "BastionHost2",
-        "BastionHost2R",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
-        "PeeringToSite2",
-        "PeeringToSite1",
-        "deployDC2VM",
         "promotedc2"
       ],            
       "properties": {
@@ -1345,26 +1134,6 @@
       "name": "restartdc2",
       "resourceGroup": "[variables('ResourceGroup2')]",      
       "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1",
-        "BastionHost1R",
-        "BastionHost2",
-        "BastionHost2R",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
-        "PeeringToSite2",
-        "PeeringToSite1",
-        "deployDC2VM",
-        "promotedc2",
         "updatevnet2dns-2"
       ],            
       "properties": {
@@ -1395,28 +1164,7 @@
       "name": "deploySRV1VM",
       "resourceGroup": "[variables('ResourceGroup1')]",            
       "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1",
-        "BastionHost1R",
-        "BastionHost2",
-        "BastionHost2R",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
-        "PeeringToSite2",
-        "PeeringToSite1",
-        "deployDC2VM",
-        "promotedc2",
-        "updatevnet2dns-2",
-        "restartdc2"
+        "createsites"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1459,7 +1207,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().Name]"
               }
           }
       }
@@ -1470,28 +1218,6 @@
       "name": "DomainJoinSRV1VM",
       "resourceGroup": "[variables('ResourceGroup1')]",            
       "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1",
-        "BastionHost1R",
-        "BastionHost2",
-        "BastionHost2R",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
-        "PeeringToSite2",
-        "PeeringToSite1",
-        "deployDC2VM",
-        "promotedc2",
-        "updatevnet2dns-2",
-        "restartdc2",
         "DeploySRV1VM"
       ],      
       "properties": {
@@ -1520,7 +1246,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                                                                                                                                                             
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().Name]"
               }
           }
       }
@@ -1531,30 +1257,7 @@
       "name": "deploySRV2VM",
       "resourceGroup": "[variables('ResourceGroup2')]",            
       "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1",
-        "BastionHost1R",
-        "BastionHost2",
-        "BastionHost2R",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
-        "PeeringToSite2",
-        "PeeringToSite1",
-        "deployDC2VM",
-        "promotedc2",
-        "updatevnet2dns-2",
-        "restartdc2",
-        "deploySRV1VM",
-        "DomainJoinSRV1VM"
+        "restartdc2"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1608,30 +1311,6 @@
       "name": "DomainJoinSRV2VM",
       "resourceGroup": "[variables('ResourceGroup2')]",            
       "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1",
-        "BastionHost1R",
-        "BastionHost2",
-        "BastionHost2R",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
-        "PeeringToSite2",
-        "PeeringToSite1",
-        "deployDC2VM",
-        "promotedc2",
-        "updatevnet2dns-2",
-        "restartdc2",
-        "DeploySRV1VM",
-        "DomainJoinSRV1VM",
         "DeploySRV2VM"
       ],      
       "properties": {
@@ -1670,34 +1349,6 @@
       "apiVersion": "2019-10-01",
       "name": "DeployRSVault1",
       "resourceGroup": "[variables('ResourceGroup1')]",            
-      "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1",
-        "BastionHost1R",
-        "BastionHost2",
-        "BastionHost2R",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
-        "PeeringToSite2",
-        "PeeringToSite1",
-        "deployDC2VM",
-        "promotedc2",
-        "updatevnet2dns-2",
-        "restartdc2",
-        "DeploySRV1VM",
-        "DomainJoinSRV1VM",
-        "DeploySRV2VM",
-        "DomainJoinSRV2VM"
-      ],      
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -1709,7 +1360,7 @@
                   "value": "[variables('RSVault1Name')]"
               },
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().Name]"
               }
           }
       }
@@ -1719,35 +1370,6 @@
       "apiVersion": "2019-10-01",
       "name": "DeployRSVault2",
       "resourceGroup": "[variables('ResourceGroup2')]",            
-      "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1",
-        "BastionHost1R",
-        "BastionHost2",
-        "BastionHost2R",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
-        "PeeringToSite2",
-        "PeeringToSite1",
-        "deployDC2VM",
-        "promotedc2",
-        "updatevnet2dns-2",
-        "restartdc2",
-        "DeploySRV1VM",
-        "DomainJoinSRV1VM",
-        "DeploySRV2VM",
-        "DomainJoinSRV2VM",
-        "DeployRSVault1"
-      ],      
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -1769,36 +1391,6 @@
       "apiVersion": "2019-10-01",
       "name": "CreateManagedID",
       "resourceGroup": "[variables('ResourceGroup2')]",            
-      "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1",
-        "BastionHost1R",
-        "BastionHost2",
-        "BastionHost2R",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
-        "PeeringToSite2",
-        "PeeringToSite1",
-        "deployDC2VM",
-        "promotedc2",
-        "updatevnet2dns-2",
-        "restartdc2",
-        "DeploySRV1VM",
-        "DomainJoinSRV1VM",
-        "DeploySRV2VM",
-        "DomainJoinSRV2VM",
-        "DeployRSVault1",
-        "DeployRSVault2"
-      ],      
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -1814,41 +1406,39 @@
               }
           }
       }
-    },    
+    },  
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "AssignManagedID",
+      "dependsOn": [
+        "CreateManagedID"
+      ],        
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/roleassignment.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "PrincipalID": {
+                  "value": "[reference('CreateManagedID').outputs.manageduseridentity.value]"
+              },
+              "RoleDefinitionID": {
+                  "value": "[variables('Contributor')]"
+              },
+              "roleAssignmentGuid": {
+                  "value": "[parameters('roleAssignmentGuid')]"
+              }              
+          }
+      }
+    },          
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DeployKeyVault1",
       "resourceGroup": "[variables('ResourceGroup1')]",            
       "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1",
-        "BastionHost1R",
-        "BastionHost2",
-        "BastionHost2R",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
-        "PeeringToSite2",
-        "PeeringToSite1",
-        "deployDC2VM",
-        "promotedc2",
-        "updatevnet2dns-2",
-        "restartdc2",
-        "DeploySRV1VM",
-        "DomainJoinSRV1VM",
-        "DeploySRV2VM",
-        "DomainJoinSRV2VM",
-        "DeployRSVault1",
-        "DeployRSVault2",
         "CreateManagedID"        
       ],      
       "properties": {
@@ -1862,7 +1452,7 @@
                   "value": "[variables('KeyVault1Name')]"
               },
               "BackupObjectID": {
-                  "value": "[parameters('BackupObjectID')]"
+                  "value": "[variables('BackupObjectID')]"
               },              
               "AdminObjectID": {
                   "value": "[parameters('AdminObjectID')]"
@@ -1871,7 +1461,7 @@
                   "value": "[reference('CreateManagedID').outputs.manageduseridentity.value]"             
               },                         
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().Name]"
               }
           }
       }
@@ -1882,36 +1472,7 @@
       "name": "DeployKeyVault2",
       "resourceGroup": "[variables('ResourceGroup2')]",            
       "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1",
-        "BastionHost1R",
-        "BastionHost2",
-        "BastionHost2R",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
-        "PeeringToSite2",
-        "PeeringToSite1",
-        "deployDC2VM",
-        "promotedc2",
-        "updatevnet2dns-2",
-        "restartdc2",
-        "DeploySRV1VM",
-        "DomainJoinSRV1VM",
-        "DeploySRV2VM",
-        "DomainJoinSRV2VM",
-        "DeployRSVault1",
-        "DeployRSVault2",
-        "CreateManagedID",        
-        "DeployKeyVault1"
+        "CreateManagedID"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1924,7 +1485,7 @@
                   "value": "[variables('KeyVault2Name')]"
               },
               "BackupObjectID": {
-                  "value": "[parameters('BackupObjectID')]"
+                  "value": "[variables('BackupObjectID')]"
               },                            
               "AdminObjectID": {
                   "value": "[parameters('AdminObjectID')]"
@@ -1937,43 +1498,42 @@
               }
           }
       }
-    },   
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "CreateHSMKey1",
+      "resourceGroup": "[variables('ResourceGroup1')]",                  
+      "dependsOn": [
+        "CreateManagedID",        
+        "DeployKeyVault1"         
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/createhsmkey.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "ManagedIDName": {
+                  "value": "[variables('ManagedIDName')]"
+              },
+              "KeyVaultName": {
+                  "value": "[variables('KeyVault2Name')]"
+              },
+              "ScriptLocation": {
+                  "value": "[resourceGroup().location]"
+              }              
+          }
+      }
+    },       
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "CreateHSMKey2",
       "resourceGroup": "[variables('ResourceGroup2')]",                  
       "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1",
-        "BastionHost1R",
-        "BastionHost2",
-        "BastionHost2R",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
-        "PeeringToSite2",
-        "PeeringToSite1",
-        "deployDC2VM",
-        "promotedc2",
-        "updatevnet2dns-2",
-        "restartdc2",
-        "DeploySRV1VM",
-        "DomainJoinSRV1VM",
-        "DeploySRV2VM",
-        "DomainJoinSRV2VM",
-        "DeployRSVault1",
-        "DeployRSVault2",
         "CreateManagedID",        
-        "DeployKeyVault1",
         "DeployKeyVault2"         
       ],      
       "properties": {
@@ -1988,46 +1548,52 @@
               },
               "KeyVaultName": {
                   "value": "[variables('KeyVault2Name')]"
-              }
+              },
+              "ScriptLocation": {
+                  "value": "[parameters('Location2')]"
+              }              
           }
       }
     },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "CreateDES",
-      "resourceGroup": "[variables('ResourceGroup2')]",                  
+      "name": "CreateDES1",
+      "resourceGroup": "[variables('ResourceGroup1')]",                  
       "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1",
-        "BastionHost1R",
-        "BastionHost2",
-        "BastionHost2R",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
-        "PeeringToSite2",
-        "PeeringToSite1",
-        "deployDC2VM",
-        "promotedc2",
-        "updatevnet2dns-2",
-        "restartdc2",
-        "DeploySRV1VM",
-        "DomainJoinSRV1VM",
-        "DeploySRV2VM",
-        "DomainJoinSRV2VM",
-        "DeployRSVault1",
-        "DeployRSVault2",
         "CreateManagedID",        
         "DeployKeyVault1",
+        "CreateHSMKey1"       
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/createdes.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "ManagedIDName": {
+                  "value": "[variables('ManagedIDName')]"
+              },
+              "KeyVaultName": {
+                  "value": "[variables('KeyVault1Name')]"
+              },
+              "ResourceGroupName": {
+                  "value": "[variables('ResourceGroup1')]"
+              },              
+              "Location": {
+                  "value": "[resourceGroup().location]"
+              }                            
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "CreateDES2",
+      "resourceGroup": "[variables('ResourceGroup2')]",                  
+      "dependsOn": [
+        "CreateManagedID",        
         "DeployKeyVault2",
         "CreateHSMKey2"       
       ],      
@@ -2052,6 +1618,44 @@
               }                            
           }
       }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "UpdateKeyVault1",
+      "resourceGroup": "[variables('ResourceGroup2')]",            
+      "dependsOn": [
+        "DeployKeyVault1",
+        "CreateHSMKey1",
+        "CreateDES1"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/updatekeyvault.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "KeyVaultName": {
+                  "value": "[variables('KeyVault1Name')]"
+              },
+              "BackupObjectID": {
+                  "value": "[variables('BackupObjectID')]"
+              },                            
+              "AdminObjectID": {
+                  "value": "[parameters('AdminObjectID')]"
+              },   
+              "UserManagedObjectID": {
+                  "value": "[reference('CreateManagedID').outputs.manageduseridentity.value]"             
+              },                                         
+              "DESObjectID": {
+                  "value": "[reference('CreateDES1').outputs.DiskEncryptionSet.value]"             
+              },                         
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
     },
     {
       "type": "Microsoft.Resources/deployments",
@@ -2059,39 +1663,9 @@
       "name": "UpdateKeyVault2",
       "resourceGroup": "[variables('ResourceGroup2')]",            
       "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1",
-        "BastionHost1R",
-        "BastionHost2",
-        "BastionHost2R",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
-        "PeeringToSite2",
-        "PeeringToSite1",
-        "deployDC2VM",
-        "promotedc2",
-        "updatevnet2dns-2",
-        "restartdc2",
-        "DeploySRV1VM",
-        "DomainJoinSRV1VM",
-        "DeploySRV2VM",
-        "DomainJoinSRV2VM",
-        "DeployRSVault1",
-        "DeployRSVault2",
-        "CreateManagedID",        
-        "DeployKeyVault1",
         "DeployKeyVault2",
         "CreateHSMKey2",
-        "CreateDES"
+        "CreateDES2"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -2104,7 +1678,7 @@
                   "value": "[variables('KeyVault2Name')]"
               },
               "BackupObjectID": {
-                  "value": "[parameters('BackupObjectID')]"
+                  "value": "[variables('BackupObjectID')]"
               },                            
               "AdminObjectID": {
                   "value": "[parameters('AdminObjectID')]"
@@ -2113,10 +1687,40 @@
                   "value": "[reference('CreateManagedID').outputs.manageduseridentity.value]"             
               },                                         
               "DESObjectID": {
-                  "value": "[reference('CreateDES').outputs.DiskEncryptionSet.value]"             
+                  "value": "[reference('CreateDES2').outputs.DiskEncryptionSet.value]"             
               },                         
               "location": {
                   "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "EncryptDC1",
+      "resourceGroup": "[variables('ResourceGroup2')]",            
+      "dependsOn": [
+        "UpdateKeyVault1"        
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/encryptvm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "ManagedIDName": {
+                  "value": "[variables('ManagedIDName')]"
+              },
+              "KeyVaultName": {
+                  "value": "[variables('KeyVault1Name')]"
+              },
+              "VMName": {
+                  "value": "[variables('dc1name')]"
+              },              
+              "ResourceGroupName": {
+                  "value": "[variables('ResourceGroup1')]"
               }
           }
       }
@@ -2127,39 +1731,6 @@
       "name": "EncryptDC2",
       "resourceGroup": "[variables('ResourceGroup2')]",            
       "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1",
-        "BastionHost1R",
-        "BastionHost2",
-        "BastionHost2R",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
-        "PeeringToSite2",
-        "PeeringToSite1",
-        "deployDC2VM",
-        "promotedc2",
-        "updatevnet2dns-2",
-        "restartdc2",
-        "DeploySRV1VM",
-        "DomainJoinSRV1VM",
-        "DeploySRV2VM",
-        "DomainJoinSRV2VM",
-        "DeployRSVault1",
-        "DeployRSVault2",
-        "CreateManagedID",        
-        "DeployKeyVault1",
-        "DeployKeyVault2",
-        "CreateHSMKey2",
-        "CreateDES",
         "UpdateKeyVault2"        
       ],      
       "properties": {
@@ -2183,48 +1754,44 @@
               }
           }
       }
-    },
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "EncryptSRV1",
+      "resourceGroup": "[variables('ResourceGroup2')]",            
+      "dependsOn": [
+        "UpdateKeyVault1"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/encryptvm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "ManagedIDName": {
+                  "value": "[variables('ManagedIDName')]"
+              },
+              "KeyVaultName": {
+                  "value": "[variables('KeyVault1Name')]"
+              },
+              "VMName": {
+                  "value": "[variables('srv1name')]"
+              },              
+              "ResourceGroupName": {
+                  "value": "[variables('ResourceGroup1')]"
+              }
+          }
+      }
+    },          
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "EncryptSRV2",
       "resourceGroup": "[variables('ResourceGroup2')]",            
       "dependsOn": [
-        "VNet1",
-        "VNet1R",
-        "VNet2",
-        "VNet2R",
-        "BastionHost1",
-        "BastionHost1R",
-        "BastionHost2",
-        "BastionHost2R",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "updatevnet2dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "createsites",
-        "PeeringToSite2",
-        "PeeringToSite1",
-        "deployDC2VM",
-        "promotedc2",
-        "updatevnet2dns-2",
-        "restartdc2",
-        "DeploySRV1VM",
-        "DomainJoinSRV1VM",
-        "DeploySRV2VM",
-        "DomainJoinSRV2VM",
-        "DeployRSVault1",
-        "DeployRSVault2",
-        "CreateManagedID",        
-        "DeployKeyVault1",
-        "DeployKeyVault2",
-        "CreateHSMKey2",
-        "CreateDES",
-        "UpdateKeyVault2",
-        "EncryptDC2"      
+        "UpdateKeyVault1"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -2247,6 +1814,6 @@
               }
           }
       }
-    }          
+    }              
   ]
 }

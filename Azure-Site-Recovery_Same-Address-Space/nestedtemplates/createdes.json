@@ -19,7 +19,13 @@
       "metadata": {
         "description": "ResourceGroupName"
       }
-    },    
+    },
+    "ScriptLocation": {
+        "type": "string",
+      "metadata": {
+        "description": "Region of Resources"
+      }
+    },          
     "location": {
         "type": "string",
       "metadata": {
@@ -36,7 +42,7 @@
       "type": "Microsoft.Resources/deploymentScripts",
       "apiVersion": "2019-10-01-preview",
       "name": "createdes",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('ScriptLocation')]",
       "kind": "AzurePowerShell",      
       "identity": {
         "type": "UserAssigned",
