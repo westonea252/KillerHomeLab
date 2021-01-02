@@ -895,9 +895,6 @@
               "TargetVNetName": {
                 "value": "[variables('vnet2Name')]"
               },              
-              "TargetVNetResourceGroup": {
-                "value": "[resourceGroup().Name]"
-              },                            
               "allowVirtualNetworkAccess": {
                 "value": "true"
               },                                                                                                                                                                                                                                                                                                           
@@ -935,9 +932,6 @@
               },
               "TargetVNetName": {
                 "value": "[variables('vnet1Name')]"
-              },              
-              "TargetVNetResourceGroup": {
-                "value": "[resourceGroup().Name]"
               },              
               "allowVirtualNetworkAccess": {
                 "value": "true"
