@@ -1705,7 +1705,7 @@
       "name": "EncryptDC2",
       "dependsOn": [
         "UpdateKeyVault2",
-        "DomainJoinSRV2VM"                
+        "DomainJoinSRV2VM"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1741,7 +1741,8 @@
       "name": "EncryptSRV1",
       "dependsOn": [
         "UpdateKeyVault1",
-        "DomainJoinSRV2VM"        
+        "DomainJoinSRV2VM",
+        "EncryptDC1"                
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1777,7 +1778,8 @@
       "name": "EncryptSRV2",
       "dependsOn": [
         "UpdateKeyVault1",
-        "DomainJoinSRV2VM"        
+        "DomainJoinSRV2VM",
+        "EncryptDC1"                
       ],      
       "properties": {
           "mode": "Incremental",
