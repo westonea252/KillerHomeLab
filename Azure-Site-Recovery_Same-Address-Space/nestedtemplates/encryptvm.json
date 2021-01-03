@@ -80,7 +80,7 @@
           New-AzDiskUpdateConfig -EncryptionType $EncryptionKeyType -DiskEncryptionSetId $des.Id | Update-AzDisk -ResourceGroupName $ResourceGroupName -DiskName $OSDisk.Name
           }
           IF ($Null -ne $DataDiskCheck){
-          $DataDisk = Get-AzDisk -Name $vm.StorageProfile.DataDisk[0].Name
+          $DataDisk = Get-AzDisk -Name $vm.StorageProfile.DataDisks[0].Name
           New-AzDiskUpdateConfig -EncryptionType $EncryptionKeyType -DiskEncryptionSetId $des.Id | Update-AzDisk -ResourceGroupName $ResourceGroupName -DiskName $DataDisk.Name
           }
           IF ($vmstatus.Statuses[0].DisplayStatus -eq 'VM deallocated') {Start-AzVm -Name $VMName -ResourceGroupName $ResourceGroupName}
