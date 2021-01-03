@@ -958,7 +958,8 @@
       "apiVersion": "2019-10-01",
       "name": "deployDC2VM",
       "dependsOn": [
-        "updatevnet2dns"
+        "PeeringToSite2",
+        "PeeringToSite1"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1014,8 +1015,6 @@
       "apiVersion": "2019-10-01",
       "name": "promotedc2",
       "dependsOn": [
-        "PeeringToSite2",
-        "PeeringToSite1",
         "deployDC2VM"
       ],      
       "properties": {
