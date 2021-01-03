@@ -45,7 +45,7 @@
 "resources": [
     {
       "type": "Microsoft.Resources/deploymentScripts",
-      "apiVersion": "2019-10-01-preview",
+      "apiVersion": "2020-10-01",
       "name": "[parameters('ScriptName')]",
       "location": "[parameters('ScriptLocation')]",
       "kind": "AzurePowerShell",      
@@ -57,7 +57,7 @@
         }
       },
       "properties": {
-        "azPowerShellVersion": "3.0",
+        "azPowerShellVersion": "5.0",
         "timeout": "PT1H",
         "arguments": "[format(' -DESName {0} -VMName {1} -ResourceGroupName {2}', variables('DESName'), parameters('VMName'), parameters('ResourceGroupName'))]", // can pass an argument string, double quotes must be escaped
         "scriptContent": "
