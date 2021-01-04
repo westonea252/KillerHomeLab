@@ -1782,7 +1782,8 @@
         "UpdateKeyVault1",
         "DomainJoinSRV2VM",
         "EncryptDC1",
-        "EncryptDC1"                        
+        "EncryptDC2",
+        "EncryptSRV1"                                
       ],      
       "properties": {
           "mode": "Incremental",

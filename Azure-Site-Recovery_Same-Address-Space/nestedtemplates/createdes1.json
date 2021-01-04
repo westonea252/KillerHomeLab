@@ -40,7 +40,7 @@
 "resources": [
     {
       "type": "Microsoft.Resources/deploymentScripts",
-      "apiVersion": "2019-10-01-preview",
+      "apiVersion": "2020-10-01",
       "name": "createdes1",
       "location": "[parameters('ScriptLocation')]",
       "kind": "AzurePowerShell",      
@@ -52,7 +52,7 @@
         }
       },
       "properties": {
-        "azPowerShellVersion": "3.0",
+        "azPowerShellVersion": "5.0",
         "timeout": "PT1H",
         "arguments": "[format(' -vaultName {0} -KeyName {1} -DESName {2} -ResourceGroupName {3} -Location {4}', parameters('keyVaultName'), variables('KeyName'), variables('DESName'), parameters('ResourceGroupName'), parameters('location'))]", // can pass an argument string, double quotes must be escaped
         "scriptContent": "
