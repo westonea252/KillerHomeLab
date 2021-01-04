@@ -41,7 +41,8 @@
       "All"
       ],
     "skuName":  "Premium",
-    "tenantID": "[subscription().tenantId]"
+    "tenantID": "[subscription().tenantId]",
+    "Test": "[parameters('keyVaultName')]"
   },
 "resources": [
     {
@@ -96,8 +97,8 @@
    ],
 "outputs": {
     "KeyVaultName": {
-        "type": "string",
-        "value": "[reference(resourceId(resourceGroup().name, 'Microsoft.KeyVault/vaults', parameters('keyVaultName'))).name]"
+        "type": "object",
+        "value": "[reference(resourceId(resourceGroup().name, 'Microsoft.KeyVault/vaults', parameters('keyVaultName')))]"
     }
   }      
 }
