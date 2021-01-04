@@ -96,7 +96,7 @@
    ],
 "outputs": {
     "KeyVaultName": {
-        "type": "object",
+        "type": "string",
         "value": "[parameters('keyVaultName')]"
     }
   }      
