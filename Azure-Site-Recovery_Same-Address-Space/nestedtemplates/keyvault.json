@@ -97,7 +97,7 @@
 "outputs": {
     "KeyVaultName": {
         "type": "string",
-        "value": "[reference(resourceId(resourceGroup().name, 'Microsoft.KeyVault/vaults', parameters('keyVaultName'))).Name]"
+        "value": "[reference(resourceId(resourceGroup().name, 'Microsoft.KeyVault/vaults', parameters('keyVaultName'))).VaultName]"
     }
   }      
 }
