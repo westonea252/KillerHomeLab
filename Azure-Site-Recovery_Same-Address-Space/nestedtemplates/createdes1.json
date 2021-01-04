@@ -11,7 +11,7 @@
     "KeyVaultName": {
       "type": "string",
       "metadata": {
-        "description": "Managed ID Name"
+        "description": "Key Vault Name ID Name"
       }
     },
     "ResourceGroupName": {

@@ -1446,6 +1446,7 @@
               "KeyVaultName": {
                   "value": "[variables('KeyVault2Name')]"
               },
+              
               "BackupObjectID": {
                   "value": "[variables('BackupObjectID')]"
               },                            
@@ -1479,9 +1480,9 @@
               "ManagedIDName": {
                   "value": "[variables('ManagedIDName')]"
               },
-              "KeyVaultName": {
-                  "value": "[variables('KeyVault1Name')]"
-              },
+              "KeyVaultname": {
+                  "value": "[reference('DeployKeyVault1').outputs.keyvaultname.value]"             
+              },                                       
               "ScriptName": {
                   "value": "[concat(variables('HSMScriptName'),'-01')]"           
               },                   
@@ -1509,9 +1510,9 @@
               "ManagedIDName": {
                   "value": "[variables('ManagedIDName')]"
               },
-              "KeyVaultName": {
-                  "value": "[variables('KeyVault2Name')]"
-              },
+              "KeyVaultname": {
+                  "value": "[reference('DeployKeyVault2').outputs.keyvaultname.value]"             
+              },   
               "ScriptName": {
                   "value": "[concat(variables('HSMScriptName'),'-02')]"           
               },               
@@ -1540,9 +1541,9 @@
               "ManagedIDName": {
                   "value": "[variables('ManagedIDName')]"
               },
-              "KeyVaultName": {
-                  "value": "[variables('KeyVault1Name')]"
-              },
+              "KeyVaultname": {
+                  "value": "[reference('DeployKeyVault1').outputs.keyvaultname.value]"             
+              }, 
               "ResourceGroupName": {
                   "value": "[resourceGroup().Name]"
               },              
@@ -1574,9 +1575,9 @@
               "ManagedIDName": {
                   "value": "[variables('ManagedIDName')]"
               },
-              "KeyVaultName": {
-                  "value": "[variables('KeyVault2Name')]"
-              },
+              "KeyVaultname": {
+                  "value": "[reference('DeployKeyVault2').outputs.keyvaultname.value]"             
+              }, 
               "ResourceGroupName": {
                   "value": "[resourceGroup().Name]"
               },              
@@ -1605,9 +1606,9 @@
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
-              "KeyVaultName": {
-                  "value": "[variables('KeyVault1Name')]"
-              },
+              "KeyVaultname": {
+                  "value": "[reference('DeployKeyVault1').outputs.keyvaultname.value]"             
+              }, 
               "BackupObjectID": {
                   "value": "[variables('BackupObjectID')]"
               },                            
@@ -1642,9 +1643,9 @@
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
-              "KeyVaultName": {
-                  "value": "[variables('KeyVault2Name')]"
-              },
+              "KeyVaultname": {
+                  "value": "[reference('DeployKeyVault2').outputs.keyvaultname.value]"             
+              }, 
               "BackupObjectID": {
                   "value": "[variables('BackupObjectID')]"
               },                            
@@ -1681,9 +1682,9 @@
               "ManagedIDName": {
                   "value": "[variables('ManagedIDName')]"
               },
-              "KeyVaultName": {
-                  "value": "[variables('KeyVault1Name')]"
-              },
+              "KeyVaultname": {
+                  "value": "[reference('DeployKeyVault1').outputs.keyvaultname.value]"             
+              }, 
               "VMName": {
                   "value": "[variables('dc1name')]"
               },              
@@ -1718,9 +1719,9 @@
               "ManagedIDName": {
                   "value": "[variables('ManagedIDName')]"
               },
-              "KeyVaultName": {
-                  "value": "[variables('KeyVault2Name')]"
-              },
+              "KeyVaultname": {
+                  "value": "[reference('DeployKeyVault2').outputs.keyvaultname.value]"             
+              }, 
               "VMName": {
                   "value": "[variables('dc2name')]"
               },              
@@ -1756,9 +1757,9 @@
               "ManagedIDName": {
                   "value": "[variables('ManagedIDName')]"
               },
-              "KeyVaultName": {
-                  "value": "[variables('KeyVault1Name')]"
-              },
+              "KeyVaultname": {
+                  "value": "[reference('DeployKeyVault1').outputs.keyvaultname.value]"             
+              }, 
               "VMName": {
                   "value": "[variables('srv1name')]"
               },              
@@ -1795,9 +1796,9 @@
               "ManagedIDName": {
                   "value": "[variables('ManagedIDName')]"
               },
-              "KeyVaultName": {
-                  "value": "[variables('KeyVault2Name')]"
-              },
+              "KeyVaultname": {
+                  "value": "[reference('DeployKeyVault2').outputs.keyvaultname.value]"             
+              }, 
               "VMName": {
                   "value": "[variables('srv2name')]"
               },              
