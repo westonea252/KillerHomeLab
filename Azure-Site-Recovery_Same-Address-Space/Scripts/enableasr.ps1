@@ -4,22 +4,16 @@
     [string] [Parameter(Mandatory=$true)] $Site1Name,
     [string] [Parameter(Mandatory=$true)] $Site2Name,
     [string] [Parameter(Mandatory=$true)] $SourceRG,
-    [string] [Parameter(Mandatory=$true)] $TargetRGName,
     [string] [Parameter(Mandatory=$true)] $location1,
     [string] [Parameter(Mandatory=$true)] $location2,
     [string] [Parameter(Mandatory=$true)] $vmName
 )
 
-# Create Target Resource Group
-$TargetRGCheck = Get-AzResourceGroup -Name $TargetRGName -ErrorAction 0
-IF ($TargetRGCheck -eq $null) {$TargetRG = New-AzResourceGroup -Name $TargetRGName -Location $location2}
-ELSE {$TargetRG = Get-AzResourceGroup -Name $TargetRGName -ErrorAction 0}
-
 $VM = Get-AzVM -ResourceGroupName $SourceRG -Name $vmname
 $OSDiskVhdURI = $VM.StorageProfile.OsDisk.Vhd
 $DataDisk1VhdURI = $VM.StorageProfile.DataDisks[0].Vhd
 
-$VaultForSite1 = Get-AzRecoveryServicesVault -Name $VaultName -ResourceGroupName $TargetRG -ErrorAction 0
+$VaultForSite1 = Get-AzRecoveryServicesVault -Name $VaultName -ResourceGroupName $SourceRG -ErrorAction 0
 Set-AzRecoveryServicesVaultProperty -SoftDeleteFeatureState Disable -VaultId $VaultForSite1.ID
 Set-AzRecoveryServicesAsrVaultContext -Vault $VaultForSite1
 
@@ -140,12 +134,12 @@ IF ($cachecheck -eq $null) {$CacheStorageAccount = New-AzStorageAccount -Name $S
 ELSE {$CacheStorageAccount = Get-AzStorageAccount -Name $Site1Name'cachestorage' -ResourceGroupName $SourceRG}
 
 #Create Target storage account in the recovery region. In this case a Standard Storage account
-$storagecheck = Get-AzStorageAccount -Name $Site2Name'targetstorage' -ResourceGroupName $TargetRG -ErrorAction 0
-IF ($storagecheck -eq $null) {$TargetStorageAccount = New-AzStorageAccount -Name $Site2Name'targetstorage' -ResourceGroupName $TargetRG -Location $location2 -SkuName Standard_LRS -Kind Storage}
-ELSE {$TargetStorageAccount = Get-AzStorageAccount -Name $Site2Name'targetstorage' -ResourceGroupName $TargetRG}
+$storagecheck = Get-AzStorageAccount -Name $Site2Name'targetstorage' -ResourceGroupName $SourceRG -ErrorAction 0
+IF ($storagecheck -eq $null) {$TargetStorageAccount = New-AzStorageAccount -Name $Site2Name'targetstorage' -ResourceGroupName $SourceRG -Location $location2 -SkuName Standard_LRS -Kind Storage}
+ELSE {$TargetStorageAccount = Get-AzStorageAccount -Name $Site2Name'targetstorage' -ResourceGroupName $SourceRG}
 
 #Set Recovery Network in the recovery region
-$RecoveryVnet = Get-AzVirtualNetwork -ResourceGroup $TargetRG -Name $RecoveryVNet
+$RecoveryVnet = Get-AzVirtualNetwork -ResourceGroup $SourceRG -Name $RecoveryVNet
 $RecoveryNetwork = $RecoveryVnet.Id
 
 #Retrieve the virtual network that the virtual machine is connected to
@@ -198,7 +192,7 @@ $RecoveryOSDiskAccountType = $vm.StorageProfile.OsDisk.ManagedDisk.StorageAccoun
 $RecoveryReplicaDiskAccountType = $vm.StorageProfile.OsDisk.ManagedDisk.StorageAccountType
 
 $OSDiskReplicationConfig = New-AzRecoveryServicesAsrAzureToAzureDiskReplicationConfig -ManagedDisk -LogStorageAccountId $CacheStorageAccount.Id `
-         -DiskId $OSdiskId -RecoveryResourceGroupId  $TargetRG.ResourceId -RecoveryReplicaDiskAccountType  $RecoveryReplicaDiskAccountType `
+         -DiskId $OSdiskId -RecoveryResourceGroupId  $SourceRG.ResourceId -RecoveryReplicaDiskAccountType  $RecoveryReplicaDiskAccountType `
          -RecoveryTargetDiskAccountType $RecoveryOSDiskAccountType
 
 # Data disk
@@ -209,7 +203,7 @@ $RecoveryReplicaDiskAccountType = $vm.StorageProfile.DataDisks[0].ManagedDisk.St
 $RecoveryTargetDiskAccountType = $vm.StorageProfile.DataDisks[0].ManagedDisk.StorageAccountType
 
 $DataDisk1ReplicationConfig  = New-AzRecoveryServicesAsrAzureToAzureDiskReplicationConfig -ManagedDisk -LogStorageAccountId $CacheStorageAccount.Id `
-         -DiskId $datadiskId1 -RecoveryResourceGroupId $TargetRG.ResourceId -RecoveryReplicaDiskAccountType $RecoveryReplicaDiskAccountType `
+         -DiskId $datadiskId1 -RecoveryResourceGroupId $SourceRG.ResourceId -RecoveryReplicaDiskAccountType $RecoveryReplicaDiskAccountType `
          -RecoveryTargetDiskAccountType $RecoveryTargetDiskAccountType
 
 
@@ -224,4 +218,4 @@ $diskconfigs += $OSDiskReplicationConfig
 
 #Start replication by creating replication protected item. Using a GUID for the name of the replication protected item to ensure uniqueness of name.
 $protecteditemcheck = Get-AzRecoveryServicesAsrReplicationProtectedItem -ProtectionContainer $PrimaryProtContainer -ErrorAction 0
-IF ($protecteditemcheck -eq $null) {New-AzRecoveryServicesAsrReplicationProtectedItem -AzureToAzure -AzureVmId $VM.Id -Name (New-Guid).Guid -ProtectionContainerMapping $EusToWusPCMapping -AzureToAzureDiskReplicationConfiguration $diskconfigs -RecoveryResourceGroupId $TargetRG.ResourceId}
+IF ($protecteditemcheck -eq $null) {New-AzRecoveryServicesAsrReplicationProtectedItem -AzureToAzure -AzureVmId $VM.Id -Name (New-Guid).Guid -ProtectionContainerMapping $EusToWusPCMapping -AzureToAzureDiskReplicationConfiguration $diskconfigs -RecoveryResourceGroupId $SourceRG.ResourceId}

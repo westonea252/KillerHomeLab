@@ -70,7 +70,6 @@
     } 
 },
 "variables": {
-    "TargetRGName": "[concat(parameters('SourceRG'),'-ASR')]",
     "ScriptURL": "https://raw.githubusercontent.com/elliottfieldsjr/KillerHomeLab/master/Azure-Site-Recovery_Same-Address-Space/Scripts/enableasr.ps1"
 },
 "resources": [
@@ -90,7 +89,7 @@
       "properties": {
         "azPowerShellVersion": "5.0",
         "timeout": "PT1H",
-        "arguments": "[format(' -VaultName {0} -RecoveryVNet {1} -Site1Name {2} -Site2Name {3} -SourceRG {4} -TargetRGName {5} -location1 {6} -location2 {7} -vmName {8}', parameters('VaultName'), parameters('RecoveryVNet'), parameters('Site1Name'), parameters('Site2Name'), parameters('SourceRG'), variables('TargetRGName'), parameters('Location1'), parameters('Location2'), parameters('vmName'))]", // can pass an argument string, double quotes must be escaped
+        "arguments": "[format(' -VaultName {0} -RecoveryVNet {1} -Site1Name {2} -Site2Name {3} -SourceRG {4} -location1 {5} -location2 {6} -vmName {7}', parameters('VaultName'), parameters('RecoveryVNet'), parameters('Site1Name'), parameters('Site2Name'), parameters('SourceRG'), parameters('Location1'), parameters('Location2'), parameters('vmName'))]", // can pass an argument string, double quotes must be escaped
         "primaryScriptUri": "[variables('ScriptURL')]",
         "cleanupPreference": "OnSuccess",
         "retentionInterval": "P1D"
