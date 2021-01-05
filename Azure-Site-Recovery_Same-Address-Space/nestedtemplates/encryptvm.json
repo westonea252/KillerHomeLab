@@ -69,17 +69,20 @@
 
           $vm = Get-AzVM -Name $VMName -ResourceGroupName $ResourceGroupName
           $vmstatus = Get-AzVM -Name $VMName -ResourceGroupName $ResourceGroupName -status
+
           $OSDisk = Get-AzDisk -Name $vm.StorageProfile.OsDisk.Name
-          $DataDiskCheck = $vm.StorageProfile.DataDisks
           IF ($OSDisk.Encryption.Type -ne 'EncryptionAtRestWithCustomerKey'){
           Stop-AzVm -Name $VMName -ResourceGroupName $ResourceGroupName -Force
           $des = Get-AzDiskEncryptionSet -Name $DESName -ResourceGroupName $ResourceGroupName
           New-AzDiskUpdateConfig -EncryptionType 'EncryptionAtRestWithCustomerKey' -DiskEncryptionSetId $des.Id | Update-AzDisk -ResourceGroupName $ResourceGroupName -DiskName $OSDisk.Name
           }
-          IF ($Null -ne $DataDiskCheck){
+
+          $DataDiskCheck = $vm.StorageProfile.DataDisks
+          IF ($DataDiskCheck -ne $Null){
           $DataDisk = Get-AzDisk -Name $vm.StorageProfile.DataDisks[0].Name
           New-AzDiskUpdateConfig -EncryptionType 'EncryptionAtRestWithCustomerKey' -DiskEncryptionSetId $des.Id | Update-AzDisk -ResourceGroupName $ResourceGroupName -DiskName $DataDisk.Name
           }
+          
           IF ($vmstatus.Statuses[0].DisplayStatus -eq 'VM deallocated') {Start-AzVm -Name $VMName -ResourceGroupName $ResourceGroupName}
         ",
         "cleanupPreference": "OnSuccess",
