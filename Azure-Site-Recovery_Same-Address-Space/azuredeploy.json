@@ -1847,7 +1847,7 @@
               "SourceRG": {
                   "value": "[resourceGroup().Name]"
               },    
-              "location": {
+              "location1": {
                   "value": "[resourceGroup().location]"
               },
               "location2": {
@@ -1901,7 +1901,7 @@
               "SourceRG": {
                   "value": "[resourceGroup().Name]"
               },    
-              "location": {
+              "location1": {
                   "value": "[resourceGroup().location]"
               },
               "location2": {
