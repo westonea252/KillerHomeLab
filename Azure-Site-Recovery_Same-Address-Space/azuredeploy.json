@@ -253,6 +253,7 @@
     "BackupObjectID": "f40e18f0-6544-45c2-9d24-639a8bb3b41a",
     "HSMScriptName": "[concat(parameters('NamingConvention'),'-hsm')]",            
     "ENCScriptName": "[concat(parameters('NamingConvention'),'-enc')]",                    
+    "ASRScriptName": "[concat(parameters('NamingConvention'),'-asr')]",                        
     "KeyVault1Name": "[concat(parameters('NamingConvention'),'-kv1-',uniqueString(resourceGroup().id))]",            
     "KeyVault2Name": "[concat(parameters('NamingConvention'),'-kv2-',uniqueString(resourceGroup().id))]",            
     "RSVault1Name": "[concat(parameters('NamingConvention'),'-rv1-',uniqueString(resourceGroup().id))]",                        
@@ -1813,6 +1814,113 @@
               }                                                    
           }
       }
-    }              
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "EnableASRforDC1",
+      "dependsOn": [
+        "EncryptDC1",
+        "EncryptDC2",
+        "EncryptSRV1",
+        "EncryptSRV2"                                        
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/encryptasr.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "VaultName": {
+                  "value": "[reference('DeployKeyVault2').outputs.keyvaultname.value]"             
+              }, 
+              "RecoveryVNet": {
+                  "value": "[reference('VNet1R').outputs.vnetName.value]"             
+              },
+              "Site1Name": {
+                  "value": "Site1"
+              },              
+              "Site2Name": {
+                  "value": "Site2"
+              },              
+              "SourceRG": {
+                  "value": "[resourceGroup().Name]"
+              },    
+              "location": {
+                  "value": "[resourceGroup().location]"
+              },
+              "location2": {
+                  "value": "[parameters('Location2')]"
+              },                                                    
+              "VMName": {
+                  "value": "[variables('dc1name')]"
+              },              
+              "ManagedIDName": {
+                  "value": "[variables('ManagedIDName')]"
+              },              
+              "ScriptName": {
+                  "value": "[concat(variables('ASRScriptName'),'-01')]"           
+              },                              
+              "ScriptLocation": {
+                  "value": "[resourceGroup().location]"
+              }                                                    
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "EnableASRforSRV1",
+      "dependsOn": [
+        "EncryptDC1",
+        "EncryptDC2",
+        "EncryptSRV1",
+        "EncryptSRV2",
+        "EnableASRforDC1"                                                
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/encryptasr.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "VaultName": {
+                  "value": "[reference('DeployKeyVault2').outputs.keyvaultname.value]"             
+              }, 
+              "RecoveryVNet": {
+                  "value": "[reference('VNet1R').outputs.vnetName.value]"             
+              },
+              "Site1Name": {
+                  "value": "Site1"
+              },              
+              "Site2Name": {
+                  "value": "Site2"
+              },              
+              "SourceRG": {
+                  "value": "[resourceGroup().Name]"
+              },    
+              "location": {
+                  "value": "[resourceGroup().location]"
+              },
+              "location2": {
+                  "value": "[parameters('Location2')]"
+              },                                                    
+              "VMName": {
+                  "value": "[variables('srv1name')]"
+              },              
+              "ManagedIDName": {
+                  "value": "[variables('ManagedIDName')]"
+              },              
+              "ScriptName": {
+                  "value": "[concat(variables('ASRScriptName'),'-02')]"           
+              },                              
+              "ScriptLocation": {
+                  "value": "[resourceGroup().location]"
+              }                                                    
+          }
+      }
+    }                      
   ]
 }

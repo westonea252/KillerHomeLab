@@ -88,5 +88,11 @@
         ]
       }
     }
-  ]
+  ],
+"outputs": {
+    "vnetName": {
+        "type": "string",
+        "value": "[parameters('vnetName')]"
+    }
+  }  
 }

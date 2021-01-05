@@ -1,0 +1,101 @@
+{
+"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+"contentVersion": "1.0.0.0",
+"parameters": {
+    "VaultName": {
+      "type": "string",
+      "metadata": {
+        "description": "Managed ID Name"
+      }
+    },
+    "RecoveryVNet": {
+        "type": "string",
+        "metadata": {
+            "description": "Recovery VNet Name"
+        }
+    },
+    "Site1Name": {
+        "type": "string",
+        "metadata": {
+            "description": "Site1 Naming Convention"
+        }
+    },   
+    "Site2Name": {
+        "type": "string",
+        "metadata": {
+            "description": "Site2 Naming Convention"
+        }
+    },            
+    "SourceRG": {
+        "type": "string",
+        "metadata": {
+            "description": "Source Resource Group"
+        }
+    },                
+    "Location1": {
+        "type": "string",
+      "metadata": {
+        "description": "Site1 Resources Location"
+      }
+    },        
+    "Location2": {
+        "type": "string",
+      "metadata": {
+        "description": "Site2 Resources Location"
+      }
+    },             
+    "vmName": {
+        "type": "string",
+      "metadata": {
+        "description": "VM to Protect"
+      }
+    }, 
+    "ManagedIDName": {
+      "type": "string",
+      "metadata": {
+        "description": "Managed ID Name"
+      }
+    },               
+    "ScriptName": {
+        "type": "string",
+      "metadata": {
+        "description": "Script Name"
+      }
+    },         
+    "ScriptLocation": {
+        "type": "string",
+      "metadata": {
+        "description": "Script Location"
+      }
+    } 
+},
+"variables": {
+    "TargetRGName": "[concat(parameters('SourceRG'),'-ASR')]",
+    "ScriptURL": "https://raw.githubusercontent.com/elliottfieldsjr/KillerHomeLab/master/Azure-Site-Recovery_Same-Address-Space/Scripts/enableasr.ps1"
+},
+"resources": [
+    {
+      "type": "Microsoft.Resources/deploymentScripts",
+      "apiVersion": "2020-10-01",
+      "name": "[parameters('ScriptName')]",
+      "location": "[parameters('ScriptLocation')]",
+      "kind": "AzurePowerShell",      
+      "identity": {
+        "type": "UserAssigned",
+        "userAssignedIdentities": {
+          "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('ManagedIDName'))]": {
+          }
+        }
+      },
+      "properties": {
+        "azPowerShellVersion": "5.0",
+        "timeout": "PT1H",
+        "arguments": "[format(' -VaultName {0} -RecoveryVNet {1} -Site1Name {2} -Site2Name {3} -SourceRG {4} -TargetRGName {5} -location1 {6} -location2 {7} -vmName {8}', parameters('VaultName'), parameters('RecoveryVNet'), parameters('Site1Name'), parameters('Site2Name'), parameters('SourceRG'), variables('TargetRGName'), parameters('Location1'), parameters('Location2'), parameters('vmName'))]", // can pass an argument string, double quotes must be escaped
+        "primaryScriptUri": "[variables('ScriptURL')]",
+        "cleanupPreference": "OnSuccess",
+        "retentionInterval": "P1D"
+      }
+    }
+  ]    
+}
+
