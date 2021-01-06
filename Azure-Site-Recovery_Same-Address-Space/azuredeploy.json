@@ -343,42 +343,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "DeployKeyVault2",
-      "dependsOn": [
-        "DeployKeyVault1"
-      ],      
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/keyvault.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "KeyVaultName": {
-                  "value": "[variables('KeyVault2Name')]"
-              },
-              
-              "BackupObjectID": {
-                  "value": "[variables('BackupObjectID')]"
-              },                            
-              "AdminObjectID": {
-                  "value": "[parameters('AdminObjectID')]"
-              },     
-              "UserManagedObjectID": {
-                  "value": "[reference('CreateManagedID').outputs.manageduseridentity.value]"             
-              },                         
-              "location": {
-                  "value": "[parameters('Location2')]"
-              }
-          }
-      }
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
       "name": "CreateHSMKey1",
       "dependsOn": [
-        "DeployKeyVault2"        
+        "DeployKeyVault1"        
       ],      
       "properties": {
           "mode": "Incremental",
@@ -437,70 +404,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "CreateHSMKey2",
-      "dependsOn": [
-        "CreateDES1"      
-      ],      
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/createhsmkey.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "ManagedIDName": {
-                  "value": "[variables('ManagedIDName')]"
-              },
-              "KeyVaultname": {
-                  "value": "[reference('DeployKeyVault2').outputs.keyvaultname.value]"             
-              },   
-              "ScriptName": {
-                  "value": "[concat(variables('HSMScriptName'),'-02')]"           
-              },               
-              "ScriptLocation": {
-                  "value": "[parameters('Location2')]"
-              }              
-          }
-      }
-    },    
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
-      "name": "CreateDES2",
-      "dependsOn": [               
-        "CreateHSMKey2"       
-      ],      
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/createdes2.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "ManagedIDName": {
-                  "value": "[variables('ManagedIDName')]"
-              },
-              "KeyVaultname": {
-                  "value": "[reference('DeployKeyVault2').outputs.keyvaultname.value]"             
-              }, 
-              "ResourceGroupName": {
-                  "value": "[resourceGroup().Name]"
-              },              
-              "Location": {
-                  "value": "[parameters('Location2')]"
-              },
-              "ScriptLocation": {
-                  "value": "[parameters('Location2')]"
-              }                                                        
-          }
-      }
-    },    
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
       "name": "UpdateKeyVault1",
       "dependsOn": [        
-        "CreateDES2"        
+        "CreateDES1"        
       ],      
       "properties": {
           "mode": "Incremental",
@@ -533,90 +439,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "UpdateKeyVault2",
-      "dependsOn": [
-        "CreateDES2"        
-      ],      
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/updatekeyvault.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "KeyVaultname": {
-                  "value": "[reference('DeployKeyVault2').outputs.keyvaultname.value]"             
-              }, 
-              "BackupObjectID": {
-                  "value": "[variables('BackupObjectID')]"
-              },                            
-              "AdminObjectID": {
-                  "value": "[parameters('AdminObjectID')]"
-              },   
-              "UserManagedObjectID": {
-                  "value": "[reference('CreateManagedID').outputs.manageduseridentity.value]"             
-              },                                         
-              "DESObjectID": {
-                  "value": "[reference('CreateDES2').outputs.DiskEncryptionSet.value]"             
-              },                         
-              "location": {
-                  "value": "[parameters('Location2')]"
-              }
-          }
-      }
-    },             
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
-      "name": "DeployRSVault1",
-      "dependsOn": [
-        "UpdateKeyVault2"        
-      ],             
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/recoveryservicesvault.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "RSVaultName": {
-                  "value": "[variables('RSVault1Name')]"
-              },
-              "location": {
-                  "value": "[resourceGroup().Location]"
-              }
-          }
-      }
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
-      "name": "DeployRSVault2",
-      "dependsOn": [
-        "UpdateKeyVault2"        
-      ],       
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/recoveryservicesvault.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "RSVaultName": {
-                  "value": "[variables('RSVault2Name')]"
-              },
-              "location": {
-                  "value": "[parameters('Location2')]"
-              }
-          }
-      }
-    },                       
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
       "name": "VNet1",
       "dependsOn": [
-        "UpdateKeyVault2"        
+        "UpdateKeyVault1"        
       ],             
       "properties": {
           "mode": "Incremental",
@@ -657,7 +482,7 @@
       "apiVersion": "2019-10-01",
       "name": "VNet1R",
       "dependsOn": [
-        "UpdateKeyVault2"        
+        "UpdateKeyVault1"        
       ],             
       "properties": {
           "mode": "Incremental",
@@ -696,170 +521,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "VNet2",
-      "dependsOn": [
-        "UpdateKeyVault2"        
-      ],             
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/vnet.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "vnetName": {
-                  "value": "[variables('vnet2Name')]"
-              },
-              "vnetprefix": {
-                  "value": "[variables('vnet2Prefix')]"
-              },
-              "subnet1Name": {
-                  "value": "[variables('vnet2subnet1Name')]"
-              },
-              "subnet1Prefix": {
-                  "value": "[variables('vnet2subnet1Prefix')]"
-              },
-              "subnet2Name": {
-                "value": "[variables('vnet2subnet2Name')]"
-              },
-              "subnet2Prefix": {
-                "value": "[variables('vnet2subnet2Prefix')]"
-              },              
-              "BastionsubnetPrefix": {
-                "value": "[variables('vnet2BastionsubnetPrefix')]"
-              },              
-              "location": {
-                  "value": "[parameters('Location2')]"
-              }
-          }
-      }
-    },    
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
-      "name": "VNet2R",
-      "dependsOn": [
-        "UpdateKeyVault2"        
-      ],             
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/vnet.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "vnetName": {
-                  "value": "[variables('vnet2NameR')]"
-              },
-              "vnetprefix": {
-                  "value": "[variables('vnet2Prefix')]"
-              },
-              "subnet1Name": {
-                  "value": "[variables('vnet2subnet1NameR')]"
-              },
-              "subnet1Prefix": {
-                  "value": "[variables('vnet2subnet1Prefix')]"
-              },
-              "subnet2Name": {
-                "value": "[variables('vnet2subnet2NameR')]"
-              },
-              "subnet2Prefix": {
-                "value": "[variables('vnet2subnet2Prefix')]"
-              },              
-              "BastionsubnetPrefix": {
-                "value": "[variables('vnet2BastionsubnetPrefix')]"
-              },              
-              "location": {
-                  "value": "[resourceGroup().Location]"
-              }
-          }
-      }
-    },        
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
-      "name": "PeeringToSite2",
-      "dependsOn": [
-        "VNet1",
-        "VNet2"
-      ],            
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/peering.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "SourceVNetName": {
-                "value": "[variables('vnet1Name')]"
-              },
-              "TargetVNetName": {
-                "value": "[variables('vnet2Name')]"
-              },              
-              "allowVirtualNetworkAccess": {
-                "value": "true"
-              },                                                                                                                                                                                                                                                                                                           
-              "allowForwardedTraffic": {
-                "value": "true"
-              },                                                                                                                                                                                                                                                                                                           
-              "allowGatewayTransit": {
-                "value": "false"
-              },
-              "useRemoteGateways": {
-                "value": "false"
-              },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
-              "location": {
-                  "value": "[resourceGroup().Location]"
-              }
-          }
-      }
-    },    
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
-      "name": "PeeringToSite1",
-      "dependsOn": [
-        "PeeringToSite2"
-      ],            
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/peering.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "SourceVNetName": {
-                "value": "[variables('vnet2Name')]"
-              },
-              "TargetVNetName": {
-                "value": "[variables('vnet1Name')]"
-              },              
-              "allowVirtualNetworkAccess": {
-                "value": "true"
-              },                                                                                                                                                                                                                                                                                                           
-              "allowForwardedTraffic": {
-                "value": "true"
-              },                                                                                                                                                                                                                                                                                                           
-              "allowGatewayTransit": {
-                "value": "false"
-              },
-              "useRemoteGateways": {
-                "value": "false"
-              },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
-              "location": {
-                  "value": "[parameters('Location2')]"
-              }
-          }
-      }
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
       "name": "deploySRV1VM",
       "dependsOn": [
-        "UpdateKeyVault1",        
-        "UpdateKeyVault2",                             
-        "PeeringToSite1"
+        "VNet1"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -941,13 +605,165 @@
               }                 
           }
       }
-    },          
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DeployRSVault2",
+      "dependsOn": [
+        "EncryptSRV1"        
+      ],       
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/recoveryservicesvault.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "RSVaultName": {
+                  "value": "[variables('RSVault2Name')]"
+              },
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },                           
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DeployKeyVault2",
+      "dependsOn": [
+        "DeployRSVault2"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/keyvault.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "KeyVaultName": {
+                  "value": "[variables('KeyVault2Name')]"
+              },
+              
+              "BackupObjectID": {
+                  "value": "[variables('BackupObjectID')]"
+              },                            
+              "AdminObjectID": {
+                  "value": "[parameters('AdminObjectID')]"
+              },     
+              "UserManagedObjectID": {
+                  "value": "[reference('CreateManagedID').outputs.manageduseridentity.value]"             
+              },                         
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "CreateHSMKey2",
+      "dependsOn": [
+        "DeployKeyVault2"      
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/createhsmkey.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "ManagedIDName": {
+                  "value": "[variables('ManagedIDName')]"
+              },
+              "KeyVaultname": {
+                  "value": "[reference('DeployKeyVault2').outputs.keyvaultname.value]"             
+              },   
+              "ScriptName": {
+                  "value": "[concat(variables('HSMScriptName'),'-02')]"           
+              },               
+              "ScriptLocation": {
+                  "value": "[parameters('Location2')]"
+              }              
+          }
+      }
+    },        
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "CreateDES2",
+      "dependsOn": [               
+        "CreateHSMKey2"       
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/createdes2.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "ManagedIDName": {
+                  "value": "[variables('ManagedIDName')]"
+              },
+              "KeyVaultname": {
+                  "value": "[reference('DeployKeyVault2').outputs.keyvaultname.value]"             
+              }, 
+              "ResourceGroupName": {
+                  "value": "[resourceGroup().Name]"
+              },              
+              "Location": {
+                  "value": "[parameters('Location2')]"
+              },
+              "ScriptLocation": {
+                  "value": "[parameters('Location2')]"
+              }                                                        
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "UpdateKeyVault2",
+      "dependsOn": [
+        "CreateDES2"        
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/updatekeyvault.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "KeyVaultname": {
+                  "value": "[reference('DeployKeyVault2').outputs.keyvaultname.value]"             
+              }, 
+              "BackupObjectID": {
+                  "value": "[variables('BackupObjectID')]"
+              },                            
+              "AdminObjectID": {
+                  "value": "[parameters('AdminObjectID')]"
+              },   
+              "UserManagedObjectID": {
+                  "value": "[reference('CreateManagedID').outputs.manageduseridentity.value]"             
+              },                                         
+              "DESObjectID": {
+                  "value": "[reference('CreateDES2').outputs.DiskEncryptionSet.value]"             
+              },                         
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },                           
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "EnableASRforSRV1",
       "dependsOn": [
-        "EncryptSRV1"
+        "CreateDES2"
       ],      
       "properties": {
           "mode": "Incremental",
