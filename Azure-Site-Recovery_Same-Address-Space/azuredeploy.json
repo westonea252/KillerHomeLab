@@ -913,10 +913,7 @@
       "apiVersion": "2019-10-01",
       "name": "EncryptSRV1",
       "dependsOn": [
-        "UpdateKeyVault1",
-        "DomainJoinSRV2VM",
-        "EncryptDC1",
-        "EncryptDC2"                        
+        "deploySRV1VM"
       ],      
       "properties": {
           "mode": "Incremental",
