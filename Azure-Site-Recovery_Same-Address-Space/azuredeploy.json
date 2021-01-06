@@ -569,6 +569,9 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DeployRSVault1",
+      "dependsOn": [
+        "UpdateKeyVault2"        
+      ],             
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -589,6 +592,9 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DeployRSVault2",
+      "dependsOn": [
+        "UpdateKeyVault2"        
+      ],       
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -609,6 +615,9 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "VNet1",
+      "dependsOn": [
+        "UpdateKeyVault2"        
+      ],             
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -647,6 +656,9 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "VNet1R",
+      "dependsOn": [
+        "UpdateKeyVault2"        
+      ],             
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -685,6 +697,9 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "VNet2",
+      "dependsOn": [
+        "UpdateKeyVault2"        
+      ],             
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -723,6 +738,9 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "VNet2R",
+      "dependsOn": [
+        "UpdateKeyVault2"        
+      ],             
       "properties": {
           "mode": "Incremental",
           "templateLink": {
