@@ -680,7 +680,7 @@
                   "value": "[variables('ManagedIDName')]"
               },
               "KeyVaultname": {
-                  "value": "[reference('DeployKeyVault2').outputs.keyvaultname.value]"             
+                  "value": "[variables('KeyVault2Name')]"
               },   
               "ScriptName": {
                   "value": "[concat(variables('HSMScriptName'),'-02')]"           
