@@ -779,10 +779,10 @@
                   "value": "[reference('VNet1R').outputs.vnetName.value]"             
               },
               "Site1Name": {
-                  "value": "Site1"
+                  "value": "site1"
               },              
               "Site2Name": {
-                  "value": "Site2"
+                  "value": "site2"
               },              
               "SourceRG": {
                   "value": "[resourceGroup().Name]"
