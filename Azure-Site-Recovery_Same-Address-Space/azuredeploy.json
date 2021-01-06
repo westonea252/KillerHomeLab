@@ -313,7 +313,7 @@
       "apiVersion": "2019-10-01",
       "name": "DeployKeyVault1",
       "dependsOn": [
-        "CreateManagedID"        
+        "AssignManagedID"        
       ],      
       "properties": {
           "mode": "Incremental",
@@ -345,7 +345,7 @@
       "apiVersion": "2019-10-01",
       "name": "DeployKeyVault2",
       "dependsOn": [
-        "CreateManagedID"
+        "AssignManagedID"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -378,8 +378,8 @@
       "apiVersion": "2019-10-01",
       "name": "CreateHSMKey1",
       "dependsOn": [
-        "CreateManagedID",        
-        "DeployKeyVault1"         
+        "AssignManagedID",        
+        "DeployKeyVault1"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -408,9 +408,8 @@
       "apiVersion": "2019-10-01",
       "name": "CreateHSMKey2",
       "dependsOn": [
-        "CreateManagedID",        
-        "DeployKeyVault2",
-        "CreateHSMKey1"
+        "AssignManagedID",        
+        "DeployKeyVault2"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -439,11 +438,7 @@
       "apiVersion": "2019-10-01",
       "name": "CreateDES1",
       "dependsOn": [
-        "CreateManagedID",        
-        "DeployKeyVault1",
-        "DeployKeyVault2",        
-        "CreateHSMKey1",
-        "CreateHSMKey2"               
+        "CreateHSMKey1"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -474,11 +469,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "CreateDES2",
-      "dependsOn": [
-        "CreateManagedID",
-        "DeployKeyVault1",               
-        "DeployKeyVault2",
-        "CreateHSMKey1",               
+      "dependsOn": [               
         "CreateHSMKey2"       
       ],      
       "properties": {
@@ -510,13 +501,8 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "UpdateKeyVault1",
-      "dependsOn": [
-        "DeployKeyVault1",
-        "DeployKeyVault2",        
-        "CreateHSMKey1",
-        "CreateHSMKey2",        
-        "CreateDES1",
-        "CreateDES2"        
+      "dependsOn": [        
+        "CreateDES1"        
       ],      
       "properties": {
           "mode": "Incremental",
@@ -551,11 +537,6 @@
       "apiVersion": "2019-10-01",
       "name": "UpdateKeyVault2",
       "dependsOn": [
-        "DeployKeyVault1",
-        "DeployKeyVault2",        
-        "CreateHSMKey1",
-        "CreateHSMKey2",        
-        "CreateDES1",
         "CreateDES2"        
       ],      
       "properties": {
