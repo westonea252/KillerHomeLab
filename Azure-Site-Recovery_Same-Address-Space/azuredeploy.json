@@ -345,7 +345,7 @@
       "apiVersion": "2019-10-01",
       "name": "DeployKeyVault2",
       "dependsOn": [
-        "AssignManagedID"
+        "DeployKeyVault1"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -378,8 +378,7 @@
       "apiVersion": "2019-10-01",
       "name": "CreateHSMKey1",
       "dependsOn": [
-        "AssignManagedID",        
-        "DeployKeyVault1"
+        "DeployKeyVault2"        
       ],      
       "properties": {
           "mode": "Incremental",
@@ -408,8 +407,6 @@
       "apiVersion": "2019-10-01",
       "name": "CreateHSMKey2",
       "dependsOn": [
-        "AssignManagedID",        
-        "DeployKeyVault2",
         "CreateHSMKey1"      
       ],      
       "properties": {
