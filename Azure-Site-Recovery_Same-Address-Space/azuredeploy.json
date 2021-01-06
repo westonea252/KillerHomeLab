@@ -686,7 +686,7 @@
                   "value": "[concat(variables('HSMScriptName'),'-02')]"           
               },               
               "ScriptLocation": {
-                  "value": "[parameters('Location2')]"
+                  "value": "[resourceGroup().location]"
               }              
           }
       }
