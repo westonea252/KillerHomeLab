@@ -439,7 +439,7 @@
       "apiVersion": "2019-10-01",
       "name": "CreateDES1",
       "dependsOn": [
-        "CreateHSMKey1"
+        "CreateHSMKey2"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -471,7 +471,7 @@
       "apiVersion": "2019-10-01",
       "name": "CreateDES2",
       "dependsOn": [               
-        "CreateHSMKey2"       
+        "CreateDES1"       
       ],      
       "properties": {
           "mode": "Incremental",
@@ -503,7 +503,7 @@
       "apiVersion": "2019-10-01",
       "name": "UpdateKeyVault1",
       "dependsOn": [        
-        "CreateDES1"        
+        "CreateDES2"        
       ],      
       "properties": {
           "mode": "Incremental",
