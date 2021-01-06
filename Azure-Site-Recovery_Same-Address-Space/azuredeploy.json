@@ -841,6 +841,8 @@
       "apiVersion": "2019-10-01",
       "name": "deploySRV1VM",
       "dependsOn": [
+        "UpdateKeyVault1",        
+        "UpdateKeyVault2",                             
         "PeeringToSite1"
       ],      
       "properties": {
