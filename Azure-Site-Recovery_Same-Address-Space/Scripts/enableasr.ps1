@@ -19,7 +19,7 @@ Set-AzRecoveryServicesAsrVaultContext -Vault $VaultForSite1
 
 #Create Primary ASR fabric
 $primaryfabriccheck = Get-AzRecoveryServicesAsrFabric -Name $Site1Name-ASR-Fabric -ErrorAction 0
-IF ($primaryfabriccheck -eq $null) {$PrimaryFabricASRJob = New-AzRecoveryServicesAsrFabric -Azure -Location $location1 -Name $Region1-ASR-Fabric}
+IF ($primaryfabriccheck -eq $null) {$PrimaryFabricASRJob = New-AzRecoveryServicesAsrFabric -Azure -Location $location1 -Name $Site1Name-ASR-Fabric}
 ELSE {$PrimaryFabricASRJob = Get-AzRecoveryServicesAsrFabric -Name $Site1Name-ASR-Fabric}
 
 # Track Job status to check for completion
@@ -84,7 +84,7 @@ $RecoveryProtContainer = Get-AzRecoveryServicesAsrProtectionContainer -Fabric $R
 
 #Create replication policy
 $policycheck = Get-AzRecoveryServicesAsrPolicy -Name $Site1Name-Policy -ErrorAction 0
-IF ($policycheck -eq $null) {$PolicyASRJob = New-AzRecoveryServicesAsrPolicy -AzureToAzure -Name $Region1-Policy -RecoveryPointRetentionInHours 24 -ApplicationConsistentSnapshotFrequencyInHours 4}
+IF ($policycheck -eq $null) {$PolicyASRJob = New-AzRecoveryServicesAsrPolicy -AzureToAzure -Name $Site1Name-Policy -RecoveryPointRetentionInHours 24 -ApplicationConsistentSnapshotFrequencyInHours 4}
 ELSE {$PolicyASRJob = Get-AzRecoveryServicesAsrPolicy -Name $Site1Name-Policy}
 
 #Track Job status to check for completion
