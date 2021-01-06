@@ -763,7 +763,7 @@
       "apiVersion": "2019-10-01",
       "name": "EnableASRforSRV1",
       "dependsOn": [
-        "CreateDES2"
+        "UpdateKeyVault2"
       ],      
       "properties": {
           "mode": "Incremental",
