@@ -1,5 +1,5 @@
 ﻿Param(
-    [string] [Parameter(Mandatory=$true)] $VaultName,
+    [string] [Parameter(Mandatory=$true)] $RSVaultName,
     [string] [Parameter(Mandatory=$true)] $RecoveryVNet,
     [string] [Parameter(Mandatory=$true)] $Site1Name,
     [string] [Parameter(Mandatory=$true)] $Site2Name,
@@ -13,7 +13,7 @@ $VM = Get-AzVM -ResourceGroupName $SourceRG -Name $vmname
 $OSDiskVhdURI = $VM.StorageProfile.OsDisk.Vhd
 $DataDisk1VhdURI = $VM.StorageProfile.DataDisks[0].Vhd
 
-$VaultForSite1 = Get-AzRecoveryServicesVault -Name $VaultName -ResourceGroupName $SourceRG -ErrorAction 0
+$VaultForSite1 = Get-AzRecoveryServicesVault -Name $RSVaultName -ResourceGroupName $SourceRG -ErrorAction 0
 Set-AzRecoveryServicesVaultProperty -SoftDeleteFeatureState Disable -VaultId $VaultForSite1.ID
 Set-AzRecoveryServicesAsrVaultContext -Vault $VaultForSite1
 

@@ -32,5 +32,11 @@
                 "tier": "[variables('skuName')]"          
             }
         }
-    ]
+    ],
+"outputs": {
+    "RSVaultName": {
+        "type": "string",
+        "value": "[parameters('RSVaultName')]"
+    }
+  }    
   }

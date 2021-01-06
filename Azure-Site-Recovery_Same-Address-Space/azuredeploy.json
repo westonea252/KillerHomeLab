@@ -1683,8 +1683,8 @@
               "ManagedIDName": {
                   "value": "[variables('ManagedIDName')]"
               },
-              "KeyVaultname": {
-                  "value": "[reference('DeployKeyVault1').outputs.keyvaultname.value]"             
+              "RSVaultname": {
+                  "value": "[variables('RSVault2Name')]"
               }, 
               "VMName": {
                   "value": "[variables('dc1name')]"
@@ -1720,8 +1720,8 @@
               "ManagedIDName": {
                   "value": "[variables('ManagedIDName')]"
               },
-              "KeyVaultname": {
-                  "value": "[reference('DeployKeyVault2').outputs.keyvaultname.value]"             
+              "RSVaultname": {
+                  "value": "[variables('RSVault2Name')]"
               }, 
               "VMName": {
                   "value": "[variables('dc2name')]"
