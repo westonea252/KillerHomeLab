@@ -1683,8 +1683,8 @@
               "ManagedIDName": {
                   "value": "[variables('ManagedIDName')]"
               },
-              "RSVaultname": {
-                  "value": "[variables('RSVault2Name')]"
+              "KeyVaultname": {
+                  "value": "[reference('DeployKeyVault1').outputs.keyvaultname.value]"             
               }, 
               "VMName": {
                   "value": "[variables('dc1name')]"
@@ -1720,8 +1720,8 @@
               "ManagedIDName": {
                   "value": "[variables('ManagedIDName')]"
               },
-              "RSVaultname": {
-                  "value": "[variables('RSVault2Name')]"
+              "KeyVaultname": {
+                  "value": "[reference('DeployKeyVault2').outputs.keyvaultname.value]"             
               }, 
               "VMName": {
                   "value": "[variables('dc2name')]"
@@ -1832,8 +1832,8 @@
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
-              "VaultName": {
-                  "value": "[reference('DeployKeyVault2').outputs.keyvaultname.value]"             
+              "RSVaultname": {
+                  "value": "[variables('RSVault2Name')]"
               }, 
               "RecoveryVNet": {
                   "value": "[reference('VNet1R').outputs.vnetName.value]"             
@@ -1886,8 +1886,8 @@
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
-              "VaultName": {
-                  "value": "[reference('DeployKeyVault2').outputs.keyvaultname.value]"             
+              "RSVaultname": {
+                  "value": "[variables('RSVault2Name')]"
               }, 
               "RecoveryVNet": {
                   "value": "[reference('VNet1R').outputs.vnetName.value]"             
