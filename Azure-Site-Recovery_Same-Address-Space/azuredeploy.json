@@ -264,38 +264,25 @@
   },  
   "resources": [
     {
-      "type": "Microsoft.Resources/resourceGroups",
-      "apiVersion": "2020-06-01",
-      "name": "[concat(variables('SourceGroupName'),'-asr')]",            
-      "location": "[parameters('Location2')]",
-      
-      "tags": {
-        "Note": "subscription level deployment"
-      },
-      "properties": {
-          "mode": "Complete"
-      }
-    },
-    {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "CreateManagedID",
+      "name": "CreateRG",
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/managedidentity.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/resourcegroup.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
-              "ManagedIDName": {
-                  "value": "[variables('ManagedIDName')]"
+              "ResourceGroupName": {
+                  "value": "[variables('SourceGroupName')]"
               },
               "location": {
                   "value": "[resourceGroup().Location]"
-              }
+              }            
           }
       }
-    },  
+    },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
@@ -322,7 +309,6 @@
           }
       }
     },
-
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
