@@ -29,7 +29,8 @@
       "properties": {
         "roleDefinitionId": "[parameters('RoleDefinitionId')]",
         "principalId": "[parameters('PrincipalID')]",
-        "principalType": "ServicePrincipal"
+        "principalType": "ServicePrincipal",
+        "scope": "[resourceGroup().id]"        
       }
     }
   ]
