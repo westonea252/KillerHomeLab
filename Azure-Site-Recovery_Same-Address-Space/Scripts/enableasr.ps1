@@ -4,25 +4,17 @@
     [string] [Parameter(Mandatory=$true)] $Site1Name,
     [string] [Parameter(Mandatory=$true)] $Site2Name,
     [string] [Parameter(Mandatory=$true)] $SourceRG,
+    [string] [Parameter(Mandatory=$true)] $TargetRG,    
     [string] [Parameter(Mandatory=$true)] $location1,
     [string] [Parameter(Mandatory=$true)] $location2,
     [string] [Parameter(Mandatory=$true)] $vmName
 )
 
-$RSVaultName = "khl-rv2-uto4sujs5rjkc"
-$RecoveryVNet = "khl-Recovery-VNet1"
-$Site1Name = "site1"
-$Site2Name = "site2"
-$SourceRG = "khl-asr-01"
-$location1 = "EastUS"
-$location2 = "WestUS"
-$vmName = "khl-srv-01"
-
 $VM = Get-AzVM -ResourceGroupName $SourceRG -Name $vmname
 $OSDiskVhdURI = $VM.StorageProfile.OsDisk.Vhd
 $DataDisk1VhdURI = $VM.StorageProfile.DataDisks[0].Vhd
 
-$VaultForSite1 = Get-AzRecoveryServicesVault -Name $RSVaultName -ResourceGroupName $SourceRG -ErrorAction 0
+$VaultForSite1 = Get-AzRecoveryServicesVault -Name $RSVaultName -ResourceGroupName $TargetRG -ErrorAction 0
 Set-AzRecoveryServicesVaultProperty -SoftDeleteFeatureState Disable -VaultId $VaultForSite1.ID
 Set-AzRecoveryServicesAsrVaultContext -Vault $VaultForSite1
 
@@ -143,12 +135,12 @@ IF ($cachecheck -eq $null) {$CacheStorageAccount = New-AzStorageAccount -Name $S
 ELSE {$CacheStorageAccount = Get-AzStorageAccount -Name $Site1Name'cachestorage' -ResourceGroupName $SourceRG}
 
 #Create Target storage account in the recovery region. In this case a Standard Storage account
-$storagecheck = Get-AzStorageAccount -Name $Site2Name'targetstorage' -ResourceGroupName $SourceRG -ErrorAction 0
-IF ($storagecheck -eq $null) {$TargetStorageAccount = New-AzStorageAccount -Name $Site2Name'targetstorage' -ResourceGroupName $SourceRG -Location $location2 -SkuName Standard_LRS -Kind Storage}
-ELSE {$TargetStorageAccount = Get-AzStorageAccount -Name $Site2Name'targetstorage' -ResourceGroupName $SourceRG}
+$storagecheck = Get-AzStorageAccount -Name $Site2Name'targetstorage' -ResourceGroupName $TargetRG -ErrorAction 0
+IF ($storagecheck -eq $null) {$TargetStorageAccount = New-AzStorageAccount -Name $Site2Name'targetstorage' -ResourceGroupName $TargetRG -Location $location2 -SkuName Standard_LRS -Kind Storage}
+ELSE {$TargetStorageAccount = Get-AzStorageAccount -Name $Site2Name'targetstorage' -ResourceGroupName $TargetRG}
 
 #Set Recovery Network in the recovery region
-$RecoveryVnet = Get-AzVirtualNetwork -ResourceGroup $SourceRG -Name $RecoveryVNet
+$RecoveryVnet = Get-AzVirtualNetwork -ResourceGroup $TargetRG -Name $RecoveryVNet
 $RecoveryNetwork = $RecoveryVnet.Id
 
 #Retrieve the virtual network that the virtual machine is connected to
@@ -159,7 +151,7 @@ $SplitNicArmId = $VM.NetworkProfile.NetworkInterfaces[0].Id.split("/")
 $NICname = $SplitNicArmId[-1]
 
 #Get network interface details using the extracted resource group name and resource name
-$NIC = Get-AzNetworkInterface -ResourceGroupName $SourceRG -Name $NICname
+$NIC = Get-AzNetworkInterface -ResourceGroupName $TargetRG -Name $NICname
 
 #Get the subnet ID of the subnet that the nic is connected to
 $PrimarySubnet = $NIC.IpConfigurations[0].Subnet
@@ -194,7 +186,7 @@ while (($networkmappingASRJob.State -eq "InProgress") -or ($networkmappingASRJob
 Write-Output $networkmappingASRJob.State
 
 #Get the resource group that the virtual machine must be created in when failed over.
-$RecoveryRG = Get-AzResourceGroup -Name $SourceRG -Location $location1
+$RecoveryRG = Get-AzResourceGroup -Name $TargetRG -Location $location1
 
 #Specify replication properties for each disk of the VM that is to be replicated (create disk replication configuration)
 

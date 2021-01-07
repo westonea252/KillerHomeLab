@@ -793,7 +793,7 @@
                   "value": "[concat(variables('HSMScriptName'),'-02')]"           
               },               
               "ScriptLocation": {
-                  "value": "[deployment().location]"
+                  "value": "[parameters('Location2')]"
               }              
           }
       }
@@ -826,7 +826,7 @@
                   "value": "[parameters('Location2')]"
               },
               "ScriptLocation": {
-                  "value": "[deployment().location]"
+                  "value": "[parameters('Location2')]"
               }                                                        
           }
       }
@@ -897,6 +897,9 @@
               "SourceRG": {
                   "value":  "[parameters('Site1RG')]"
               },    
+              "TargetRG": {
+                  "value":  "[parameters('Site2RG')]"
+              },                  
               "location1": {
                   "value": "[deployment().location]"
               },
