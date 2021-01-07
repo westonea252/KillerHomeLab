@@ -8,7 +8,21 @@
       "metadata": {
         "description": "Choose Region (Example: WestUS)"
       }
-    },        
+    },   
+    "Site1RG": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Site1 Resource Groups"
+      }
+    },            
+    "Site2RG": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Site2 Resource Groups"
+      }
+    },                
     "AdminObjectID": {
       "type": "string",
       "defaultValue": "",
@@ -259,8 +273,7 @@
     "RSVault1Name": "[concat(parameters('NamingConvention'),'-rv1-',uniqueString(resourceGroup().id))]",                        
     "RSVault2Name": "[concat(parameters('NamingConvention'),'-rv2-',uniqueString(resourceGroup().id))]",            
     "ManagedIDName": "[concat(parameters('NamingConvention'),'-mi-',uniqueString(resourceGroup().id))]",
-    "SourceRGName": "[resourceGroup().Name]",
-    "TargetRGName": "[concat(variables('SourceRGName'),'-site2')]",                
+
     "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"              
   },  
   "resources": [
@@ -276,10 +289,10 @@
           },
           "parameters": {
               "ResourceGroupName": {
-                  "value": "[variables('SourceRGName')]"
+                  "value": "[parameters('Site1RG')]"
               },
               "location": {
-                  "value": "[resourceGroup().Location]"
+                  "value": "[deployment().Location]"
               }            
           }
       }
@@ -288,7 +301,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "CreateManagedID",
-      "resourceGroup":  "[resourceGroup().Name]",
+      "resourceGroup":  "[parameters('Site1RG')]",
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -300,7 +313,7 @@
                   "value": "[variables('ManagedIDName')]"
               },
               "location": {
-                  "value": "[resourceGroup().Location]"
+                  "value": "[deployment().Location]"
               }
           }
       }
@@ -309,7 +322,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "AssignManagedID",
-      "resourceGroup":  "[resourceGroup().Name]",      
+      "resourceGroup": "[parameters('Site1RG')]",
       "dependsOn": [
         "CreateManagedID"
       ],        
@@ -337,7 +350,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DeployKeyVault1",
-      "resourceGroup":  "[resourceGroup().Name]",      
+      "resourceGroup": "[parameters('Site1RG')]",     
       "dependsOn": [
         "AssignManagedID"        
       ],      
@@ -361,7 +374,7 @@
                   "value": "[reference('CreateManagedID').outputs.manageduseridentity.value]"             
               },                         
               "location": {
-                  "value": "[resourceGroup().Location]"
+                  "value": "[deployment().Location]"
               }
           }
       }
@@ -370,7 +383,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "CreateHSMKey1",
-      "resourceGroup":  "[resourceGroup().Name]",      
+      "resourceGroup": "[parameters('Site1RG')]",    
       "dependsOn": [
         "DeployKeyVault1"        
       ],      
@@ -391,7 +404,7 @@
                   "value": "[concat(variables('HSMScriptName'),'-01')]"           
               },                   
               "ScriptLocation": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().location]"
               }              
           }
       }
@@ -400,7 +413,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "CreateDES1",
-      "resourceGroup":  "[resourceGroup().Name]",      
+      "resourceGroup": "[parameters('Site1RG')]",     
       "dependsOn": [
         "CreateHSMKey1"
       ],      
@@ -418,13 +431,13 @@
                   "value": "[reference('DeployKeyVault1').outputs.keyvaultname.value]"             
               }, 
               "ResourceGroupName": {
-                  "value": "[resourceGroup().Name]"
+                  "value": "[parameters('Site1RG')]"
               },              
               "Location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().location]"
               },
               "ScriptLocation": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().location]"
               }                                                        
           }
       }
@@ -433,7 +446,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "UpdateKeyVault1",
-      "resourceGroup":  "[resourceGroup().Name]",      
+      "resourceGroup": "[parameters('Site1RG')]",
       "dependsOn": [        
         "CreateDES1"        
       ],      
@@ -460,7 +473,7 @@
                   "value": "[reference('CreateDES1').outputs.DiskEncryptionSet.value]"             
               },                         
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().location]"
               }
           }
       }
@@ -469,7 +482,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "VNet1",
-      "resourceGroup":  "[resourceGroup().Name]",      
+      "resourceGroup": "[parameters('Site1RG')]",
       "dependsOn": [
         "UpdateKeyVault1"        
       ],             
@@ -502,7 +515,7 @@
                 "value": "[variables('vnet1BastionsubnetPrefix')]"
               },              
               "location": {
-                  "value": "[resourceGroup().Location]"
+                  "value": "[deployment().Location]"
               }
           }
       }
@@ -511,7 +524,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "VNet1R",
-      "resourceGroup":  "[variables('TargetRGName')]",
+      "resourceGroup": "[parameters('Site2RG')]",
       "dependsOn": [
         "UpdateKeyVault1"        
       ],             
@@ -553,7 +566,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "deploySRV1VM",
-      "resourceGroup":  "[resourceGroup().Name]",            
+      "resourceGroup": "[parameters('Site1RG')]",
       "dependsOn": [
         "VNet1"
       ],      
@@ -598,7 +611,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[resourceGroup().Location]"
+                  "value": "[deployment().Location]"
               }
           }
       }
@@ -607,7 +620,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "EncryptSRV1",
-      "resourceGroup":  "[resourceGroup().Name]",            
+      "resourceGroup": "[parameters('Site1RG')]",
       "dependsOn": [
         "deploySRV1VM"
       ],      
@@ -628,13 +641,13 @@
                   "value": "[variables('srv1name')]"
               },              
               "ResourceGroupName": {
-                  "value": "[resourceGroup().Name]"
+                  "value":  "[parameters('Site1RG')]"
               },
               "ScriptName": {
                   "value": "[concat(variables('ENCScriptName'),'-01')]"           
               },                
               "ScriptLocation": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().location]"
               }                 
           }
       }
@@ -643,7 +656,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DeployRSVault2",
-      "resourceGroup":  "[variables('TargetRGName')]",      
+      "resourceGroup":   "[parameters('Site2RG')]",      
       "dependsOn": [
         "EncryptSRV1"        
       ],       
@@ -667,7 +680,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DeployKeyVault2",
-      "resourceGroup":  "[variables('TargetRGName')]",      
+      "resourceGroup": "[parameters('Site2RG')]",
       "dependsOn": [
         "DeployRSVault2"
       ],      
@@ -701,7 +714,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "CreateHSMKey2",
-      "resourceGroup":  "[variables('TargetRGName')]",      
+      "resourceGroup": "[parameters('Site2RG')]",
       "dependsOn": [
         "DeployKeyVault2"      
       ],      
@@ -722,7 +735,7 @@
                   "value": "[concat(variables('HSMScriptName'),'-02')]"           
               },               
               "ScriptLocation": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().location]"
               }              
           }
       }
@@ -731,7 +744,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "CreateDES2",
-      "resourceGroup":  "[variables('TargetRGName')]",      
+      "resourceGroup": "[parameters('Site2RG')]",
       "dependsOn": [               
         "CreateHSMKey2"       
       ],      
@@ -749,13 +762,13 @@
                   "value": "[reference('DeployKeyVault2').outputs.keyvaultname.value]"             
               }, 
               "ResourceGroupName": {
-                  "value": "[resourceGroup().Name]"
+                  "value":  "[parameters('Site2RG')]"
               },              
               "Location": {
                   "value": "[parameters('Location2')]"
               },
               "ScriptLocation": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().location]"
               }                                                        
           }
       }
@@ -764,7 +777,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "UpdateKeyVault2",
-      "resourceGroup":  "[variables('TargetRGName')]",      
+      "resourceGroup": "[parameters('Site2RG')]",
       "dependsOn": [
         "CreateDES2"        
       ],      
@@ -800,7 +813,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "EnableASRforSRV1",
-      "resourceGroup":  "[resourceGroup().Name]",     
+      "resourceGroup": "[parameters('Site1RG')]",
       "dependsOn": [
         "UpdateKeyVault2"
       ],      
@@ -824,10 +837,10 @@
                   "value": "site2"
               },              
               "SourceRG": {
-                  "value": "[resourceGroup().Name]"
+                  "value":  "[parameters('Site1RG')]"
               },    
               "location1": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().location]"
               },
               "location2": {
                   "value": "[parameters('Location2')]"
@@ -842,7 +855,7 @@
                   "value": "[concat(variables('ASRScriptName'),'-01')]"           
               },                              
               "ScriptLocation": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().location]"
               }                                                    
           }
       }
