@@ -374,7 +374,8 @@
       "name": "AssignManagedIDRG2",
       "resourceGroup": "[parameters('Site2RG')]",
       "dependsOn": [
-        "CreateManagedID"
+        "CreateManagedID",
+        "AssignManagedIDRG1"        
       ],        
       "properties": {
           "mode": "Incremental",
