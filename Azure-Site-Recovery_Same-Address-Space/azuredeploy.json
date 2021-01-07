@@ -785,8 +785,8 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "CreateHSMKey2",
-      "resourceGroup": "[parameters('Site2RG')]",
+      "name": "CreateHSMKey2",      
+      "resourceGroup": "[parameters('Site1RG')]",
       "dependsOn": [
         "DeployKeyVault2"      
       ],      
@@ -807,7 +807,7 @@
                   "value": "[concat(variables('HSMScriptName'),'-02')]"           
               },               
               "ScriptLocation": {
-                  "value": "[parameters('Location2')]"
+                  "value": "[deployment().location]"
               }              
           }
       }
@@ -816,7 +816,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "CreateDES2",
-      "resourceGroup": "[parameters('Site2RG')]",
+      "resourceGroup": "[parameters('Site1RG')]",
       "dependsOn": [               
         "CreateHSMKey2"       
       ],      
@@ -840,7 +840,7 @@
                   "value": "[parameters('Location2')]"
               },
               "ScriptLocation": {
-                  "value": "[parameters('Location2')]"
+                  "value": "[deployment().location]"
               }                                                        
           }
       }
