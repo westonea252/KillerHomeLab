@@ -217,20 +217,20 @@
             "description": "A new GUID used to identify the role assignment"
         }
     },  
-    "KYVaultGuid": {
+    "KeyVaultUniqueID": {
         "type": "string",
-        "defaultValue": "[newGuid()]",
+        "defaultValue": "01",
         "metadata": {
-            "description": "A new GUID for KeyVault"
+            "description": "KeyVault 1 Unique Identifier"
         }
     },                            
-    "RSVaultGuid": {
+    "RecoveryServicesVaultUniqueID": {
         "type": "string",
-        "defaultValue": "[newGuid()]",
+        "defaultValue": "01",
         "metadata": {
-            "description": "A new GUID for Recovery Serices vault"
+            "description": "Recovery Services Vault 1 Unique Identifier"
         }
-    },                                
+    },                              
     "_artifactsLocation": {
       "type": "string",
       "metadata": {
@@ -289,9 +289,9 @@
     "HSMScriptName": "[concat(parameters('NamingConvention'),'-hsm')]",            
     "ENCScriptName": "[concat(parameters('NamingConvention'),'-enc')]",                    
     "ASRScriptName": "[concat(parameters('NamingConvention'),'-asr')]",                        
-    "KeyVault1Name": "[concat(parameters('NamingConvention'),'-kv1-', parameters('KYVaultGuid'))]",            
-    "KeyVault2Name": "[concat(parameters('NamingConvention'),'-kv2-', parameters('KYVaultGuid'))]",            
-    "RSVault2Name": "[concat(parameters('NamingConvention'),'-rv2-', parameters('RSVaultGuid'))]",            
+    "KeyVault1Name": "[concat(parameters('NamingConvention'),'-kv1-', parameters('KeyVaultUniqueID'))]",            
+    "KeyVault2Name": "[concat(parameters('NamingConvention'),'-kv2-', parameters('KeyVaultUniqueID'))]",            
+    "RSVault2Name": "[concat(parameters('NamingConvention'),'-rv2-', parameters('RecoveryServicesVaultUniqueID'))]",            
     "ManagedIDName": "[concat(parameters('NamingConvention'),'-mi-', uniqueString(subscription().id))]",            
     "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"              
   },  
