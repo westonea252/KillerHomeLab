@@ -219,14 +219,14 @@
     },  
     "KeyVaultUniqueID": {
         "type": "string",
-        "defaultValue": "01",
+        "defaultValue": "1234567890x1",
         "metadata": {
             "description": "KeyVault 1 Unique Identifier"
         }
     },                            
     "RecoveryServicesVaultUniqueID": {
         "type": "string",
-        "defaultValue": "01",
+        "defaultValue": "1234567890x1",
         "metadata": {
             "description": "Recovery Services Vault 1 Unique Identifier"
         }
