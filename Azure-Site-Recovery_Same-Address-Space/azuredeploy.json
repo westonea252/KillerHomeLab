@@ -1,5 +1,5 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptiondeploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
     "Location2": {
@@ -259,7 +259,8 @@
     "RSVault1Name": "[concat(parameters('NamingConvention'),'-rv1-',uniqueString(resourceGroup().id))]",                        
     "RSVault2Name": "[concat(parameters('NamingConvention'),'-rv2-',uniqueString(resourceGroup().id))]",            
     "ManagedIDName": "[concat(parameters('NamingConvention'),'-mi-',uniqueString(resourceGroup().id))]",
-    "SourceGroupName": "[resourceGroup().Name]",
+    "SourceRGName": "[resourceGroup().Name]",
+    "TargetRGName": "[concat(variables('SourceRGName'),'-site2')]",                
     "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"              
   },  
   "resources": [
@@ -275,7 +276,7 @@
           },
           "parameters": {
               "ResourceGroupName": {
-                  "value": "[variables('SourceGroupName')]"
+                  "value": "[variables('SourceRGName')]"
               },
               "location": {
                   "value": "[resourceGroup().Location]"
@@ -287,6 +288,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "CreateManagedID",
+      "resourceGroup":  "[resourceGroup().Name]",
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -307,6 +309,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "AssignManagedID",
+      "resourceGroup":  "[resourceGroup().Name]",      
       "dependsOn": [
         "CreateManagedID"
       ],        
@@ -334,6 +337,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DeployKeyVault1",
+      "resourceGroup":  "[resourceGroup().Name]",      
       "dependsOn": [
         "AssignManagedID"        
       ],      
@@ -366,6 +370,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "CreateHSMKey1",
+      "resourceGroup":  "[resourceGroup().Name]",      
       "dependsOn": [
         "DeployKeyVault1"        
       ],      
@@ -395,6 +400,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "CreateDES1",
+      "resourceGroup":  "[resourceGroup().Name]",      
       "dependsOn": [
         "CreateHSMKey1"
       ],      
@@ -427,6 +433,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "UpdateKeyVault1",
+      "resourceGroup":  "[resourceGroup().Name]",      
       "dependsOn": [        
         "CreateDES1"        
       ],      
@@ -462,6 +469,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "VNet1",
+      "resourceGroup":  "[resourceGroup().Name]",      
       "dependsOn": [
         "UpdateKeyVault1"        
       ],             
@@ -503,6 +511,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "VNet1R",
+      "resourceGroup":  "[variables('TargetRGName')]",
       "dependsOn": [
         "UpdateKeyVault1"        
       ],             
@@ -544,6 +553,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "deploySRV1VM",
+      "resourceGroup":  "[resourceGroup().Name]",            
       "dependsOn": [
         "VNet1"
       ],      
@@ -597,6 +607,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "EncryptSRV1",
+      "resourceGroup":  "[resourceGroup().Name]",            
       "dependsOn": [
         "deploySRV1VM"
       ],      
@@ -632,6 +643,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DeployRSVault2",
+      "resourceGroup":  "[variables('TargetRGName')]",      
       "dependsOn": [
         "EncryptSRV1"        
       ],       
@@ -655,6 +667,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DeployKeyVault2",
+      "resourceGroup":  "[variables('TargetRGName')]",      
       "dependsOn": [
         "DeployRSVault2"
       ],      
@@ -688,6 +701,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "CreateHSMKey2",
+      "resourceGroup":  "[variables('TargetRGName')]",      
       "dependsOn": [
         "DeployKeyVault2"      
       ],      
@@ -717,6 +731,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "CreateDES2",
+      "resourceGroup":  "[variables('TargetRGName')]",      
       "dependsOn": [               
         "CreateHSMKey2"       
       ],      
@@ -749,6 +764,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "UpdateKeyVault2",
+      "resourceGroup":  "[variables('TargetRGName')]",      
       "dependsOn": [
         "CreateDES2"        
       ],      
@@ -784,6 +800,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "EnableASRforSRV1",
+      "resourceGroup":  "[resourceGroup().Name]",     
       "dependsOn": [
         "UpdateKeyVault2"
       ],      
