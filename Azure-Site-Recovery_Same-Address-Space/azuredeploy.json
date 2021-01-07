@@ -279,6 +279,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "CreateSite1RG",
+      "location": "[deployment().Location]",
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -299,6 +300,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "CreateSite2RG",
+      "location": "[parameters('Location2')]",
       "properties": {
           "mode": "Incremental",
           "templateLink": {
