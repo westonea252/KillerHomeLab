@@ -275,10 +275,10 @@
     "HSMScriptName": "[concat(parameters('NamingConvention'),'-hsm')]",            
     "ENCScriptName": "[concat(parameters('NamingConvention'),'-enc')]",                    
     "ASRScriptName": "[concat(parameters('NamingConvention'),'-asr')]",                        
-    "KeyVault1Name": "[concat(parameters('NamingConvention'),'-kv1-', uniqueString(subscription().name))]",            
-    "KeyVault2Name": "[concat(parameters('NamingConvention'),'-kv2-', uniqueString(subscription().name))]",            
-    "RSVault2Name": "[concat(parameters('NamingConvention'),'-rv2-', uniqueString(subscription().name))]",            
-    "ManagedIDName": "[concat(parameters('NamingConvention'),'-mi-', uniqueString(subscription().name))]",            
+    "KeyVault1Name": "[concat(parameters('NamingConvention'),'-kv1-', uniqueString(subscription().id))]",            
+    "KeyVault2Name": "[concat(parameters('NamingConvention'),'-kv2-', uniqueString(subscription().id))]",            
+    "RSVault2Name": "[concat(parameters('NamingConvention'),'-rv2-', uniqueString(subscription().id))]",            
+    "ManagedIDName": "[concat(parameters('NamingConvention'),'-mi-', uniqueString(subscription().id))]",            
     "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"              
   },  
   "resources": [
