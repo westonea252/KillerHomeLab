@@ -15,10 +15,13 @@
         }
     }
 },
+  "variables": {
+    "ManagedIDName": "[concat(parameters('ManagedIDName'),uniqueString(resourceGroup().id))]"
+  },  
 "resources": [
     {
       "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
-      "name": "[parameters('ManagedIDName')]",
+      "name": "[variables('ManagedIDName')]",
       "apiVersion": "2018-11-30",
       "location": "[parameters('location')]"
     }
@@ -26,7 +29,7 @@
 "outputs": {
     "manageduseridentity": {
         "type": "string",
-        "value": "[reference(resourceId(resourceGroup().name, 'Microsoft.ManagedIdentity/userAssignedIdentities', parameters('ManagedIDName'))).principalId]"
+        "value": "[reference(resourceId(resourceGroup().name, 'Microsoft.ManagedIdentity/userAssignedIdentities', variables('ManagedIDName'))).principalId]"
     }
   }      
 }

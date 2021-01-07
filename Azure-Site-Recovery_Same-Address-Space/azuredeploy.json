@@ -268,19 +268,17 @@
     "HSMScriptName": "[concat(parameters('NamingConvention'),'-hsm')]",            
     "ENCScriptName": "[concat(parameters('NamingConvention'),'-enc')]",                    
     "ASRScriptName": "[concat(parameters('NamingConvention'),'-asr')]",                        
-    "KeyVault1Name": "[concat(parameters('NamingConvention'),'-kv1-',uniqueString(resourceGroup().id))]",            
-    "KeyVault2Name": "[concat(parameters('NamingConvention'),'-kv2-',uniqueString(resourceGroup().id))]",            
-    "RSVault1Name": "[concat(parameters('NamingConvention'),'-rv1-',uniqueString(resourceGroup().id))]",                        
-    "RSVault2Name": "[concat(parameters('NamingConvention'),'-rv2-',uniqueString(resourceGroup().id))]",            
-    "ManagedIDName": "[concat(parameters('NamingConvention'),'-mi-',uniqueString(resourceGroup().id))]",
-
+    "KeyVault1Name": "[concat(parameters('NamingConvention'),'-kv1-')]",            
+    "KeyVault2Name": "[concat(parameters('NamingConvention'),'-kv2-')]",            
+    "RSVault2Name": "[concat(parameters('NamingConvention'),'-rv2-')]",            
+    "ManagedIDName": "[concat(parameters('NamingConvention'),'-mi-')]",
     "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"              
   },  
   "resources": [
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "CreateRG",
+      "name": "CreateSite1RG",
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -300,8 +298,31 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
+      "name": "CreateSite2RG",
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/resourcegroup.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "ResourceGroupName": {
+                  "value": "[parameters('Site2RG')]"
+              },
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }            
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
       "name": "CreateManagedID",
       "resourceGroup":  "[parameters('Site1RG')]",
+      "dependsOn": [
+        "CreateSite1RG"        
+      ],        
       "properties": {
           "mode": "Incremental",
           "templateLink": {
