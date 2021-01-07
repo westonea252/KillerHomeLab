@@ -259,9 +259,20 @@
     "RSVault1Name": "[concat(parameters('NamingConvention'),'-rv1-',uniqueString(resourceGroup().id))]",                        
     "RSVault2Name": "[concat(parameters('NamingConvention'),'-rv2-',uniqueString(resourceGroup().id))]",            
     "ManagedIDName": "[concat(parameters('NamingConvention'),'-mi-',uniqueString(resourceGroup().id))]",
+    "SourceGroupName": "[resourceGroup().Location]",
     "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"              
   },  
   "resources": [
+    {
+      "type": "Microsoft.Resources/resourceGroups",
+      "apiVersion": "2020-06-01",
+      "name": "[concat(variables('SourceGroupName'),'-asr')]",            
+      "location": "[parameters('Location2')]",
+      "tags": {
+        "Note": "subscription level deployment"
+      },
+      "properties": {}
+    },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
@@ -307,7 +318,8 @@
               }              
           }
       }
-    }, 
+    },
+
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",

@@ -9,6 +9,15 @@
     [string] [Parameter(Mandatory=$true)] $vmName
 )
 
+$RSVaultName = "khl-rv2-uto4sujs5rjkc"
+$RecoveryVNet = "khl-Recovery-VNet1"
+$Site1Name = "site1"
+$Site2Name = "site2"
+$SourceRG = "khl-asr-01"
+$location1 = "EastUS"
+$location2 = "WestUS"
+$vmName = "khl-srv-01"
+
 $VM = Get-AzVM -ResourceGroupName $SourceRG -Name $vmname
 $OSDiskVhdURI = $VM.StorageProfile.OsDisk.Vhd
 $DataDisk1VhdURI = $VM.StorageProfile.DataDisks[0].Vhd
@@ -184,6 +193,9 @@ while (($networkmappingASRJob.State -eq "InProgress") -or ($networkmappingASRJob
 #Check if the Job completed successfully. The updated job state of a successfully completed job should be "Succeeded"
 Write-Output $networkmappingASRJob.State
 
+#Get the resource group that the virtual machine must be created in when failed over.
+$RecoveryRG = Get-AzResourceGroup -Name $SourceRG -Location $location1
+
 #Specify replication properties for each disk of the VM that is to be replicated (create disk replication configuration)
 
 #OsDisk
@@ -192,7 +204,7 @@ $RecoveryOSDiskAccountType = $vm.StorageProfile.OsDisk.ManagedDisk.StorageAccoun
 $RecoveryReplicaDiskAccountType = $vm.StorageProfile.OsDisk.ManagedDisk.StorageAccountType
 
 $OSDiskReplicationConfig = New-AzRecoveryServicesAsrAzureToAzureDiskReplicationConfig -ManagedDisk -LogStorageAccountId $CacheStorageAccount.Id `
-         -DiskId $OSdiskId -RecoveryResourceGroupId  $SourceRG.ResourceId -RecoveryReplicaDiskAccountType  $RecoveryReplicaDiskAccountType `
+         -DiskId $OSdiskId -RecoveryResourceGroupId  $RecoveryRG.ResourceId -RecoveryReplicaDiskAccountType  $RecoveryReplicaDiskAccountType `
          -RecoveryTargetDiskAccountType $RecoveryOSDiskAccountType
 
 # Data disk
@@ -203,7 +215,7 @@ $RecoveryReplicaDiskAccountType = $vm.StorageProfile.DataDisks[0].ManagedDisk.St
 $RecoveryTargetDiskAccountType = $vm.StorageProfile.DataDisks[0].ManagedDisk.StorageAccountType
 
 $DataDisk1ReplicationConfig  = New-AzRecoveryServicesAsrAzureToAzureDiskReplicationConfig -ManagedDisk -LogStorageAccountId $CacheStorageAccount.Id `
-         -DiskId $datadiskId1 -RecoveryResourceGroupId $SourceRG.ResourceId -RecoveryReplicaDiskAccountType $RecoveryReplicaDiskAccountType `
+         -DiskId $datadiskId1 -RecoveryResourceGroupId $RecoveryRG.ResourceId -RecoveryReplicaDiskAccountType $RecoveryReplicaDiskAccountType `
          -RecoveryTargetDiskAccountType $RecoveryTargetDiskAccountType
 
 
@@ -218,4 +230,4 @@ $diskconfigs += $OSDiskReplicationConfig
 
 #Start replication by creating replication protected item. Using a GUID for the name of the replication protected item to ensure uniqueness of name.
 $protecteditemcheck = Get-AzRecoveryServicesAsrReplicationProtectedItem -ProtectionContainer $PrimaryProtContainer -ErrorAction 0
-IF ($protecteditemcheck -eq $null) {New-AzRecoveryServicesAsrReplicationProtectedItem -AzureToAzure -AzureVmId $VM.Id -Name (New-Guid).Guid -ProtectionContainerMapping $EusToWusPCMapping -AzureToAzureDiskReplicationConfiguration $diskconfigs -RecoveryResourceGroupId $SourceRG.ResourceId}
+IF ($protecteditemcheck -eq $null) {New-AzRecoveryServicesAsrReplicationProtectedItem -AzureToAzure -AzureVmId $VM.Id -Name (New-Guid).Guid -ProtectionContainerMapping $EusToWusPCMapping -AzureToAzureDiskReplicationConfiguration $diskconfigs -RecoveryResourceGroupId $RecoveryRG.ResourceId}
