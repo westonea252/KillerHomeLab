@@ -16,14 +16,13 @@
       }
     },
   "variables": {
-    "skuName":  "Standard",
-    "RSVaultName": "[concat(parameters('RSVaultName'),uniqueString(resourceGroup().name))]"
+    "skuName":  "Standard"
   },    
     "resources": [
         {
             "type": "Microsoft.RecoveryServices/vaults",
             "apiVersion": "2016-06-01",
-            "name": "[variables('RSVaultName')]",
+            "name": "[parameters('RSVaultName')]",
             "location": "[parameters('location')]",
             "tags": {
             },
@@ -37,7 +36,7 @@
 "outputs": {
     "RSVaultName": {
         "type": "string",
-        "value": "[variables('RSVaultName')]"
+        "value": "[parameters('RSVaultName')]"
     }
   }    
   }

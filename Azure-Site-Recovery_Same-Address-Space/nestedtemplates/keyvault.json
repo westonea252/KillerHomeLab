@@ -41,13 +41,12 @@
       "All"
       ],
     "skuName":  "Premium",
-    "tenantID": "[subscription().tenantId]",
-    "KeyVaultName": "[concat(parameters('keyVaultName'),uniqueString(resourceGroup().name))]"
+    "tenantID": "[subscription().tenantId]"
   },
 "resources": [
     {
       "type": "Microsoft.KeyVault/vaults",
-      "name": "[variables('keyVaultName')]",
+      "name": "[parameters('keyVaultName')]",
       "apiVersion": "2016-10-01",
       "location": "[parameters('location')]",
       "properties": {
@@ -98,7 +97,7 @@
 "outputs": {
     "KeyVaultName": {
         "type": "string",
-        "value": "[variables('keyVaultName')]"
+        "value": "[parameters('keyVaultName')]"
     }
   }      
 }
