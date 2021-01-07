@@ -186,7 +186,7 @@ while (($networkmappingASRJob.State -eq "InProgress") -or ($networkmappingASRJob
 Write-Output $networkmappingASRJob.State
 
 #Get the resource group that the virtual machine must be created in when failed over.
-$RecoveryRG = Get-AzResourceGroup -Name $TargetRG -Location $location1
+$RecoveryRG = Get-AzResourceGroup -Name $TargetRG -Location $location2
 
 #Specify replication properties for each disk of the VM that is to be replicated (create disk replication configuration)
 

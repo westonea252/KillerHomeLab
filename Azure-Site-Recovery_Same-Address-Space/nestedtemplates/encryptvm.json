@@ -83,7 +83,7 @@
           }
           
           $vmstatus = Get-AzVM -Name $VMName -ResourceGroupName $ResourceGroupName -status          
-          IF ($vmstatus.Statuses[0].DisplayStatus -eq 'VM deallocated') {Start-AzVm -Name $VMName -ResourceGroupName $ResourceGroupName}
+          IF ($vmstatus.Statuses.DisplayStatus -eq 'VM deallocated') {Start-AzVm -Name $VMName -ResourceGroupName $ResourceGroupName}
         ",
         "cleanupPreference": "OnSuccess",
         "retentionInterval": "P1D"
