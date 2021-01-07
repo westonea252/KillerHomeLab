@@ -344,7 +344,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "AssignManagedID",
+      "name": "AssignManagedIDRG1",
       "resourceGroup": "[parameters('Site1RG')]",
       "dependsOn": [
         "CreateManagedID"
@@ -368,14 +368,41 @@
           }
       }
     },
-
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "AssignManagedIDRG2",
+      "resourceGroup": "[parameters('Site2RG')]",
+      "dependsOn": [
+        "CreateManagedID"
+      ],        
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/roleassignment.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "PrincipalID": {
+                  "value": "[reference('CreateManagedID').outputs.manageduseridentity.value]"
+              },
+              "RoleDefinitionID": {
+                  "value": "[variables('Contributor')]"
+              },
+              "roleAssignmentGuid": {
+                  "value": "[parameters('roleAssignmentGuid')]"
+              }              
+          }
+      }
+    },    
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DeployKeyVault1",
       "resourceGroup": "[parameters('Site1RG')]",     
       "dependsOn": [
-        "AssignManagedID"        
+        "AssignManagedIDRG1",
+        "AssignManagedIDRG2"                
       ],      
       "properties": {
           "mode": "Incremental",
