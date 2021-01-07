@@ -151,7 +151,7 @@ $SplitNicArmId = $VM.NetworkProfile.NetworkInterfaces[0].Id.split("/")
 $NICname = $SplitNicArmId[-1]
 
 #Get network interface details using the extracted resource group name and resource name
-$NIC = Get-AzNetworkInterface -ResourceGroupName $TargetRG -Name $NICname
+$NIC = Get-AzNetworkInterface -ResourceGroupName $SourceRG -Name $NICname
 
 #Get the subnet ID of the subnet that the nic is connected to
 $PrimarySubnet = $NIC.IpConfigurations[0].Subnet
