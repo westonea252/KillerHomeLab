@@ -19,9 +19,9 @@ Set-AzRecoveryServicesVaultProperty -SoftDeleteFeatureState Disable -VaultId $Va
 Set-AzRecoveryServicesAsrVaultContext -Vault $VaultForSite1
 
 #Create Primary ASR fabric
-$primaryfabriccheck = Get-AzRecoveryServicesAsrFabric -Name $Site1Name-ASR-Fabric -ErrorAction 0
-IF ($primaryfabriccheck -eq $null) {$PrimaryFabricASRJob = New-AzRecoveryServicesAsrFabric -Azure -Location $location1 -Name $Site1Name-ASR-Fabric}
-ELSE {$PrimaryFabricASRJob = Get-AzRecoveryServicesAsrFabric -Name $Site1Name-ASR-Fabric}
+$primaryfabriccheck = Get-AzRecoveryServicesAsrFabric -Name $Site1Name-ASR-Fabric1 -ErrorAction 0
+IF ($primaryfabriccheck -eq $null) {$PrimaryFabricASRJob = New-AzRecoveryServicesAsrFabric -Azure -Location $location1 -Name $Site1Name-ASR-Fabric1}
+ELSE {$PrimaryFabricASRJob = Get-AzRecoveryServicesAsrFabric -Name $Site1Name-ASR-Fabric1}
 
 # Track Job status to check for completion
 while (($PrimaryFabricASRJob.State -eq "InProgress") -or ($PrimaryFabricASRJob.State -eq "NotStarted")){
@@ -160,30 +160,32 @@ $PrimarySubnet = $NIC.IpConfigurations[0].Subnet
 $PrimaryNetwork = (Split-Path(Split-Path($PrimarySubnet.Id))).Replace("\","/")
 
 #Create an ASR network mapping between the primary Azure virtual network and the recovery Azure virtual network
-$NetworkMappingASRJob = New-AzRecoveryServicesAsrNetworkMapping -AzureToAzure -Name $Site1Name-NWMapping -PrimaryFabric $PrimaryFabric -PrimaryAzureNetworkId $PrimaryNetwork -RecoveryFabric $RecoveryFabric -RecoveryAzureNetworkId $RecoveryNetwork
+$FailoverMappingcheck = Get-AzRecoveryServicesAsrNetworkMapping -Name Failover -PrimaryFabric $PrimaryFabric -ErrorAction 0
+IF ($FailoverMappingcheck -eq $null) {$FailoverMappingASRJob = New-AzRecoveryServicesAsrNetworkMapping -AzureToAzure -Name Failover -PrimaryFabric $PrimaryFabric -PrimaryAzureNetworkId $PrimaryNetwork -RecoveryFabric $RecoveryNetwork -RecoveryAzureNetworkId $RecoveryNetwork}
+ELSE {$FailoverMappingASRJob = Get-AzRecoveryServicesAsrNetworkMapping -Name Failover -PrimaryFabric $PrimaryFabric}
 
 #Track Job status to check for completion
-while (($NetworkMappingASRJob.State -eq "InProgress") -or ($NetworkMappingASRJob.State -eq "NotStarted")){
+while (($FailoverMappingASRJob.State -eq "InProgress") -or ($FailoverMappingASRJob.State -eq "NotStarted")){
         sleep 10;
-        $NetworkMappingASRJob = Get-AzRecoveryServicesAsrJob -Job $NetworkMappingASRJob
+        $FailoverMappingASRJob = Get-AzRecoveryServicesAsrJob -Job $FailoverMappingASRJob
 }
 
 #Check if the Job completed successfully. The updated job state of a successfully completed job should be "Succeeded"
-Write-Output $NetworkMappingASRJob.State 
+Write-Output $FailoverMappingASRJob.State 
 
 #Create an ASR network mapping for failback between the recovery Azure virtual network and the primary Azure virtual network
-$networkmappingcheck = Get-AzRecoveryServicesAsrNetworkMapping -Name $Site1Name-NWMapping -PrimaryFabric $PrimaryFabric -ErrorAction 0
-IF ($networkmappingcheck -eq $null) {$networkmappingASRJob = New-AzRecoveryServicesAsrNetworkMapping -AzureToAzure -Name $Site2Name-NWMapping -PrimaryFabric $RecoveryFabric -PrimaryAzureNetworkId $RecoveryNetwork -RecoveryFabric $PrimaryFabric -RecoveryAzureNetworkId $PrimaryNetwork}
-ELSE {$NetworkMappingASRJob = Get-AzRecoveryServicesAsrNetworkMapping -Name $Site1Name-NWMapping -PrimaryFabric $PrimaryFabric}
+$FailbackMappingcheck = Get-AzRecoveryServicesAsrNetworkMapping -Name Failback -PrimaryFabric $RecoveryFabric -ErrorAction 0
+IF ($FailbackMappingcheck -eq $null) {$FailbackMappingASRJob = New-AzRecoveryServicesAsrNetworkMapping -AzureToAzure -Name Failback -PrimaryFabric $RecoveryFabric -PrimaryAzureNetworkId $RecoveryNetwork -RecoveryFabric $PrimaryFabric -RecoveryAzureNetworkId $PrimaryNetwork}
+ELSE {$FailbackMappingASRJob = Get-AzRecoveryServicesAsrNetworkMapping -Name Failback -PrimaryFabric $PrimaryFabric}
 
 #Track Job status to check for completion
-while (($networkmappingASRJob.State -eq "InProgress") -or ($networkmappingASRJob.State -eq "NotStarted")){
+while (($FailbackMappingASRJob.State -eq "InProgress") -or ($FailbackMappingASRJob.State -eq "NotStarted")){
         sleep 10;
-        $networkmappingASRJob = Get-AzRecoveryServicesAsrJob -Job $networkmappingASRJob
+        $FailbackMappingASRJob = Get-AzRecoveryServicesAsrJob -Job $FailbackMappingASRJob
 }
 
 #Check if the Job completed successfully. The updated job state of a successfully completed job should be "Succeeded"
-Write-Output $networkmappingASRJob.State
+Write-Output $FailbackMappingASRJob.State
 
 #Get the resource group that the virtual machine must be created in when failed over.
 $RecoveryRG = Get-AzResourceGroup -Name $TargetRG -Location $location2
