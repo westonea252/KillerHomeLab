@@ -666,7 +666,7 @@
       "name": "DeployRSVault2",
       "resourceGroup":   "[parameters('Site2RG')]",      
       "dependsOn": [
-        "DeployRSVault2"        
+        "DeployRSVault1"        
       ],       
       "properties": {
           "mode": "Incremental",
