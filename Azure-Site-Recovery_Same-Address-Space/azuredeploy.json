@@ -899,9 +899,12 @@
               "RSVaultname": {
                   "value": "[reference('DeployRSVault2').outputs.RSVaultName.value]"            
               }, 
-              "RecoveryVNet": {
+              "RecoveryVNetName": {
                   "value": "[reference('VNet1R').outputs.vnetName.value]"             
               },
+              "DESName": {
+                  "value": "[concat(variables('KeyVault1Name'),'-DES')]"
+              },                                       
               "Site1Name": {
                   "value": "site1"
               },              

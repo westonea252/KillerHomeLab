@@ -8,12 +8,18 @@
         "description": "Recovery Services Vault Name"
       }
     },
-    "RecoveryVNet": {
-        "type": "string",
-        "metadata": {
-            "description": "Recovery VNet Name"
-        }
-    },
+    "RecoveryVNetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Recovery VNet Name"
+      }
+    },    
+    "DESName": {
+      "type": "string",
+      "metadata": {
+        "description": "Disk Encryption Set Name"
+      }
+    }, 
     "Site1Name": {
         "type": "string",
         "metadata": {
@@ -95,7 +101,7 @@
       "properties": {
         "azPowerShellVersion": "5.0",
         "timeout": "PT1H",
-        "arguments": "[format(' -RSVaultName {0} -RecoveryVNet {1} -Site1Name {2} -Site2Name {3} -SourceRG {4} -TargetRG {5} -location1 {6} -location2 {7} -vmName {8}', parameters('RSVaultName'), parameters('RecoveryVNet'), parameters('Site1Name'), parameters('Site2Name'), parameters('SourceRG'), parameters('TargetRG'), parameters('Location1'), parameters('Location2'), parameters('vmName'))]", // can pass an argument string, double quotes must be escaped
+        "arguments": "[format(' -RSVaultName {0} -RecoveryVNetName {1} -DESName {2} -Site1Name {3} -Site2Name {4} -SourceRG {5} -TargetRG {6} -location1 {7} -location2 {8} -vmName {9}', parameters('RSVaultName'), parameters('RecoveryVNetName'), parameters('DESName'), parameters('Site1Name'), parameters('Site2Name'), parameters('SourceRG'), parameters('TargetRG'), parameters('Location1'), parameters('Location2'), parameters('vmName'))]", // can pass an argument string, double quotes must be escaped
         "primaryScriptUri": "[variables('ScriptURL')]",
         "cleanupPreference": "OnSuccess",
         "retentionInterval": "P1D"
