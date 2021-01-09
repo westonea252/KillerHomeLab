@@ -903,7 +903,7 @@
                   "value": "[reference('VNet1R').outputs.vnetName.value]"             
               },
               "DESName": {
-                  "value": "[concat(variables('KeyVault1Name'),'-DES')]"
+                  "value": "[concat(variables('KeyVault2Name'),'-DES')]"
               },                                       
               "Site1Name": {
                   "value": "site1"
