@@ -288,9 +288,11 @@
     "BackupObjectID": "f40e18f0-6544-45c2-9d24-639a8bb3b41a",
     "HSMScriptName": "[concat(parameters('NamingConvention'),'-hsm')]",            
     "ENCScriptName": "[concat(parameters('NamingConvention'),'-enc')]",                    
-    "ASRScriptName": "[concat(parameters('NamingConvention'),'-asr')]",                        
+    "ASRScriptName": "[concat(parameters('NamingConvention'),'-asr')]",                    
+    "BCKScriptName": "[concat(parameters('NamingConvention'),'-bck')]",                            
     "KeyVault1Name": "[concat(parameters('NamingConvention'),'-kv1-', parameters('KeyVaultUniqueID'))]",            
     "KeyVault2Name": "[concat(parameters('NamingConvention'),'-kv2-', parameters('KeyVaultUniqueID'))]",            
+    "RSVault1Name": "[concat(parameters('NamingConvention'),'-rv1-', parameters('RecoveryServicesVaultUniqueID'))]",            
     "RSVault2Name": "[concat(parameters('NamingConvention'),'-rv2-', parameters('RecoveryServicesVaultUniqueID'))]",            
     "ManagedIDName": "[concat(parameters('NamingConvention'),'-mi-', uniqueString(subscription().id))]",            
     "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"              
@@ -637,100 +639,34 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "deploySRV1VM",
-      "resourceGroup": "[parameters('Site1RG')]",
+      "name": "DeployRSVault1",
+      "resourceGroup":   "[parameters('Site1RG')]",      
       "dependsOn": [
-        "VNet1"
-      ],      
+        "UpdateKeyVault1"        
+      ],       
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/recoveryservicesvault.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
-              "computerName": {
-                  "value": "[variables('srv1name')]"
+              "RSVaultName": {
+                  "value": "[variables('RSVault1Name')]"
               },
-              "computerIP": {
-                  "value": "[variables('srv1IP')]"
-              },
-              "Publisher": {
-                  "value": "MicrosoftWindowsServer"
-              },
-              "Offer": {
-                  "value": "WindowsServer"
-              },
-              "OSVersion": {
-                "value": "[parameters('SRV1OSVersion')]"
-              },              
-              "LicenseType": {
-                "value": "[parameters('WindowsServerLicenseType')]"
-              },               
-              "VMSize": {
-                "value": "[parameters('SRV1VMSize')]"
-              },
-              "vnetName": {
-                "value": "[variables('vnet1Name')]"
-              },            
-              "subnetName": {
-                "value": "[variables('vnet1subnet2Name')]"
-              },            
-              "adminUsername": {
-                "value": "[parameters('adminUsername')]"
-              },                                                                                                            
-              "adminPassword": {
-                "value": "[parameters('adminPassword')]"
-              },                                                                                                                                        
               "location": {
-                  "value": "[deployment().Location]"
+                  "value": "[deployment().location]"
               }
           }
       }
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
-      "name": "EncryptSRV1",
-      "resourceGroup": "[parameters('Site1RG')]",
-      "dependsOn": [
-        "deploySRV1VM"
-      ],      
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/encryptvm.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "ManagedIDName": {
-                  "value": "[variables('ManagedIDName')]"
-              },
-              "KeyVaultname": {
-                  "value": "[reference('DeployKeyVault1').outputs.keyvaultname.value]"             
-              }, 
-              "VMName": {
-                  "value": "[variables('srv1name')]"
-              },              
-              "ResourceGroupName": {
-                  "value":  "[parameters('Site1RG')]"
-              },
-              "ScriptName": {
-                  "value": "[concat(variables('ENCScriptName'),'-01')]"           
-              },                
-              "ScriptLocation": {
-                  "value": "[deployment().location]"
-              }                 
-          }
-      }
-    },    
+    },           
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DeployRSVault2",
       "resourceGroup":   "[parameters('Site2RG')]",      
       "dependsOn": [
-        "EncryptSRV1"        
+        "DeployRSVault2"        
       ],       
       "properties": {
           "mode": "Incremental",
@@ -878,6 +814,132 @@
               "location": {
                   "value": "[parameters('Location2')]"
               }
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "deploySRV1VM",
+      "resourceGroup": "[parameters('Site1RG')]",
+      "dependsOn": [
+        "UpdateKeyVault2"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('srv1name')]"
+              },
+              "computerIP": {
+                  "value": "[variables('srv1IP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsServer"
+              },
+              "Offer": {
+                  "value": "WindowsServer"
+              },
+              "OSVersion": {
+                "value": "[parameters('SRV1OSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "[parameters('WindowsServerLicenseType')]"
+              },               
+              "VMSize": {
+                "value": "[parameters('SRV1VMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('vnet1Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('vnet1subnet2Name')]"
+              },            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[deployment().Location]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "BackupSRV1",
+      "resourceGroup": "[parameters('Site1RG')]",
+      "dependsOn": [
+        "EncryptSRV1"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/backupvm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "BackupPolicyName": {
+                  "value": "[concat(parameters('NamingConvention'),'-Site1-BackupPolicy')]"
+              },
+              "RSVaultname": {
+                  "value": "[variables('RSVault1Name')]"
+              },           
+              "ResourceGroupName": {
+                  "value":  "[parameters('Site1RG')]"
+              },
+              "VMName": {
+                  "value": "[variables('srv1name')]"
+              },                  
+              "ScriptName": {
+                  "value": "[concat(variables('BCKScriptName'),'-01')]"           
+              },                
+              "ScriptLocation": {
+                  "value": "[deployment().location]"
+              }                 
+          }
+      }
+    },                               
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "EncryptSRV1",
+      "resourceGroup": "[parameters('Site1RG')]",
+      "dependsOn": [
+        "deploySRV1VM"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/encryptvm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "ManagedIDName": {
+                  "value": "[variables('ManagedIDName')]"
+              },
+              "KeyVaultname": {
+                  "value": "[reference('DeployKeyVault1').outputs.keyvaultname.value]"             
+              }, 
+              "VMName": {
+                  "value": "[variables('srv1name')]"
+              },              
+              "ResourceGroupName": {
+                  "value":  "[parameters('Site1RG')]"
+              },
+              "ScriptName": {
+                  "value": "[concat(variables('ENCScriptName'),'-01')]"           
+              },                
+              "ScriptLocation": {
+                  "value": "[deployment().location]"
+              }                 
           }
       }
     },                           
