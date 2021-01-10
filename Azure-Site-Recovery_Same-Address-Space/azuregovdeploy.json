@@ -143,6 +143,7 @@
     "srv1name": "[concat(parameters('NamingConvention'),'-srv-01')]",           
     "srv1IP": "[concat(parameters('vnet1ID'),'.2.',variables('srv1lastoctet'))]",        
     "BackupObjectID": "ff281ffe-705c-4f53-9f37-a40e6f2c68f3",
+    "ScriptLocation": "USGovVirginia",    
     "HSMScriptName": "[concat(parameters('NamingConvention'),'-hsm')]",            
     "ENCScriptName": "[concat(parameters('NamingConvention'),'-enc')]",                    
     "ASRScriptName": "[concat(parameters('NamingConvention'),'-asr')]",                    
@@ -335,7 +336,7 @@
                   "value": "[concat(variables('HSMScriptName'),'-01')]"           
               },                   
               "ScriptLocation": {
-                  "value": "[deployment().location]"
+                  "value": "[variables('ScriptLocation')]"
               }              
           }
       }
@@ -368,7 +369,7 @@
                   "value": "[deployment().location]"
               },
               "ScriptLocation": {
-                  "value": "[deployment().location]"
+                  "value": "[variables('ScriptLocation')]"
               }                                                        
           }
       }
@@ -600,7 +601,7 @@
                   "value": "[concat(variables('HSMScriptName'),'-02')]"           
               },               
               "ScriptLocation": {
-                  "value": "[deployment().location]"
+                  "value": "[variables('ScriptLocation')]"
               }              
           }
       }
@@ -633,7 +634,7 @@
                   "value": "[parameters('Location2')]"
               },
               "ScriptLocation": {
-                  "value": "[deployment().location]"
+                  "value": "[variables('ScriptLocation')]"
               }                                                        
           }
       }
@@ -759,7 +760,7 @@
                   "value": "[concat(variables('ENCScriptName'),'-01')]"           
               },                
               "ScriptLocation": {
-                  "value": "[deployment().location]"
+                  "value": "[variables('ScriptLocation')]"
               }                 
           }
       }
@@ -798,7 +799,7 @@
                   "value": "[concat(variables('BCKScriptName'),'-01')]"           
               },                
               "ScriptLocation": {
-                  "value": "[deployment().location]"
+                  "value": "[variables('ScriptLocation')]"
               }                 
           }
       }
@@ -855,7 +856,7 @@
                   "value": "[concat(variables('ASRScriptName'),'-01')]"           
               },                              
               "ScriptLocation": {
-                  "value": "[deployment().location]"
+                  "value": "[variables('ScriptLocation')]"
               }                                                    
           }
       }
