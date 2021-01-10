@@ -9,7 +9,7 @@
 $targetVault = Get-AzRecoveryServicesVault -ResourceGroupName $ResourceGroupName -Name $RSVaultName
 
 # Set Recovery Services Vault to use Geo Redundancy
-Set-AzRecoveryServicesBackupProperty -Vault $targetVault.ID -BackupStorageRedundancy GeoRedundant
+Set-AzRecoveryServicesBackupProperty -Vault $targetVault -BackupStorageRedundancy GeoRedundant
 
 # Get Backup Policy
 $schPol = Get-AzRecoveryServicesBackupSchedulePolicyObject -WorkloadType "AzureVM"
@@ -20,10 +20,10 @@ $schpol.ScheduleRunTimes[0] = $UtcTime
 # Get Retention Policy
 $retPol = Get-AzRecoveryServicesBackupRetentionPolicyObject -WorkloadType "AzureVM"
 
-# Create New Policy
-New-AzRecoveryServicesBackupProtectionPolicy -Name $BackupPolicyName -WorkloadType "AzureVM" -RetentionPolicy $retPol -SchedulePolicy $schPol -VaultId $targetVault.ID
-
-$pol = Get-AzRecoveryServicesBackupProtectionPolicy -Name $BackupPolicyName -VaultId $targetVault.ID
+# Create New Policy if needed
+$PolicyCheck = Get-AzRecoveryServicesBackupProtectionPolicy -Name $BackupPolicyName -ErrorAction 0
+IF ($PolicyCheck -eq $Null){$pol = New-AzRecoveryServicesBackupProtectionPolicy -Name $BackupPolicyName -WorkloadType "AzureVM" -RetentionPolicy $retPol -SchedulePolicy $schPol -VaultId $targetVault.ID}
+ELSE {$pol = Get-AzRecoveryServicesBackupProtectionPolicy -Name $BackupPolicyName}
 
 # Enable Protection
 Enable-AzRecoveryServicesBackupProtection -Policy $pol -Name $vmName -ResourceGroupName $ResourceGroupName -VaultId $targetVault.ID
