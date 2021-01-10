@@ -897,7 +897,10 @@
               },
               "VMName": {
                   "value": "[variables('srv1name')]"
-              },                  
+              },    
+              "ManagedIDName": {
+                  "value": "[variables('ManagedIDName')]"
+              },                            
               "ScriptName": {
                   "value": "[concat(variables('BCKScriptName'),'-01')]"           
               },                
