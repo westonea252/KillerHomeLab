@@ -59,100 +59,14 @@
       "metadata": {
         "description": "Environment Naming Convention"
       }
-    },
-    "SubDNSDomain": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-          "description": "Sub DNS Domain Name Example:  sub1. must include a DOT AT END"
-      }
-    },     
-    "SubDNSBaseDN": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-          "description": "Sub DNS Domain Name Example:  DC=sub2,DC=sub1, must include COMMA AT END"
-      }
-    },                
-    "NetBiosDomain": {
-      "type": "string",
-      "defaultValue": "killerhomelab",
-      "metadata": {
-          "description": "NetBios Domain Name"
-      }
-    },   
-    "InternalDomain": {
-      "type": "string",
-      "defaultValue": "killerhomelab",
-      "metadata": {
-          "description": "NetBios Domain Name"
-      }
-    },       
-    "TLD": {
-      "type": "string",
-      "defaultValue": "com",
-      "allowedValues": [
-        "com",
-        "net",
-        "org",
-        "edu",
-        "gov",
-        "mil"
-      ],      
-      "metadata": {
-          "description": "Top-Level Domain Name"
-      }
-    },                            
+    },                         
     "vnet1ID": {
       "type": "string",
       "defaultValue": "10.1",
       "metadata": {
         "description": "VNet1 Prefix"
       }
-    },    
-    "vnet2ID": {
-      "type": "string",
-      "defaultValue": "10.2",
-      "metadata": {
-        "description": "VNet1 Prefix"
-      }
     },        
-    "ReverseLookup1": {
-      "type": "string",
-      "defaultValue": "1.10",
-      "metadata": {
-          "description": "DNS Reverse Lookup Zone1 Prefix"
-      }
-    },                    
-    "ReverseLookup2": {
-      "type": "string",
-      "defaultValue": "2.10",
-      "metadata": {
-          "description": "DNS Reverse Lookup Zone2 Prefix"
-      }
-    },                       
-    "DC1OSVersion": {
-        "type": "string",
-        "defaultValue": "2019-Datacenter",
-        "allowedValues": [
-          "2019-Datacenter",
-          "2016-Datacenter"
-        ],
-        "metadata": {
-            "description": "Domain Controller1 OS Version"
-        }
-    },
-    "DC2OSVersion": {
-      "type": "string",
-      "defaultValue": "2019-Datacenter",
-      "allowedValues": [
-        "2019-Datacenter",
-        "2016-Datacenter"
-      ],
-      "metadata": {
-          "description": "Domain Controller2 OS Version"
-      }
-    },    
     "SRV1OSVersion": {
       "type": "string",
       "defaultValue": "2019-Datacenter",
@@ -164,31 +78,6 @@
           "description": "Server1 OS Version"
       }
     },    
-    "SRV2OSVersion": {
-      "type": "string",
-      "defaultValue": "2019-Datacenter",
-      "allowedValues": [
-        "2019-Datacenter",
-        "2016-Datacenter"
-      ],
-      "metadata": {
-          "description": "Server2 OS Version"
-      }
-    },    
-    "DC1VMSize": {
-        "type": "string",
-        "defaultValue": "Standard_D2s_v3",
-        "metadata": {
-            "description": "Domain Controller1 VMSize"
-        }
-    },        
-    "DC2VMSize": {
-      "type": "string",
-      "defaultValue": "Standard_D2s_v3",
-      "metadata": {
-          "description": "Domain Controller2 VMSize"
-      }
-    },            
     "SRV1VMSize": {
       "type": "string",
       "defaultValue": "Standard_D2s_v3",
@@ -196,13 +85,6 @@
           "description": "Server1 VMSize"
       }
     },            
-    "SRV2VMSize": {
-      "type": "string",
-      "defaultValue": "Standard_D2s_v3",
-      "metadata": {
-          "description": "Server2 VMSize"
-      }
-    },                
     "roleAssignmentGuid1": {
         "type": "string",
         "defaultValue": "[newGuid()]",
@@ -257,34 +139,9 @@
     "vnet1subnet2NameR": "[concat(parameters('NamingConvention'),'-Recovery-VNet1-Subnet2')]",         
     "vnet1subnet2Prefix": "[concat(parameters('vnet1ID'),'.2.0/24')]",    
     "vnet1BastionsubnetPrefix": "[concat(parameters('vnet1ID'),'.253.0/24')]",        
-    "vnet2Name": "[concat(parameters('NamingConvention'),'-VNet2')]",    
-    "vnet2NameR": "[concat(parameters('NamingConvention'),'-Recovery-VNet2')]",        
-    "vnet2Prefix": "[concat(parameters('vnet2ID'),'.0.0/16')]",
-    "vnet2subnet1Name": "[concat(parameters('NamingConvention'),'-VNet2-Subnet1')]",   
-    "vnet2subnet1NameR": "[concat(parameters('NamingConvention'),'-Recovery-VNet2-Subnet1')]",         
-    "vnet2subnet1Prefix": "[concat(parameters('vnet2ID'),'.1.0/24')]",    
-    "vnet2subnet2Name": "[concat(parameters('NamingConvention'),'-VNet2-Subnet2')]",    
-    "vnet2subnet2NameR": "[concat(parameters('NamingConvention'),'-Recovery-VNet2-Subnet2')]",        
-    "vnet2subnet2Prefix": "[concat(parameters('vnet2ID'),'.2.0/24')]",    
-    "vnet2BastionsubnetPrefix": "[concat(parameters('vnet2ID'),'.253.0/24')]",        
-    "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",           
-    "dc1IP": "[concat(parameters('vnet1ID'),'.1.',variables('dc1lastoctet'))]",        
-    "dc2name": "[concat(parameters('NamingConvention'),'-dc-02')]",           
-    "dc2IP": "[concat(parameters('vnet2ID'),'.1.',variables('dc2lastoctet'))]",            
-    "ReverseLookup1": "[concat('1.',parameters('ReverseLookup1'))]",    
-    "ReverseLookup2": "[concat('1.',parameters('ReverseLookup2'))]",        
-    "dc1lastoctet": "101",        
     "srv1lastoctet": "102",            
     "srv1name": "[concat(parameters('NamingConvention'),'-srv-01')]",           
     "srv1IP": "[concat(parameters('vnet1ID'),'.2.',variables('srv1lastoctet'))]",        
-    "dc2lastoctet": "101",        
-    "srv2lastoctet": "102",            
-    "srv2name": "[concat(parameters('NamingConvention'),'-srv-02')]",           
-    "srv2IP": "[concat(parameters('vnet2ID'),'.2.',variables('srv2lastoctet'))]",        
-    "DCDataDisk1Name": "NTDS",            
-    "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
-    "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
-    "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
     "BackupObjectID": "f40e18f0-6544-45c2-9d24-639a8bb3b41a",
     "HSMScriptName": "[concat(parameters('NamingConvention'),'-hsm')]",            
     "ENCScriptName": "[concat(parameters('NamingConvention'),'-enc')]",                    
