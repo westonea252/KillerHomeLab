@@ -2,10 +2,10 @@
 "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
 "contentVersion": "1.0.0.0",
 "parameters": {
-    "resourcegroupName": {
-        "type": "string",
+    "FlowLogName": {
+        "type": "array",
         "metadata": {
-            "description": "Resource Group Name"
+            "description": "Solution Type"
           }
     },
     "workspaceName": {
@@ -14,13 +14,13 @@
           "description": "Specifies the name of the workspace."
         }
     },
-    "solutionTypes": {
+    "NSGName": {
         "type": "array",
         "metadata": {
             "description": "Solution Type"
           }
     },    
-    "subscriptionId": {
+    "StorageAccountName": {
         "type": "string",
         "metadata": {
             "description": "Specifies Subscription ID."
@@ -36,19 +36,40 @@
         "type": "string",
         "metadata": {
         "description": "Specifies the service tier of the workspace: Standalone, PerNode, Per-GB"
-    }
-      }
+        }
+    }    
 },
+    "variables": {
+      "NSGResourceID": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', parameters('NSGName'))]",
+      "StorageAccountResourceID": "[resourceId(resourceGroup().name, 'Microsoft.Storage/storageAccounts', parameters('StorageAccountName'))]",
+      "WorkspaceResourceID": "[resourceId(resourceGroup().name, 'Microsoft.OperationalInsights/workspaces', parameters('workspaceName'))]",
+      "NetworkWatcherName": "[concat('NetworkWatcher_', parameters('location'))]",
+      "NSGFlowName": "[concat(variables('NetworkWatcherName'), '/', parameters('FlowLogName'))]"               
+    },
 "resources": [
     {
-        "name": "string",
+        "type": "Microsoft.OperationalInsights/workspaces",
+        "name": "[parameters('workspaceName')]",
+        "apiVersion": "2020-08-01",
+        "location": "[parameters('location')]",
+        "properties": {
+            "sku": {
+                "name": "[parameters('sku')]"
+            },
+            "features": {
+                "searchVersion": 1
+            }
+        }
+    },
+    {
+        "name": "[variables('NSGFlowName')]",
         "type": "Microsoft.Network/networkWatchers/flowLogs",
         "apiVersion": "2019-11-01",
-        "location": "string",
+        "location": "[parameters('location')]",
         "tags": {},
         "properties": {
-            "targetResourceId": "string",
-            "storageId": "string",
+            "targetResourceId": "[variables('NSGResourceID')]",
+            "storageId": "[variables('StorageAccountResourceID')]",
             "enabled": true,
             "retentionPolicy": {
                 "days": 5,
@@ -61,9 +82,7 @@
             "flowAnalyticsConfiguration": {
                 "networkWatcherFlowAnalyticsConfiguration": {
                     "enabled": true,
-                    "workspaceId": "string",
-                    "workspaceRegion": "string",
-                    "workspaceResourceId": "string",
+                    "workspaceResourceId": "[variables('WorkspaceResourceID')]",
                     "trafficAnalyticsInterval": 10
                     }
             }
