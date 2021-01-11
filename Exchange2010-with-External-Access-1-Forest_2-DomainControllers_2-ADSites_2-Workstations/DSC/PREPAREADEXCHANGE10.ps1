@@ -4,9 +4,6 @@
    (
         [String]$ExchangeOrgName,
         [String]$NetBiosDomain,
-        [String]$Site1DC,
-        [String]$Site2DC,
-        [String]$BaseDN,
         [System.Management.Automation.PSCredential]$Admincreds
 
     )
@@ -33,14 +30,12 @@
         {
             SetScript =
             {
-                repadmin /replicate "$using:Site1DC" "$using:Site2DC" "$using:BaseDN"
-                repadmin /replicate "$using:Site2DC" "$using:Site1DC" "$using:BaseDN"
+                (Get-ADDomainController -Filter *).Name | Foreach-Object { repadmin /syncall $_ (Get-ADDomain).DistinguishedName /AdeP }
                                 
                 C:\MachineConfig\Exchange2010SP3\Setup.com /PrepareSchema
                 C:\MachineConfig\Exchange2010SP3\Setup.com /PrepareAD /on:"$using:ExchangeOrgName"
 
-                repadmin /replicate "$using:Site1DC" "$using:Site2DC" "$using:BaseDN"
-                repadmin /replicate "$using:Site2DC" "$using:Site1DC" "$using:BaseDN"
+                (Get-ADDomainController -Filter *).Name | Foreach-Object { repadmin /syncall $_ (Get-ADDomain).DistinguishedName /AdeP }
             }
             GetScript =  { @{} }
             TestScript = { $false}
