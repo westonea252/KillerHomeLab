@@ -1,0 +1,73 @@
+{
+"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+"contentVersion": "1.0.0.0",
+"parameters": {
+    "resourcegroupName": {
+        "type": "string",
+        "metadata": {
+            "description": "Resource Group Name"
+          }
+    },
+    "workspaceName": {
+        "type": "string",
+        "metadata": {
+          "description": "Specifies the name of the workspace."
+        }
+    },
+    "solutionTypes": {
+        "type": "array",
+        "metadata": {
+            "description": "Solution Type"
+          }
+    },    
+    "subscriptionId": {
+        "type": "string",
+        "metadata": {
+            "description": "Specifies Subscription ID."
+          }
+    },    
+    "location": {
+        "type": "string",
+        "metadata": {
+          "description": "Specifies the location in which to create the workspace."
+        }
+    },
+    "sku": {
+        "type": "string",
+        "metadata": {
+        "description": "Specifies the service tier of the workspace: Standalone, PerNode, Per-GB"
+    }
+      }
+},
+"resources": [
+    {
+        "name": "string",
+        "type": "Microsoft.Network/networkWatchers/flowLogs",
+        "apiVersion": "2019-11-01",
+        "location": "string",
+        "tags": {},
+        "properties": {
+            "targetResourceId": "string",
+            "storageId": "string",
+            "enabled": true,
+            "retentionPolicy": {
+                "days": 5,
+                "enabled": true
+            },
+            "format": {
+                "type": "JSON",
+                "version": 2
+            },
+            "flowAnalyticsConfiguration": {
+                "networkWatcherFlowAnalyticsConfiguration": {
+                    "enabled": true,
+                    "workspaceId": "string",
+                    "workspaceRegion": "string",
+                    "workspaceResourceId": "string",
+                    "trafficAnalyticsInterval": 10
+                    }
+            }
+        }
+    }
+   ]
+}
