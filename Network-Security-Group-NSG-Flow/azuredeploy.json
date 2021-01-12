@@ -132,7 +132,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "CreateStorage",   
       "resourceGroup":  "[parameters('ResourceGroup')]",            
       "location": "[deployment().location]",
@@ -154,7 +154,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DeployNSG",
       "location": "[deployment().location]",
       "resourceGroup":  "[parameters('ResourceGroup')]",            
@@ -220,7 +220,7 @@
     },     
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "VNet1",
       "location": "[deployment().location]",  
       "resourceGroup":  "[parameters('ResourceGroup')]",  
@@ -263,7 +263,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "BastionHost1",
       "location": "[deployment().location]",  
       "resourceGroup":  "[parameters('ResourceGroup')]",                
@@ -297,7 +297,7 @@
     },    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployDC1VM",
       "location": "[deployment().location]",   
       "resourceGroup":  "[parameters('ResourceGroup')]",               
