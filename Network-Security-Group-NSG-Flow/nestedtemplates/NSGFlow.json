@@ -2,6 +2,12 @@
 "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
 "contentVersion": "1.0.0.0",
 "parameters": {
+    "ResourceGroup": {
+        "type": "string",
+        "metadata": {
+            "description": "Resource Group"
+          }
+    },
     "FlowLogName": {
         "type": "string",
         "metadata": {
@@ -40,8 +46,8 @@
     }    
 },
     "variables": {
-      "NSGResourceID": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', parameters('NSGName'))]",
-      "StorageAccountResourceID": "[resourceId(resourceGroup().name, 'Microsoft.Storage/storageAccounts', parameters('StorageAccountName'))]",
+      "NSGResourceID": "[resourceId(parameters('ResourceGroup'), 'Microsoft.Network/networkSecurityGroups', parameters('NSGName'))]",
+      "StorageAccountResourceID": "[resourceId(parameters('ResourceGroup'), 'Microsoft.Storage/storageAccounts', parameters('StorageAccountName'))]",
       "WorkspaceResourceID": "[resourceId(resourceGroup().name, 'Microsoft.OperationalInsights/workspaces', parameters('workspaceName'))]",
       "NetworkWatcherName": "[concat('NetworkWatcher_', parameters('location'))]",
       "NSGFlowName": "[concat(variables('NetworkWatcherName'), '/', parameters('FlowLogName'))]"               

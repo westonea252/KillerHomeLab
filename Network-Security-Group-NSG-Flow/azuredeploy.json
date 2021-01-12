@@ -185,7 +185,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DeployNSGFlowSolution",
-      "resourceGroup":  "[parameters('ResourceGroup')]",            
+      "resourceGroup":  "NetworkWatcherRG",            
       "dependsOn": [
         "CreateStorage",
         "DeployNSG"
@@ -197,6 +197,9 @@
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
+              "ResourceGroup": {
+                  "value": "[parameters('ResourceGroup')]"
+              },
               "FlowLogName": {
                   "value": "[parameters('FlowLogName')]"
               },
