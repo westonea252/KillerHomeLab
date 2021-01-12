@@ -107,8 +107,6 @@
     "WorkSpaceName": "[concat(parameters('NamingConvention'),'-LAW-',uniqueString(subscription().id))]",
     "NSGName": "[concat(parameters('NamingConvention'),'-nsg')]",   
     "StorageAccountName": "[concat(parameters('NamingConvention'), uniqueString(subscription().id))]"
-    
-    
   },  
   "resources": [
     {
@@ -136,7 +134,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "name": "CreateStorage",   
-      "resourceGroup":  "[deployment().resourceGroup]",
+      "resourceGroup":  "[parameters('ResourceGroup')]",            
       "location": "[deployment().location]",
       "properties": {
           "mode": "Incremental",
