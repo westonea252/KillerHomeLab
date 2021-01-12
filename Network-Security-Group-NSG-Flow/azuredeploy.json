@@ -107,7 +107,8 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "CreateStorage",     
+      "name": "CreateStorage",   
+      "location": "[deployment().location]",
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -127,7 +128,8 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "DeployNSG",     
+      "name": "DeployNSG",
+      "location": "[deployment().location]",      
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -151,6 +153,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DeployNSGFlowSolution",
+      "location": "[deployment().location]",      
       "resourceGroup":  "NetworkWatcherRG",      
       "dependsOn": [
         "CreateStorage",
@@ -188,6 +191,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "name": "VNet1",
+      "location": "[deployment().location]",      
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -226,6 +230,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "name": "BastionHost1",
+      "location": "[deployment().location]",      
       "dependsOn": [
         "VNet1"
       ],
@@ -258,6 +263,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "name": "deployDC1VM",
+      "location": "[deployment().location]",      
       "dependsOn": [
         "VNet1"
       ],      
