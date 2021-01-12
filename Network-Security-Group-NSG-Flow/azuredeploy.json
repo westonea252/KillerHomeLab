@@ -134,7 +134,10 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "CreateStorage",   
-      "resourceGroup":  "[parameters('ResourceGroup')]",            
+      "resourceGroup":  "[parameters('ResourceGroup')]",    
+      "dependsOn": [
+        "CreateRG"
+      ],               
       "properties": {
           "mode": "Incremental",
           "templateLink": {
