@@ -2,11 +2,18 @@
   "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptiondeploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "ResourceGroup": {
+      "type": "string",
+      "defaultValue": "NSG-Flow1",
+      "metadata": {
+        "description": "Resource Groups"
+      }
+    },   
     "FlowLogName": {
       "type": "string",
-      "defaultValue": "NSG-Flow-01",
+      "defaultValue": "NSG-Flow-Log-01",
       "metadata": {
-        "description": "Choose Region (Example: WestUS)"
+        "description": "Flow Log Name"
       }
     },    
     "WorkspaceLocation": {
@@ -106,8 +113,30 @@
   "resources": [
     {
       "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "CreateRG",
+      "location": "[deployment().Location]",
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/resourcegroup.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "ResourceGroupName": {
+                  "value": "[parameters('ResourceGroup')]"
+              },
+              "location": {
+                  "value": "[deployment().Location]"
+              }            
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "name": "CreateStorage",   
+      "resourceGroup":  "[deployment().resourceGroup]",
       "location": "[deployment().location]",
       "properties": {
           "mode": "Incremental",
@@ -129,7 +158,11 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "name": "DeployNSG",
-      "location": "[deployment().location]",      
+      "location": "[deployment().location]",
+      "resourceGroup":  "[parameters('ResourceGroup')]",            
+      "dependsOn": [
+        "CreateRG"
+      ],            
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -191,7 +224,11 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "name": "VNet1",
-      "location": "[deployment().location]",      
+      "location": "[deployment().location]",  
+      "resourceGroup":  "[parameters('ResourceGroup')]",  
+      "dependsOn": [
+        "CreateRG"
+      ],            
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -230,7 +267,8 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "name": "BastionHost1",
-      "location": "[deployment().location]",      
+      "location": "[deployment().location]",  
+      "resourceGroup":  "[parameters('ResourceGroup')]",                
       "dependsOn": [
         "VNet1"
       ],
@@ -263,7 +301,8 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "name": "deployDC1VM",
-      "location": "[deployment().location]",      
+      "location": "[deployment().location]",   
+      "resourceGroup":  "[parameters('ResourceGroup')]",               
       "dependsOn": [
         "VNet1"
       ],      
