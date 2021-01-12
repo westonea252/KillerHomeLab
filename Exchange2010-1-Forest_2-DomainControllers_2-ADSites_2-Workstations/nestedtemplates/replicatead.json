@@ -8,12 +8,12 @@
                 "description": "Computer Name"
             }
         },
-        "ExchangeOrgName": {
+        "location": {
             "type": "string",
-            "metadata": {
-                "description": "Exchange Organization Name"
-            }
-        },                            
+          "metadata": {
+            "description": "Region of Resources"
+          }
+        }, 
         "NetBiosDomain": {
             "type": "string",
             "metadata": {
@@ -31,13 +31,7 @@
           "metadata": {
             "description": "The password for the Administrator account of the new VM and Domain"
           }
-        },                
-        "location": {
-            "type": "string",
-          "metadata": {
-            "description": "Region of Resources"
-          }
-        }, 
+        },                        
         "_artifactsLocation": {
             "type": "string",
             "metadata": {
@@ -52,8 +46,8 @@
         }                
     },
     "variables": {
-        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/PREPAREADEXCHANGE10.zip', parameters('_artifactsLocationSasToken')))]",
-        "ConfigurationFunction": "PREPAREADEXCHANGE10.ps1\\PREPAREADEXCHANGE10"
+        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/REPLICATEAD.zip', parameters('_artifactsLocationSasToken')))]",
+        "ConfigurationFunction": "REPLICATEAD.ps1\\REPLICATEAD"
     },
     "resources": [
         {
@@ -70,8 +64,7 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
-                            "ExchangeOrgName": "[parameters('ExchangeOrgName')]",                            
-                            "NetBiosDomain": "[parameters('NetBiosDomain')]",                                                                                                                                            
+                            "NetBiosDomain": "[parameters('NetBiosDomain')]",                                                        
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"
