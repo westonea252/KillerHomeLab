@@ -97,9 +97,9 @@
     "srv1name": "[concat(parameters('NamingConvention'),'-srv-01')]",           
     "srv1IP": "[concat(parameters('vnet1ID'),'.1.',variables('srv1lastoctet'))]",        
     "srv1lastoctet": "101",        
-    "WorkSpaceName": "[concat(parameters('NamingConvention'),'-LAW-',uniqueString(deployment().id))]",
+    "WorkSpaceName": "[concat(parameters('NamingConvention'),'-LAW-',uniqueString(subscription().id))]",
     "NSGName": "[concat(parameters('NamingConvention'),'-nsg')]",   
-    "StorageAccountName": "[concat(parameters('NamingConvention'), uniqueString(deployment().id))]"
+    "StorageAccountName": "[concat(parameters('NamingConvention'), uniqueString(subscription().id))]"
     
     
   },  
