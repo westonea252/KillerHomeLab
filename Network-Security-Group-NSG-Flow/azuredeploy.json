@@ -113,7 +113,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "CreateRG",
-      "location": "[deployment().Location]",
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -134,8 +133,8 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "CreateStorage",   
+      "location": "[deployment().location]",        
       "resourceGroup":  "[parameters('ResourceGroup')]",            
-      "location": "[deployment().location]",
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -156,7 +155,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DeployNSG",
-      "location": "[deployment().location]",
       "resourceGroup":  "[parameters('ResourceGroup')]",            
       "dependsOn": [
         "CreateRG"
@@ -184,7 +182,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DeployNSGFlowSolution",
-      "location": "[deployment().location]",      
       "resourceGroup":  "NetworkWatcherRG",      
       "dependsOn": [
         "CreateStorage",
@@ -222,7 +219,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "VNet1",
-      "location": "[deployment().location]",  
       "resourceGroup":  "[parameters('ResourceGroup')]",  
       "dependsOn": [
         "CreateRG"
@@ -265,7 +261,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "BastionHost1",
-      "location": "[deployment().location]",  
       "resourceGroup":  "[parameters('ResourceGroup')]",                
       "dependsOn": [
         "VNet1"
@@ -299,7 +294,6 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "deployDC1VM",
-      "location": "[deployment().location]",   
       "resourceGroup":  "[parameters('ResourceGroup')]",               
       "dependsOn": [
         "VNet1"
