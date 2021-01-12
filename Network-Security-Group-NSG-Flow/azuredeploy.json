@@ -361,6 +361,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "name": "updatevnet1nsg",
+      "resourceGroup":  "[parameters('ResourceGroup')]",                     
       "dependsOn": [
         "DeployNSG",
         "VNet1"
@@ -406,6 +407,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "name": "addasrv1pip",
+      "resourceGroup":  "[parameters('ResourceGroup')]",                     
       "dependsOn": [
         "DeployNSG",
         "VNet1",
