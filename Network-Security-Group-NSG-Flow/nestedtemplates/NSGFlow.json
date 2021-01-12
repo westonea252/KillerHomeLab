@@ -62,7 +62,7 @@
         }
     },
     {
-        "name": "[parameters('FlowLogName')]",
+        "name": "[variables('NSGFlowName')]",
         "type": "Microsoft.Network/networkWatchers/flowLogs",
         "apiVersion": "2019-11-01",
         "location": "[parameters('location')]",
