@@ -77,6 +77,13 @@
       "metadata": {
           "description": "VM1 VMSize"
       }
+    },     
+    "UniqueID": {
+        "type": "string",
+        "defaultValue": "1234567890x1",
+        "metadata": {
+            "description": "Unique Identifier"
+        }
     },                           
     "_artifactsLocation": {
       "type": "string",
@@ -104,9 +111,9 @@
     "srv1name": "[concat(parameters('NamingConvention'),'-srv-01')]",           
     "srv1IP": "[concat(parameters('vnet1ID'),'.1.',variables('srv1lastoctet'))]",        
     "srv1lastoctet": "101",        
-    "WorkSpaceName": "[concat(parameters('NamingConvention'),'-LAW-',uniqueString(subscription().id))]",
+    "WorkSpaceName": "[concat(parameters('NamingConvention'),'-law-', parameters('UniqueID'))]",            
     "NSGName": "[concat(parameters('NamingConvention'),'-nsg')]",   
-    "StorageAccountName": "[concat(parameters('NamingConvention'), uniqueString(subscription().id))]"
+    "StorageAccountName": "[concat(parameters('NamingConvention'), parameters('UniqueID'))]"
   },  
   "resources": [
     {
