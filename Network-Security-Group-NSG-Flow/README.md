@@ -15,7 +15,7 @@ This Templates deploys an NSG Flow Log enabled Environemnt with the following re
 - 1 - Tools Server (PowerBi Desktop)
 
 Parameters that support changes
-
+- Resource Group. Resource Group Name for Resources.
 - FlowLogName. Name of NSG Flow Log
 - WorkspaceLocation. Enter a Valid Azure Region for your Log Analytics Workspace based on which Cloud (AzureCloud, AzureUSGovernment, etc...) you are using.
 - AdminUsername.  Enter a valid Admin Username
@@ -23,5 +23,8 @@ Parameters that support changes
 - WindowsServerLicenseType.  Choose Windows Server License Type (Example:  Windows_Server or None)
 - Naming Convention. Enter a name that will be used as a naming prefix for (Servers, VNets, etc) you are using.
 - Vnet1ID.  Enter first 2 octets of your desired Address Space for Virtual Network 1 (Example:  10.1)
-- SRV1OSVersion.  Select 2016-Datacenter (Windows 2016) or 2019-Datacenter (Windows 2019) for Server OS Version
-- SRV1VMSize.  Enter a Valid VM Size based on which Region the VM is deployed.
+- WEBOSVersion.  Select 2016-Datacenter (Windows 2016) or 2019-Datacenter (Windows 2019) for Web Server OS Version
+- ToolsOSVersion.  Select 2016-Datacenter (Windows 2016) or 2019-Datacenter (Windows 2019) for Tools Server OS Version
+- WEBVMSize.  Enter a Valid VM Size based on which Region the Web Server is deployed.
+- TOOLSVMSize.  Enter a Valid VM Size based on which Region the Tools Server deployed.
+- UniqueID. Enter a valid identifier for your Log Analytics Workspace.
