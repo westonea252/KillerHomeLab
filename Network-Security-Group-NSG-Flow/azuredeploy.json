@@ -327,7 +327,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "deplopSRV1VM",
+      "name": "deploySRV1VM",
       "resourceGroup":  "[parameters('ResourceGroup')]",               
       "dependsOn": [
         "VNet1"
