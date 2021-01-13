@@ -45,7 +45,18 @@
       "metadata": {
           "description": "Windows Server OS License Type"
       }
-    },      
+    },     
+    "WindowsClientLicenseType": {
+      "type": "string",
+      "defaultValue": "None",
+      "allowedValues": [
+        "None",
+        "Windows_Client"
+      ],      
+      "metadata": {
+          "description": "Windows Client OS License Type"
+      }
+    },     
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
@@ -60,7 +71,7 @@
         "description": "VNet1 Prefix"
       }
     },    
-    "SRV1OSVersion": {
+    "WEBOSVersion": {
       "type": "string",
       "defaultValue": "2019-Datacenter",
       "allowedValues": [
@@ -72,17 +83,16 @@
       }
     }, 
     "ToolsOSVersion": {
-        "type": "string",
-        "defaultValue": "2019-Datacenter",
-        "allowedValues": [
-          "2019-Datacenter",
-          "2016-Datacenter"
-        ],            
-        "metadata": {
-            "description": "Tools OS Version"
-        }
-    },       
-    "SRV1VMSize": {
+      "type": "string",
+      "defaultValue": "19h1-pro",
+      "allowedValues": [
+        "19h1-pro"
+      ],      
+      "metadata": {
+          "description": "Worksation2 OS Version"
+      }
+    },          
+    "WEBVMSize": {
       "type": "string",
       "defaultValue": "Standard_D2s_v3",
       "metadata": {
@@ -126,9 +136,9 @@
     "vnet1subnet2Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet2')]",   
     "vnet1subnet2Prefix": "[concat(parameters('vnet1ID'),'.2.0/24')]",    
     "vnet1BastionsubnetPrefix": "[concat(parameters('vnet1ID'),'.253.0/24')]",        
-    "srv1name": "[concat(parameters('NamingConvention'),'-srv-01')]",           
-    "srv1IP": "[concat(parameters('vnet1ID'),'.1.',variables('srv1lastoctet'))]",        
-    "srv1lastoctet": "101", 
+    "webname": "[concat(parameters('NamingConvention'),'-web-01')]",           
+    "webIP": "[concat(parameters('vnet1ID'),'.1.',variables('weblastoctet'))]",        
+    "weblastoctet": "101", 
     "toolslastoctet": "150",                  
     "Toolsname": "[concat(parameters('NamingConvention'),'-tool-01')]",                      
     "ToolsIP": "[concat(parameters('vnet1ID'),'.2.',variables('toolslastoctet'))]",            
@@ -201,7 +211,7 @@
                   "value": "[variables('NSGName')]"
               },                                                                                                      
               "PrivateIP": {
-                  "value": "[variables('srv1IP')]"
+                  "value": "[variables('webIP')]"
               },                                                                                                      
               "location": {
                   "value": "[deployment().location]"
@@ -340,10 +350,10 @@
           },
           "parameters": {
               "computerName": {
-                  "value": "[variables('srv1name')]"
+                  "value": "[variables('webname')]"
               },
               "computerIP": {
-                  "value": "[variables('srv1IP')]"
+                  "value": "[variables('webIP')]"
               },
               "Publisher": {
                   "value": "MicrosoftWindowsServer"
@@ -352,13 +362,13 @@
                   "value": "WindowsServer"
               },
               "OSVersion": {
-                "value": "[parameters('SRV1OSVersion')]"
+                "value": "[parameters('WEBOSVersion')]"
               },              
               "LicenseType": {
                 "value": "[parameters('WindowsServerLicenseType')]"
               },           
               "VMSize": {
-                "value": "[parameters('SRV1VMSize')]"
+                "value": "[parameters('WEBVMSize')]"
               },
               "vnetName": {
                 "value": "[variables('vnet1Name')]"
@@ -394,7 +404,7 @@
           },
           "parameters": {
               "computerName": {
-                  "value": "[variables('srv1name')]"
+                  "value": "[variables('webname')]"
               },           
               "location": {
                   "value": "[deployment().location]"
@@ -430,16 +440,16 @@
                   "value": "[variables('ToolsIP')]"
               },
               "Publisher": {
-                  "value": "MicrosoftWindowsServer"
+                  "value": "MicrosoftWindowsDesktop"
               },
               "Offer": {
-                  "value": "WindowsServer"
+                  "value": "Windows-10"
               },
               "OSVersion": {
                 "value": "[parameters('ToolsOSVersion')]"
               },              
               "LicenseType": {
-                "value": "[parameters('WindowsServerLicenseType')]"
+                "value": "[parameters('WindowsClientLicenseType')]"
               },   
               "VMSize": {
                 "value": "[parameters('ToolsVMSize')]"
