@@ -337,7 +337,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "deploySRV1VM",
+      "name": "deployWEBVM",
       "resourceGroup":  "[parameters('ResourceGroup')]",               
       "dependsOn": [
         "VNet1"
@@ -394,7 +394,7 @@
       "name": "InstallIIS",
       "resourceGroup":  "[parameters('ResourceGroup')]",                           
       "dependsOn": [
-        "deploySRV1VM"
+        "deployWEBVM"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -551,7 +551,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "addasrv1pip",
+      "name": "addwebpip",
       "resourceGroup":  "[parameters('ResourceGroup')]",                     
       "dependsOn": [
         "DeployNSG",
@@ -566,10 +566,10 @@
           },
           "parameters": {
               "computerName": {
-                  "value": "[variables('srv1name')]"
+                  "value": "[variables('webname')]"
               },
               "computerIP": {
-                  "value": "[variables('srv1IP')]"
+                  "value": "[variables('webIP')]"
               },
               "Publisher": {
                   "value": "MicrosoftWindowsServer"
@@ -578,13 +578,13 @@
                   "value": "WindowsServer"
               },
               "OSVersion": {
-                "value": "[parameters('SRV1OSVersion')]"
+                "value": "[parameters('WEBOSVersion')]"
               },              
               "LicenseType": {
                 "value": "[parameters('WindowsServerLicenseType')]"
               },     
               "VMSize": {
-                "value": "[parameters('srv1VMSize')]"
+                "value": "[parameters('WEBVMSize')]"
               },
               "vnetName": {
                 "value": "[variables('vnet1Name')]"
