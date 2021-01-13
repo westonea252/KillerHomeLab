@@ -20,6 +20,7 @@
         {
             Ensure = 'Present'
             Name = 'Web-Server'
+            IncludeAllSubFeature = $true
         }
 
         TimeZone SetTimeZone

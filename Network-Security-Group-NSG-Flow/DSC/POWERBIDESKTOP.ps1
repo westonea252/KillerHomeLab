@@ -2,9 +2,16 @@
 {
     Import-DscResource -Module xPSDesiredStateConfiguration # Used for xRemote
     Import-DscResource -Module ComputerManagementDsc # Used for TimeZone
+    Import-DscResource -ModuleName xPowerShellExecutionPolicy
 
     Node localhost
     {
+
+        xPowerShellExecutionPolicy ExecutionPolicy
+        {
+            ExecutionPolicy = 'Unrestricted'
+        }
+
         File Software
         {
             Type = 'Directory'
@@ -37,7 +44,7 @@
             }
             GetScript =  { @{} }
             TestScript = { $false}
-            DependsOn = '[xRemoteFile]DownloadPowerBI'
+            DependsOn = '[xPowerShellExecutionPolicy]ExecutionPolicy','[xRemoteFile]DownloadPowerBI'
         }
 
 
