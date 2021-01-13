@@ -70,14 +70,32 @@
       "metadata": {
           "description": "VM1 OS Version"
       }
-    },    
+    }, 
+    "ToolsOSVersion": {
+        "type": "string",
+        "defaultValue": "2019-Datacenter",
+        "allowedValues": [
+          "2019-Datacenter",
+          "2016-Datacenter"
+        ],            
+        "metadata": {
+            "description": "Tools OS Version"
+        }
+    },       
     "SRV1VMSize": {
       "type": "string",
       "defaultValue": "Standard_D2s_v3",
       "metadata": {
           "description": "VM1 VMSize"
       }
-    },     
+    },    
+    "ToolsVMSize": {
+      "type": "string",
+      "defaultValue": "Standard_D2s_v3",
+      "metadata": {
+          "description": "Tools VMSize"
+      }
+    },      
     "UniqueID": {
         "type": "string",
         "defaultValue": "1234567890x1",
@@ -110,7 +128,10 @@
     "vnet1BastionsubnetPrefix": "[concat(parameters('vnet1ID'),'.253.0/24')]",        
     "srv1name": "[concat(parameters('NamingConvention'),'-srv-01')]",           
     "srv1IP": "[concat(parameters('vnet1ID'),'.1.',variables('srv1lastoctet'))]",        
-    "srv1lastoctet": "101",        
+    "srv1lastoctet": "101", 
+    "toolslastoctet": "150",                  
+    "Toolsname": "[concat(parameters('NamingConvention'),'-tool-01')]",                      
+    "ToolsIP": "[concat(parameters('vnet1ID'),'.2.',variables('toolslastoctet'))]",            
     "WorkSpaceName": "[concat(parameters('NamingConvention'),'-law-', parameters('UniqueID'))]",            
     "NSGName": "[concat(parameters('NamingConvention'),'-nsg')]",   
     "StorageAccountName": "[concat(parameters('NamingConvention'), parameters('UniqueID'))]"
@@ -357,6 +378,90 @@
           }
       }
     },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "deployToolsVM",
+      "resourceGroup":  "[parameters('ResourceGroup')]",                     
+      "dependsOn": [
+        "VNet1"
+      ],                  
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('Toolsname')]"
+              },
+              "computerIP": {
+                  "value": "[variables('ToolsIP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsServer"
+              },
+              "Offer": {
+                  "value": "WindowsServer"
+              },
+              "OSVersion": {
+                "value": "[parameters('ToolsOSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "[parameters('WindowsServerLicenseType')]"
+              },   
+              "VMSize": {
+                "value": "[parameters('ToolsVMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('vnet1Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('vnet1subnet2Name')]"
+              },            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[deployment().location]"
+              }
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "InstallPowerBiDesktop",
+      "resourceGroup":  "[parameters('ResourceGroup')]",                           
+      "dependsOn": [
+        "deployToolsVM"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/powerbidesktop.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('Toolsname')]"
+              },           
+              "location": {
+                  "value": "[deployment().location]"
+              },                                          
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+          }
+      }
+    },    
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
