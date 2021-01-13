@@ -2,17 +2,9 @@
 {
     Import-DscResource -Module xPSDesiredStateConfiguration # Used for xRemote
     Import-DscResource -Module ComputerManagementDsc # Used for TimeZone
-    Import-DscResource -ModuleName xPowerShellExecutionPolicy
 
     Node localhost
     {
-
-        xPowerShellExecutionPolicy ExecutionPolicy
-        {
-            ExecutionPolicy = 'Unrestricted'
-            ExecutionPolicyScope = 'LocalMachine'
-        }
-
         File Software
         {
             Type = 'Directory'
@@ -41,11 +33,11 @@
             SetScript =
             {
                 # Install PowerBi Desktop
-                C:\Software\PBIDesktopSetup_x64.exe /install /quiet /norestart
+                C:\Software\PBIDesktopSetup_x64.exe -quiet -norestart ACCEPT_EULA=1
             }
             GetScript =  { @{} }
             TestScript = { $false}
-            DependsOn = '[xPowerShellExecutionPolicy]ExecutionPolicy','[xRemoteFile]DownloadPowerBI'
+            DependsOn = '[xRemoteFile]DownloadPowerBI'
         }
 
 
