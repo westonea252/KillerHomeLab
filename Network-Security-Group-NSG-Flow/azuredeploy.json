@@ -45,18 +45,7 @@
       "metadata": {
           "description": "Windows Server OS License Type"
       }
-    },     
-    "WindowsClientLicenseType": {
-      "type": "string",
-      "defaultValue": "None",
-      "allowedValues": [
-        "None",
-        "Windows_Client"
-      ],      
-      "metadata": {
-          "description": "Windows Client OS License Type"
-      }
-    },     
+    },         
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
@@ -79,17 +68,18 @@
         "2016-Datacenter"
       ],
       "metadata": {
-          "description": "VM1 OS Version"
+          "description": "Web Server OS Version"
       }
     }, 
     "ToolsOSVersion": {
       "type": "string",
-      "defaultValue": "19h1-pro",
+      "defaultValue": "2019-Datacenter",
       "allowedValues": [
-        "19h1-pro"
-      ],      
+        "2019-Datacenter",
+        "2016-Datacenter"
+      ],
       "metadata": {
-          "description": "Worksation2 OS Version"
+          "description": "Tools Server OS Version"
       }
     },          
     "WEBVMSize": {
