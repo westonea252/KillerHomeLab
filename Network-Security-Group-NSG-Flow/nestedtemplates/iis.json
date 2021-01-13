@@ -28,8 +28,8 @@
         }                
     },
     "variables": {
-        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/POWERBIDESKTOP.zip', parameters('_artifactsLocationSasToken')))]",
-        "ConfigurationFunction": "POWERBIDESKTOP.ps1\\POWERBIDESKTOP"
+        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/IIS.zip', parameters('_artifactsLocationSasToken')))]",
+        "ConfigurationFunction": "IIS.ps1\\IIS"
     },
     "resources": [
         {
