@@ -440,16 +440,16 @@
                   "value": "[variables('ToolsIP')]"
               },
               "Publisher": {
-                  "value": "MicrosoftWindowsDesktop"
+                  "value": "MicrosoftWindowsServer"
               },
               "Offer": {
-                  "value": "Windows-10"
+                  "value": "WindowsServer"
               },
               "OSVersion": {
                 "value": "[parameters('ToolsOSVersion')]"
               },              
               "LicenseType": {
-                "value": "[parameters('WindowsClientLicenseType')]"
+                "value": "[parameters('WindowsServerLicenseType')]"
               },   
               "VMSize": {
                 "value": "[parameters('ToolsVMSize')]"
