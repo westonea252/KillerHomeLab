@@ -10,6 +10,7 @@
         xPowerShellExecutionPolicy ExecutionPolicy
         {
             ExecutionPolicy = 'Unrestricted'
+            ExecutionPolicyScope = 'LocalMachine'
         }
 
         File Software
