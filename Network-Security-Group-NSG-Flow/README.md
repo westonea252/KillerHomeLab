@@ -3,7 +3,7 @@
 Click the button below to deploy
 
 [![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2Fmaster%2FNetwork-Security-Group-NSG-Flow%2Fazuredeploy.json)
-[![Deploy To Azure US Gov](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.svg?sanitize=true)](https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2Fmaster%2FNetwork-Security-Group-NSG-Flow%2Fazuregovdeploy.json)
+[![Deploy To Azure US Gov](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.svg?sanitize=true)](https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2Fmaster%2FNetwork-Security-Group-NSG-Flow%2Fazuredeploy.json)
 
 This Templates deploys an NSG Flow Log enabled Environemnt with the following resources:
 
@@ -17,7 +17,6 @@ This Templates deploys an NSG Flow Log enabled Environemnt with the following re
 Parameters that support changes
 - Resource Group. Resource Group Name for Resources.
 - FlowLogName. Name of NSG Flow Log
-- WorkspaceLocation. Enter a Valid Azure Region for your Log Analytics Workspace (Azure Gov Deployments Only)
 - AdminUsername.  Enter a valid Admin Username
 - AdminPassword.  Enter a valid Admin Password
 - WindowsServerLicenseType.  Choose Windows Server License Type (Example:  Windows_Server or None)
