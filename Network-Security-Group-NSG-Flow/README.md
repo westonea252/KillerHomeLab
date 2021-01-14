@@ -17,7 +17,7 @@ This Templates deploys an NSG Flow Log enabled Environemnt with the following re
 Parameters that support changes
 - Resource Group. Resource Group Name for Resources.
 - FlowLogName. Name of NSG Flow Log
-- WorkspaceLocation. Enter a Valid Azure Region for your Log Analytics Workspace based on which Cloud (AzureCloud, AzureUSGovernment, etc...) you are using.
+- WorkspaceLocation. Enter a Valid Azure Region for your Log Analytics Workspace (Azure Gov Deployments Only)
 - AdminUsername.  Enter a valid Admin Username
 - AdminPassword.  Enter a valid Admin Password
 - WindowsServerLicenseType.  Choose Windows Server License Type (Example:  Windows_Server or None)

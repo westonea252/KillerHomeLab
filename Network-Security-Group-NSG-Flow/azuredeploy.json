@@ -15,14 +15,7 @@
       "metadata": {
         "description": "Flow Log Name"
       }
-    },    
-    "WorkspaceLocation": {
-      "type": "string",
-      "defaultValue": "EastUS",
-      "metadata": {
-        "description": "Choose a Log Analytics Workspace Location"
-      }
-    },        
+    },          
     "adminUsername": {
       "type": "string",
       "metadata": {
@@ -133,6 +126,7 @@
     "Toolsname": "[concat(parameters('NamingConvention'),'-tool-01')]",                      
     "ToolsIP": "[concat(parameters('vnet1ID'),'.2.',variables('toolslastoctet'))]",            
     "WorkSpaceName": "[concat(parameters('NamingConvention'),'-law-', parameters('UniqueID'))]",            
+    "WorkSpaceLocation": "[deployment().Location]",    
     "NSGName": "[concat(parameters('NamingConvention'),'-nsg')]",   
     "StorageAccountName": "[concat(parameters('NamingConvention'), parameters('UniqueID'))]"
   },  
@@ -241,7 +235,7 @@
                   "value": "[variables('StorageAccountName')]"
               },  
               "location": {
-                  "value": "[parameters('WorkspaceLocation')]"
+                  "value": "[variables('WorkspaceLocation')]"
               },
               "sku": {
                   "value": "Free"
