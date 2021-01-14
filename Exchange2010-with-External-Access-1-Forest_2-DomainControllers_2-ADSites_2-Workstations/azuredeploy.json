@@ -397,7 +397,7 @@
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
     "PWSEXPolGPOName":  "PowerShell-ExecutionPolicy",
     "PWSEXPolGPOGUID": "EC04DF04-A647-4A3E-9247-51B4CB137F5F",
-    "PWSEXPolGPOSASUrl": "https://raw.githubusercontent.com/elliottfieldsjr/KillerHomeLab/master/Exchange2010-1-Forest_2-DomainControllers_2-ADSites_2-Workstations/GPOs/PowerShell-ExecutionPolicy.zip",
+    "PWSEXPolGPOSASUrl": "https://raw.githubusercontent.com/elliottfieldsjr/KillerHomeLab/master/Exchange2010-with-External-Access-1-Forest_2-DomainControllers_2-ADSites_2-Workstations/GPOs/PowerShell-ExecutionPolicy.zip",
     "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
     "DB1Name": "[concat(parameters('NamingConvention'),'-10-db01')]",
