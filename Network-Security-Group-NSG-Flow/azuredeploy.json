@@ -540,6 +540,8 @@
       "dependsOn": [
         "DeployNSG",
         "VNet1",
+        "deployWEBVM",
+        "InstallIIS",
         "updatevnet1nsg"
       ],            
       "properties": {
