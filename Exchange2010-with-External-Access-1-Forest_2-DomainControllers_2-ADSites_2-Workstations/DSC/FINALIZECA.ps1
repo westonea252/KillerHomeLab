@@ -8,7 +8,6 @@
         [String]$RootCAName,
         [String]$RootDomainFQDN,
         [String]$CATemplateScriptUrl,
-
         [System.Management.Automation.PSCredential]$Admincreds
     )
 
