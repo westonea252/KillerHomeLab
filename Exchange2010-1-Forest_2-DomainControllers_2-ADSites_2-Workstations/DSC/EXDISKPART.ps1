@@ -2,12 +2,30 @@
 {
    param
    (
+        [String]$EXDiskPartUrl
     )
 
     Import-DscResource -Module xPSDesiredStateConfiguration # Used for xRemoteFile
 
     Node localhost
     {
+        Registry SchUseStrongCrypto
+        {
+            Key                         = 'HKLM:\SOFTWARE\Microsoft\.NETFramework\v4.0.30319'
+            ValueName                   = 'SchUseStrongCrypto'
+            ValueType                   = 'Dword'
+            ValueData                   =  '1'
+            Ensure                      = 'Present'
+        }
+
+        Registry SchUseStrongCrypto64
+        {
+            Key                         = 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework\v4.0.30319'
+            ValueName                   = 'SchUseStrongCrypto'
+            ValueType                   = 'Dword'
+            ValueData                   =  '1'
+            Ensure                      = 'Present'
+        }
         File DiskConfig
         {
             Type = 'Directory'
@@ -18,7 +36,7 @@
         xRemoteFile DiskPart
         {
             DestinationPath = "C:\DiskConfig\ExchangeDiskPart.txt"
-            Uri             = "https://raw.githubusercontent.com/elliottfieldsjr/KillerHomeLab/master/Exchange2010-1-Forest_2-DomainControllers_2-ADSites_2-Workstations/Scripts/ExchangeDiskpart.txt"
+            Uri             = $EXDiskPartUrl
             UserAgent       = "[Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer"
             DependsOn =    "[File]DiskConfig"
         }
