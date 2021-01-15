@@ -8,6 +8,12 @@
                 "description": "Computer Name"
             }
         },
+        "EXDiskPartUrl": {
+            "type": "string",
+          "metadata": {
+            "description": "URL to Diskpart Script"
+          }
+        },         
         "location": {
             "type": "string",
           "metadata": {
@@ -44,7 +50,10 @@
                 "autoUpgradeMinorVersion": true,
                 "settings": {
                     "ModulesUrl": "[variables('modulesUrl')]",
-                    "ConfigurationFunction": "[variables('configurationFunction')]"
+                    "ConfigurationFunction": "[variables('configurationFunction')]",
+                        "Properties": {
+                            "EXDiskPartUrl": "[parameters('EXDiskPartUrl')]"
+                        }                    
                     }
                 }
             }
