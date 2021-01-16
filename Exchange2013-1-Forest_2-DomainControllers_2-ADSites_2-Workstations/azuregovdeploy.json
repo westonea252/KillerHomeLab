@@ -6,7 +6,7 @@
       "type": "string",
       "defaultValue": "USGovTexas",
       "metadata": {
-        "description": "Choose Region (Example:  USGovTexas)"
+        "description": "Choose Region (Example: USGovTexas)"
       }
     },    
     "ExchangeOrgName": {
@@ -64,13 +64,34 @@
         "description": "Environment Naming Convention"
       }
     },
+    "SubDNSDomain": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+          "description": "Sub DNS Domain Name Example:  sub1. must include a DOT AT END"
+      }
+    },     
+    "SubDNSBaseDN": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+          "description": "Sub DNS Domain Name Example:  DC=sub2,DC=sub1, must include COMMA AT END"
+      }
+    },     
     "NetBiosDomain": {
       "type": "string",
       "defaultValue": "killerhomelab",
       "metadata": {
           "description": "NetBios Domain Name"
       }
-    },    
+    },  
+    "InternalDomain": {
+      "type": "string",
+      "defaultValue": "killerhomelab",
+      "metadata": {
+          "description": "NetBios Domain Name"
+      }
+    },       
     "TLD": {
       "type": "string",
       "defaultValue": "com",
@@ -367,8 +388,9 @@
     "ReverseLookup1": "[concat('1.',parameters('ReverseLookup1'))]",    
     "ReverseLookup2": "[concat('1.',parameters('ReverseLookup2'))]",        
     "DCDataDisk1Name": "NTDS",            
-    "domainName": "[concat(parameters('NetBiosDomain'),'.',parameters('TLD'))]",
-    "BaseDN": "[concat('DC=',parameters('NetBiosDomain'),',DC=',parameters('TLD'))]",
+    "CATemplateScriptUrl": "https://elliottf.blob.core.windows.net/github/Scripts/Create_CA_Templates.ps1",    
+    "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
+    "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
     "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
     "DB1Name": "[concat(parameters('NamingConvention'),'-13-db01')]",
@@ -1430,6 +1452,9 @@
               "RootDomainFQDN": {
                   "value": "[variables('domainName')]"
               },   
+              "CATemplateScriptUrl": {
+                  "value": "[variables('CATemplateScriptUrl')]"
+              },                 
               "location": {
                   "value": "[resourceGroup().location]"
               },
@@ -2270,7 +2295,7 @@
       "dependsOn": [        
         "DomainJoinEX1",
         "prepareexchange13s1",
-        "prepareadexchange13"   
+        "prepareadexchange13"     
       ],      
       "properties": {
           "mode": "Incremental",
@@ -2731,6 +2756,6 @@
               }
           }
       }
-    }                                                                                                
+    }
   ]
 }
