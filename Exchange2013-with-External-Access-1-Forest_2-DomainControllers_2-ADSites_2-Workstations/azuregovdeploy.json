@@ -280,6 +280,13 @@
             "description": "Issuing CA VMSize"
         }
     },            
+    "OCSPVMSize": {
+        "type": "string",
+        "defaultValue": "Standard_D2s_v3",
+        "metadata": {
+            "description": "OCSP VMSize"
+        }
+    },        
     "FS1VMSize": {
         "type": "string",
         "defaultValue": "Standard_D2s_v3",
@@ -293,14 +300,7 @@
         "metadata": {
             "description": "Exchange Server1 VMSize"
         }
-    },                                            
-    "OCSPVMSize": {
-        "type": "string",
-        "defaultValue": "Standard_D2s_v3",
-        "metadata": {
-            "description": "OCSP VMSize"
-        }
-    },                       
+    },                                                               
     "WK1VMSize": {
       "type": "string",
       "defaultValue": "Standard_D2s_v3",
@@ -3127,10 +3127,10 @@
                   "value": "autodiscover"
               },
               "OutlookRecord": {
-                  "value": "outlook2016"
+                  "value": "outlook2013"
               },
               "EASRecord": {
-                  "value": "eas2016"
+                  "value": "eas2013"
               },
               "SMTP1Record": {
                   "value": "smtp1"
