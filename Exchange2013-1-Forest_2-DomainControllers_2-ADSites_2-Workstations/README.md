@@ -72,17 +72,18 @@ Exchange
 - DAG Creation and Adding both Exchange Servers
 
 Parameters that support changes
+- Location2. Enter a Valid Azure Region based on which Cloud (AzureCloud, AzureUSGovernment, etc...) you are using.
 - Exchange Org Name. Enter a name that will be used for your Exchange Organization Name.
 - Exchange2013ISOUrl.  You must enter a URL or created SAS URL that points to an Exchange 2013 ISO for this installation to be successful.
-- Exchange2013CUEXEUrl.  You must enter a URL or created SAS URL that points to an Exchange 2016 CU EXE for this installation to be successful.
 - Admin Username.  Enter a valid Admin Username
 - Admin Password.  Enter a valid Admin Password
 - WindowsServerLicenseType.  Choose Windows_Server if you already have a WindowsServer License or None if you don't
 - WindowsClientLicenseType.  Choose Windows_Server if you already have a WindowsClient License or None if you don't
-- Location1. Enter a Valid Azure Region based on which Cloud (AzureCloud, AzureUSGovernment, etc...) you are using.
-- Location2. Enter a Valid Azure Region based on which Cloud (AzureCloud, AzureUSGovernment, etc...) you are using.
 - Naming Convention. Enter a name that will be used as a naming prefix for (Servers, VNets, etc) you are using.
+- Sub DNS Domain.  OPTIONALLY, enter a valid DNS Sub Domain. (Example:  sub1. or sub1.sub2.    This entry must end with a DOT )
+- Sub DNS BaseDN.  OPTIONALLY, enter a valid DNS Sub Base DN. (Example:  DC=sub1, or DC=sub1,DC=sub2,    This entry must end with a COMMA )
 - Net Bios Domain.  Enter a valid Net Bios Domain Name (Example:  killerhomelab).
+- Internal Domain.  Enter a valid Internal Domain (Exmaple:  killerhomelab)
 - TLD.  Select a valid Top-Level Domain using the Pull-Down Menu.
 - Vnet1ID.  Enter first 2 octets of your desired Address Space for Virtual Network 1 (Example:  13.1)
 - Vnet2ID.  Enter first 2 octets of your desired Address Space for Virtual Network 2 (Example:  13.2)

@@ -272,7 +272,14 @@
         "metadata": {
             "description": "Issuing CA VMSize"
         }
-    },            
+    },           
+    "OCSPVMSize": {
+        "type": "string",
+        "defaultValue": "Standard_D2s_v3",
+        "metadata": {
+            "description": "OCSP VMSize"
+        }
+    },        
     "FS1VMSize": {
         "type": "string",
         "defaultValue": "Standard_D2s_v3",
@@ -286,14 +293,7 @@
         "metadata": {
             "description": "Exchange Server1 VMSize"
         }
-    },                                            
-    "OCSPVMSize": {
-        "type": "string",
-        "defaultValue": "Standard_D2s_v3",
-        "metadata": {
-            "description": "OCSP VMSize"
-        }
-    },                       
+    },                                                                
     "WK1VMSize": {
       "type": "string",
       "defaultValue": "Standard_D2s_v3",
