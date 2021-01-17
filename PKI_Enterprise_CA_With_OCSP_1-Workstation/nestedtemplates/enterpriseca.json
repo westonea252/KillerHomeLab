@@ -39,7 +39,13 @@
             "metadata": {
                 "description": "Enterprise CA Key Length"
         }
-        },                            
+        }, 
+        "CATemplateScriptUrl": {
+            "type": "string",
+            "metadata": {
+                "description": "URL to PowerShell Script for CA Template Creation"
+            }
+        },                                      
         "location": {
             "type": "string",
           "metadata": {
@@ -94,7 +100,8 @@
                             "RootDomainFQDN": "[parameters('RootDomainFQDN')]",
                             "EnterpriseCAName": "[parameters('EnterpriseCAName')]",
                             "EnterpriseCAHashAlgorithm": "[parameters('EnterpriseCAHashAlgorithm')]",                            
-                            "EnterpriseCAKeyLength": "[parameters('EnterpriseCAKeyLength')]",                                                                                                                                       
+                            "EnterpriseCAKeyLength": "[parameters('EnterpriseCAKeyLength')]",   
+                            "CATemplateScriptUrl": "[parameters('CATemplateScriptUrl')]",                                                                                                                                                                                            
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"                                                                                   

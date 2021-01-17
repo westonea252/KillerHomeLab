@@ -7,6 +7,7 @@ Configuration ENTERPRISECA
         [String]$EnterpriseCAHashAlgorithm,
         [String]$EnterpriseCAKeyLength,
         [String]$EnterpriseCAName,
+        [String]$CATemplateScriptUrl,
         [System.Management.Automation.PSCredential]$Admincreds
     )
  
@@ -18,6 +19,24 @@ Configuration ENTERPRISECA
  
     Node localhost
     {
+        Registry SchUseStrongCrypto
+        {
+            Key                         = 'HKLM:\SOFTWARE\Microsoft\.NETFramework\v4.0.30319'
+            ValueName                   = 'SchUseStrongCrypto'
+            ValueType                   = 'Dword'
+            ValueData                   =  '1'
+            Ensure                      = 'Present'
+        }
+
+        Registry SchUseStrongCrypto64
+        {
+            Key                         = 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework\v4.0.30319'
+            ValueName                   = 'SchUseStrongCrypto'
+            ValueType                   = 'Dword'
+            ValueData                   =  '1'
+            Ensure                      = 'Present'
+        }
+
         WindowsFeature ADCSCA 
         {
             Name = 'ADCS-Cert-Authority'
@@ -98,7 +117,7 @@ Configuration ENTERPRISECA
         xRemoteFile DownloadCreateCATemplates
         {
             DestinationPath = "C:\CertEnroll\Create_CA_Templates.ps1"
-            Uri             = "https://raw.githubusercontent.com/elliottfieldsjr/KillerHomeLab/master/PKI_Enterprise_CA_With_OCSP_1-Workstation/Scripts/Create_CA_Templates.ps1"
+            Uri             = $CATemplateScriptUrl
             UserAgent       = "[Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer"
         }
 

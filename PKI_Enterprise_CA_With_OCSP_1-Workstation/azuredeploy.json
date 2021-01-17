@@ -236,7 +236,8 @@
     "wk1lastoctet": "201",            
     "wk1name": "[concat(parameters('NamingConvention'),'-wk-01')]",           
     "wk1IP": "[concat(parameters('vnet1ID'),'.2.',variables('wk1lastoctet'))]",        
-    "DCDataDisk1Name": "NTDS",            
+    "DCDataDisk1Name": "NTDS",         
+    "CATemplateScriptUrl": "https://elliottf.blob.core.windows.net/github/Scripts/Create_CA_Templates.ps1",                                  
     "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
     "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
@@ -695,7 +696,10 @@
               },  
               "EnterpriseCAKeyLength": {
                   "value": "[parameters('EnterpriseCAKeyLength')]"
-              },                
+              },      
+              "CATemplateScriptUrl": {
+                  "value": "[variables('CATemplateScriptUrl')]"
+              },                          
               "location": {
                   "value": "[resourceGroup().location]"
               },              
