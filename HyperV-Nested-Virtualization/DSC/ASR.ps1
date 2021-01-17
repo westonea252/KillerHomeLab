@@ -48,7 +48,7 @@
                 $AzureCreds.GetNetworkCredential().Password | fl > C:\AzureCredsPlainTextPassword.txt
                 $AzureCreds.Password.Length | fl > C:\AzureCredsPasswordLength.txt
 
-                Connect-AzAccount -Environment AzureUSGovernment -Credential $AzureCreds -Debug
+                Connect-AzAccount -Environment AzureUSGovernment -Credential $AzureCreds
 
                 New-Item -Path C:\TestAfterLoginLogin -Type Directory                ​
                 
