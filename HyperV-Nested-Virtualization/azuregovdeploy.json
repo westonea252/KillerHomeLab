@@ -14,6 +14,18 @@
         "description": "The password for the Administrator account of the new VM and Domain"
       }
     },
+    "TenantAdmin": {
+        "type": "string",
+        "metadata": {
+            "description": "Tenant Admin Username"
+        }
+    },      
+    "TenantPassword": {
+        "type": "securestring",
+      "metadata": {
+        "description": "Tenant Admin Password"
+      }
+    },    
     "Location1": {
       "type": "string",
       "defaultValue": "USGovVirginia",
@@ -245,9 +257,7 @@
       "apiVersion": "2015-01-01",
       "name": "ConfigureHyperV",
       "dependsOn": [
-        "VNet1",
-        "DeployHVVM",
-        "DeployRSVault"
+        "DeployHVVM"
       ],
       "properties": {
           "mode": "Incremental",
@@ -267,7 +277,7 @@
               },                                                                                                            
               "HyperVSubnetPrefix": {
                 "value": "[variables('HyperVsubnetPrefix')]"
-              },
+              },              
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
               },                                                                                                            
@@ -276,6 +286,54 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
           }
       }
-    }       
+    },       
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "ConfigureASR",
+      "dependsOn": [
+        "DeployRSVault",
+        "ConfigureHyperV"
+      ],
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/ASR.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('hvname')]"
+              },
+              "VaultName": {
+                  "value": "[variables('VaultName')]"
+              },                                          
+              "HyperVSite": {
+                "value": "8113"
+              },                                                                                                            
+              "TenantAdmin": {
+                "value": "[parameters('TenantAdmin')]"
+              },
+              "TenantPassword": {
+                "value": "[parameters('TenantPassword')]"
+              },    
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },          
+              "location": {
+                  "value": "[parameters('Location1')]"
+              },                                
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+          }
+      }
+    }           
   ]
 }
