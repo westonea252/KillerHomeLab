@@ -14,6 +14,29 @@
         "description": "Admin Password"
       }
     },     
+    "VPNSku": {
+      "type": "string",
+      "defaultValue": "Basic",
+      "allowedValues": [
+        "Basic",
+        "HighPerformance",
+        "Standard",
+        "UltraPerformance",
+        "VpnGw1",
+        "VpnGw2",
+        "VpnGw3",
+        "VpnGw4",
+        "VpnGw5",                
+        "VpnGw1AZ",
+        "VpnGw2AZ",
+        "VpnGw3AZ",
+        "VpnGw4AZ",                                        
+        "VpnGw5AZ"                                                        
+      ],      
+      "metadata": {
+          "description": "Windows Server OS License Type"
+      }
+    },       
     "WindowsServerLicenseType": {
       "type": "string",
       "defaultValue": "None",
@@ -93,6 +116,13 @@
         "description": "VNet1 Prefix"
       }
     },    
+    "vnet2ID": {
+      "type": "string",
+      "defaultValue": "10.2",
+      "metadata": {
+        "description": "VNet2 Prefix"
+      }
+    },        
     "ReverseLookup1": {
       "type": "string",
       "defaultValue": "1.10",
@@ -224,6 +254,14 @@
     "vnet1subnet2Prefix": "[concat(parameters('vnet1ID'),'.2.0/24')]",    
     "vnet1BastionsubnetPrefix": "[concat(parameters('vnet1ID'),'.253.0/24')]",  
     "vnet1GatewaysubnetPrefix": "[concat(parameters('vnet1ID'),'.0.0/24')]",                            
+    "vnet2Name": "[concat(parameters('NamingConvention'),'-VNet2')]",
+    "vnet2Prefix": "[concat(parameters('vnet2ID'),'.0.0/16')]",
+    "vnet2subnet1Name": "[concat(parameters('NamingConvention'),'-VNet2-Subnet1')]",    
+    "vnet2subnet1Prefix": "[concat(parameters('vnet2ID'),'.1.0/24')]",    
+    "vnet2subnet2Name": "[concat(parameters('NamingConvention'),'-VNet2-Subnet2')]",    
+    "vnet2subnet2Prefix": "[concat(parameters('vnet2ID'),'.2.0/24')]",    
+    "vnet2BastionsubnetPrefix": "[concat(parameters('vnet2ID'),'.253.0/24')]",  
+    "vnet2GatewaysubnetPrefix": "[concat(parameters('vnet2ID'),'.0.0/24')]",                                
     "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",           
     "dc1IP": "[concat(parameters('vnet1ID'),'.1.',variables('dc1lastoctet'))]",        
     "ecaname": "[concat(parameters('NamingConvention'),'-eca-01')]",           
@@ -236,7 +274,7 @@
     "ocsplastoctet": "103",                    
     "wk1lastoctet": "201",            
     "wk1name": "[concat(parameters('NamingConvention'),'-wk-01')]",           
-    "wk1IP": "[concat(parameters('vnet1ID'),'.2.',variables('wk1lastoctet'))]",        
+    "wk1IP": "[concat(parameters('vnet2ID'),'.2.',variables('wk1lastoctet'))]",        
     "DCDataDisk1Name": "NTDS",    
     "CATemplateScriptUrl": "https://elliottf.blob.core.windows.net/github/Scripts/Create_CA_Templates.ps1",                           
     "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
@@ -289,6 +327,47 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
+      "name": "VNet2",
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/vnet.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "vnetName": {
+                  "value": "[variables('vnet2Name')]"
+              },
+              "vnetprefix": {
+                  "value": "[variables('vnet2Prefix')]"
+              },
+              "subnet1Name": {
+                  "value": "[variables('vnet2subnet1Name')]"
+              },
+              "subnet1Prefix": {
+                  "value": "[variables('vnet2subnet1Prefix')]"
+              },
+              "subnet2Name": {
+                "value": "[variables('vnet2subnet2Name')]"
+              },
+              "subnet2Prefix": {
+                "value": "[variables('vnet2subnet2Prefix')]"
+              },              
+              "BastionsubnetPrefix": {
+                "value": "[variables('vnet2BastionsubnetPrefix')]"
+              },       
+              "GatewaysubnetPrefix": {
+                "value": "[variables('vnet2GatewaysubnetPrefix')]"
+              },                                   
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
       "name": "DeployVPN",
       "dependsOn": [
         "VNet1"      
@@ -310,7 +389,7 @@
                   "value": "GatewaySubnet"
               },
               "sku": {
-                  "value": "Basic"
+                  "value": "[parameters('VPNSku')]"
               },              
               "gatewayType": {
                   "value": "VPN"
@@ -330,9 +409,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "name": "BastionHost1",
+      "name": "BastionHost2",
       "dependsOn": [
-        "VNet1"
+        "VNet2"
       ],
       "properties": {
           "mode": "Incremental",
@@ -342,13 +421,13 @@
           },
           "parameters": {
               "publicIPAddressName": {
-                "value": "[concat(variables('vnet1Name'),'-Bastion-pip')]"
+                "value": "[concat(variables('vnet2Name'),'-Bastion-pip')]"
               },
               "AllocationMethod": {
                 "value": "Static"
               },              
               "vnetName": {
-                  "value": "[variables('vnet1Name')]"
+                  "value": "[variables('vnet2Name')]"
               },
               "subnetName": {
                   "value": "AzureBastionSubnet"
@@ -398,10 +477,10 @@
                 "value": "[parameters('DC1VMSize')]"
               },
               "vnetName": {
-                "value": "[variables('vnet1Name')]"
+                "value": "[variables('vnet2Name')]"
               },            
               "subnetName": {
-                "value": "[variables('vnet1subnet1Name')]"
+                "value": "[variables('vnet2subnet1Name')]"
               },            
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
@@ -610,6 +689,82 @@
           }
       }
     },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "PeeringToSite2",
+      "dependsOn": [
+        "createous"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/peering.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "SourceVNetName": {
+                "value": "[variables('vnet1Name')]"
+              },
+              "TargetVNetName": {
+                "value": "[variables('vnet2Name')]"
+              },              
+              "allowVirtualNetworkAccess": {
+                "value": "true"
+              },                                                                                                                                                                                                                                                                                                           
+              "allowForwardedTraffic": {
+                "value": "true"
+              },                                                                                                                                                                                                                                                                                                           
+              "allowGatewayTransit": {
+                "value": "false"
+              },
+              "useRemoteGateways": {
+                "value": "false"
+              },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "PeeringToSite1",
+      "dependsOn": [
+        "PeeringToSite2"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/peering.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "SourceVNetName": {
+                "value": "[variables('vnet2Name')]"
+              },
+              "TargetVNetName": {
+                "value": "[variables('vnet1Name')]"
+              },              
+              "allowVirtualNetworkAccess": {
+                "value": "true"
+              },                                                                                                                                                                                                                                                                                                           
+              "allowForwardedTraffic": {
+                "value": "true"
+              },                                                                                                                                                                                                                                                                                                           
+              "allowGatewayTransit": {
+                "value": "false"
+              },
+              "useRemoteGateways": {
+                "value": "false"
+              },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },            
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
@@ -931,10 +1086,10 @@
                 "value": "[parameters('WK1VMSize')]"
               },
               "vnetName": {
-                "value": "[variables('vnet1Name')]"
+                "value": "[variables('vnet2Name')]"
               },            
               "subnetName": {
-                "value": "[variables('vnet1subnet2Name')]"
+                "value": "[variables('vnet2subnet2Name')]"
               },                                                                                                                      
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"

@@ -1,0 +1,106 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "computerName": {
+            "type": "string",
+            "metadata": {
+                "description": "Computer Name"
+            }
+        },
+        "VaultName": {
+            "type": "string",
+            "metadata": {
+                "description": "Recovery Services Vault Name"
+            }
+        },                             
+        "HyperVSite": {
+            "type": "string",
+            "metadata": {
+                "description": "Azure Site Recovery Hyper-V Site"
+            }
+        },                                     
+        "TenantAdmin": {
+            "type": "string",
+            "metadata": {
+                "description": "Azure Tenant Admin"
+            }
+        },
+      "TenantPassword": {
+          "type": "securestring",
+        "metadata": {
+          "description": "Azure Tenant Password"
+        }
+      },         
+      "adminUsername": {
+          "type": "string",
+          "metadata": {
+              "description": "The name of the Administrator of the new VM and Domain"
+          }
+      },
+      "adminPassword": {
+          "type": "securestring",
+        "metadata": {
+          "description": "The password for the Administrator account of the new VM and Domain"
+        }
+      },                                                     
+        "location": {
+            "type": "string",
+          "metadata": {
+            "description": "Region of Resources"
+          }
+        },
+        "_artifactsLocation": {
+            "type": "string",
+            "metadata": {
+                "description": "The location of resources, such as templates and DSC modules, that the template depends on"
+            }
+        },
+        "_artifactsLocationSasToken": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Auto-generated token to access _artifactsLocation"
+            }
+        }                
+    },
+    "variables": {
+        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/ASR.zip', parameters('_artifactsLocationSasToken')))]",
+        "ConfigurationFunction": "ASR.ps1\\ASR"
+    },
+    "resources": [
+        {
+            "name": "[concat(parameters('computerName'),'/Microsoft.Powershell.DSC')]",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "apiVersion": "2019-03-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "publisher": "Microsoft.Powershell",
+                "type": "DSC",
+                "typeHandlerVersion": "2.19",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "ModulesUrl": "[variables('modulesUrl')]",
+                    "ConfigurationFunction": "[variables('configurationFunction')]",
+                        "Properties": {
+                            "VaultName": "[parameters('VaultName')]",
+                            "HyperVSite": "[parameters('HyperVSite')]",
+                            "AdminCreds": {
+                                "UserName": "[parameters('adminUsername')]",
+                                "Password": "PrivateSettingsRef:AdminPassword"
+                            },
+                            "TenantCreds": {
+                                "UserName": "[parameters('TenantAdmin')]",
+                                "Password": "PrivateSettingsRef:TenantPassword"
+                            }                                                                                    
+                        }
+                    },
+                    "protectedSettings": {
+                        "Items": {
+                            "AdminPassword": "[parameters('adminPassword')]",
+                            "TenantPassword": "[parameters('TenantPassword')]"                            
+                        }
+                    }                 
+            }
+        }
+    ]
+}
