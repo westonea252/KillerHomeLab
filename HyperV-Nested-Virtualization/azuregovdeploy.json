@@ -17,9 +17,9 @@
     "TenantAdmin": {
         "type": "string",
         "metadata": {
-            "description": "Tenant Admin Username"
+            "description": "Tenant Username"
         }
-    },      
+    }, 
     "TenantPassword": {
         "type": "securestring",
       "metadata": {

@@ -7,6 +7,12 @@
       },
       "adminPassword": {
         "value": "GEN-PASSWORD"
-      }
+      },
+      "TenantAdmin": {
+        "value": "GEN-UNIQUE"
+      },
+      "TenantPassword": {
+        "value": "GEN-PASSWORD"
+      }      
     }
   }
