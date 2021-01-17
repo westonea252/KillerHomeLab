@@ -388,7 +388,8 @@
     "wk2lastoctet": "201",                
     "ReverseLookup1": "[concat('1.',parameters('ReverseLookup1'))]",    
     "ReverseLookup2": "[concat('1.',parameters('ReverseLookup2'))]",        
-    "DCDataDisk1Name": "NTDS",            
+    "DCDataDisk1Name": "NTDS",   
+    "CATemplateScriptUrl": "https://elliottf.blob.core.windows.net/github/Scripts/Create_CA_Templates.ps1",                    
     "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",    
     "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
@@ -1452,6 +1453,9 @@
               "RootDomainFQDN": {
                   "value": "[variables('domainName')]"
               },   
+              "CATemplateScriptUrl": {
+                  "value": "[variables('CATemplateScriptUrl')]"
+              },                       
               "location": {
                   "value": "[resourceGroup().location]"
               },
@@ -2753,6 +2757,6 @@
               }
           }
       }
-    }                                                                                                
+    }
   ]
 }
