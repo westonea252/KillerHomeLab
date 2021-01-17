@@ -490,7 +490,10 @@
               },               
               "BastionsubnetPrefix": {
                 "value": "[variables('vnet1BastionsubnetPrefix')]"
-              },                         
+              },    
+              "GatewaysubnetPrefix": {
+                "value": "[variables('vnet1GatewaysubnetPrefix')]"
+              },                                     
               "DNSServerIP": {
                 "value": [
                   "[variables('dc1IP')]"
