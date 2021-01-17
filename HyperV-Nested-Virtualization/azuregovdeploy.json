@@ -166,8 +166,7 @@
       "apiVersion": "2015-01-01",
       "name": "deployHVVM",
       "dependsOn": [
-        "VNet1",
-        "BastionHost1"
+        "VNet1"
       ],
       "properties": {
           "mode": "Incremental",
@@ -223,8 +222,6 @@
       "apiVersion": "2019-10-01",
       "name": "DeployRSVault",
       "dependsOn": [
-        "VNet1",
-        "BastionHost1",
         "DeployHVVM"
       ],    
       "properties": {
@@ -249,7 +246,6 @@
       "name": "ConfigureHyperV",
       "dependsOn": [
         "VNet1",
-        "BastionHost1",
         "DeployHVVM",
         "DeployRSVault"
       ],
