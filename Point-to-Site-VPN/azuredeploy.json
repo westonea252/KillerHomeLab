@@ -2,6 +2,7 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+
     "adminUsername": {
         "type": "string",
         "metadata": {
@@ -13,7 +14,19 @@
       "metadata": {
         "description": "Admin Password"
       }
-    },     
+    },
+    "TenantAdmin": {
+        "type": "string",
+        "metadata": {
+            "description": "Tenant Username"
+        }
+    }, 
+    "TenantPassword": {
+        "type": "securestring",
+      "metadata": {
+        "description": "Tenant Admin Password"
+      }
+    },          
     "VPNSku": {
       "type": "string",
       "defaultValue": "Basic",
@@ -34,7 +47,7 @@
         "VpnGw5AZ"                                                        
       ],      
       "metadata": {
-          "description": "Windows Server OS License Type"
+          "description": "Select a VPN Sku"
       }
     },       
     "WindowsServerLicenseType": {
@@ -246,6 +259,7 @@
     }
   },
   "variables": {
+    "Envrionment": "AzureUSGovernment",
     "vnet1Name": "[concat(parameters('NamingConvention'),'-VNet1')]",
     "vnet1Prefix": "[concat(parameters('vnet1ID'),'.0.0/16')]",
     "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet1')]",    
@@ -497,9 +511,53 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
+      "name": "LoginAzure",
+      "dependsOn": [
+        "deployDC1VM"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/certupload.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('dc1name')]"
+              },
+              "Environment": {
+                  "value": "[variables('Envrionment')]"
+              },
+              "TenantAdmin": {
+                "value": "[parameters('TenantAdmin')]"
+              },                                                                                                            
+              "TenantPassword": {
+                "value": "[parameters('TenantPassword')]"
+              },            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              }, 
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                                           
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
       "name": "promotedc1",
       "dependsOn": [
-        "DeployDC1VM"
+        "LoginAzure"
       ],            
       "properties": {
           "mode": "Incremental",
