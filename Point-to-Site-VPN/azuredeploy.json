@@ -388,7 +388,7 @@
       "name": "CreateManagedID",
       "resourceGroup":  "[parameters('AzureRG')]",
       "dependsOn": [
-        "CreateSite1RG"        
+        "CreateAzureRG"        
       ],        
       "properties": {
           "mode": "Incremental",
@@ -499,7 +499,7 @@
       "name": "VNet1",
       "resourceGroup":  "[parameters('AzureRG')]",            
       "dependsOn": [
-        "CreateSite1RG"        
+        "CreateAzureRG"        
       ],        
       "properties": {
           "mode": "Incremental",
@@ -544,7 +544,7 @@
       "name": "VNet2",
       "resourceGroup":  "[parameters('OnPremRG')]",                  
       "dependsOn": [
-        "CreateSite2RG"        
+        "CreateOnPremRG"        
       ],        
       "properties": {
           "mode": "Incremental",
