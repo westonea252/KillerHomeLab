@@ -1013,7 +1013,7 @@
               "TargetVNetName": {
                 "value": "[variables('vnet2Name')]"
               },        
-              "TargetRGName": {
+              "TargetVNetRGName": {
                 "value": "[parameters('OnPremRG')]"
               },                     
               "allowVirtualNetworkAccess": {
@@ -1055,7 +1055,7 @@
               "TargetVNetName": {
                 "value": "[variables('vnet1Name')]"
               },  
-              "TargetRGName": {
+              "TargetVNetRGName": {
                 "value": "[parameters('AzureRG')]"
               },                            
               "allowVirtualNetworkAccess": {
