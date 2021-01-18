@@ -1,0 +1,78 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "ManagedIDName": {
+          "type": "string",
+          "metadata": {
+            "description": "Managed ID Name"
+          }
+        },
+        "spDisplayName": {
+          "type": "string",
+          "metadata": {
+            "description": "Service Principal Display Name"
+          }
+        },        
+        "ScriptLocation": {
+            "type": "string",
+          "metadata": {
+            "description": "Script Location"
+          }
+        }
+    },
+    "resources": [
+        {
+          "type": "Microsoft.Resources/deploymentScripts",
+          "apiVersion": "2020-10-01",
+          "name": "createspn",
+          "location": "[parameters('ScriptLocation')]",
+          "kind": "AzurePowerShell",      
+          "identity": {
+            "type": "UserAssigned",
+            "userAssignedIdentities": {
+              "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('ManagedIDName'))]": {
+              }
+            }
+          },
+          "properties": {
+            "azPowerShellVersion": "5.0",
+            "timeout": "PT1H",
+            "arguments": "[format(' -spDisplayName {0}', parameters('spDisplayName'))]", // can pass an argument string, double quotes must be escaped
+            "scriptContent": "
+              param(
+              [string] [Parameter(Mandatory=$true)] $spDisplayName 
+              )
+              $startDate = Get-Date
+              $KeyId = (New-Guid).Guid
+              $KeyPassword = (New-Guid).Guid
+              $psadCredential = New-Object Microsoft.Azure.Commands.ActiveDirectory.PSADPasswordCredential
+              $psadCredential.StartDate = $startDate
+              $psadCredential.EndDate = $startDate.AddYears(1)
+              $psadCredential.KeyId = $KeyId
+              $psadCredential.Password = $KeyPassword
+
+              $ServicePrincipalCheck = Get-AzADServicePrincipal -DisplayName $spDisplayName -ErrorAction 0
+              IF ($ServicePrincipalCheck -eq $Null) {
+                  New-AzADServicePrincipal -DisplayName $spDisplayName -PasswordCredential $psadCredential
+                  Start-Sleep 30
+              }
+
+              $appID = (Get-AzADServicePrincipal -DisplayName $spDisplayName).ApplicationId
+              $output = $appID
+              Write-Output $output
+              $DeploymentScriptOutputs = @{}
+              $DeploymentScriptOutputs['text'] = $output              
+            ",
+            "cleanupPreference": "OnSuccess",
+            "retentionInterval": "P1D"
+          }
+        }
+      ],
+    "outputs": {
+        "ApplicationID": {
+            "type": "string",
+            "value": "[reference('createspn').outputs.text]"
+        }
+      }      
+    }

@@ -1,8 +1,28 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+"$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptiondeploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
-  "parameters": {
-
+  "parameters": {  
+    "AzureRG": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Azure Resource Groups"
+      }
+    },            
+    "OnPremRG": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "On-Premise Resource Groups"
+      }
+    },
+    "spDisplayName": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Service Principal Display Name"
+      }
+    },     
     "adminUsername": {
         "type": "string",
         "metadata": {
@@ -248,7 +268,21 @@
       "metadata": {
           "description": "Workstation1 VMSize"
       }
-    },             
+    },    
+    "roleAssignmentGuid1": {
+        "type": "string",
+        "defaultValue": "[newGuid()]",
+        "metadata": {
+            "description": "A new GUID used to identify the role assignment"
+        }
+    },   
+    "roleAssignmentGuid2": {
+        "type": "string",
+        "defaultValue": "[newGuid()]",
+        "metadata": {
+            "description": "A new GUID used to identify the role assignment"
+        }
+    },               
     "_artifactsLocation": {
       "type": "string",
       "metadata": {
@@ -281,7 +315,8 @@
     "vnet2subnet2Name": "[concat(parameters('NamingConvention'),'-VNet2-Subnet2')]",    
     "vnet2subnet2Prefix": "[concat(parameters('vnet2ID'),'.2.0/24')]",    
     "vnet2BastionsubnetPrefix": "[concat(parameters('vnet2ID'),'.253.0/24')]",  
-    "vnet2GatewaysubnetPrefix": "[concat(parameters('vnet2ID'),'.0.0/24')]",                                
+    "vnet2GatewaysubnetPrefix": "[concat(parameters('vnet2ID'),'.0.0/24')]",   
+    "SPNScriptName": "[concat(parameters('NamingConvention'),'-spn')]",                                             
     "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",           
     "dc1IP": "[concat(parameters('vnet1ID'),'.1.',variables('dc1lastoctet'))]",        
     "ecaname": "[concat(parameters('NamingConvention'),'-eca-01')]",           
@@ -300,13 +335,172 @@
     "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
     "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
-    "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]"    
+    "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
+    "ManagedIDName": "[concat(parameters('NamingConvention'),'-mi-', uniqueString(subscription().id))]",            
+    "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"                   
   },  
   "resources": [
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
+      "name": "CreateAzureRG",
+      "location": "[deployment().Location]",
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/resourcegroup.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "ResourceGroupName": {
+                  "value": "[parameters('AzureRG')]"
+              },
+              "location": {
+                  "value": "[deployment().Location]"
+              }            
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "CreateOnPremRG",
+      "location": "[deployment().Location]",
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/resourcegroup.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "ResourceGroupName": {
+                  "value": "[parameters('OnpremRG')]"
+              },
+              "location": {
+                  "value": "[deployment().Location]"
+              }            
+          }
+      }
+    }, 
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "CreateManagedID",
+      "resourceGroup":  "[parameters('AzureRG')]",
+      "dependsOn": [
+        "CreateSite1RG"        
+      ],        
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/managedidentity.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "ManagedIDName": {
+                  "value": "[variables('ManagedIDName')]"
+              },
+              "location": {
+                  "value": "[deployment().Location]"
+              }
+          }
+      }
+    },  
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "AssignManagedIDRG1",
+      "resourceGroup": "[parameters('AzureRG')]",
+      "dependsOn": [
+        "CreateManagedID"
+      ],        
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/roleassignment.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "PrincipalID": {
+                  "value": "[reference('CreateManagedID').outputs.manageduseridentity.value]"
+              },
+              "RoleDefinitionID": {
+                  "value": "[variables('Contributor')]"
+              },
+              "roleAssignmentGuid": {
+                  "value": "[parameters('roleAssignmentGuid1')]"
+              }              
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "AssignManagedIDRG2",
+      "resourceGroup": "[parameters('OnPremRG')]",
+      "dependsOn": [
+        "CreateManagedID",
+        "AssignManagedIDRG1"        
+      ],        
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/roleassignment.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "PrincipalID": {
+                  "value": "[reference('CreateManagedID').outputs.manageduseridentity.value]"
+              },
+              "RoleDefinitionID": {
+                  "value": "[variables('Contributor')]"
+              },
+              "roleAssignmentGuid": {
+                  "value": "[parameters('roleAssignmentGuid2')]"
+              }              
+          }
+      }
+    },             
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "CreateSPN",
+      "resourceGroup":  "[parameters('AzureRG')]",      
+      "dependsOn": [
+        "CreateManagedID",
+        "AssignManagedIDRG1",
+        "AssignManagedIDRG2"                
+      ],       
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/createspn.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "ManagedIDName": {
+                  "value": "[variables('ManagedIDName')]"
+              },
+              "spDisplayname": {
+                  "value": "[parameters('spDisplayName')]"
+              },                                       
+              "ScriptName": {
+                  "value": "[concat(variables('SPNScriptName'),'-01')]"           
+              },                   
+              "ScriptLocation": {
+                  "value": "[deployment().location]"
+              }              
+          }
+      }
+    },       
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
       "name": "VNet1",
+      "resourceGroup":  "[parameters('AzureRG')]",            
+      "dependsOn": [
+        "CreateSite1RG"        
+      ],        
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -339,15 +533,19 @@
                 "value": "[variables('vnet1GatewaysubnetPrefix')]"
               },                                   
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().Location]"
               }
           }
       }
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "VNet2",
+      "resourceGroup":  "[parameters('OnPremRG')]",                  
+      "dependsOn": [
+        "CreateSite2RG"        
+      ],        
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -380,15 +578,16 @@
                 "value": "[variables('vnet2GatewaysubnetPrefix')]"
               },                                   
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().Location]"
               }
           }
       }
     },    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DeployVPN",
+      "resourceGroup":  "[parameters('AzureRG')]",                        
       "dependsOn": [
         "VNet1"      
       ],
@@ -421,15 +620,16 @@
                 "value": "[concat(parameters('NamingConvention'),'-vpn-pip')]"
               },                                          
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().Location]"
               }
           }
       }
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "BastionHost1",
+      "resourceGroup":  "[parameters('AzureRG')]",                              
       "dependsOn": [
         "VNet1"
       ],
@@ -453,15 +653,16 @@
                   "value": "AzureBastionSubnet"
               },
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().Location]"
               }
           }
       }
     },           
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "BastionHost2",
+      "resourceGroup":  "[parameters('OnPremRG')]",                                    
       "dependsOn": [
         "VNet2"
       ],
@@ -485,7 +686,7 @@
                   "value": "AzureBastionSubnet"
               },
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().Location]"
               }
           }
       }
@@ -494,6 +695,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "name": "deployDC1VM",
+      "resourceGroup":  "[parameters('AzureRG')]",                                          
       "dependsOn": [
         "VNet1"
       ],      
@@ -541,15 +743,16 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().Location]"
               }
           }
       }
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "LoginAzure",
+      "resourceGroup":  "[parameters('AzureRG')]",                                                
       "dependsOn": [
         "deployDC1VM"
       ],            
@@ -588,7 +791,7 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                           
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().Location]"
               }
           }
       }
@@ -597,6 +800,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "name": "promotedc1",
+      "resourceGroup":  "[parameters('AzureRG')]",                                                      
       "dependsOn": [
         "LoginAzure"
       ],            
@@ -629,15 +833,16 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                           
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().Location]"
               }
           }
       }
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "updatevnet1dns",
+      "resourceGroup":  "[parameters('AzureRG')]",                                                            
       "dependsOn": [
         "promotedc1"
       ],            
@@ -678,15 +883,16 @@
                 ]
               },                                                                                                            
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().Location]"
               }
           }
       }
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "restartdc1",
+      "resourceGroup":  "[parameters('AzureRG')]",                                                            
       "dependsOn": [
         "updatevnet1dns"
       ],            
@@ -707,15 +913,16 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                                         
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().Location]"
               }
           }
       }
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "configdns",
+      "resourceGroup":  "[parameters('AzureRG')]",                                                                  
       "dependsOn": [
         "restartdc1"
       ],            
@@ -751,15 +958,16 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                           
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().Location]"
               }
           }
       }
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "createous",
+      "resourceGroup":  "[parameters('AzureRG')]",                                                                  
       "dependsOn": [
         "configdns"
       ],            
@@ -783,15 +991,16 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                           
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().Location]"
               }
           }
       }
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "PeeringToSite2",
+      "resourceGroup":  "[parameters('AzureRG')]",                                                                  
       "dependsOn": [
         "createous"
       ],            
@@ -807,7 +1016,10 @@
               },
               "TargetVNetName": {
                 "value": "[variables('vnet2Name')]"
-              },              
+              },        
+              "TargetRG": {
+                "value": "[parameters('OnPremRG')]"
+              },                     
               "allowVirtualNetworkAccess": {
                 "value": "true"
               },                                                                                                                                                                                                                                                                                                           
@@ -821,15 +1033,16 @@
                 "value": "false"
               },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().Location]"
               }
           }
       }
     },    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "PeeringToSite1",
+      "resourceGroup":  "[parameters('OnPremRG')]",                                                                  
       "dependsOn": [
         "PeeringToSite2"
       ],            
@@ -845,7 +1058,10 @@
               },
               "TargetVNetName": {
                 "value": "[variables('vnet1Name')]"
-              },              
+              },  
+              "TargetRG": {
+                "value": "[parameters('AzureRG')]"
+              },                            
               "allowVirtualNetworkAccess": {
                 "value": "true"
               },                                                                                                                                                                                                                                                                                                           
@@ -859,15 +1075,16 @@
                 "value": "false"
               },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().Location]"
               }
           }
       }
     },            
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployenterpriseca",
+      "resourceGroup":  "[parameters('AzureRG')]",                                                                  
       "dependsOn": [
         "restartdc1"
       ],      
@@ -912,15 +1129,16 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().Location]"
               }
           }
       }
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DomainJoinEnterpriseCA",
+      "resourceGroup":  "[parameters('AzureRG')]",                                                                  
       "dependsOn": [
         "deployenterpriseca"
       ],      
@@ -950,15 +1168,16 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                                                                                                                                                             
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().Location]"
               }
           }
       }
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "configureenterpriseca",
+      "resourceGroup":  "[parameters('AzureRG')]",                                                                  
       "dependsOn": [
         "DomainJoinEnterpriseCA"
       ],      
@@ -991,7 +1210,7 @@
                   "value": "[variables('CATemplateScriptUrl')]"
               },                              
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().Location]"
               },              
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
@@ -1010,8 +1229,9 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployocsp",
+      "resourceGroup":  "[parameters('AzureRG')]",                                                                  
       "dependsOn": [
         "configureenterpriseca"    
       ],      
@@ -1056,15 +1276,16 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().Location]"
               }
           }
       }
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DomainJoinOCSP",
+      "resourceGroup":  "[parameters('AzureRG')]",                                                                  
       "dependsOn": [
         "deployocsp"
       ],      
@@ -1094,15 +1315,16 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                                                                                                                                                             
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().Location]"
               }
           }
       }
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "configureocsp",
+      "resourceGroup":  "[parameters('AzureRG')]",                                                                  
       "dependsOn": [
         "DomainJoinOCSP"
       ],      
@@ -1132,7 +1354,7 @@
                   "value": "[parameters('EnterpriseCAName')]"
               },              
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().Location]"
               },
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
@@ -1151,8 +1373,9 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployWK1VM",
+      "resourceGroup":  "[parameters('OnPremRG')]",                                                                  
       "dependsOn": [
         "configureocsp"
       ],      
@@ -1197,15 +1420,16 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().Location]"
               }
           }
       }
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DomainJoinWK1VM",
+      "resourceGroup":  "[parameters('OnPremRG')]",                                                                  
       "dependsOn": [
         "DeployWK1VM"
       ],      
@@ -1235,7 +1459,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                                                                                                                                                             
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().Location]"
               }
           }
       }
