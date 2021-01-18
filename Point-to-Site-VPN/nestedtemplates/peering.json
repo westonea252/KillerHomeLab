@@ -14,7 +14,7 @@
           "description": "Set the Target VNet name"
         }
       },
-      "TargetVNetRG": {
+      "TargetVNetRGName": {
         "type": "string",
         "metadata": {
           "description": "Set Target Resource Group"
@@ -52,7 +52,7 @@
       }
     },
     "variables": {
-      "TargetVNet": "[resourceId(parameters('TargetVNetRG'), 'Microsoft.Network/virtualNetworks', parameters('TargetVNetName'))]",
+      "TargetVNet": "[resourceId(parameters('TargetVNetRGName'), 'Microsoft.Network/virtualNetworks', parameters('TargetVNetName'))]",
       "peeringName": "[concat(parameters('SourceVNetName'), '/', parameters('SourceVNetName'), '-to-', parameters('TargetVNetName'))]"
     },
     "resources": [
