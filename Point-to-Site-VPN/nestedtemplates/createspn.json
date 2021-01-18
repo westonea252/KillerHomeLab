@@ -43,6 +43,8 @@
               param(
               [string] [Parameter(Mandatory=$true)] $spDisplayName 
               )
+              Import-Module -Name Az.Resources
+
               $startDate = Get-Date
               $KeyId = (New-Guid).Guid
               $KeyPassword = (New-Guid).Guid
