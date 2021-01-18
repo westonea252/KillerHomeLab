@@ -43,6 +43,9 @@
               param(
               [string] [Parameter(Mandatory=$true)] $spDisplayName 
               )
+              $ServicePrincipalCheck = Get-AzADServicePrincipal -DisplayName $spDisplayName -ErrorAction 0
+              IF ($ServicePrincipalCheck -eq $Null) {
+
               Import-Module -Name Az.Resources
 
               $startDate = Get-Date
@@ -54,17 +57,25 @@
               $psadCredential.KeyId = $KeyId
               $psadCredential.Password = $KeyPassword
 
-              $ServicePrincipalCheck = Get-AzADServicePrincipal -DisplayName $spDisplayName -ErrorAction 0
-              IF ($ServicePrincipalCheck -eq $Null) {
-                  New-AzADServicePrincipal -DisplayName $spDisplayName -PasswordCredential $psadCredential
-                  Start-Sleep 30
-              }
-
-              $appID = (Get-AzADServicePrincipal -DisplayName $spDisplayName).ApplicationId
-              $output = $appID
+              New-AzADServicePrincipal -DisplayName $spDisplayName -PasswordCredential $psadCredential
+              Start-Sleep 30
+              $appID = (Get-AzADServicePrincipal -DisplayName $spDisplayName).ApplicationId                  
+              $output = $appID.Guid
               Write-Output $output
               $DeploymentScriptOutputs = @{}
-              $DeploymentScriptOutputs['text'] = $output              
+              $DeploymentScriptOutputs['text'] = $output                            
+              }
+
+              ELSE {
+              $appID = (Get-AzADServicePrincipal -DisplayName $spDisplayName).ApplicationId                  
+              $output1 = $appID.Guid
+              $output2 = $KeyPassword              
+              Write-Output $output1
+              Write-Output $output2              
+              $DeploymentScriptOutputs = @{}
+              $DeploymentScriptOutputs['ApplicationID'] = $output1                            
+              $DeploymentScriptOutputs['KeyPassword'] = $output2                                         
+              }
             ",
             "cleanupPreference": "OnSuccess",
             "retentionInterval": "P1D"
@@ -74,7 +85,11 @@
     "outputs": {
         "ApplicationID": {
             "type": "string",
-            "value": "[reference('createspn').outputs.text]"
-        }
+            "value": "[reference('createspn').outputs.ApplicationID]"
+        },
+        "KeyPassword": {
+            "type": "string",
+            "value": "[reference('createspn').outputs.KeyPassword]"
+        }        
       }      
     }
