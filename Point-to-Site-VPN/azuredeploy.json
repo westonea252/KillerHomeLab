@@ -491,10 +491,10 @@
                 "value": "[parameters('DC1VMSize')]"
               },
               "vnetName": {
-                "value": "[variables('vnet2Name')]"
+                "value": "[variables('vnet1Name')]"
               },            
               "subnetName": {
-                "value": "[variables('vnet2subnet1Name')]"
+                "value": "[variables('vnet1subnet1Name')]"
               },            
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
