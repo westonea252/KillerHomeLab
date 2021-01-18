@@ -2,10 +2,13 @@
 {
    param
    (
+        [String]$TenantDomain,
         [String]$Environment,
         [System.Management.Automation.PSCredential]$Admincreds,
         [System.Management.Automation.PSCredential]$Tenantcreds
     )
+
+    [System.Management.Automation.PSCredential ]$NewTenantCreds = New-Object System.Management.Automation.PSCredential ("$($Tenantcreds.UserName)@${TenantDomain}", $Tenantcreds.Password)
 
     Node localhost
     {
@@ -42,7 +45,7 @@
             SetScript =
             {                 
                 # Load Credentials
-                $Creds = $using:TenantCreds
+                $Creds = $using:NewTenantCreds
 
                 # Convert Secure to Plaintext
                 $PlainPassword = $Creds.GetNetworkCredential().Password

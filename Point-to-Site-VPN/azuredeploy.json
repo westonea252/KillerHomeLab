@@ -21,6 +21,12 @@
             "description": "Tenant Username"
         }
     }, 
+    "TenantDomain": {
+        "type": "string",
+        "metadata": {
+            "description": "Tenant Domain"
+        }
+    },     
     "TenantPassword": {
         "type": "securestring",
       "metadata": {
@@ -562,7 +568,10 @@
               },
               "TenantAdmin": {
                 "value": "[parameters('TenantAdmin')]"
-              },                                                                                                            
+              },
+              "TenantDomain": {
+                "value": "[parameters('TenantDomain')]"
+              },                                                                                                                          
               "TenantPassword": {
                 "value": "[parameters('TenantPassword')]"
               },            
