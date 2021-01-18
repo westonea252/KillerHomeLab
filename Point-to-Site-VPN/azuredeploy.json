@@ -316,7 +316,6 @@
     "vnet2subnet2Prefix": "[concat(parameters('vnet2ID'),'.2.0/24')]",    
     "vnet2BastionsubnetPrefix": "[concat(parameters('vnet2ID'),'.253.0/24')]",  
     "vnet2GatewaysubnetPrefix": "[concat(parameters('vnet2ID'),'.0.0/24')]",   
-    "SPNScriptName": "[concat(parameters('NamingConvention'),'-spn')]",                                             
     "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",           
     "dc1IP": "[concat(parameters('vnet1ID'),'.1.',variables('dc1lastoctet'))]",        
     "ecaname": "[concat(parameters('NamingConvention'),'-eca-01')]",           
@@ -483,10 +482,7 @@
               },
               "spDisplayname": {
                   "value": "[parameters('spDisplayName')]"
-              },                                       
-              "ScriptName": {
-                  "value": "[concat(variables('SPNScriptName'),'-01')]"           
-              },                   
+              },                                                       
               "ScriptLocation": {
                   "value": "[deployment().location]"
               }              
