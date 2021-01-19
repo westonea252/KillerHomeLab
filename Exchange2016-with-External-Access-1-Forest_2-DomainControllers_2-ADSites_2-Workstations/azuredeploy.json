@@ -6,7 +6,7 @@
       "type": "string",
       "defaultValue": "WestUS",
       "metadata": {
-        "description": "Choose Region (Example:  WestUS)"
+        "description": "Choose Region (Example: WestUS)"
       }
     },           
     "ExchangeOrgName": {

@@ -56,14 +56,7 @@
       "metadata": {
           "description": "Windows Client OS License Type"
       }
-    },         
-    "ToEmail": {
-        "type": "string",
-        "defaultValue": "",
-        "metadata": {
-            "description": "Enter an Email Address to send the Trusted CA Certificates"
-        }
-    },    
+    },           
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
@@ -71,6 +64,20 @@
         "description": "Environment Naming Convention"
       }
     },
+    "SubDNSDomain": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+          "description": "Sub DNS Domain Name Example:  sub1. must include a DOT AT END"
+      }
+    },     
+    "SubDNSBaseDN": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+          "description": "Sub DNS Domain Name Example:  DC=sub2,DC=sub1, must include COMMA AT END"
+      }
+    },     
     "NetBiosDomain": {
       "type": "string",
       "defaultValue": "killerhomelab",
@@ -78,6 +85,13 @@
           "description": "NetBios Domain Name"
       }
     },    
+    "InternalDomain": {
+      "type": "string",
+      "defaultValue": "killerhomelab",
+      "metadata": {
+          "description": "NetBios Domain Name"
+      }
+    },      
     "TLD": {
       "type": "string",
       "defaultValue": "com",
@@ -374,8 +388,9 @@
     "ReverseLookup1": "[concat('1.',parameters('ReverseLookup1'))]",    
     "ReverseLookup2": "[concat('1.',parameters('ReverseLookup2'))]",        
     "DCDataDisk1Name": "NTDS",            
-    "domainName": "[concat(parameters('NetBiosDomain'),'.',parameters('TLD'))]",
-    "BaseDN": "[concat('DC=',parameters('NetBiosDomain'),',DC=',parameters('TLD'))]",
+    "CATemplateScriptUrl": "https://elliottf.blob.core.windows.net/github/Scripts/Create_CA_Templates.ps1",               
+    "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
+    "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
     "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
     "DB1Name": "[concat(parameters('NamingConvention'),'-19-db01')]",
@@ -388,7 +403,7 @@
   "resources": [
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "VNet1",
       "properties": {
           "mode": "Incremental",
@@ -426,7 +441,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "VNet2",   
       "properties": {
           "mode": "Incremental",
@@ -464,7 +479,7 @@
     },    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "BastionHost1",
       "dependsOn": [
         "VNet1"
@@ -496,7 +511,7 @@
     },        
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "BastionHost2",
       "dependsOn": [
         "VNet2"
@@ -528,7 +543,7 @@
     },            
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployDC1VM",
       "dependsOn": [
         "VNet1"
@@ -584,7 +599,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "promotedc1",
       "dependsOn": [
         "DeployDC1VM"
@@ -625,7 +640,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "updatevnet1dns",
       "dependsOn": [
         "promotedc1"
@@ -671,7 +686,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "updatevnet2dns",
       "dependsOn": [
         "promotedc1"
@@ -717,7 +732,7 @@
     },    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "restartdc1",
       "dependsOn": [
         "updatevnet1dns",
@@ -747,7 +762,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "configdns",
       "dependsOn": [
         "restartdc1"
@@ -803,7 +818,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "createous",
       "dependsOn": [
         "configdns"
@@ -835,7 +850,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "createsites",
       "dependsOn": [
         "createous"
@@ -876,7 +891,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "PeeringToSite2",
       "dependsOn": [
         "createsites"
@@ -914,7 +929,7 @@
     },    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "PeeringToSite1",
       "dependsOn": [
         "PeeringToSite2"
@@ -952,7 +967,7 @@
     },        
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployDC2VM",
       "dependsOn": [
         "PeeringToSite1"
@@ -1008,7 +1023,7 @@
     },        
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "promotedc2",
       "dependsOn": [
         "deployDC2VM"
@@ -1052,7 +1067,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "updatevnet2dns-2",
       "dependsOn": [
         "promotedc2"
@@ -1098,7 +1113,7 @@
     },    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "restartdc2",
       "dependsOn": [
         "updatevnet2dns-2"
@@ -1127,7 +1142,7 @@
     },     
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployrootca",
       "dependsOn": [
         "configdns"
@@ -1180,7 +1195,7 @@
     },  
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "configurerootca",
       "dependsOn": [
         "deployrootca"
@@ -1224,7 +1239,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployissuingca",
       "dependsOn": [
         "configurerootca"
@@ -1277,7 +1292,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DomainJoinIssuingCA",
       "dependsOn": [
         "deployissuingca"
@@ -1315,7 +1330,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "configureissueca",
       "dependsOn": [
         "DomainJoinIssuingCA"
@@ -1371,7 +1386,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "grantcarequest",
       "dependsOn": [
         "configureissueca"
@@ -1409,7 +1424,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "finalizeca",
       "dependsOn": [
         "grantcarequest"
@@ -1439,6 +1454,9 @@
               "RootDomainFQDN": {
                   "value": "[variables('domainName')]"
               },   
+              "CATemplateScriptUrl": {
+                  "value": "[variables('CATemplateScriptUrl')]"
+              },               
               "location": {
                   "value": "[resourceGroup().location]"
               },
@@ -1459,7 +1477,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployocsp",
       "dependsOn": [
         "finalizeca"
@@ -1512,7 +1530,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DomainJoinOCSP",
       "dependsOn": [
         "deployocsp"
@@ -1550,7 +1568,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "configureocsp",
       "dependsOn": [
         "DomainJoinOCSP"
@@ -1603,7 +1621,7 @@
     },  
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "ReplicateAD",
       "dependsOn": [
         "configureocsp"
@@ -1641,7 +1659,7 @@
     },                            
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployfs1",
       "dependsOn": [
         "restartdc1"
@@ -1694,7 +1712,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DomainJoinFS1",
       "dependsOn": [
         "deployfs1"
@@ -1732,7 +1750,7 @@
     },                
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployfs2",
       "dependsOn": [
         "restartdc2"
@@ -1785,7 +1803,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DomainJoinFS2",
       "dependsOn": [
         "deployfs2"
@@ -1823,7 +1841,7 @@
     },                    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployex1",
       "dependsOn": [
         "restartdc1"
@@ -1882,7 +1900,7 @@
     },    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DomainJoinEX1",
       "dependsOn": [
         "deployex1"
@@ -1920,7 +1938,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "prepareexchange19s1",
       "dependsOn": [
         "DomainJoinEX1"
@@ -1961,7 +1979,7 @@
     },         
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "restartex1-1",
       "dependsOn": [
         "prepareexchange19s1"
@@ -1990,7 +2008,7 @@
     },                  
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployex2",
       "dependsOn": [
         "restartdc2"
@@ -2049,7 +2067,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DomainJoinEX2",
       "dependsOn": [
         "deployex2"
@@ -2087,7 +2105,7 @@
     },                                                 
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "prepareexchange19s2",
       "dependsOn": [
         "DomainJoinEX2"
@@ -2128,7 +2146,7 @@
     }, 
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "restartex2-1",
       "dependsOn": [
         "prepareexchange19s2"
@@ -2157,7 +2175,7 @@
     },                                                                           
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "prepareadexchange19",
       "dependsOn": [
         "ReplicateAD",        
@@ -2208,7 +2226,7 @@
     },     
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "grantextrustedsub1",
       "dependsOn": [
         "DomainJoinFS1",        
@@ -2241,7 +2259,7 @@
     },       
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "grantextrustedsub2",
       "dependsOn": [
         "DomainJoinFS2",
@@ -2274,7 +2292,7 @@
     },       
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "installexchange1",
       "dependsOn": [
         "DomainJoinEX1",
@@ -2320,7 +2338,7 @@
     }, 
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "configexchange1",
       "dependsOn": [
         "installexchange1"
@@ -2385,7 +2403,7 @@
     },    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "installexchange2",
       "dependsOn": [
         "DomainJoinEX2",
@@ -2432,7 +2450,7 @@
     },      
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "configexchange2",
       "dependsOn": [
         "installexchange2"
@@ -2497,7 +2515,7 @@
     }, 
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "restartex1-2",
       "dependsOn": [
         "configexchange2"
@@ -2526,7 +2544,7 @@
     },  
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "restartex2-2",
       "dependsOn": [
         "configexchange2"
@@ -2555,7 +2573,7 @@
     },                   
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployWK1VM",
       "dependsOn": [
         "restartdc1"
@@ -2608,7 +2626,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DomainJoinWK1VM",
       "dependsOn": [
         "DeployWK1VM"
@@ -2646,7 +2664,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployWK2VM",
       "dependsOn": [
         "restartdc2"
@@ -2699,7 +2717,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DomainJoinWK2VM",
       "dependsOn": [
         "DeployWK2VM"
@@ -2737,7 +2755,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "addocsppip",
       "dependsOn": [
         "configureocsp"
@@ -2790,7 +2808,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "addex1pip",
       "dependsOn": [
         "restartex1-2",
@@ -2850,7 +2868,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "addex2pip",
       "dependsOn": [
         "restartex1-2",
@@ -2910,7 +2928,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deploynsg1",
       "dependsOn": [
         "addocsppip",
@@ -2940,7 +2958,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deploynsg2",
       "dependsOn": [
         "addex2pip"
@@ -2969,7 +2987,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "updatevnet1nsg",
       "dependsOn": [
         "deploynsg1"
@@ -3018,7 +3036,7 @@
     },                                                                                                                                                                                                                            
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "updatevnet2nsg",
       "dependsOn": [
         "deploynsg2"
@@ -3067,7 +3085,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "createpublicdns",
       "dependsOn": [
         "updatevnet1nsg"
@@ -3117,7 +3135,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "sendcompletionemail",
       "dependsOn": [
         "createpublicdns"

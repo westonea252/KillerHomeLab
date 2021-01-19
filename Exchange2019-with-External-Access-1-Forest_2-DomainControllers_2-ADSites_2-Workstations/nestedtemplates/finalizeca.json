@@ -38,6 +38,12 @@
                 "description": "Root Domain Name FQDN"
             }
         },             
+        "CATemplateScriptUrl": {
+            "type": "string",
+            "metadata": {
+                "description": "URL to PowerShell Script for CA Template Creation"
+            }
+        },                     
         "location": {
             "type": "string",
           "metadata": {
@@ -93,6 +99,7 @@
                             "IssuingCAName": "[parameters('IssuingCAName')]",
                             "RootCAName": "[parameters('RootCAName')]",                            
                             "RootDomainFQDN": "[parameters('RootDomainFQDN')]",
+                            "CATemplateScriptUrl": "[parameters('CATemplateScriptUrl')]",                            
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"                                                                                   
