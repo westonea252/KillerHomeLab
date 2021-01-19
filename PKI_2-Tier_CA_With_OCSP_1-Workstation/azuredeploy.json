@@ -174,7 +174,8 @@
         "defaultValue": "2019-Datacenter",
         "allowedValues": [
           "2019-Datacenter",
-          "2016-Datacenter"
+          "2016-Datacenter",
+          "2012-R2-Datacenter"
         ],
         "metadata": {
             "description": "Offline Root CA OS Version"
@@ -185,7 +186,8 @@
         "defaultValue": "2019-Datacenter",
         "allowedValues": [
           "2019-Datacenter",
-          "2016-Datacenter"
+          "2016-Datacenter",
+          "2012-R2-Datacenter"
         ],
         "metadata": {
             "description": "Issuing CA OS Version"
@@ -197,6 +199,7 @@
         "allowedValues": [
           "2019-Datacenter",
           "2016-Datacenter"
+          "2012-R2-Datacenter"
         ],
         "metadata": {
             "description": "OCSP OS Version"
