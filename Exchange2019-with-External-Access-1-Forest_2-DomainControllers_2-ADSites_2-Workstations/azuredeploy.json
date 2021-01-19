@@ -35,6 +35,13 @@
         "description": "The password for the Administrator account of the new VM and Domain"
       }
     }, 
+    "ToEmail": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Enter Email Address to send completed status"
+      }
+    },         
     "WindowsServerLicenseType": {
       "type": "string",
       "defaultValue": "None",
