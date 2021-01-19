@@ -62,7 +62,7 @@
             Recurse = $true
             SourcePath = "C:\CABackup\"
             DestinationPath = "\\$OCSPIP\c$\CertEnroll"
-            PsDscRunAsCredential = $DomainCreds
+            PsDscRunAsCredential = $Admincreds
             DependsOn = '[File]CABackup'
         }
      }
