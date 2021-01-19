@@ -273,7 +273,7 @@
       "apiVersion": "2019-10-01",
       "name": "deployrootca",
       "dependsOn": [
-        "createous"
+        "deployrootca"
       ],      
       "properties": {
           "mode": "Complete",
