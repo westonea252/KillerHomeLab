@@ -198,7 +198,7 @@
         "defaultValue": "2019-Datacenter",
         "allowedValues": [
           "2019-Datacenter",
-          "2016-Datacenter"
+          "2016-Datacenter",
           "2012-R2-Datacenter"
         ],
         "metadata": {
