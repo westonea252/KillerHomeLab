@@ -329,7 +329,8 @@
     "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
     "ManagedIDName": "[concat(parameters('NamingConvention'),'-mi-', uniqueString(subscription().id))]",            
-    "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"                   
+    "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+    "Owner": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]"        
   },  
   "resources": [
     {
@@ -417,7 +418,7 @@
                   "value": "[reference('CreateManagedID').outputs.manageduseridentity.value]"
               },
               "RoleDefinitionID": {
-                  "value": "[variables('Contributor')]"
+                  "value": "[variables('Owner')]"
               },
               "roleAssignmentGuid": {
                   "value": "[parameters('roleAssignmentGuid1')]"

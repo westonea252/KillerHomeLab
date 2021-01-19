@@ -41,7 +41,7 @@
             "arguments": "[format(' -spDisplayName {0}', parameters('spDisplayName'))]", // can pass an argument string, double quotes must be escaped
             "scriptContent": "
               param(
-              [string] [Parameter(Mandatory=$true)] $spDisplayName 
+              [string] [Parameter(Mandatory=$true)] $spDisplayName
               )
               $sp = New-AzADServicePrincipal -DisplayName $spDisplayName
               $BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($sp.Secret)
