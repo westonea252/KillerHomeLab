@@ -273,7 +273,7 @@
       "apiVersion": "2019-10-01",
       "name": "deployrootca",
       "dependsOn": [
-        "deployrootca"
+        "RootCABackup"
       ],      
       "properties": {
           "mode": "Complete",
