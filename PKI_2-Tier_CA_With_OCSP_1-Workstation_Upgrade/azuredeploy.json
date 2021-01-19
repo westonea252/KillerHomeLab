@@ -264,65 +264,6 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
           }
       }
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
-      "name": "deployrootca",
-      "dependsOn": [
-        "RootCABackup"
-      ],      
-      "properties": {
-          "mode": "Complete",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "computerName": {
-                  "value": "[variables('rcaname')]"
-              },
-              "computerIP": {
-                  "value": "[variables('rcaIP')]"
-              },
-              "Publisher": {
-                  "value": "MicrosoftWindowsServer"
-              },
-              "Offer": {
-                  "value": "WindowsServer"
-              },
-              "OSVersion": {
-                "value": "[parameters('rcaOSVersion')]"
-              },              
-              "LicenseType": {
-                "value": "[parameters('WindowsServerLicenseType')]"
-              },            
-              "VMSize": {
-                "value": "[parameters('rcaVMSize')]"
-              },
-              "vnetName": {
-                "value": "[variables('vnet1Name')]"
-              },            
-              "subnetName": {
-                "value": "[variables('vnet1subnet1Name')]"
-              },            
-              "vnetprefix": {
-                "value": "[variables('vnet1Prefix')]"
-              },            
-              "subnetPrefix": {
-                "value": "[variables('vnet1subnet1Prefix')]"
-              },                                                                                                            
-              "adminUsername": {
-                "value": "[parameters('adminUsername')]"
-              },                                                                                                            
-              "adminPassword": {
-                "value": "[parameters('adminPassword')]"
-              },                                                                                                                                        
-              "location": {
-                  "value": "[resourceGroup().location]"
-              }
-          }
-      }
     }
   ]
 }
