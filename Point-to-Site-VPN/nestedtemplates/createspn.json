@@ -43,36 +43,14 @@
               param(
               [string] [Parameter(Mandatory=$true)] $spDisplayName 
               )
-              $ServicePrincipalCheck = Get-AzADServicePrincipal -DisplayName $spDisplayName -ErrorAction 0
-              IF ($ServicePrincipalCheck -eq $Null) {
-
-              Import-Module -Name Az.Resources
-
-              $startDate = Get-Date
-              $KeyId = (New-Guid).Guid
-              $KeyPassword = (New-Guid).Guid
-              $psadCredential = New-Object Microsoft.Azure.Commands.ActiveDirectory.PSADPasswordCredential
-              $psadCredential.StartDate = $startDate
-              $psadCredential.EndDate = $startDate.AddYears(1)
-              $psadCredential.KeyId = $KeyId
-              $psadCredential.Password = $KeyPassword
-
-              New-AzADServicePrincipal -DisplayName $spDisplayName -PasswordCredential $psadCredential
-              Start-Sleep 30
-              $appID = (Get-AzADServicePrincipal -DisplayName $spDisplayName).ApplicationId                  
-              $output = $appID.Guid
+              $sp = New-AzADServicePrincipal -DisplayName $spDisplayName
+              $BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($sp.Secret)
+              $UnsecureSecret = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)
+              
+              $output = $UnsecureSecret
               Write-Output $output
               $DeploymentScriptOutputs = @{}
               $DeploymentScriptOutputs['text'] = $output                            
-              }
-
-              ELSE {
-              $appID = (Get-AzADServicePrincipal -DisplayName $spDisplayName).ApplicationId                  
-              $output = $appID.Guid  
-              Write-Output $output
-              $DeploymentScriptOutputs = @{}
-              $DeploymentScriptOutputs['text'] = $output
-              }
             ",
             "cleanupPreference": "OnSuccess",
             "retentionInterval": "P1D"
@@ -80,7 +58,7 @@
         }
       ],
     "outputs": {
-        "ApplicationID": {
+        "Secret": {
             "type": "string",
             "value": "[reference('createspn').outputs.text]"
         }
