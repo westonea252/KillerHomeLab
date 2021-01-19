@@ -3,7 +3,7 @@
 Click the button below to deploy
 
 [![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2Fmaster%2FPKI_2-Tier_CA_With_OCSP_1-Workstation%2Fazuredeploy.json)
-[![Deploy To Azure US Gov](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.svg?sanitize=true)](https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2Fmaster%2FPKI_2-Tier_CA_With_OCSP_1-Workstation%2Fazuregovdeploy.json)
+[![Deploy To Azure US Gov](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.svg?sanitize=true)](https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2Fmaster%2FPKI_2-Tier_CA_With_OCSP_1-Workstation%2Fazuredeploy.json)
 
 This Templates deploys a Single Forest/Domain:
 
@@ -49,7 +49,8 @@ PKI
 Parameters that support changes
 - Admin Username.  Enter a valid Admin Username
 - Admin Password.  Enter a valid Admin Password
-- Location1. Enter a Valid Azure Region based on which Cloud (AzureCloud, AzureUSGovernment, etc...) you are using.
+- WindowsServerLicenseType.  Choose Windows Server License Type (Example:  Windows_Server or None)
+- WindowsClientLicenseType.  Choose Windows Client License Type (Example:  Windows_Client or None)
 - Naming Convention. Enter a name that will be used as a naming prefix for (Servers, VNets, etc) you are using.
 - Sub DNS Domain.  OPTIONALLY, enter a valid DNS Sub Domain. (Example:  sub1. or sub1.sub2.    This entry must end with a DOT )
 - Sub DNS BaseDN.  OPTIONALLY, enter a valid DNS Sub Base DN. (Example:  DC=sub1, or DC=sub1,DC=sub2,    This entry must end with a COMMA )
@@ -57,11 +58,13 @@ Parameters that support changes
 - Internal Domain.  Enter a valid Internal Domain (Exmaple:  killerhomelab)
 - TLD.  Select a valid Top-Level Domain using the Pull-Down Menu.
 - Vnet1ID.  Enter first 2 octets of your desired Address Space for Virtual Network 1 (Example:  10.1)
-- Vnet2ID.  Enter first 2 octets of your desired Address Space for Virtual Network 2 (Example:  10.2)
 - Reverse Lookup1.  Enter first 2 octets of your desired Address Space in Reverse (Example:  1.10)
-- Reverse Lookup2.  Enter first 2 octets of your desired Address Space in Reverse (Example:  2.10)
 - Root CA Name.  Enter a Name for your Root Certificate Authority
 - Issuing CA Name.  Enter a Name for your Issuing Certificate Authority
+- RootCAHashAlgorithm.  Hash Algorithm for Offline Root CA
+- RootCAKeyLength.  Key Length for Offline Root CA
+- IssuingCAHashAlgorithm.  Hash Algorithm for Issuing CA
+- IssuingCAKeyLength.  Key Length for Issuing CA
 - DC1OSVersion.  Select 2016-Datacenter (Windows 2016) or 2019-Datacenter (Windows 2019) Domain Controller 1 OS Version
 - RCAOSVersion.  Select 2016-Datacenter (Windows 2016) or 2019-Datacenter (Windows 2019) Root CA OS Version
 - ICAOSVersion.  Select 2016-Datacenter (Windows 2016) or 2019-Datacenter (Windows 2019) Issuing CA OS Version
