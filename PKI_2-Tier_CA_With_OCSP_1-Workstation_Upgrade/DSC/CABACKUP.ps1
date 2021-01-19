@@ -61,7 +61,7 @@
             Type = "Directory"
             Recurse = $true
             SourcePath = "C:\CABackup\"
-            DestinationPath = "\\$OCSPIP\c$\Certificates"
+            DestinationPath = "\\$OCSPIP\c$\CertEnroll"
             Credential = $Admincreds
             DependsOn = '[File]CABackup'
         }
