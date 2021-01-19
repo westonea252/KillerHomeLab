@@ -14,13 +14,28 @@
         "description": "Admin Password"
       }
     },     
-    "Location1": {
+    "WindowsServerLicenseType": {
       "type": "string",
-      "defaultValue": "USGovVirginia",
+      "defaultValue": "[parameters('WindowsServerLicenseType')]",
+      "allowedValues": [
+        "[parameters('WindowsServerLicenseType')]",
+        "Windows_Server"
+      ],      
       "metadata": {
-        "description": "Choose Region (Example: USGovVirginia)"
+          "description": "Windows Server OS License Type"
       }
-    },      
+    },    
+    "WindowsClientLicenseType": {
+      "type": "string",
+      "defaultValue": "[parameters('WindowsServerLicenseType')]",
+      "allowedValues": [
+        "[parameters('WindowsServerLicenseType')]",
+        "Windows_Client"
+      ],      
+      "metadata": {
+          "description": "Windows Client OS License Type"
+      }
+    },                   
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
@@ -277,7 +292,8 @@
     "wk1lastoctet": "201",            
     "wk1name": "[concat(parameters('NamingConvention'),'-wk-01')]",           
     "wk1IP": "[concat(parameters('vnet1ID'),'.2.',variables('wk1lastoctet'))]",        
-    "DCDataDisk1Name": "NTDS",            
+    "DCDataDisk1Name": "NTDS",       
+    "CATemplateScriptUrl": "https://elliottf.blob.core.windows.net/github/Scripts/Create_CA_Templates.ps1",         
     "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
     "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
@@ -286,7 +302,7 @@
   "resources": [
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "VNet1",
       "properties": {
           "mode": "Incremental",
@@ -317,14 +333,14 @@
                 "value": "[variables('vnet1BastionsubnetPrefix')]"
               },              
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "BastionHost1",
       "dependsOn": [
         "VNet1"
@@ -349,18 +365,17 @@
                   "value": "AzureBastionSubnet"
               },
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
     },    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployDC1VM",
       "dependsOn": [
-        "VNet1",
-        "BastionHost1"
+        "VNet1"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -385,7 +400,7 @@
                 "value": "[parameters('DC1OSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
+                "value": "[parameters('WindowsServerLicenseType')]"
               },            
               "DataDisk1Name": {
                 "value": "[variables('DCDataDisk1Name')]"
@@ -412,18 +427,16 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "promotedc1",
       "dependsOn": [
-        "VNet1",
-        "BastionHost1",
         "DeployDC1VM"
       ],            
       "properties": {
@@ -455,19 +468,16 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                           
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "updatevnet1dns",
       "dependsOn": [
-        "VNet1",
-        "BastionHost1",
-        "DeployDC1VM",
         "promotedc1"
       ],            
       "properties": {
@@ -504,20 +514,16 @@
                 ]
               },                                                                                                            
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "restartdc1",
       "dependsOn": [
-        "VNet1",
-        "BastionHost1",
-        "DeployDC1VM",
-        "promotedc1",
         "updatevnet1dns"
       ],            
       "properties": {
@@ -537,21 +543,16 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                                         
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "configdns",
       "dependsOn": [
-        "VNet1",
-        "BastionHost1",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
         "restartdc1"
       ],            
       "properties": {
@@ -586,22 +587,16 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                           
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "createous",
       "dependsOn": [
-        "VNet1",
-        "BastionHost1",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "restartdc1",
         "configdns"
       ],            
       "properties": {
@@ -624,23 +619,16 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                           
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployrootca",
       "dependsOn": [
-        "VNet1",
-        "BastionHost1",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "restartdc1",
-        "configdns",
         "createous"
       ],      
       "properties": {
@@ -666,7 +654,7 @@
                 "value": "[parameters('rcaOSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
+                "value": "[parameters('WindowsServerLicenseType')]"
               },            
               "VMSize": {
                 "value": "[parameters('rcaVMSize')]"
@@ -690,24 +678,16 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
     },  
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "configurerootca",
       "dependsOn": [
-        "VNet1",
-        "BastionHost1",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "restartdc1",
-        "configdns",
-        "createous",
         "deployrootca"
       ],      
       "properties": {
@@ -736,7 +716,7 @@
                   "value": "[variables('BaseDN')]"
               },
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               },              
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
@@ -755,18 +735,9 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployissuingca",
       "dependsOn": [
-        "VNet1",
-        "BastionHost1",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "deployrootca",
         "configurerootca"
       ],      
       "properties": {
@@ -792,7 +763,7 @@
                 "value": "[parameters('icaOSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
+                "value": "[parameters('WindowsServerLicenseType')]"
               },            
               "VMSize": {
                 "value": "[parameters('icaVMSize')]"
@@ -816,26 +787,16 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DomainJoinIssuingCA",
       "dependsOn": [
-        "VNet1",
-        "BastionHost1",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "deployrootca",
-        "configurerootca",
         "deployissuingca"
       ],      
       "properties": {
@@ -864,27 +825,16 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                                                                                                                                                             
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "configureissueca",
       "dependsOn": [
-        "VNet1",
-        "BastionHost1",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "deployrootca",
-        "configurerootca",
-        "deployissuingca",
         "DomainJoinIssuingCA"
       ],      
       "properties": {
@@ -925,7 +875,7 @@
                   "value": "[parameters('IssuingCAKeyLength')]"
               },                
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               },              
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
@@ -944,21 +894,9 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "grantcarequest",
       "dependsOn": [
-        "VNet1",
-        "BastionHost1",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "deployrootca",
-        "configurerootca",
-        "deployissuingca",
-        "DomainJoinIssuingCA",
         "configureissueca"
       ],      
       "properties": {
@@ -981,7 +919,7 @@
                   "value": "[parameters('RootCAName')]"
               },
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               },
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
@@ -994,22 +932,9 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "finalizeca",
       "dependsOn": [
-        "VNet1",
-        "BastionHost1",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "deployrootca",
-        "configurerootca",
-        "deployissuingca",
-        "DomainJoinIssuingCA",
-        "configureissueca",
         "grantcarequest"
       ],      
       "properties": {
@@ -1037,8 +962,11 @@
               "RootDomainFQDN": {
                   "value": "[variables('domainName')]"
               },   
+              "CATemplateScriptUrl": {
+                  "value": "[variables('CATemplateScriptUrl')]"
+              },                 
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               },
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
@@ -1057,23 +985,9 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployocsp",
       "dependsOn": [
-        "VNet1",
-        "BastionHost1",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "deployrootca",
-        "configurerootca",
-        "deployissuingca",
-        "DomainJoinIssuingCA",
-        "configureissueca",
-        "grantcarequest",
         "finalizeca"
       ],      
       "properties": {
@@ -1099,7 +1013,7 @@
                 "value": "[parameters('OCSPOSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
+                "value": "[parameters('WindowsServerLicenseType')]"
               },            
               "VMSize": {
                 "value": "[parameters('ocspVMSize')]"
@@ -1123,31 +1037,16 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DomainJoinOCSP",
       "dependsOn": [
-        "VNet1",
-        "BastionHost1",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "deployrootca",
-        "configurerootca",
-        "deployissuingca",
-        "DomainJoinIssuingCA",
-        "configureissueca",
-        "grantcarequest",
-        "finalizeca",
         "deployocsp"
       ],      
       "properties": {
@@ -1176,32 +1075,16 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                                                                                                                                                             
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "configureocsp",
       "dependsOn": [
-        "VNet1",
-        "BastionHost1",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "deployrootca",
-        "configurerootca",
-        "deployissuingca",
-        "DomainJoinIssuingCA",
-        "configureissueca",
-        "grantcarequest",
-        "finalizeca",
-        "deployocsp",
         "DomainJoinOCSP"
       ],      
       "properties": {
@@ -1233,7 +1116,7 @@
                   "value": "[parameters('RootCAName')]"
               },
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               },
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
@@ -1252,27 +1135,10 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployWK1VM",
       "dependsOn": [
-        "VNet1",
-        "BastionHost1",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "deployrootca",
-        "configurerootca",
-        "deployissuingca",
-        "DomainJoinIssuingCA",
-        "configureissueca",
-        "grantcarequest",
-        "finalizeca",
-        "deployocsp",
-        "DomainJoinOCSP",
-        "configureocsp"
+        "restartdc1"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1297,7 +1163,7 @@
                 "value": "[parameters('WK1OSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
+                "value": "[parameters('WindowsClientLicenseType')]"
               },            
               "VMSize": {
                 "value": "[parameters('WK1VMSize')]"
@@ -1321,34 +1187,16 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DomainJoinWK1VM",
       "dependsOn": [
-        "VNet1",
-        "BastionHost1",
-        "DeployDC1VM",
-        "promotedc1",
-        "updatevnet1dns",
-        "restartdc1",
-        "configdns",
-        "createous",
-        "deployrootca",
-        "configurerootca",
-        "deployissuingca",
-        "DomainJoinIssuingCA",
-        "configureissueca",
-        "grantcarequest",
-        "finalizeca",
-        "deployocsp",
-        "DomainJoinOCSP",
-        "configureocsp",
         "DeployWK1VM"
       ],      
       "properties": {
@@ -1377,7 +1225,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                                                                                                                                                             
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
