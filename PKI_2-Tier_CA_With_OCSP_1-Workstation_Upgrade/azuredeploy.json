@@ -214,9 +214,11 @@
     "rcaIP": "[concat(parameters('vnet1ID'),'.1.',variables('rcalastoctet'))]",            
     "icaname": "[concat(parameters('NamingConvention'),'-ica-01')]",           
     "icaIP": "[concat(parameters('vnet1ID'),'.1.',variables('icalastoctet'))]",            
+    "ocspIP": "[concat(parameters('vnet1ID'),'.1.',variables('ocsplastoctet'))]",                
     "dc1lastoctet": "101",
     "rcalastoctet": "99",
     "icalastoctet": "102",
+    "ocsplastoctet": "103",    
     "CATemplateScriptUrl": "https://elliottf.blob.core.windows.net/github/Scripts/Create_CA_Templates.ps1",              
     "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
@@ -241,8 +243,8 @@
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },
-              "DCIP": {
-                  "value": "[variables('dc1IP')]"
+              "OCSPIP": {
+                  "value": "[variables('ocspIP')]"
               },                                                          
               "CAName": {
                   "value": "[parameters('RootCAName')]"

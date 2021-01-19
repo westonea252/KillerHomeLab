@@ -14,10 +14,10 @@
                 "description": "NetBios Domain Name"
             }
         },                                        
-        "DCIP": {
+        "OCSPIP": {
             "type": "string",
             "metadata": {
-                "description": "DCIP"
+                "description": "OCSP IP"
             }
         },        
         "CAName": {
@@ -77,7 +77,7 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                                                        
-                            "DCIP": "[parameters('DCIP')]",                                                                                    
+                            "OCSPIP": "[parameters('OCSPIP')]",                                                                                    
                             "CAName": "[parameters('CAName')]",
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",

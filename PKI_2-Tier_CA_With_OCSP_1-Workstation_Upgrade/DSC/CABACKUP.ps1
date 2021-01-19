@@ -3,7 +3,7 @@
    param
    (
         [String]$NetBiosDomain,   
-        [String]$DCIP,   
+        [String]$OCSPIP,   
         [String]$CAName,            
         [System.Management.Automation.PSCredential]$Admincreds
     )
@@ -61,8 +61,8 @@
             Type = "Directory"
             Recurse = $true
             SourcePath = "C:\CABackup\"
-            DestinationPath = "\\$DCIP\c$\Certificates"
-            Credential = $DomainCreds
+            DestinationPath = "\\$OCSPIP\c$\Certificates"
+            Credential = $Admincreds
             DependsOn = '[File]CABackup'
         }
      }
