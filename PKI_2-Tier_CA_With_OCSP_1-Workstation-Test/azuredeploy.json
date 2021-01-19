@@ -16,9 +16,9 @@
     },     
     "WindowsServerLicenseType": {
       "type": "string",
-      "defaultValue": "[parameters('WindowsServerLicenseType')]",
+      "defaultValue": "None",
       "allowedValues": [
-        "[parameters('WindowsServerLicenseType')]",
+        "None",
         "Windows_Server"
       ],      
       "metadata": {
@@ -27,15 +27,15 @@
     },    
     "WindowsClientLicenseType": {
       "type": "string",
-      "defaultValue": "[parameters('WindowsServerLicenseType')]",
+      "defaultValue": "None",
       "allowedValues": [
-        "[parameters('WindowsServerLicenseType')]",
+        "None",
         "Windows_Client"
       ],      
       "metadata": {
           "description": "Windows Client OS License Type"
       }
-    },                   
+    },                  
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
