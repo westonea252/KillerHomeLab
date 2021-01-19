@@ -71,13 +71,10 @@
 
               ELSE {
               $appID = (Get-AzADServicePrincipal -DisplayName $spDisplayName).ApplicationId                  
-              $output1 = $appID.Guid
-              $output2 = $KeyPassword              
-              Write-Output $output1
-              Write-Output $output2              
+              $output = $appID.Guid  
+              Write-Output $output
               $DeploymentScriptOutputs = @{}
-              $DeploymentScriptOutputs['ApplicationID'] = $output1                            
-              $DeploymentScriptOutputs['KeyPassword'] = $output2                                         
+              $DeploymentScriptOutputs['text'] = $output
               }
             ",
             "cleanupPreference": "OnSuccess",
@@ -88,11 +85,7 @@
     "outputs": {
         "ApplicationID": {
             "type": "string",
-            "value": "[reference('createspn').outputs.ApplicationID]"
-        },
-        "KeyPassword": {
-            "type": "string",
-            "value": "[reference('createspn').outputs.KeyPassword]"
-        }        
+            "value": "[reference('createspn').outputs.text]"
+        }
       }      
     }
