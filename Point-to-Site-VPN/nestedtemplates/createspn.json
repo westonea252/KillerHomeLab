@@ -60,10 +60,13 @@
               New-AzADServicePrincipal -DisplayName $spDisplayName -PasswordCredential $psadCredential
               Start-Sleep 30
               $appID = (Get-AzADServicePrincipal -DisplayName $spDisplayName).ApplicationId                  
-              $output = $appID.Guid
-              Write-Output $output
+              $output1 = $appID.Guid
+              $output2 = $KeyPassword              
+              Write-Output $output1
+              Write-Output $output2
               $DeploymentScriptOutputs = @{}
-              $DeploymentScriptOutputs['text'] = $output                            
+              $DeploymentScriptOutputs['ApplicationID'] = $output1                            
+              $DeploymentScriptOutputs['KeyPassword'] = $output2                                                                    
               }
 
               ELSE {
@@ -85,11 +88,11 @@
     "outputs": {
         "ApplicationID": {
             "type": "string",
-            "value": "[reference('createspn').outputs.ApplicationID]"
+            "value": "[reference('createspn').outputs.text]"
         },
         "KeyPassword": {
             "type": "string",
-            "value": "[reference('createspn').outputs.KeyPassword]"
+            "value": "[reference('createspn').outputs.text]"
         }        
       }      
     }
