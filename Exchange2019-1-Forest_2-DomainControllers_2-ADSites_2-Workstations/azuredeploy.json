@@ -395,10 +395,7 @@
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
     "DB1Name": "[concat(parameters('NamingConvention'),'-19-db01')]",
     "DB2Name": "[concat(parameters('NamingConvention'),'-19-db02')]" ,             
-    "DAG19Name": "[concat(parameters('NamingConvention'),'-19-dag01')]",
-    "NSG1Name": "[concat(parameters('NamingConvention'),'-nsg01')]",
-    "NSG2Name": "[concat(parameters('NamingConvention'),'-nsg02')]",
-    "FromEmail": "[concat(parameters('adminUserName'),'@',variables('domainName'))]"    
+    "DAG19Name": "[concat(parameters('NamingConvention'),'-19-dag01')]"
   },  
   "resources": [
     {
