@@ -14,6 +14,17 @@
         "description": "The password for the Administrator account of the new VM and Domain"
       }
     },
+    "WindowsServerLicenseType": {
+      "type": "string",
+      "defaultValue": "None",
+      "allowedValues": [
+        "None",
+        "Windows_Server"
+      ],      
+      "metadata": {
+          "description": "Windows Server OS License Type"
+      }
+    },        
     "SQLSASUrl": {
       "type": "string",
       "defaultValue": "",
@@ -35,13 +46,6 @@
         "description": "SQL Node Last Octet"
       }
     },        
-    "Location1": {
-      "type": "string",
-      "defaultValue": "EastUS",
-      "metadata": {
-        "description": "Choose Region (Example: EastUS)"
-      }
-    },
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
@@ -144,7 +148,7 @@
   "resources": [
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deploySQLVM",
       "properties": {
           "mode": "Incremental",
@@ -169,7 +173,7 @@
                 "value": "[parameters('SQLOSVersion')]"
               },              
               "LicenseType": {
-                "value": "None"
+                "value": "[parameters('WindowsServerLicenseType')]"
               },   
               "DataDisk1Name": {
                 "value": "SQLDatabases"
@@ -193,14 +197,14 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DomainJoinSQL",
       "dependsOn": [
         "deploySQLVM"
@@ -231,14 +235,14 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                                                                                                                                                             
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "InstallSQL",
       "dependsOn": [
         "deploySQLVM",
@@ -262,7 +266,7 @@
               },                            
 
               "location": {
-                  "value": "[parameters('Location1')]"
+                  "value": "[resourceGroup().location]"
               },                                          
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
