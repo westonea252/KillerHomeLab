@@ -60,7 +60,7 @@
             Recurse = $true
             SourcePath = "C:\CABackup\"
             DestinationPath = "\\$RemoteBackupIP\c$\CABackup"
-            Credential =  = $Admincreds
+            Credential  = $Admincreds
             DependsOn = '[Script]CABackup'
         }
      }
