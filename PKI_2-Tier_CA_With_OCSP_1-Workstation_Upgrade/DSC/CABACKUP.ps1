@@ -8,8 +8,6 @@
         [System.Management.Automation.PSCredential]$Admincreds
     )
 
-    [System.Management.Automation.PSCredential ]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosDomain}\$($Admincreds.UserName)", $Admincreds.Password)
-
     Node localhost
     {
         File CABackup
@@ -52,7 +50,7 @@
             GetScript =  { @{} }
             TestScript = { $false}
             DependsOn = '[File]CABackup'
-            PsDscRunAsCredential = $DomainCreds
+            PsDscRunAsCredential = $Admincreds
         }
 
         File TransferCABackupToDC
