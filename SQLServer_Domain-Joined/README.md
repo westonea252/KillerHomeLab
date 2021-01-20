@@ -32,6 +32,7 @@ SQL Deployment
 Parameters that support changes
 - Admin Username.  Enter a valid Admin Username
 - Admin Password.  Enter a valid Admin Password
+- WindowsServerLicenseType.  Choose Windows Seer License Type (Example:  Windows_Server or None)
 - SQLSASURL.  Enter a valid URL that points to the SQL 2019 or 2017 .ISO
 - SQLNode.  SQL Server Node Number (Example:  01)
 - SQLLastOctet.  Provide a value for the Last IP Octet of your SQL Server.
