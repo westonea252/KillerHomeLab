@@ -3,7 +3,7 @@
    param
    (
         [String]$NetBiosDomain,   
-        [String]$OCSPIP,   
+        [String]$RemoteBackupIP,   
         [String]$CAName,            
         [System.Management.Automation.PSCredential]$Admincreds
     )
@@ -61,9 +61,9 @@
             Type = "Directory"
             Recurse = $true
             SourcePath = "C:\CABackup\"
-            DestinationPath = "\\$OCSPIP\c$\CertEnroll"
+            DestinationPath = "\\$RemoteBackupIP\c$\CABackup"
             PsDscRunAsCredential = $Admincreds
-            DependsOn = '[File]CABackup'
+            DependsOn = '[Script]CABackup'
         }
      }
   }

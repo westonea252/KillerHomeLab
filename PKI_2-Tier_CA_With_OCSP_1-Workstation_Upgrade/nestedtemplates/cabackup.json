@@ -14,10 +14,10 @@
                 "description": "NetBios Domain Name"
             }
         },                                        
-        "OCSPIP": {
+        "RemoteBackupIP": {
             "type": "string",
             "metadata": {
-                "description": "OCSP IP"
+                "description": "Remote IP"
             }
         },        
         "CAName": {
@@ -77,7 +77,7 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                                                        
-                            "OCSPIP": "[parameters('OCSPIP')]",                                                                                    
+                            "RemoteBackupIP": "[parameters('RemoteBackupIP')]",                                                                                    
                             "CAName": "[parameters('CAName')]",
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",

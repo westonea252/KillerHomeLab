@@ -243,8 +243,8 @@
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },
-              "OCSPIP": {
-                  "value": "[variables('ocspIP')]"
+              "RemoteBackupIP": {
+                  "value": "[variables('dc1IP')]"
               },                                                          
               "CAName": {
                   "value": "[parameters('RootCAName')]"
