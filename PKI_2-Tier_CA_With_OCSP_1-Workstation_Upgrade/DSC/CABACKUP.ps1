@@ -13,7 +13,7 @@
         File CABackup
         {
             Type = 'Directory'
-            DestinationPath = 'C:\CABACKUP'
+            DestinationPath = 'C:\CABackup'
             Ensure = "Present"
         }
 
@@ -60,7 +60,7 @@
             Recurse = $true
             SourcePath = "C:\CABackup\"
             DestinationPath = "\\$RemoteBackupIP\c$\CABackup"
-            PsDscRunAsCredential = $Admincreds
+            Credential =  = $Admincreds
             DependsOn = '[Script]CABackup'
         }
      }
