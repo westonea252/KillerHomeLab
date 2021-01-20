@@ -34,7 +34,7 @@ Parameters that support changes
 - SQLHost.  Name of SQL Host (Example:  KHL-SQL-01)
 - Admin Username.  Enter a valid Admin Username
 - Admin Password.  Enter a valid Admin Password
-- WindowsServerLicenseType.  Choose Windows Server License Type (Example:  Windows_Server or None)
+- WindowsServerLicenseType.  Choose Windows Seer License Type (Example:  Windows_Server or None)
 - AzureADConnectDownloadUrl.  Download location for Azure AD Connect.
 - Naming Convention. Enter a name that will be used as a naming prefix for (Servers, VNets, etc) you are using.
 - Sub DNS Domain.  OPTIONALLY, enter a valid DNS Sub Domain. (Example:  sub1. or sub1.sub2.    This entry must end with a DOT )
