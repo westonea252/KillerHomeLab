@@ -8,6 +8,12 @@
                 "description": "Computer Name"
             }
         },
+        "SQLHost": {
+            "type": "string",
+            "metadata": {
+                "description": "SQL Host Name"
+            }
+        },         
         "RootDomainFQDN": {
             "type": "string",
             "metadata": {
@@ -76,8 +82,8 @@
         }                
     },
     "variables": {
-        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/OTHERADFS.zip', parameters('_artifactsLocationSasToken')))]",
-        "ConfigurationFunction": "OTHERADFS.ps1\\OTHERADFS"
+        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/OTHERADFSwithSQL.zip', parameters('_artifactsLocationSasToken')))]",
+        "ConfigurationFunction": "OTHERADFSwithSQL.ps1\\OTHERADFSwithSQL"
     },
     "resources": [
         {
@@ -94,6 +100,7 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
+                            "SQLHost": "[parameters('SQLHost')]",                            
                             "RootDomainFQDN": "[parameters('RootDomainFQDN')]",                            
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",  
                             "IssuingCAName": "[parameters('IssuingCAName')]",

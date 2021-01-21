@@ -223,7 +223,7 @@
   "resources": [
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "createFSGMSA",
       "properties": {
           "mode": "Incremental",
@@ -255,7 +255,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployADCVM",    
       "properties": {
           "mode": "Incremental",
@@ -305,7 +305,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DomainJoinADC",
       "dependsOn": [
         "deployADCVM"
@@ -343,7 +343,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "downloadaaddc",
       "dependsOn": [
         "DomainJoinADC"
@@ -381,7 +381,7 @@
     },    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployADFS1VM",   
       "properties": {
           "mode": "Incremental",
@@ -431,7 +431,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DomainJoinADFS1",
       "dependsOn": [
         "deployADFS1VM"
@@ -469,7 +469,7 @@
     },        
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "configurefirstadfs",
       "dependsOn": [
         "createFSGMSA",
@@ -520,7 +520,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployADFS2VM",     
       "properties": {
           "mode": "Incremental",
@@ -570,7 +570,7 @@
     },    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DomainJoinADFS2",
       "dependsOn": [
         "deployADFS2VM"        
@@ -608,26 +608,23 @@
     }, 
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "configureotheradfs",
       "dependsOn": [
         "createFSGMSA",
         "configurefirstadfs",
-        "DomainJoinADFS2"            
+        "DomainJoinADFS2"        
       ],      
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/firstadfswithsql.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/otheradfswithsql.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
               "computerName": {
                   "value": "[variables('adfs2name')]"
               },
-              "SQLHost": {
-                  "value": "[parameters('SQLHost')]"
-              },              
               "RootDomainFQDN": {
                   "value": "[variables('domainName')]"
               },          
@@ -643,6 +640,12 @@
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
               },                                                                                                            
+              "PrimaryADFSServer": {
+                "value": "[variables('adfs1name')]"
+              },                                                                                                                          
+              "PrimaryADFSServerIP": {
+                "value": "[variables('adfs1IP')]"
+              },                                                                                                            
               "adminPassword": {
                 "value": "[parameters('adminPassword')]"
               },
@@ -657,10 +660,10 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
           }
       }
-    },  
+    },               
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployWAP1VM",
       "properties": {
           "mode": "Incremental",
@@ -710,7 +713,7 @@
     },    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "configurefirstwap",
       "dependsOn": [
         "configureotheradfs",                
@@ -761,7 +764,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployWAP2VM",
       "properties": {
           "mode": "Incremental",
@@ -811,7 +814,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "configureotherwap",
       "dependsOn": [
         "configurefirstwap",        
@@ -862,7 +865,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "createpublicdns",
       "dependsOn": [
         "deployWAP1VM",
