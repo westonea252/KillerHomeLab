@@ -923,7 +923,10 @@
               },                                                                                                      
               "EXPrivateIP": {
                   "value": "[variables('ex1IP')]"
-              },                                                                                                                                  
+              },    
+              "WAPPrivateIP": {
+                  "value": "[variables('wap1IP')]"
+              },                                                                                                                                                
               "location": {
                   "value": "[resourceGroup().location]"
               }
@@ -952,7 +955,10 @@
               },                                                                                                      
               "EXPrivateIP": {
                   "value": "[variables('ex2IP')]"
-              },                                                                                                                                  
+              },       
+              "WAPPrivateIP": {
+                  "value": "[variables('wap2IP')]"
+              },                                                                                                                                                                    
               "location": {
                   "value": "[parameters('Location2')]"
               }
