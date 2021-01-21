@@ -625,6 +625,9 @@
               "computerName": {
                   "value": "[variables('adfs2name')]"
               },
+              "SQLHost": {
+                  "value": "[parameters('SQLHost')]"
+              },                 
               "RootDomainFQDN": {
                   "value": "[variables('domainName')]"
               },          
