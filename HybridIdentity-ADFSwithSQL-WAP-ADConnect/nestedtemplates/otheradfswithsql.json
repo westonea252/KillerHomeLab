@@ -37,13 +37,7 @@
             "metadata": {
                 "description": "Root CA Name"
             }
-        },  
-        "PrimaryADFSServer": {
-            "type": "string",
-            "metadata": {
-                "description": "Primary ADFS Server Name"
-            }
-        },                          
+        },                         
         "PrimaryADFSServerIP": {
             "type": "string",
             "metadata": {
@@ -104,8 +98,7 @@
                             "RootDomainFQDN": "[parameters('RootDomainFQDN')]",                            
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",  
                             "IssuingCAName": "[parameters('IssuingCAName')]",
-                            "RootCAName": "[parameters('RootCAName')]",                                    
-                            "PrimaryADFSServer": "[parameters('PrimaryADFSServer')]",                                                                                                      
+                            "RootCAName": "[parameters('RootCAName')]",                                                                                                                                      
                             "PrimaryADFSServerIP": "[parameters('PrimaryADFSServerIP')]",                                                                                                                                  
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",

@@ -642,10 +642,7 @@
               },
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
-              },                                                                                                            
-              "PrimaryADFSServer": {
-                "value": "[variables('adfs1name')]"
-              },                                                                                                                          
+              },                                                                                                                                                                                                                                  
               "PrimaryADFSServerIP": {
                 "value": "[variables('adfs1IP')]"
               },                                                                                                            

@@ -6,8 +6,7 @@
         [String]$RootDomainFQDN,
         [String]$NetBiosDomain,
         [String]$IssuingCAName,
-        [String]$RootCAName,    
-        [String]$PrimaryADFSServer,         
+        [String]$RootCAName,         
         [String]$PrimaryADFSServerIP,         
         [System.Management.Automation.PSCredential]$Admincreds
 
@@ -146,7 +145,7 @@
                 $signthumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=adfs-signing.$using:RootDomainFQDN"}).Thumbprint
 
                 Import-Module ADFS
-                Add-AdfsFarmNode -GroupServiceAccountIdentifier "$using:NetBiosDomain\FsGmsa$" -PrimaryComputerName "$using:PrimaryADFSServer" -CertificateThumbprint $thumbprint -SQLConnectionString "Data Source=$using:SQLHost;Initial Catalog=ADFSConfiguration;Integrated Security=True;Min Pool Size=20"
+                Add-AdfsFarmNode -GroupServiceAccountIdentifier "$using:NetBiosDomain\FsGmsa$" -CertificateThumbprint $thumbprint -SQLConnectionString "Data Source=$using:SQLHost;Initial Catalog=ADFSConfiguration;Integrated Security=True;Min Pool Size=20"
                 
                 # Enable Certificate Copy
                 $firewall = Get-NetFirewallRule "FPS-SMB-In-TCP" -ErrorAction 0
