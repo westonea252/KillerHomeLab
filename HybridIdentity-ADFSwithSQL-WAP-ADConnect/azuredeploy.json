@@ -200,7 +200,13 @@
     "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet1')]",    
     "vnet2Name": "[concat(parameters('NamingConvention'),'-VNet2')]",
     "vnet2subnet1Name": "[concat(parameters('NamingConvention'),'-VNet2-Subnet1')]",    
-    "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",                      
+    "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",
+    "ex2IP": "[concat(parameters('vnet2ID'),'.1.',variables('ex2lastoctet'))]",  
+    "ex2lastoctet": "110",    
+    "ex1IP": "[concat(parameters('vnet1ID'),'.1.',variables('ex1lastoctet'))]",         
+    "ex1lastoctet": "110",      
+    "ocspIP": "[concat(parameters('vnet1ID'),'.1.',variables('ocsplastoctet'))]",                            
+    "ocsplastoctet": "103",                             
     "adcname": "[concat(parameters('NamingConvention'),'-adc-01')]",           
     "adcIP": "[concat(parameters('vnet1ID'),'.1.',variables('adclastoctet'))]", 
     "adclastoctet": "120",           
@@ -218,7 +224,9 @@
     "wap2lastoctet": "122",
     "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
-    "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]"
+    "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
+    "NSG1Name": "[concat(parameters('NamingConvention'),'-nsg01')]",
+    "NSG2Name": "[concat(parameters('NamingConvention'),'-nsg02')]"    
   },  
   "resources": [
     {
@@ -892,6 +900,64 @@
               }                                                                                                                                                                                                                                                                                                                                                  
           }
       }
-    }                
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "Updatensg1",
+      "dependsOn": [
+        "createpublicdns"       
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/UpdateNetworkSecurityGroup.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "NetworkSecurityGroupname": {
+                  "value": "[variables('NSG1Name')]"
+              },                                                                                                      
+              "OCSPPrivateIP": {
+                  "value": "[variables('ocspIP')]"
+              },                                                                                                      
+              "EXPrivateIP": {
+                  "value": "[variables('ex1IP')]"
+              },                                                                                                                                  
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },  
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "Updatensg2",
+      "dependsOn": [
+        "createpublicdns"       
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/UpdateNetworkSecurityGroup.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "NetworkSecurityGroupname": {
+                  "value": "[variables('NSG2Name')]"
+              },                                                                                                      
+              "OCSPPrivateIP": {
+                  "value": "[variables('ocspIP')]"
+              },                                                                                                      
+              "EXPrivateIP": {
+                  "value": "[variables('ex2IP')]"
+              },                                                                                                                                  
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    }                    
   ]
 }
