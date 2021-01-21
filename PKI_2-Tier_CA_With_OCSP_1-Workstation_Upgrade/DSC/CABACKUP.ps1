@@ -44,8 +44,6 @@
                 IF ($allowunencrypt -eq $null) {New-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\WinRM\Service\" -Name "AllowUnencryptedTraffic" -Value 1}
                 IF ($allowbasic -eq $null) {New-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\WinRM\Service\" -Name "AllowBasic" -Value 1}
                 IF ($firewall -ne $null) {Enable-NetFirewallRule -Name "FPS-SMB-In-TCP"}
-
-
             }
             GetScript =  { @{} }
             TestScript = { $false}
@@ -59,7 +57,7 @@
             Type = "Directory"
             Recurse = $true
             SourcePath = "C:\CABackup\"
-            DestinationPath = "\\$RemoteBackupIP\c$\CABackup"
+            DestinationPath = "\\$RemoteBackupIP\c$\CABackup\"
             Credential  = $Admincreds
             DependsOn = '[Script]CABackup'
         }
