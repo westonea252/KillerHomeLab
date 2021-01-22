@@ -214,7 +214,8 @@
     "rcaname": "[concat(parameters('NamingConvention'),'-rca-01')]",           
     "rcaIP": "[concat(parameters('vnet1ID'),'.1.',variables('rcalastoctet'))]",            
     "icaname": "[concat(parameters('NamingConvention'),'-ica-01')]",           
-    "icaIP": "[concat(parameters('vnet1ID'),'.1.',variables('icalastoctet'))]",            
+    "icaIP": "[concat(parameters('vnet1ID'),'.1.',variables('icalastoctet'))]",   
+    "ocspname": "[concat(parameters('NamingConvention'),'-ocsp-01')]",                            
     "ocspIP": "[concat(parameters('vnet1ID'),'.1.',variables('ocsplastoctet'))]",                
     "dc1lastoctet": "101",
     "rcalastoctet": "99",
@@ -277,7 +278,7 @@
           },
           "parameters": {
               "computerName": {
-                  "value": "[variables('dc1name')]"
+                  "value": "[variables('ocspname')]"
               },
               "RootCAIP": {
                   "value": "[variables('rcaIP')]"
