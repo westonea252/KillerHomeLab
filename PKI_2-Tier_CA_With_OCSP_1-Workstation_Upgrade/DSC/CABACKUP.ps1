@@ -1,9 +1,7 @@
 ﻿Configuration CABACKUP
 {
    param
-   (
-        [String]$NetBiosDomain,   
-        [String]$RemoteBackupIP,   
+   (   
         [String]$CAName,            
         [System.Management.Automation.PSCredential]$Admincreds
     )
@@ -49,17 +47,6 @@
             TestScript = { $false}
             DependsOn = '[File]CABackup'
             PsDscRunAsCredential = $Admincreds
-        }
-
-        File TransferCABackupToDC
-        {
-            Ensure = "Present"
-            Type = "Directory"
-            Recurse = $true
-            SourcePath = "C:\CABackup\"
-            DestinationPath = "\\$RemoteBackupIP\c$\CABackup\"
-            Credential  = $Admincreds
-            DependsOn = '[Script]CABackup'
         }
      }
   }

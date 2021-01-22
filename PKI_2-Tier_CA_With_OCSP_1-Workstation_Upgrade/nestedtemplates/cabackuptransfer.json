@@ -7,13 +7,19 @@
             "metadata": {
                 "description": "Computer Name"
             }
-        },                                           
-        "CAName": {
+        },                                      
+        "RootCAIP": {
             "type": "string",
             "metadata": {
-                "description": "CA Name"
+                "description": "Remote IP"
             }
-        },
+        },    
+        "NetBiosDomain": {
+            "type": "string",
+            "metadata": {
+                "description": "NetBios Domain Name"
+            }
+        },            
         "location": {
             "type": "string",
           "metadata": {
@@ -64,7 +70,8 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {                                                   
-                            "CAName": "[parameters('CAName')]",
+                            "RootCAIP": "[parameters('RootCAIP')]",                                                                                    
+                            "NetBiosDomain": "[parameters('NetBiosDomain')]",                                                        
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"                                                                                   

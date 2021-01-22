@@ -210,6 +210,7 @@
     "vnet1subnet2Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet2')]",    
     "vnet1subnet2Prefix": "[concat(parameters('vnet1ID'),'.2.0/24')]",    
     "dc1IP": "[concat(parameters('vnet1ID'),'.1.',variables('dc1lastoctet'))]",            
+    "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",               
     "rcaname": "[concat(parameters('NamingConvention'),'-rca-01')]",           
     "rcaIP": "[concat(parameters('vnet1ID'),'.1.',variables('rcalastoctet'))]",            
     "icaname": "[concat(parameters('NamingConvention'),'-ica-01')]",           
@@ -239,13 +240,7 @@
           "parameters": {
               "computerName": {
                   "value": "[variables('rcaname')]"
-              },
-              "NetBiosDomain": {
-                  "value": "[parameters('NetBiosDomain')]"
-              },
-              "RemoteBackupIP": {
-                  "value": "[variables('dc1IP')]"
-              },                                                          
+              },                                                         
               "CAName": {
                   "value": "[parameters('RootCAName')]"
               },
@@ -266,6 +261,44 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
           }
       }
-    }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "TransferRootCABackup",
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/cabackuptransfer.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('dc1name')]"
+              },
+              "RootCAIP": {
+                  "value": "[variables('rcaIP')]"
+              },                                                          
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },
+              "location": {
+                  "value": "[resourceGroup().location]"
+              },              
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+          }
+      }
+    }    
   ]
 }
