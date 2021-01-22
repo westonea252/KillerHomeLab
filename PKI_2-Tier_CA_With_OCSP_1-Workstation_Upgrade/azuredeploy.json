@@ -266,6 +266,9 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "TransferRootCABackup",
+      "dependsOn": [
+        "RootCABackup"
+      ],       
       "properties": {
           "mode": "Incremental",
           "templateLink": {
