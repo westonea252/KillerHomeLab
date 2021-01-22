@@ -185,6 +185,9 @@
                 # Enable Certificate Copy
                 $EnableSMB = Get-NetFirewallRule "FPS-SMB-In-TCP" -ErrorAction 0
                 IF ($EnableSMB -ne $null) {Enable-NetFirewallRule -Name "FPS-SMB-In-TCP"}
+
+                # Enable Test Sign-In
+                Set-AdfsProperties -EnableIdPInitiatedSignonPage $true
             }
             GetScript =  { @{} }
             TestScript = { $false}
