@@ -807,6 +807,7 @@
       "apiVersion": "2015-01-01",
       "name": "configureotherwap",
       "dependsOn": [
+        "configurefirstwap",
         "deployWAP2VM"
       ],      
       "properties": {

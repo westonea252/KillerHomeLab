@@ -723,7 +723,8 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "configurefirstwap",
-      "dependsOn": [              
+      "dependsOn": [  
+        "configureotheradfs",                          
         "deployWAP1VM"
       ],      
       "properties": {
