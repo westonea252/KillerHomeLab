@@ -52,8 +52,8 @@
         }                
     },
     "variables": {
-        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/CABACKUP.zip', parameters('_artifactsLocationSasToken')))]",
-        "ConfigurationFunction": "CABACKUP.ps1\\CABACKUP"
+        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/CABACKUPTRANSFER.zip', parameters('_artifactsLocationSasToken')))]",
+        "ConfigurationFunction": "CABACKUPTRANSFER.ps1\\CABACKUPTRANSFER"
     },
     "resources": [
         {
