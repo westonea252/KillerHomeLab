@@ -437,7 +437,10 @@
               },
               "computerName": {
                   "value": "[variables('rcaoldvmname')]"
-              },                                       
+              },      
+              "ResourceGroupName": {
+                  "value":  "[resourceGroup().name]"
+              },                                               
               "ScriptName": {
                   "value": "[concat(variables('ShutdownScriptName'),'-01')]"           
               },                   
