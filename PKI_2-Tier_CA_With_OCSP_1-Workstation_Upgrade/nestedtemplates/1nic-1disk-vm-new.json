@@ -8,6 +8,12 @@
             "description": "Computer Name"
         }
       },
+      "VMName": {
+        "type": "string",
+        "metadata": {
+            "description": "VM Name"
+        }
+      },      
       "computerIP": {
         "type": "string",
         "metadata": {
@@ -25,7 +31,7 @@
         "metadata": {
             "description": "Image Publisher Offer"
         }
-      },            
+      },
       "OSVersion": {
           "type": "string",
           "metadata": {
@@ -37,13 +43,7 @@
         "metadata": {
             "description": "License Type (Windows_Server or None)"
         }
-      },     
-      "DataDisk1Name": {
-        "type": "string",
-        "metadata": {
-            "description": "Data Disk Name 1"
-        }
-      },             
+      },      
       "VMSize": {
           "type": "string",
           "metadata": {
@@ -60,18 +60,6 @@
           "type": "string",
           "metadata": {
               "description": "Existing subnet name that contains the domain controller"
-          }
-      },
-      "vnetPrefix": {
-          "type": "string",
-          "metadata": {
-              "description": "VNet IP Prefix"
-          }
-      },
-      "subnetPrefix": {
-          "type": "string",
-          "metadata": {
-              "description": "Subnet IP Prefix"
           }
       },
       "adminUsername": {
@@ -95,13 +83,10 @@
   },
   "variables": {
       "storageAccountType": "Premium_LRS",
-      "VMName": "[parameters('computerName')]",
       "imagePublisher": "[parameters('Publisher')]",
       "imageOffer": "[parameters('Offer')]",
       "imageSKU": "[parameters('OSVersion')]",
-      "DataDiskSize": 50,      
       "subnetId": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]",
-      "virtualNetworkAddressRange": "[parameters('vnetPrefix')]",
       "NicName": "[concat(parameters('computerName'),'-nic')]",
       "NicIPAddress": "[parameters('computerIP')]"
   },
@@ -127,7 +112,7 @@
           }
       },
       {
-          "name": "[variables('VMName')]",
+          "name": "[parameters('VMName')]",
           "type": "Microsoft.Compute/virtualMachines",
           "apiVersion": "2019-03-01",
           "location": "[parameters('location')]",
@@ -135,12 +120,12 @@
               "[resourceId('Microsoft.Network/networkInterfaces',variables('NicName'))]"
           ],
           "properties": {
-            "licenseType": "[parameters('licenseType')]",
+              "licenseType": "[parameters('licenseType')]",
               "hardwareProfile": {
                   "vmSize": "[parameters('VMSize')]"
               },
               "osProfile": {
-                  "computerName": "[variables('VMName')]",
+                  "computerName": "[parameters('computerName')]",
                   "adminUsername": "[parameters('adminUsername')]",
                   "adminPassword": "[parameters('adminPassword')]"
               },
@@ -152,26 +137,13 @@
                       "version": "latest"
                   },
                   "osDisk": {
-                      "name": "[concat(variables('VMName'),'_OSDisk')]",
+                      "name": "[concat(parameters('VMName'),'_OSDisk')]",
                       "caching": "ReadWrite",
                       "createOption": "FromImage",
                       "managedDisk": {
                           "storageAccountType": "[variables('storageAccountType')]"
                       }
-                  },
-                  "dataDisks": [
-                    {
-                      "name": "[concat(variables('VMName'),'_',parameters('DataDisk1Name'))]",
-                      "caching": "None",
-                      "diskSizeGB": "[variables('DataDiskSize')]",
-                      "lun": 0,
-                      "createOption": "Empty",
-                        "managedDisk": {
-                            "storageAccountType": "[variables('storageAccountType')]"
-                        }
-                    }
-                    ]                   
-                  
+                  }
               },
               "networkProfile": {
                   "networkInterfaces": [

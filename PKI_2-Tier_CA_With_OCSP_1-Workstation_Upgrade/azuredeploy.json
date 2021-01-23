@@ -186,7 +186,14 @@
         "metadata": {
             "description": "Issuing CA VMSize"
         }
-    },                                  
+    },   
+    "roleAssignmentGuid": {
+        "type": "string",
+        "defaultValue": "[newGuid()]",
+        "metadata": {
+            "description": "A new GUID used to identify the role assignment"
+        }
+    },                                    
     "_artifactsLocation": {
       "type": "string",
       "metadata": {
@@ -211,21 +218,28 @@
     "vnet1subnet2Prefix": "[concat(parameters('vnet1ID'),'.2.0/24')]",    
     "dc1IP": "[concat(parameters('vnet1ID'),'.1.',variables('dc1lastoctet'))]",            
     "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",               
-    "rcaname": "[concat(parameters('NamingConvention'),'-rca-01')]",           
+    "rcacomputername": "[concat(parameters('NamingConvention'),'-rca-01')]",   
+    "rcaoldvmname": "[concat(parameters('NamingConvention'),'-rca-01')]",               
+    "rcanewvmname": "[concat(parameters('NamingConvention'),'-rca-01-new')]",                   
     "rcaIP": "[concat(parameters('vnet1ID'),'.1.',variables('rcalastoctet'))]",            
+    "oldrcaIP": "[concat(parameters('vnet1ID'),'.1.',variables('oldrcalastoctet'))]",                
     "icaname": "[concat(parameters('NamingConvention'),'-ica-01')]",           
     "icaIP": "[concat(parameters('vnet1ID'),'.1.',variables('icalastoctet'))]",   
     "ocspname": "[concat(parameters('NamingConvention'),'-ocsp-01')]",                            
     "ocspIP": "[concat(parameters('vnet1ID'),'.1.',variables('ocsplastoctet'))]",                
     "dc1lastoctet": "101",
     "rcalastoctet": "99",
+    "oldrcalastoctet": "98",    
     "icalastoctet": "102",
     "ocsplastoctet": "103",    
     "CATemplateScriptUrl": "https://elliottf.blob.core.windows.net/github/Scripts/Create_CA_Templates.ps1",              
     "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
     "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
-    "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]"    
+    "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
+    "ManagedIDName": "[concat(parameters('NamingConvention'),'-mi-', uniqueString(resourceGroup().id))]",
+    "ShutdownScriptName": "[concat(parameters('NamingConvention'),'-vmshutdown-')]",                
+    "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"                     
   },  
   "resources": [
     {
@@ -240,7 +254,7 @@
           },
           "parameters": {
               "computerName": {
-                  "value": "[variables('rcaname')]"
+                  "value": "[variables('rcaoldvmname')]"
               },                                                         
               "CAName": {
                   "value": "[parameters('RootCAName')]"
@@ -266,14 +280,14 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "TransferRootCABackup",
+      "name": "TransferRootCABackup1",
       "dependsOn": [
         "RootCABackup"
       ],       
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/cabackuptransfer.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/cabackuptransfer1.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -303,6 +317,232 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
           }
       }
-    }    
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "CreateManagedID",     
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/managedidentity.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "ManagedIDName": {
+                  "value": "[variables('ManagedIDName')]"
+              },
+              "location": {
+                  "value": "[deployment().Location]"
+              }
+          }
+      }
+    },  
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "AssignManagedIDRG1",
+      "dependsOn": [
+        "CreateManagedID"
+      ],        
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/roleassignment.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "PrincipalID": {
+                  "value": "[reference('CreateManagedID').outputs.manageduseridentity.value]"
+              },
+              "RoleDefinitionID": {
+                  "value": "[variables('Contributor')]"
+              },
+              "roleAssignmentGuid": {
+                  "value": "[parameters('roleAssignmentGuid')]"
+              }              
+          }
+      }
+    },  
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "ChangeOldRootCAIP",
+      "dependsOn": [
+        "TransferRootCABackup1"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('rcaoldvmname')]"
+              },
+              "computerIP": {
+                  "value": "[variables('oldrcaIP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsServer"
+              },
+              "Offer": {
+                  "value": "WindowsServer"
+              },
+              "OSVersion": {
+                "value": "[parameters('RCAOSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "[parameters('WindowsServerLicenseType')]"
+              },               
+              "VMSize": {
+                "value": "[parameters('RCAVMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('vnet1Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('vnet1subnet1Name')]"
+              },            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[resourceGroup().Location]"
+              }
+          }
+      }
+    },                 
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "ShutdownOldRootCA",
+      "dependsOn": [
+        "AssignManagedIDRG1",        
+        "ChangeOldRootCAIP"
+      ],        
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/shutdownvm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "ManagedIDName": {
+                  "value": "[variables('ManagedIDName')]"
+              },
+              "computerName": {
+                  "value": "[variables('rcaoldvmname')]"
+              },                                       
+              "ScriptName": {
+                  "value": "[concat(variables('ShutdownScriptName'),'-01')]"           
+              },                   
+              "ScriptLocation": {
+                  "value": "[deployment().location]"
+              }              
+          }
+      }
+    },  
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DeployNewRootCA",
+      "dependsOn": [
+        "ShutdownOldRootCA"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm-new.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('rcacomputername')]"
+              },
+              "vmName": {
+                  "value": "[variables('rcanewvmname')]"
+              },              
+              "computerIP": {
+                  "value": "[variables('rcaIP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsServer"
+              },
+              "Offer": {
+                  "value": "WindowsServer"
+              },
+              "OSVersion": {
+                "value": "[parameters('RCAOSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "[parameters('WindowsServerLicenseType')]"
+              },               
+              "VMSize": {
+                "value": "[parameters('RCAVMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('vnet1Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('vnet1subnet1Name')]"
+              },            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[resourceGroup().Location]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "TransferRootCABackup2",
+      "dependsOn": [
+        "DeployNewRootCA"
+      ],       
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/cabackuptransfer2.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ocspname')]"
+              },
+              "BackupCAIP": {
+                  "value": "[variables('ocspIP')]"
+              },                                                          
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },
+              "location": {
+                  "value": "[resourceGroup().location]"
+              },              
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+          }
+      }
+    }      
   ]
 }

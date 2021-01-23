@@ -1,0 +1,69 @@
+{
+"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+"contentVersion": "1.0.0.0",
+"parameters": {
+    "ManagedIDName": {
+      "type": "string",
+      "metadata": {
+        "description": "Managed ID Name"
+      }
+    },
+    "computerName": {
+        "type": "string",
+        "metadata": {
+            "description": "Computer Name"
+        }
+    },    
+   "ResourceGroupName": {
+      "type": "string",
+      "metadata": {
+        "description": "ResourceGroupName"
+      }
+    },      
+    "ScriptLocation": {
+        "type": "string",
+      "metadata": {
+        "description": "Script Location"
+      }
+    },          
+    "location": {
+        "type": "string",
+      "metadata": {
+        "description": "Region of Resources"
+      }
+    }     
+},
+"resources": [
+    {
+      "type": "Microsoft.Resources/deploymentScripts",
+      "apiVersion": "2020-10-01",
+      "name": "createdes1",
+      "location": "[parameters('ScriptLocation')]",
+      "kind": "AzurePowerShell",      
+      "identity": {
+        "type": "UserAssigned",
+        "userAssignedIdentities": {
+          "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('ManagedIDName'))]": {
+          }
+        }
+      },
+      "properties": {
+        "azPowerShellVersion": "5.0",
+        "timeout": "PT1H",
+        "arguments": "[format(' -computerName {0} -ResourceGroupName {3} -Location {4}', parameters('computerName'), parameters('ResourceGroupName'), parameters('location'))]", // can pass an argument string, double quotes must be escaped
+        "scriptContent": "
+          param(
+          [string] [Parameter(Mandatory=$true)] $computerName,
+          [string] [Parameter(Mandatory=$true)] $ResourceGroupName,
+          [string] [Parameter(Mandatory=$true)] $Location    
+          )
+
+          Stop-AzVm -Name $VMName -ResourceGroupName $ResourceGroupName -Force
+          
+        ",
+        "cleanupPreference": "OnSuccess",
+        "retentionInterval": "P1D"
+      }
+    }
+  ]    
+}

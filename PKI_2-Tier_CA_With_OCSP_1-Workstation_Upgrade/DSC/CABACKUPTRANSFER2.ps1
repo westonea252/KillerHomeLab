@@ -1,13 +1,11 @@
-﻿Configuration CABACKUPTRANSFER
+﻿Configuration CABACKUPTRANSFER2
 {
    param
    (
         [String]$NetBiosDomain,   
-        [String]$RootCAIP,              
+        [String]$BackupCAIP,              
         [System.Management.Automation.PSCredential]$Admincreds
     )
-
-    [System.Management.Automation.PSCredential ]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosDomain}\$($AdminCreds.UserName)", $AdminCreds.Password)
 
     Node localhost
     {
@@ -23,9 +21,9 @@
             Ensure = "Present"
             Type = "Directory"
             Recurse = $true
-            SourcePath = "\\$RootCAIP\c$\CABackup"
+            SourcePath = "\\$BackupIP\c$\CABackup"
             DestinationPath = "C:\CABackup\"
-            Credential = $DomainCreds
+            Credential = $AdminCreds
             DependsOn = '[File]CABackup'
         }
      }

@@ -8,7 +8,7 @@
                 "description": "Computer Name"
             }
         },                                      
-        "RootCAIP": {
+        "BackupCAIP": {
             "type": "string",
             "metadata": {
                 "description": "Remote IP"
@@ -52,8 +52,8 @@
         }                
     },
     "variables": {
-        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/CABACKUPTRANSFER.zip', parameters('_artifactsLocationSasToken')))]",
-        "ConfigurationFunction": "CABACKUPTRANSFER.ps1\\CABACKUPTRANSFER"
+        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/CABACKUPTRANSFER2.zip', parameters('_artifactsLocationSasToken')))]",
+        "ConfigurationFunction": "CABACKUPTRANSFER2.ps1\\CABACKUPTRANSFER2"
     },
     "resources": [
         {
@@ -70,7 +70,7 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {                                                   
-                            "RootCAIP": "[parameters('RootCAIP')]",                                                                                    
+                            "RootCAIP": "[parameters('BackupCAIP')]",                                                                                    
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                                                        
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
