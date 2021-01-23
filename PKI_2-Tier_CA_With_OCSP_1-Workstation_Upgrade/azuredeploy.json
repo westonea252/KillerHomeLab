@@ -448,11 +448,8 @@
                   "value": "[resourceGroup().location]"
               },
               "location": {
-                  "type": "string",
-                "metadata": {
-                  "description": "Region of Resources"
-                }
-              }                            
+                  "value": "[resourceGroup().Location]"
+              }
           }
       }
     },  
