@@ -20,7 +20,7 @@
             SetScript =
             {
                 # Backup CA Database and Private Key
-                $DBBackupCheck = Get-ChildItem -Path "C:\CABackup\$using:CAName.log" -ErrorAction 0
+                $DBBackupCheck = Get-ChildItem -Path "C:\CABackup\$using:CAName.p12" -ErrorAction 0
                 IF ($DBBackupCheck -eq $null) { 
                 Backup-CARoleService –path C:\CABackup
                 Stop-service CertSvc
