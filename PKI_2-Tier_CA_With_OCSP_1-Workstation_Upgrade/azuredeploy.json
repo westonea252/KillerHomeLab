@@ -333,7 +333,7 @@
                   "value": "[variables('ManagedIDName')]"
               },
               "location": {
-                  "value": "[deployment().Location]"
+                  "value": "[resourceGroup().Location]"
               }
           }
       }
@@ -442,7 +442,7 @@
                   "value": "[concat(variables('ShutdownScriptName'),'-01')]"           
               },                   
               "ScriptLocation": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               }              
           }
       }
