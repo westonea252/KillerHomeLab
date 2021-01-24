@@ -161,7 +161,18 @@
         "metadata": {
             "description": "Offline Root CA OS Version"
         }
-    },   
+    },
+    "RCAExistingOSVersion": {
+        "type": "string",
+        "defaultValue": "2019-Datacenter",
+        "allowedValues": [
+          "2016-Datacenter",
+          "2012-R2-Datacenter"                    
+        ],
+        "metadata": {
+            "description": "Offline Root CA OS Version"
+        }
+    },       
     "ICAOSVersion": {
         "type": "string",
         "defaultValue": "2019-Datacenter",
@@ -391,7 +402,7 @@
                   "value": "WindowsServer"
               },
               "OSVersion": {
-                "value": "[parameters('RCAOSVersion')]"
+                "value": "[parameters('RCAExistingOSVersion')]"
               },              
               "LicenseType": {
                 "value": "[parameters('WindowsServerLicenseType')]"
