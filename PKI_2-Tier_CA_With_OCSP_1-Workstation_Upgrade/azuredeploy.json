@@ -456,7 +456,7 @@
                   "value": "[concat(variables('ShutdownScriptName'),'-01')]"           
               },                   
               "ScriptLocation": {
-                  "value": "[resourceGroup().location]"
+                  "value": "USGovVirginia"
               },
               "location": {
                   "value": "[resourceGroup().Location]"
