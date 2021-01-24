@@ -164,7 +164,7 @@
     },
     "RCAExistingOSVersion": {
         "type": "string",
-        "defaultValue": "2019-Datacenter",
+        "defaultValue": "2016-Datacenter",
         "allowedValues": [
           "2016-Datacenter",
           "2012-R2-Datacenter"                    
