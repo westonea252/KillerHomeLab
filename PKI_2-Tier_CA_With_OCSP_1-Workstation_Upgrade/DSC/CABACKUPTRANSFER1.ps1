@@ -27,6 +27,7 @@
             DestinationPath = "C:\CABackup\"
             Credential = $DomainCreds
             DependsOn = '[File]CABackup'
+            Force = $true
         }
      }
   }
