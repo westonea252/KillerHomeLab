@@ -29,7 +29,7 @@
     },
     "variables": {
         "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/FW-ENABLEFILECOPY.zip', parameters('_artifactsLocationSasToken')))]",
-        "ConfigurationFunction": "FW-EN0ABLEFILECOPY.ps1\\FW-ENABLEFILECOPY"
+        "ConfigurationFunction": "FW-ENABLEFILECOPY.ps1\\FW-ENABLEFILECOPY"
     },
     "resources": [
         {
