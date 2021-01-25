@@ -64,7 +64,7 @@
           [string] [Parameter(Mandatory=$true)] $Location    
           )
 
-          Stop-AzVm -Name $VMName -ResourceGroupName $ResourceGroupName -Force
+          Stop-AzVm -Name $computerName -ResourceGroupName $ResourceGroupName -Force
           
         ",
         "cleanupPreference": "OnSuccess",
