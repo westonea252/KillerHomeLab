@@ -70,7 +70,7 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {                                                   
-                            "RootCAIP": "[parameters('BackupCAIP')]",                                                                                    
+                            "BackupCAIP": "[parameters('BackupCAIP')]",                                                                                    
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                                                        
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
