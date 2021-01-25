@@ -87,7 +87,7 @@
       "imageOffer": "[parameters('Offer')]",
       "imageSKU": "[parameters('OSVersion')]",
       "subnetId": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]",
-      "NicName": "[concat(parameters('computerName'),'-nic')]",
+      "NicName": "[concat(parameters('VMName'),'-nic')]",
       "NicIPAddress": "[parameters('computerIP')]"
   },
   "resources": [
