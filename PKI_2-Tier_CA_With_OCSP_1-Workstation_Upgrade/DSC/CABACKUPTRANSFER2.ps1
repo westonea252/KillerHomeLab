@@ -7,6 +7,8 @@
         [System.Management.Automation.PSCredential]$Admincreds
     )
 
+    [System.Management.Automation.PSCredential ]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosDomain}\$($AdminCreds.UserName)", $AdminCreds.Password)
+
     Node localhost
     {
         File CABackup
@@ -23,7 +25,7 @@
             Recurse = $true
             SourcePath = "\\$BackupIP\c$\CABackup"
             DestinationPath = "C:\CABackup\"
-            Credential = $AdminCreds
+            Credential = $DomainCreds
             DependsOn = '[File]CABackup'
         }
      }
