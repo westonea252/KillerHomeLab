@@ -9,10 +9,10 @@
 
     Node localhost
     {
-        File CABackup
+        File CARestore
         {
             Type = 'Directory'
-            DestinationPath = 'C:\CABackup'
+            DestinationPath = 'C:\Restore'
             Ensure = "Present"
         }
 
@@ -22,8 +22,9 @@
             Type = "Directory"
             Recurse = $true
             SourcePath = "\\$BackupIP\c$\CABackup"
-            DestinationPath = "C:\CABackup\"
-            DependsOn = '[File]CABackup'
+            DestinationPath = "C:\CARestore\"
+            Credential = $Admincreds
+            DependsOn = '[File]CARestore'
         }
      }
   }
