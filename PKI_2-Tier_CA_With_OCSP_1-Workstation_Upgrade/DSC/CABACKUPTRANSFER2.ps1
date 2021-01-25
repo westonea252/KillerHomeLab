@@ -21,8 +21,8 @@
             Ensure = "Present"
             Type = "Directory"
             Recurse = $true
-            SourcePath = "C:\CABackup\"
-            DestinationPath = "\\$BackupIP\c$\CABackup"
+            SourcePath = "\\$BackupIP\c$\CABackup"
+            DestinationPath = "C:\CABackup\"
             Credential = $AdminCreds
             DependsOn = '[File]CABackup'
         }

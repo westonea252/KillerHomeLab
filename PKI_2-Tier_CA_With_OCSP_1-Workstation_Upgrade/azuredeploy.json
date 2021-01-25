@@ -535,7 +535,7 @@
           },
           "parameters": {
               "computerName": {
-                  "value": "[variables('ocspname')]"
+                  "value": "[variables('rcanewvmname')]"
               },
               "BackupCAIP": {
                   "value": "[variables('ocspIP')]"
