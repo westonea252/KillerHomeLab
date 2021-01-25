@@ -56,7 +56,7 @@
       "properties": {
         "azPowerShellVersion": "5.0",
         "timeout": "PT1H",
-        "arguments": "[format(' -computerName {0} -ResourceGroupName {3} -Location {4}', parameters('computerName'), parameters('ResourceGroupName'), parameters('location'))]", // can pass an argument string, double quotes must be escaped
+        "arguments": "[format(' -computerName {0} -ResourceGroupName {1} -Location {2}', parameters('computerName'), parameters('ResourceGroupName'), parameters('location'))]", // can pass an argument string, double quotes must be escaped
         "scriptContent": "
           param(
           [string] [Parameter(Mandatory=$true)] $computerName,
