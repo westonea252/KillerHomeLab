@@ -11,24 +11,9 @@ Configuration NEWROOTCA
     Import-DscResource -Module ComputerManagementDsc
     Import-DscResource -Module ActiveDirectoryCSDsc
     Import-DscResource -Module xPSDesiredStateConfiguration
-
-    [System.Management.Automation.PSCredential ]$Creds = New-Object System.Management.Automation.PSCredential ("$($AdminCreds.UserName)", $AdminCreds.Password)
  
     Node localhost
     {
-        Script ImportRootCA
-        {
-            SetScript =
-            {
-                # Import Root CA
-                $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\Root | Where-Object {$_.Subject -like "CN=$using:RootCAName"}).Thumbprint
-                IF ($thumbprint -eq $null) {Import-PfxCertificate -FilePath "C:\CARestore\$using:RootCAName.p12" -CertStoreLocation cert:\LocalMachine\Root}
-            }
-            GetScript =  { @{} }
-            TestScript = { $false}
-        }
-
-        # Assemble the Local Admin Credentials
         # Install the ADCS Certificate Authority
         WindowsFeature ADCSCA 
         {
@@ -40,11 +25,12 @@ Configuration NEWROOTCA
         ADCSCertificationAuthority CertificateAuthority
         {
             Ensure = 'Present'
-	        Credential = $Creds	
+	        Credential = $Admincreds
             CAType = 'StandaloneRootCA'
             IsSingleInstance = 'Yes'
             CertFile = "C:\CARestore\$RootCAName.p12"
             DependsOn = '[Script]ImportRootCA','[WindowsFeature]ADCSCA'
+            PsDscRunAsCredential = $Admincreds
         }
  
         WindowsFeature RSAT-ADCS 
@@ -92,6 +78,7 @@ Configuration NEWROOTCA
             }
             GetScript =  { @{} }
             TestScript = { $false}
+            PsDscRunAsCredential = $Admincreds
             DependsOn = '[AdcsCertificationAuthority]CertificateAuthority'
         }
    
