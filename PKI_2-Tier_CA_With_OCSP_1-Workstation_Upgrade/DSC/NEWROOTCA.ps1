@@ -38,21 +38,15 @@ Configuration NEWROOTCA
             Ensure = 'Present'
         }
 
-        # Configure the CA as Standalone Root CA
+        # Configure the CA as Standalone Root CA from .p12
         ADCSCertificationAuthority CertificateAuthority
         {
             Ensure = 'Present'
 	        Credential = $Creds	
             CAType = 'StandaloneRootCA'
-            CACommonName = $RootCAName
-            CADistinguishedNameSuffix = $Node.CADistinguishedNameSuffix
-            ValidityPeriod = 'Years'
-            ValidityPeriodUnits = 20
-            CryptoProviderName = 'RSA#Microsoft Software Key Storage Provider'
-            HashAlgorithmName = $RootCAHashAlgorithm
-            KeyLength = $RootCAKeyLength
             IsSingleInstance = 'Yes'
             CertFile = "C:\CARestore\$RootCAName.p12"
+            CertFilePassword = $null
             DependsOn = '[Script]ImportRootCA','[WindowsFeature]ADCSCA'
         }
  
