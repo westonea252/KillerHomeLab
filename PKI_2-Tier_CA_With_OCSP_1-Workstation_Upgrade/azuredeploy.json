@@ -107,7 +107,7 @@
           "description": "Issuing CA Name"
       }
     },
-    "RootCAHashAlgorithm": {
+    "ExistingRootCAHashAlgorithm": {
       "type": "string",
       "defaultValue": "SHA256",
         "allowedValues": [
@@ -118,7 +118,7 @@
           "description": "Offline Root CA Algorithm"
       }
     },    
-    "RootCAKeyLength": {
+    "ExistingRootCAKeyLength": {
       "type": "string",
       "defaultValue": "4096",
         "allowedValues": [
@@ -640,10 +640,10 @@
                   "value": "[parameters('RootCAName')]"
               },
               "RootCAHashAlgorithm": {
-                  "value": "[parameters('RootCAHashAlgorithm')]"
+                  "value": "[parameters('ExistingRootCAHashAlgorithm')]"
               },  
               "RootCAKeyLength": {
-                  "value": "[parameters('RootCAKeyLength')]"
+                  "value": "[parameters('ExistingRootCAKeyLength')]"
               },                            
               "RootDomainFQDN": {
                   "value": "[variables('domainName')]"
