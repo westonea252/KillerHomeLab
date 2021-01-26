@@ -106,29 +106,7 @@
       "metadata": {
           "description": "Issuing CA Name"
       }
-    },
-    "ExistingRootCAHashAlgorithm": {
-      "type": "string",
-      "defaultValue": "SHA256",
-        "allowedValues": [
-          "SHA256",
-          "SHA1"
-        ],
-      "metadata": {
-          "description": "Offline Root CA Algorithm"
-      }
-    },    
-    "ExistingRootCAKeyLength": {
-      "type": "string",
-      "defaultValue": "4096",
-        "allowedValues": [
-          "4096",
-          "2048"
-        ],
-      "metadata": {
-          "description": "Offline Root CA Key Length"
-      }
-    },                                
+    },                             
     "IssuingCAHashAlgorithm": {
       "type": "string",
       "defaultValue": "SHA256",
@@ -164,9 +142,8 @@
     },
     "RCAExistingOSVersion": {
         "type": "string",
-        "defaultValue": "2016-Datacenter",
+        "defaultValue": "2012-R2-Datacenter",
         "allowedValues": [
-          "2016-Datacenter",
           "2012-R2-Datacenter"                    
         ],
         "metadata": {
@@ -638,13 +615,7 @@
               },
               "RootCAName": {
                   "value": "[parameters('RootCAName')]"
-              },
-              "RootCAHashAlgorithm": {
-                  "value": "[parameters('ExistingRootCAHashAlgorithm')]"
-              },  
-              "RootCAKeyLength": {
-                  "value": "[parameters('ExistingRootCAKeyLength')]"
-              },                            
+              },                          
               "RootDomainFQDN": {
                   "value": "[variables('domainName')]"
               },

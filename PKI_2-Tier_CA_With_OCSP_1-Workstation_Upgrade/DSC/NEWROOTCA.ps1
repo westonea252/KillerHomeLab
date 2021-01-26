@@ -3,8 +3,6 @@ Configuration NEWROOTCA
    param
    (
         [String]$RootDomainFQDN,
-        [String]$RootCAHashAlgorithm,
-        [String]$RootCAKeyLength,
         [String]$RootCAName,
         [String]$BaseDN,
         [System.Management.Automation.PSCredential]$Admincreds

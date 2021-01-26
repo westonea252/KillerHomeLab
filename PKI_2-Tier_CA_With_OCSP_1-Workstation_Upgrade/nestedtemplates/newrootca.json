@@ -13,21 +13,7 @@
             "metadata": {
                 "description": "Certificate Authority Name"
             }
-        },
-        "RootCAHashAlgorithm": {
-            "type": "string",
-            "defaultValue": "",
-            "metadata": {
-                "description": "Offline Root CA Algorithm"
-        }
-        },   
-        "RootCAKeyLength": {
-            "type": "string",
-            "defaultValue": "",
-            "metadata": {
-                "description": "Offline Root CA Key Length"
-        }
-        },                    
+        },                 
         "RootDomainFQDN": {
             "type": "string",
             "metadata": {
@@ -92,8 +78,6 @@
                         "Properties": {
                             "RootDomainFQDN": "[parameters('RootDomainFQDN')]",
                             "RootCAName": "[parameters('RootCAName')]",
-                            "RootCAHashAlgorithm": "[parameters('RootCAHashAlgorithm')]",                            
-                            "RootCAKeyLength": "[parameters('RootCAKeyLength')]",                                                        
                             "BaseDN": "[parameters('BaseDN')]",                            
                         "AdminCreds": {
                             "UserName": "[parameters('adminUsername')]",
