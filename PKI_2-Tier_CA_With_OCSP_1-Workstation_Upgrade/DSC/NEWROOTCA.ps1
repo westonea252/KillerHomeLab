@@ -22,20 +22,9 @@ Configuration NEWROOTCA
         {
             SetScript =
             {
-                # Import CA
-                Import-Certificate -FilePath "C:\CARestore\$using:RootCAName.p7b" -CertStoreLocation cert:\LocalMachine\Root
-
-                # Restore CA Database
-                Restore-CARoleService –path C:\CARestore -DatabaseOnly -Force
-
-                # Start CA Service
-                Start-Service -Name CertSvc
-
-                # Stop CA Service
-                Stop-Service -Name CertSvc
-
-                # Restore Registry
-                reg import "C:\CARestore\$using:RootCAName.reg"
+                # Import Root CA
+                $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\Root | Where-Object {$_.Subject -like "CN=$using:RootCAName"}).Thumbprint
+                IF ($thumbprint -eq $null) {Import-PfxCertificate -FilePath "C:\CARestore\$using:RootCAName.p12" -CertStoreLocation cert:\LocalMachine\Root}
             }
             GetScript =  { @{} }
             TestScript = { $false}
@@ -63,6 +52,7 @@ Configuration NEWROOTCA
             HashAlgorithmName = $RootCAHashAlgorithm
             KeyLength = $RootCAKeyLength
             IsSingleInstance = 'Yes'
+            CertFile = "C:\CARestore\$RootCAName.p12"
             DependsOn = '[Script]ImportRootCA','[WindowsFeature]ADCSCA'
         }
  
@@ -90,20 +80,24 @@ Configuration NEWROOTCA
         {
             SetScript =
             {
+                $RestoreCheck = Get-ChildItem -Path "C:\CARestore\RestoreStatus.txt" -ErrorAction 0
+                IF ($RestoreCheck -eq $null) { 
+
                 # Stop CA Service
                 Stop-Service -Name CertSvc
 
                 # Restore CA Database
                 Restore-CARoleService –path C:\CARestore -DatabaseOnly -Force
 
-                # Start CA Service
-                Start-Service -Name CertSvc
-
-                # Stop CA Service
-                Stop-Service -Name CertSvc
-
                 # Restore Registry
                 reg import "C:\CARestore\$using:RootCAName.reg"
+
+                # Restore Successful
+                Set-Content -Path C:\CARestore\RestoreStatus.txt -Value 'Restore Successful'
+
+                # Start CA Service
+                Start-Service -Name CertSvc
+                }
             }
             GetScript =  { @{} }
             TestScript = { $false}
