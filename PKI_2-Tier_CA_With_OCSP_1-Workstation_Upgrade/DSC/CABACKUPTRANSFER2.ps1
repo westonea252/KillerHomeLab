@@ -21,7 +21,7 @@
             Ensure = "Present"
             Type = "Directory"
             Recurse = $true
-            SourcePath = "\\$BackupIP\c$\CABackup"
+            SourcePath = "\\$BackupCAIP\c$\CABackup"
             DestinationPath = "C:\CARestore\"
             Credential = $Admincreds
             DependsOn = '[File]CARestore'
