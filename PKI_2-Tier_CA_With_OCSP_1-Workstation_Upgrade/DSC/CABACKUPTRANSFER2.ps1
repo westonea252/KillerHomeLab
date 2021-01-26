@@ -9,13 +9,6 @@
 
     Node localhost
     {
-        File CARestore
-        {
-            Type = 'Directory'
-            DestinationPath = 'C:\Restore'
-            Ensure = "Present"
-        }
-
         File CopyCABackup
         {
             Ensure = "Present"
@@ -24,7 +17,6 @@
             SourcePath = "\\$BackupCAIP\c$\CABackup"
             DestinationPath = "C:\CARestore\"
             Credential = $Admincreds
-            DependsOn = '[File]CARestore'
         }
      }
   }
