@@ -44,7 +44,6 @@ Configuration NEWROOTCA
             CAType = 'StandaloneRootCA'
             IsSingleInstance = 'Yes'
             CertFile = "C:\CARestore\$RootCAName.p12"
-            CertFilePassword = $null
             DependsOn = '[Script]ImportRootCA','[WindowsFeature]ADCSCA'
         }
  

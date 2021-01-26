@@ -25,17 +25,6 @@
           "description": "Windows Server OS License Type"
       }
     },    
-    "WindowsClientLicenseType": {
-      "type": "string",
-      "defaultValue": "None",
-      "allowedValues": [
-        "None",
-        "Windows_Client"
-      ],      
-      "metadata": {
-          "description": "Windows Client OS License Type"
-      }
-    },    
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
@@ -106,29 +95,7 @@
       "metadata": {
           "description": "Issuing CA Name"
       }
-    },                             
-    "IssuingCAHashAlgorithm": {
-      "type": "string",
-      "defaultValue": "SHA256",
-        "allowedValues": [
-          "SHA256",
-          "SHA1"
-        ],
-      "metadata": {
-          "description": "Issuing CA Algorithm"
-      }
-    },    
-    "IssuingCAKeyLength": {
-      "type": "string",
-      "defaultValue": "4096",
-        "allowedValues": [
-          "4096",
-          "2048"
-        ],
-      "metadata": {
-          "description": "Issuing CA Key Length"
-      }
-    },        
+    },                                  
     "RCAOSVersion": {
         "type": "string",
         "defaultValue": "2019-Datacenter",
@@ -223,7 +190,6 @@
     "CATemplateScriptUrl": "https://elliottf.blob.core.windows.net/github/Scripts/Create_CA_Templates.ps1",              
     "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
-    "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
     "ManagedIDName": "[concat(parameters('NamingConvention'),'-mi-', uniqueString(resourceGroup().id))]",
     "ShutdownScriptName": "[concat(parameters('NamingConvention'),'-vmshutdown-')]",                
