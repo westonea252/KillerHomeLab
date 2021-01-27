@@ -30,6 +30,7 @@ Configuration NEWROOTCA
             IsSingleInstance = 'Yes'
             CertFile = "C:\CARestore\$RootCAName.p12"
             DependsOn = '[Script]ImportRootCA','[WindowsFeature]ADCSCA'
+            PsDscRunAsCredential = $Admincreds
         }
  
         WindowsFeature RSAT-ADCS 
