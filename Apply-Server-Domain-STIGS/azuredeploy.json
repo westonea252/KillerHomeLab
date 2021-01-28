@@ -1,0 +1,227 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "adminUsername": {
+        "type": "string",
+        "metadata": {
+            "description": "The name of the Administrator of the new VM and Domain"
+        }
+    },
+    "adminPassword": {
+        "type": "securestring",
+      "metadata": {
+        "description": "The password for the Administrator account of the new VM and Domain"
+      }
+    },    
+    "WindowsServerLicenseType": {
+      "type": "string",
+      "defaultValue": "None",
+      "allowedValues": [
+        "None",
+        "Windows_Server"
+      ],      
+      "metadata": {
+          "description": "Windows Server OS License Type"
+      }
+    },    
+    "WindowsClientLicenseType": {
+      "type": "string",
+      "defaultValue": "None",
+      "allowedValues": [
+        "None",
+        "Windows_Client"
+      ],      
+      "metadata": {
+          "description": "Windows Client OS License Type"
+      }
+    },        
+    "NamingConvention": {
+      "type": "string",
+      "defaultValue": "khl",
+      "metadata": {
+        "description": "VNet1 Name"
+      }
+    },
+    "SubDNSDomain": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+          "description": "Sub DNS Domain Name Example:  sub1. must include a DOT AT END"
+      }
+    },     
+    "SubDNSBaseDN": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+          "description": "Sub DNS Domain Name Example:  DC=sub2,DC=sub1, must include COMMA AT END"
+      }
+    },            
+    "NetBiosDomain": {
+      "type": "string",
+      "defaultValue": "killerhomelab",
+      "metadata": {
+          "description": "NetBios Parent Domain Name"
+      }
+    },  
+    "InternalDomain": {
+      "type": "string",
+      "defaultValue": "killerhomelab",
+      "metadata": {
+          "description": "NetBios Domain Name"
+      }
+    },       
+    "TLD": {
+      "type": "string",
+      "defaultValue": "com",
+      "allowedValues": [
+        "com",
+        "net",
+        "org",
+        "edu",
+        "gov",
+        "mil"
+      ],      
+      "metadata": {
+          "description": "Top-Level Domain Name"
+      }
+    },                            
+    "vnet1ID": {
+      "type": "string",
+      "defaultValue": "10.1",
+      "metadata": {
+        "description": "VNet1 Prefix"
+      }
+    },    
+    "ReverseLookup1": {
+      "type": "string",
+      "defaultValue": "1.10",
+      "metadata": {
+          "description": "DNS Reverse Lookup Zone1 Prefix"
+      }
+    },                        
+    "DC1OSVersion": {
+        "type": "string",
+        "defaultValue": "2019-Datacenter",
+        "allowedValues": [
+          "2019-Datacenter",
+          "2016-Datacenter",
+          "2012-R2-Datacenter"
+        ],
+        "metadata": {
+            "description": "Domain Controller1 OS Version"
+        }
+    },
+    "WK1OSVersion": {
+      "type": "string",
+      "defaultValue": "19h1-pro",
+      "allowedValues": [
+        "19h1-pro"
+      ],
+      "metadata": {
+          "description": "Workstation1 OS Version"
+      }
+  },    
+    "DC1VMSize": {
+        "type": "string",
+        "defaultValue": "Standard_D2s_v3",
+        "metadata": {
+            "description": "Domain Controller1 VMSize"
+        }
+    },        
+    "WK1VMSize": {
+      "type": "string",
+      "defaultValue": "Standard_D2s_v3",
+      "metadata": {
+          "description": "Workstation1 VMSize"
+      }
+    },            
+    "_artifactsLocation": {
+      "type": "string",
+      "metadata": {
+          "description": "The location of resources, such as templates and DSC modules, that the template depends on"
+      },
+      "defaultValue": "[deployment().properties.templateLink.uri]"
+    },
+    "_artifactsLocationSasToken": {
+        "type": "securestring",
+        "metadata": {
+            "description": "Auto-generated token to access _artifactsLocation. Leave it blank unless you need to provide your own value."
+        },
+        "defaultValue": ""
+    }
+  },
+  "variables": {
+    "vnet1Name": "[concat(parameters('NamingConvention'),'-VNet1')]",
+    "vnet1Prefix": "[concat(parameters('vnet1ID'),'.0.0/16')]",
+    "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet1')]",    
+    "vnet1subnet1Prefix": "[concat(parameters('vnet1ID'),'.1.0/24')]",    
+    "vnet1subnet2Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet2')]",    
+    "vnet1subnet2Prefix": "[concat(parameters('vnet1ID'),'.2.0/24')]",    
+    "vnet1BastionsubnetPrefix": "[concat(parameters('vnet1ID'),'.253.0/24')]",        
+    "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",           
+    "dc1IP": "[concat(parameters('vnet1ID'),'.1.',variables('dc1lastoctet'))]",        
+    "ReverseLookup1": "[concat('1.',parameters('ReverseLookup1'))]",    
+    "dc1lastoctet": "101",        
+    "wk1lastoctet": "201",            
+    "wk1name": "[concat(parameters('NamingConvention'),'-wk-01')]",           
+    "wk1IP": "[concat(parameters('vnet1ID'),'.2.',variables('wk1lastoctet'))]",        
+    "DCDataDisk1Name": "NTDS",            
+    "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
+    "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
+    "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
+    "DefaultDomainGPOURL":  "https://elliottf.blob.core.windows.net/github/GPOs/Default Domain Policy.zip",
+    "IEEnhancedGPOURL":  "https://elliottf.blob.core.windows.net/github/GPOs/IE11_Enhanced Testing.zip",
+    "PolicyDefinitionsURL":  "https://elliottf.blob.core.windows.net/github/GPOs/PolicyDefinitions.zip",
+    "SVR2016BaselinGPOURL":  "https://elliottf.blob.core.windows.net/github/GPOs/SVR-2016-Baseline-v3.zip",
+    "SVR2016DCBaselineGPOURL":  "https://elliottf.blob.core.windows.net/github/GPOs/SVR-2016-DC-Baseline-v2.zip",
+    "SVRBaselineGPOURL": "https://elliottf.blob.core.windows.net/github/GPOs/SVR-Baseline-v3.zip",
+    "SVRDCBaselineGPOURL": "https://elliottf.blob.core.windows.net/github/GPOs/SVR-DC-Baseline-v3.zip",
+    "SVCDCBaselineTimeGPOURL": "https://elliottf.blob.core.windows.net/github/GPOs/SVR-DC-Baseline-WindowsTimeSource-v1.zip",
+    "SVRDisableSSLGPOURL": "https://elliottf.blob.core.windows.net/github/GPOs/SVR-Disable-SSL-TLS(Except-TLS-1.2)-TEST.zip",
+    "WKBaselineGPOURL":  "https://elliottf.blob.core.windows.net/github/GPOs/WKS-Baseline-v3.zip",
+    "WKDisableSSLGPOURL":  "https://elliottf.blob.core.windows.net/github/GPOs/WKS-Disable-SSL-TLS(Except-TLS-1.2)-TEST.zip",
+    "WKWIN10BaselineGPOURL":  "https://elliottf.blob.core.windows.net/github/GPOs/WKS-WIN10-Baseline-v3.zip"
+
+  },  
+  "resources": [
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "ApplySTIGS",
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/applystigs.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "vnetName": {
+                  "value": "[variables('vnet1Name')]"
+              },
+              "vnetprefix": {
+                  "value": "[variables('vnet1Prefix')]"
+              },
+              "subnet1Name": {
+                  "value": "[variables('vnet1subnet1Name')]"
+              },
+              "subnet1Prefix": {
+                  "value": "[variables('vnet1subnet1Prefix')]"
+              },
+              "subnet2Name": {
+                "value": "[variables('vnet1subnet2Name')]"
+              },
+              "subnet2Prefix": {
+                "value": "[variables('vnet1subnet2Prefix')]"
+              },              
+              "BastionsubnetPrefix": {
+                "value": "[variables('vnet1BastionsubnetPrefix')]"
+              },              
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    }
+  ]
+}
