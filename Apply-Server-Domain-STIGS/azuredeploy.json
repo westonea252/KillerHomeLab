@@ -169,20 +169,56 @@
     "DCDataDisk1Name": "NTDS",            
     "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
-    "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
+    "WKOUPath": "[concat('OU=Workstations,',variables('BaseDN'))]",
+    "WK10OUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",    
+    "SVROUPath": "[concat('OU=Servers,',variables('BaseDN'))]",    
+    "SVR2016OUPath": "[concat('OU=Servers2016,OU=Servers,',variables('BaseDN'))]",        
     "DefaultDomainGPOURL":  "https://elliottf.blob.core.windows.net/github/GPOs/Default Domain Policy.zip",
+    "DefaultDomainGPOGUID": "079C9640-8D6E-40F1-8618-1A026A2E5D76",
+    "DefaultDomainGPOName": "Default Domain Policy",
     "IEEnhancedGPOURL":  "https://elliottf.blob.core.windows.net/github/GPOs/IE11_Enhanced Testing.zip",
+    "IEEnhancedGPOGUID": "871799F3-F246-4CA9-ABF8-BD78D9E0559B ",
+    "IEEnhancedGPOName":  "IE11_Enhanced Testing",
     "PolicyDefinitionsURL":  "https://elliottf.blob.core.windows.net/github/GPOs/PolicyDefinitions.zip",
-    "SVR2016BaselinGPOURL":  "https://elliottf.blob.core.windows.net/github/GPOs/SVR-2016-Baseline-v3.zip",
-    "SVR2016DCBaselineGPOURL":  "https://elliottf.blob.core.windows.net/github/GPOs/SVR-2016-DC-Baseline-v2.zip",
-    "SVRBaselineGPOURL": "https://elliottf.blob.core.windows.net/github/GPOs/SVR-Baseline-v3.zip",
-    "SVRDCBaselineGPOURL": "https://elliottf.blob.core.windows.net/github/GPOs/SVR-DC-Baseline-v3.zip",
-    "SVCDCBaselineTimeGPOURL": "https://elliottf.blob.core.windows.net/github/GPOs/SVR-DC-Baseline-WindowsTimeSource-v1.zip",
-    "SVRDisableSSLGPOURL": "https://elliottf.blob.core.windows.net/github/GPOs/SVR-Disable-SSL-TLS(Except-TLS-1.2)-TEST.zip",
-    "WKBaselineGPOURL":  "https://elliottf.blob.core.windows.net/github/GPOs/WKS-Baseline-v3.zip",
-    "WKDisableSSLGPOURL":  "https://elliottf.blob.core.windows.net/github/GPOs/WKS-Disable-SSL-TLS(Except-TLS-1.2)-TEST.zip",
-    "WKWIN10BaselineGPOURL":  "https://elliottf.blob.core.windows.net/github/GPOs/WKS-WIN10-Baseline-v3.zip"
+    "PolicyDefinitionsName":  "PolicyDefinitions",
 
+    "SVR2016BaselinGPOURL":  "https://elliottf.blob.core.windows.net/github/GPOs/SVR-2016-Baseline-v3.zip",
+    "SVR2016BaselinGPOGUID":  "27764575-1F9E-4962-A039-EC6B650BEF43",
+    "SVR2016BaselinGPOName":  "SVR-2016-Baseline-v3",
+     
+
+    "SVR2016DCBaselineGPOURL":  "https://elliottf.blob.core.windows.net/github/GPOs/SVR-2016-DC-Baseline-v2.zip",
+    "SVR2016DCBaselineGPOGUID": "DB77366E-8E1F-4D88-8041-AA10201E9704",
+    "SVR2016DCBaselineGPOName": "SVR-2016-DC-Baseline-v2",
+
+    "SVRBaselineGPOURL": "https://elliottf.blob.core.windows.net/github/GPOs/SVR-Baseline-v3.zip",
+    "SVRBaselineGPOGUID": "F733FEB4-3992-4D28-8A7A-C8210F72A778",
+    "SVRBaselineGPOName": "SVR-Baseline-v3",
+     
+    "SVRDCBaselineGPOURL": "https://elliottf.blob.core.windows.net/github/GPOs/SVR-DC-Baseline-v3.zip",
+    "SVRDCBaselineGPOGUID": "2109B8C1-6A7F-4CEB-8C42-E0D985E4AFA1",
+    "SVRDCBaselineGPOName": "SVR-DC-Baseline-v3",
+    
+
+    "SVRDCBaselineTimeGPOURL": "https://elliottf.blob.core.windows.net/github/GPOs/SVR-DC-Baseline-WindowsTimeSource-v1.zip",
+    "SVRDCBaselineTimeGPOGUID": "20B6E319-1ED7-41FE-BABD-3D9C8A1EB9CE",
+    "SVRDCBaselineTimeGPOName": "SVR-DC-Baseline-WindowsTimeSource-v1",
+
+    "SVRDisableSSLGPOURL": "https://elliottf.blob.core.windows.net/github/GPOs/SVR-Disable-SSL-TLS(Except-TLS-1.2)-TEST.zip",
+    "SVRDisableSSLGPOGUID": "9BE6002A-4B9F-4FB6-8CB6-DAA6BEF87AAD",
+    "SVRDisableSSLGPOName": "SVR-Disable-SSL-TLS(Except-TLS-1.2)-TEST",
+
+    "WKBaselineGPOURL":  "https://elliottf.blob.core.windows.net/github/GPOs/WKS-Baseline-v3.zip",
+    "WKBaselineGPOGUID":  "B0FB8233-96D9-47FA-B653-F54B83452468",
+    "WKBaselineGPOName":  "WKS-Baseline-v3",
+
+    "WKDisableSSLGPOURL":  "https://elliottf.blob.core.windows.net/github/GPOs/WKS-Disable-SSL-TLS(Except-TLS-1.2)-TEST.zip",
+    "WKDisableSSLGPOGUID":  "2E69AEBB-52CC-4A92-8445-35E39E105BED",
+    "WKDisableSSLGPOName":  "WKS-Disable-SSL-TLS(Except-TLS-1.2)-TEST",
+
+    "WKWIN10BaselineGPOURL":  "https://elliottf.blob.core.windows.net/github/GPOs/WKS-WIN10-Baseline-v3.zip",
+    "WKWIN10BaselineGPOGUID": "6DDB9814-EC43-4E25-8178-4F306520C840",
+    "WKWIN10BaselineGPOName": "WKS-WIN10-Baseline-v3"
   },  
   "resources": [
     {
