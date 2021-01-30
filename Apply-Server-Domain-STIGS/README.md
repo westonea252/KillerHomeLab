@@ -8,6 +8,7 @@ Click the button below to deploy
 This Templates applies the following STIGS:
 
 - Default Domain Policy
+- Server 2016
 
 
 Parameters that support changes
