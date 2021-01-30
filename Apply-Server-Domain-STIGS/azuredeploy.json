@@ -2,40 +2,6 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "adminUsername": {
-        "type": "string",
-        "metadata": {
-            "description": "The name of the Administrator of the new VM and Domain"
-        }
-    },
-    "adminPassword": {
-        "type": "securestring",
-      "metadata": {
-        "description": "The password for the Administrator account of the new VM and Domain"
-      }
-    },    
-    "WindowsServerLicenseType": {
-      "type": "string",
-      "defaultValue": "None",
-      "allowedValues": [
-        "None",
-        "Windows_Server"
-      ],      
-      "metadata": {
-          "description": "Windows Server OS License Type"
-      }
-    },    
-    "WindowsClientLicenseType": {
-      "type": "string",
-      "defaultValue": "None",
-      "allowedValues": [
-        "None",
-        "Windows_Client"
-      ],      
-      "metadata": {
-          "description": "Windows Client OS License Type"
-      }
-    },        
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
@@ -43,13 +9,6 @@
         "description": "VNet1 Name"
       }
     },
-    "SubDNSDomain": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-          "description": "Sub DNS Domain Name Example:  sub1. must include a DOT AT END"
-      }
-    },     
     "SubDNSBaseDN": {
       "type": "string",
       "defaultValue": "",
@@ -85,57 +44,7 @@
       "metadata": {
           "description": "Top-Level Domain Name"
       }
-    },                            
-    "vnet1ID": {
-      "type": "string",
-      "defaultValue": "10.1",
-      "metadata": {
-        "description": "VNet1 Prefix"
-      }
-    },    
-    "ReverseLookup1": {
-      "type": "string",
-      "defaultValue": "1.10",
-      "metadata": {
-          "description": "DNS Reverse Lookup Zone1 Prefix"
-      }
-    },                        
-    "DC1OSVersion": {
-        "type": "string",
-        "defaultValue": "2019-Datacenter",
-        "allowedValues": [
-          "2019-Datacenter",
-          "2016-Datacenter",
-          "2012-R2-Datacenter"
-        ],
-        "metadata": {
-            "description": "Domain Controller1 OS Version"
-        }
-    },
-    "WK1OSVersion": {
-      "type": "string",
-      "defaultValue": "19h1-pro",
-      "allowedValues": [
-        "19h1-pro"
-      ],
-      "metadata": {
-          "description": "Workstation1 OS Version"
-      }
-  },    
-    "DC1VMSize": {
-        "type": "string",
-        "defaultValue": "Standard_D2s_v3",
-        "metadata": {
-            "description": "Domain Controller1 VMSize"
-        }
-    },        
-    "WK1VMSize": {
-      "type": "string",
-      "defaultValue": "Standard_D2s_v3",
-      "metadata": {
-          "description": "Workstation1 VMSize"
-      }
-    },            
+    },                              
     "_artifactsLocation": {
       "type": "string",
       "metadata": {
@@ -152,22 +61,7 @@
     }
   },
   "variables": {
-    "vnet1Name": "[concat(parameters('NamingConvention'),'-VNet1')]",
-    "vnet1Prefix": "[concat(parameters('vnet1ID'),'.0.0/16')]",
-    "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet1')]",    
-    "vnet1subnet1Prefix": "[concat(parameters('vnet1ID'),'.1.0/24')]",    
-    "vnet1subnet2Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet2')]",    
-    "vnet1subnet2Prefix": "[concat(parameters('vnet1ID'),'.2.0/24')]",    
-    "vnet1BastionsubnetPrefix": "[concat(parameters('vnet1ID'),'.253.0/24')]",        
     "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",           
-    "dc1IP": "[concat(parameters('vnet1ID'),'.1.',variables('dc1lastoctet'))]",        
-    "ReverseLookup1": "[concat('1.',parameters('ReverseLookup1'))]",    
-    "dc1lastoctet": "101",        
-    "wk1lastoctet": "201",            
-    "wk1name": "[concat(parameters('NamingConvention'),'-wk-01')]",           
-    "wk1IP": "[concat(parameters('vnet1ID'),'.2.',variables('wk1lastoctet'))]",        
-    "DCDataDisk1Name": "NTDS",            
-    "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
     "WKOUPath": "[concat('OU=Workstations,',variables('BaseDN'))]",
     "WK10OUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",    
@@ -181,49 +75,38 @@
     "IEEnhancedGPOName":  "IE11_Enhanced Testing",
     "PolicyDefinitionsURL":  "https://elliottf.blob.core.windows.net/github/GPOs/PolicyDefinitions.zip",
     "PolicyDefinitionsName":  "PolicyDefinitions",
-
-    "SVR2016BaselinGPOURL":  "https://elliottf.blob.core.windows.net/github/GPOs/SVR-2016-Baseline-v3.zip",
-    "SVR2016BaselinGPOGUID":  "27764575-1F9E-4962-A039-EC6B650BEF43",
-    "SVR2016BaselinGPOName":  "SVR-2016-Baseline-v3",
-     
-
+    "SVR2016BaselineGPOURL":  "https://elliottf.blob.core.windows.net/github/GPOs/SVR-2016-Baseline-v3.zip",
+    "SVR2016BaselineGPOGUID":  "27764575-1F9E-4962-A039-EC6B650BEF43",
+    "SVR2016BaselineGPOName":  "SVR-2016-Baseline-v3",
     "SVR2016DCBaselineGPOURL":  "https://elliottf.blob.core.windows.net/github/GPOs/SVR-2016-DC-Baseline-v2.zip",
     "SVR2016DCBaselineGPOGUID": "DB77366E-8E1F-4D88-8041-AA10201E9704",
     "SVR2016DCBaselineGPOName": "SVR-2016-DC-Baseline-v2",
-
     "SVRBaselineGPOURL": "https://elliottf.blob.core.windows.net/github/GPOs/SVR-Baseline-v3.zip",
     "SVRBaselineGPOGUID": "F733FEB4-3992-4D28-8A7A-C8210F72A778",
     "SVRBaselineGPOName": "SVR-Baseline-v3",
-     
     "SVRDCBaselineGPOURL": "https://elliottf.blob.core.windows.net/github/GPOs/SVR-DC-Baseline-v3.zip",
     "SVRDCBaselineGPOGUID": "2109B8C1-6A7F-4CEB-8C42-E0D985E4AFA1",
     "SVRDCBaselineGPOName": "SVR-DC-Baseline-v3",
-    
-
     "SVRDCBaselineTimeGPOURL": "https://elliottf.blob.core.windows.net/github/GPOs/SVR-DC-Baseline-WindowsTimeSource-v1.zip",
     "SVRDCBaselineTimeGPOGUID": "20B6E319-1ED7-41FE-BABD-3D9C8A1EB9CE",
     "SVRDCBaselineTimeGPOName": "SVR-DC-Baseline-WindowsTimeSource-v1",
-
     "SVRDisableSSLGPOURL": "https://elliottf.blob.core.windows.net/github/GPOs/SVR-Disable-SSL-TLS(Except-TLS-1.2)-TEST.zip",
     "SVRDisableSSLGPOGUID": "9BE6002A-4B9F-4FB6-8CB6-DAA6BEF87AAD",
     "SVRDisableSSLGPOName": "SVR-Disable-SSL-TLS(Except-TLS-1.2)-TEST",
-
-    "WKBaselineGPOURL":  "https://elliottf.blob.core.windows.net/github/GPOs/WKS-Baseline-v3.zip",
-    "WKBaselineGPOGUID":  "B0FB8233-96D9-47FA-B653-F54B83452468",
-    "WKBaselineGPOName":  "WKS-Baseline-v3",
-
-    "WKDisableSSLGPOURL":  "https://elliottf.blob.core.windows.net/github/GPOs/WKS-Disable-SSL-TLS(Except-TLS-1.2)-TEST.zip",
-    "WKDisableSSLGPOGUID":  "2E69AEBB-52CC-4A92-8445-35E39E105BED",
-    "WKDisableSSLGPOName":  "WKS-Disable-SSL-TLS(Except-TLS-1.2)-TEST",
-
-    "WKWIN10BaselineGPOURL":  "https://elliottf.blob.core.windows.net/github/GPOs/WKS-WIN10-Baseline-v3.zip",
-    "WKWIN10BaselineGPOGUID": "6DDB9814-EC43-4E25-8178-4F306520C840",
-    "WKWIN10BaselineGPOName": "WKS-WIN10-Baseline-v3"
+    "WKSBaselineGPOURL":  "https://elliottf.blob.core.windows.net/github/GPOs/WKS-Baseline-v3.zip",
+    "WKSBaselineGPOGUID":  "B0FB8233-96D9-47FA-B653-F54B83452468",
+    "WKSBaselineGPOName":  "WKS-Baseline-v3",
+    "WKSDisableSSLGPOURL":  "https://elliottf.blob.core.windows.net/github/GPOs/WKS-Disable-SSL-TLS(Except-TLS-1.2)-TEST.zip",
+    "WKSDisableSSLGPOGUID":  "2E69AEBB-52CC-4A92-8445-35E39E105BED",
+    "WKSDisableSSLGPOName":  "WKS-Disable-SSL-TLS(Except-TLS-1.2)-TEST",
+    "WKSWIN10BaselineGPOURL":  "https://elliottf.blob.core.windows.net/github/GPOs/WKS-WIN10-Baseline-v3.zip",
+    "WKSWIN10BaselineGPOGUID": "6DDB9814-EC43-4E25-8178-4F306520C840",
+    "WKSWIN10BaselineGPOName": "WKS-WIN10-Baseline-v3"
   },  
   "resources": [
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "ApplySTIGS",
       "properties": {
           "mode": "Incremental",
@@ -232,27 +115,132 @@
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
-              "vnetName": {
-                  "value": "[variables('vnet1Name')]"
+              "computerName": {
+                  "value": "[variables('dc1name')]"
               },
-              "vnetprefix": {
-                  "value": "[variables('vnet1Prefix')]"
-              },
-              "subnet1Name": {
-                  "value": "[variables('vnet1subnet1Name')]"
-              },
-              "subnet1Prefix": {
-                  "value": "[variables('vnet1subnet1Prefix')]"
-              },
-              "subnet2Name": {
-                "value": "[variables('vnet1subnet2Name')]"
-              },
-              "subnet2Prefix": {
-                "value": "[variables('vnet1subnet2Prefix')]"
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
               },              
-              "BastionsubnetPrefix": {
-                "value": "[variables('vnet1BastionsubnetPrefix')]"
+              "BaseDN": {
+                  "value": "[variables('BaseDN')]"
+              },                            
+              "SVROUPath": {
+                  "value": "[variables('SVROUPath')]"
+              },
+              "SVR2016OUPath": {
+                  "value": "[variables('SVR2016OUPath')]"
+              },                                          
+              "WKOUPath": {
+                  "value": "[variables('WKOUPath')]"
+              },
+              "WK10OUPath": {
+                  "value": "[variables('WK10OUPath')]"
               },              
+              "DefaultDomainGPOURL": {
+                  "value": "[variables('DefaultDomainGPOURL')]"
+              },                            
+              "SVRDCBaselineGPOURL": {
+                  "value": "[variables('SVRDCBaselineGPOURL')]"
+              },                            
+              "SVR2016DCBaselineGPOURL": {
+                  "value": "[variables('SVR2016DCBaselineGPOURL')]"
+              },                            
+              "SVRDCBaselineTimeGPOURL": {
+                  "value": "[variables('SVRDCBaselineTimeGPOURL')]"
+              },                            
+              "SVRBaselineGPOURL": {
+                  "value": "[variables('SVRBaselineGPOURL')]"
+              },                            
+              "SVR2016BaselineGPOURL": {
+                  "value": "[variables('SVR2016BaselineGPOURL')]"
+              },                            
+              "SVRDisableSSLGPOURL": {
+                  "value": "[variables('SVRDisableSSLGPOURL')]"
+              },                            
+              "WKSBaselineGPOURL": {
+                  "value": "[variables('WKSBaselineGPOURL')]"
+              },                            
+              "WKSWIN10BaselineGPOURL": {
+                  "value": "[variables('WKSWIN10BaselineGPOURL')]"
+              },                            
+              "WKSDisableSSLGPOURL": {
+                  "value": "[variables('WKSDisableSSLGPOURL')]"
+              },                                                                                                                                                          
+              "IEEnhancedGPOURL": {
+                  "value": "[variables('IEEnhancedGPOURL')]"
+              },
+              "PolicyDefinitionsURL": {
+                  "value": "[variables('PolicyDefinitionsURL')]"
+              },
+              "DefaultDomainGPOGUID": {
+                  "value": "[variables('DefaultDomainGPOGUID')]"
+              },
+              "SVRDCBaselineGPOGUID": {
+                  "value": "[variables('SVRDCBaselineGPOGUID')]"
+              },
+              "SVR2016DCBaselineGPOGUID": {
+                  "value": "[variables('SVR2016DCBaselineGPOGUID')]"
+              },
+              "SVRDCBaselineTimeGPOGUID": {
+                  "value": "[variables('SVRDCBaselineTimeGPOGUID')]"
+              },
+              "SVRBaselineGPOGUID": {
+                  "value": "[variables('SVRBaselineGPOGUID')]"
+              },
+              "SVR2016BaselineGPOGUID": {
+                  "value": "[variables('SVR2016BaselineGPOGUID')]"
+              },
+              "SVRDisableSSLGPOGUID": {
+                  "value": "[variables('SVRDisableSSLGPOGUID')]"
+              },
+              "WKSBaselineGPOGUID": {
+                  "value": "[variables('WKSBaselineGPOGUID')]"
+              },    
+              "WKSWIN10BaselineGPOGUID": {
+                  "value": "[variables('WKSWIN10BaselineGPOGUID')]"
+              },  
+              "WKSDisableSSLGPOGUID": {
+                  "value": "[variables('WKSDisableSSLGPOGUID')]"
+              },  
+              "IEEnhancedGPOGUID": {
+                  "value": "[variables('IEEnhancedGPOGUID')]"
+              },  
+              "DefaultDomainGPOName": {
+                  "value": "[variables('DefaultDomainGPOName')]"
+              },  
+              "SVRDCBaselineGPOName": {
+                  "value": "[variables('SVRDCBaselineGPOName')]"
+              },  
+              "SVR2016DCBaselineGPOName": {
+                  "value": "[variables('SVR2016DCBaselineGPOName')]"
+              },  
+              "SVRDCBaselineTimeGPOName": {
+                  "value": "[variables('SVRDCBaselineTimeGPOName')]"
+              },  
+              "SVRBaselineGPOName": {
+                  "value": "[variables('SVRBaselineGPOName')]"
+              },  
+              "SVR2016BaselineGPOName": {
+                  "value": "[variables('SVR2016BaselineGPOName')]"
+              },  
+              "SVRDisableSSLGPOName": {
+                  "value": "[variables('SVRDisableSSLGPOName')]"
+              },  
+              "WKSBaselineGPOName": {
+                  "value": "[variables('WKSBaselineGPOName')]"
+              },                                                                                                                                                                                                                                                                                                   
+              "WKSWIN10BaselineGPOName": {
+                  "value": "[variables('WKSWIN10BaselineGPOName')]"
+              }, 
+              "WKSDisableSSLGPOName": {
+                  "value": "[variables('WKSDisableSSLGPOName')]"
+              }, 
+              "IEEnhancedGPOName": {
+                  "value": "[variables('IEEnhancedGPOName')]"
+              },                             
+              "PolicyDefinitionsName": {
+                  "value": "[variables('PolicyDefinitionsName')]"
+              },               
               "location": {
                   "value": "[resourceGroup().location]"
               }

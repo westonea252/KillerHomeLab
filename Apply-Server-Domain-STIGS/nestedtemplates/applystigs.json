@@ -14,12 +14,252 @@
                 "description": "NetBios Domain Name"
             }
         },
-        "domainName": {
+        "BaseDN": {
             "type": "string",
+            "metadata": {
+                "description": "Base Domain Distiguished Name"
+            }
+        },
+        "SVROUPath": {
+          "type": "string",
           "metadata": {
-            "description": "The FQDN of the AD Domain created "
+              "description": "SVR Organizational Unit Path"
           }
-        },                               
+        },                        
+        "SVR2016OUPath": {
+          "type": "string",
+          "metadata": {
+              "description": "SVR 2016 Organizational Unit Path"
+          }
+        },                        
+        "WKOUPath": {
+          "type": "string",
+          "metadata": {
+              "description": "WK Organizational Unit Path"
+          }
+        },       
+        "WK10OUPath": {
+          "type": "string",
+          "metadata": {
+              "description": "WK10 Organizational Unit Path"
+          }
+        },     
+        "DefaultDomainGPOURL": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO URL"
+          }
+        },   
+        "SVRDCBaselineGPOURL": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO URL"
+          }
+        }, 
+        "SVR2016DCBaselineGPOURL": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO URL"
+          }
+        }, 
+        "SVRDCBaselineTimeGPOURL": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO URL"
+          }
+        }, 
+        "SVRBaselineGPOURL": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO URL"
+          }
+        }, 
+        "SVR2016BaselineGPOURL": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO URL"
+          }
+        },  
+        "SVRDisableSSLGPOURL": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO URL"
+          }
+        },  
+        "WKSBaselineGPOURL": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO URL"
+          }
+        },  
+        "WKSWIN10BaselineGPOURL": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO URL"
+          }
+        },  
+        "WKSDisableSSLGPOURL": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO URL"
+          }
+        },  
+        "IEEnhancedGPOURL": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO URL"
+          }
+        },  
+        "PolicyDefinitionsURL": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO URL"
+          }
+        },  
+        "DefaultDomainGPOGUID": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO GUID"
+          }
+        },                            
+        "SVRDCBaselineGPOGUID": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO GUID"
+          }
+        },                            
+        "SVR2016DCBaselineGPOGUID": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO GUID"
+          }
+        },                            
+        "SVRDCBaselineTimeGPOGUID": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO GUID"
+          }
+        },  
+        "SVRBaselineGPOGUID": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO GUID"
+          }
+        }, 
+        "SVR2016BaselineGPOGUID": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO GUID"
+          }
+        }, 
+        "SVRDisableSSLGPOGUID": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO GUID"
+          }
+        }, 
+        "WKSBaselineGPOGUID": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO GUID"
+          }
+        },   
+        "WKSWIN10BaselineGPOGUID": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO GUID"
+          }
+        },   
+        "WKSDisableSSLGPOGUID": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO GUID"
+          }
+        },   
+        "IEEnhancedGPOGUID": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO GUID"
+          }
+        },   
+        "PolicyDefinitionsGUID": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO GUID"
+          }
+        }, 
+        "DefaultDomainGPOName": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO Name"
+          }
+        },
+        "SVRDCBaselineGPOName": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO Name"
+          }
+        },
+        "SVR2016DCBaselineGPOName": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO Name"
+          }
+        },
+        "SVRDCBaselineTimeGPOName": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO Name"
+          }
+        },
+        "SVRBaselineGPOName": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO Name"
+          }
+        },
+        "SVR2016BaselineGPOName": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO Name"
+          }
+        },
+        "SVRDisableSSLGPOName": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO Name"
+          }
+        },
+        "WKSBaselineGPOName": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO Name"
+          }
+        },
+        "WKSWIN10BaselineGPOName": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO Name"
+          }
+        },
+        "WKSDisableSSLGPOName": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO Name"
+          }
+        },
+        "IEEnhancedGPOName": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO Name"
+          }
+        },   
+        "PolicyDefinitionsName": {
+          "type": "string",
+          "metadata": {
+              "description": "GPO Name"
+          }
+        },                                                                                                                                                                                                                                                                                                                                                                                                                       
         "location": {
             "type": "string",
           "metadata": {
@@ -70,8 +310,49 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
-                            "DomainName": "[parameters('domainName')]",
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",
+                            "DC1Name": "[parameters('computerName')]",
+                            "BaseDN": "[parameters('BaseDN')]",
+                            "SVROUPath": "[parameters('SVROUPath')]",
+                            "SVR2016OUPath": "[parameters('SVR2016OUPath')]",
+                            "WKOUPath": "[parameters('WKOUPath')]",
+                            "WK10OUPath": "[parameters('WK10OUPath')]",
+                            "DefaultDomainGPOURL": "[parameters('DefaultDomainGPOURL')]",
+                            "SVRDCBaselineGPOURL": "[parameters('SVRDCBaselineGPOURL')]",
+                            "SVR2016DCBaselineGPOURL": "[parameters('SVR2016DCBaselineGPOURL')]",
+                            "SVRDCBaselineTimeGPOURL": "[parameters('SVRDCBaselineTimeGPOURL')]",
+                            "SVRBaselineGPOURL": "[parameters('SVRBaselineGPOURL')]",
+                            "SVR2016BaselineGPOURL": "[parameters('SVR2016BaselineGPOURL')]",
+                            "SVRDisableSSLGPOURL": "[parameters('SVRDisableSSLGPOURL')]",
+                            "WKSBaselineGPOURL": "[parameters('WKSBaselineGPOURL')]",
+                            "WKSWIN10BaselineGPOURL": "[parameters('WKSWIN10BaselineGPOURL')]",
+                            "WKSDisableSSLGPOURL": "[parameters('WKSDisableSSLGPOURL')]",
+                            "IEEnhancedGPOURL": "[parameters('IEEnhancedGPOURL')]",
+                            "PolicyDefinitionsURL": "[parameters('PolicyDefinitionsURL')]",
+                            "DefaultDomainGPOGUID": "[parameters('DefaultDomainGPOGUID')]",
+                            "SVRDCBaselineGPOGUID": "[parameters('SVRDCBaselineGPOGUID')]",
+                            "SVR2016DCBaselineGPOGUID": "[parameters('SVR2016DCBaselineGPOGUID')]",
+                            "SVRDCBaselineTimeGPOGUID": "[parameters('SVRDCBaselineTimeGPOGUID')]",
+                            "SVRBaselineGPOGUID": "[parameters('SVRBaselineGPOGUID')]",
+                            "SVR2016BaselineGPOGUID": "[parameters('SVR2016BaselineGPOGUID')]",
+                            "SVRDisableSSLGPOGUID": "[parameters('SVRDisableSSLGPOGUID')]",
+                            "WKSBaselineGPOGUID": "[parameters('WKSBaselineGPOGUID')]",
+                            "WKSWIN10BaselineGPOGUID": "[parameters('WKSWIN10BaselineGPOGUID')]",
+                            "WKSDisableSSLGPOGUID": "[parameters('WKSDisableSSLGPOGUID')]",
+                            "IEEnhancedGPOGUID": "[parameters('IEEnhancedGPOGUID')]",
+                            "PolicyDefinitionsGUID": "[parameters('PolicyDefinitionsGUID')]",
+                            "DefaultDomainGPOName": "[parameters('DefaultDomainGPOName')]",                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+                            "SVRDCBaselineGPOName": "[parameters('SVRDCBaselineGPOName')]",
+                            "SVR2016DCBaselineGPOName": "[parameters('SVR2016DCBaselineGPOName')]",
+                            "SVRDCBaselineTimeGPOName": "[parameters('SVRDCBaselineTimeGPOName')]",
+                            "SVRBaselineGPOName": "[parameters('SVRBaselineGPOName')]",
+                            "SVR2016BaselineGPOName": "[parameters('SVR2016BaselineGPOName')]",
+                            "SVRDisableSSLGPOName": "[parameters('SVRDisableSSLGPOName')]",
+                            "WKSBaselineGPOName": "[parameters('WKSBaselineGPOName')]",
+                            "WKSWIN10BaselineGPOName": "[parameters('WKSWIN10BaselineGPOName')]",
+                            "WKSDisableSSLGPOName": "[parameters('WKSDisableSSLGPOName')]",
+                            "IEEnhancedGPOName": "[parameters('IEEnhancedGPOName')]",
+                            "PolicyDefinitionsName": "[parameters('PolicyDefinitionsName')]",                                                                                                                                                                                                                                                                                                                    
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"

@@ -9,8 +9,6 @@
         [String]$SVR2016OUPath,
         [String]$WKOUPath,
         [String]$WK10OUPath,
-
-
         [String]$DefaultDomainGPOURL,
         [String]$SVRDCBaselineGPOURL,
         [String]$SVR2016DCBaselineGPOURL,
@@ -23,7 +21,6 @@
         [String]$WKSDisableSSLGPOURL,
         [String]$IEEnhancedGPOURL,
         [String]$PolicyDefinitionsURL,
-
         [String]$DefaultDomainGPOGUID,
         [String]$SVRDCBaselineGPOGUID,
         [String]$SVR2016DCBaselineGPOGUID,
@@ -35,8 +32,6 @@
         [String]$WKSWIN10BaselineGPOGUID,
         [String]$WKSDisableSSLGPOGUID,
         [String]$IEEnhancedGPOGUID,
-        [String]$PolicyDefinitionsGUID,
-
         [String]$DefaultDomainGPOName,
         [String]$SVRDCBaselineGPOName,
         [String]$SVR2016DCBaselineGPOName,
@@ -49,7 +44,6 @@
         [String]$WKSDisableSSLGPOName,
         [String]$IEEnhancedGPOName,
         [String]$PolicyDefinitionsName,
-        
         [System.Management.Automation.PSCredential]$Admincreds
     )
 
@@ -82,6 +76,13 @@
         {
             Ensure = 'Present'
             GroupName = '2016_Servers'
+            Path       = "OU=Admin,OU=Groups,$BaseDN"
+        }
+
+        ADGroup 10_WorkstationsGroup
+        {
+            Ensure = 'Present'
+            GroupName = '2016_Workstations'
             Path       = "OU=Admin,OU=Groups,$BaseDN"
         }
 
@@ -314,7 +315,7 @@
                 # Create and Link SVR Baseline GPO
                 $SVRBaselinePolicy = Get-GPO -Name "$using:SVRBaselineGPOName" -ErrorAction 0
                 IF ($SVRBaselinePolicy -eq $null) {
-                New-Gpo -Name "$using:SVRBaselineGPOName" | New-GPLink -Target "$using:SVR8OUPath"
+                New-Gpo -Name "$using:SVRBaselineGPOName" | New-GPLink -Target "$using:SVROUPath"
                 Set-GPLink -Name "$using:SVRBaselineGPOName" -Target "$using:SVROUPath" -Order 2
                 Import-GPO -BackupId "$using:SVRBaselineGPOGUID" -TargetName "$using:SVRBaselineGPOName" -Path "C:\STIGS\$using:SVRBaselineGPOName"
                 Set-GPPermission -Name "$using:SVRBaselineGPOName" -TargetName "Authenticated Users" -Replace -TargetType Group -PermissionLevel GPORead
@@ -339,44 +340,45 @@
                 Import-GPO -BackupId "$using:IEEnhancedGPOGUID" -TargetName "$using:IEEnhancedGPOName" -Path "C:\STIGS\$using:IEEnhancedGPOName"
                 }
 
-                # Create and Link SVR Baseline GPO
-                $SVR2016BaselinePolicy = Get-GPO -Name $SVR2016BaselineGPOPath -ErrorAction 0
-                IF ($SVR2016BaselinePolicy -eq $null) {
-                New-Gpo -Name "$using:SVRBaselineGPOName" | New-GPLink -Target "$using:SVR2016OUPath"
-                Set-GPLink -Name "$using:SVRBaselineGPOName" -Target "$using:SVR2016OUPath" -Order 2
-                Import-GPO -BackupId "$using:SVRBaselineGPOGUID" -TargetName "$using:SVRBaselineGPOName" -Path "C:\STIGS\$using:SVRBaselineGPOName"
-                Set-GPPermission -Name "$using:SVRBaselineGPOName" -TargetName "Authenticated Users" -Replace -TargetType Group -PermissionLevel GPORead
-                Set-GPPermission -Name "$using:SVRBaselineGPOName" -TargetName "2016_Servers" -Replace -TargetType Group -PermissionLevel GPOApply
+                # Create and Link SVR Disbale SSL GPO
+                $SVRDisableSSLPolicy = Get-GPO -Name "$using:SVRDisableSSLGPOName" -ErrorAction 0
+                IF ($SVRDisableSSLPolicy -eq $null) {
+                New-Gpo -Name "$using:SVRDisableSSLGPOName" | New-GPLink -Target "$using:SVROUPath"
+                Set-GPLink -Name "$using:SVRDisableSSLGPOName" -Target "$using:SVROUPath" -Order 1
+                Import-GPO -BackupId "$using:SVRBaselineGPOGUID" -TargetName "$using:SVRDisableSSLGPOName" -Path "C:\STIGS\$using:SVRDisableSSLGPOName"
+                Set-GPPermission -Name "$using:SVRDisableSSLGPOName" -TargetName "Authenticated Users" -Replace -TargetType Group -PermissionLevel GPORead
+                Set-GPPermission -Name "$using:SVRDisableSSLGPOName" -TargetName "2016_Servers" -Replace -TargetType Group -PermissionLevel GPOApply
                 }
 
-# Create GPOs
-$srv2016 = Get-GPO -Name "$(SVR2016Baselinev3)" -ErrorAction 0
-$srvtls = Get-GPO -Name "$(SVRDisableSSLTLSExceptTLS12TEST)" -ErrorAction 0
+                # Create and Link WKS Baseline GPO
+                $WKSBaselinePolicy = Get-GPO -Name "$using:WKSBaselineGPOName" -ErrorAction 0
+                IF ($WKSBaselinePolicy -eq $null) {
+                New-Gpo -Name "$using:WKSBaselineGPOName" | New-GPLink -Target "$using:WKOUPath"
+                Set-GPLink -Name "$using:WKSBaselineGPOName" -Target "$using:WKOUPath" -Order 1
+                Import-GPO -BackupId "$using:WKSBaselineGPOGUID" -TargetName "$using:WKSBaselineGPOName" -Path "C:\STIGS\$using:WKSBaselineGPOName"
+                Set-GPPermission -Name "$using:WKSBaselineGPOName" -TargetName "Authenticated Users" -Replace -TargetType Group -PermissionLevel GPORead
+                Set-GPPermission -Name "$using:WKSBaselineGPOName" -TargetName "2016_Workstations" -Replace -TargetType Group -PermissionLevel GPOApply
+                }
 
-$file2 = Get-Item -Path "C:\MachineConfig\$(SVR2016Baselinev3).zip" -ErrorAction 0
-$file3 = Get-Item -Path "C:\MachineConfig\$(SVRDisableSSLTLSExceptTLS12TEST).zip" -ErrorAction 0
+                # Create and Link WKS Baseline GPO
+                $WKSWIN10BaselinePolicy = Get-GPO -Name "$using:WKSWIN10BaselineGPOName" -ErrorAction 0
+                IF ($WKSWIN10BaselinePolicy -eq $null) {
+                New-Gpo -Name "$using:WKSWIN10BaselineGPOName" | New-GPLink -Target "$using:WK10OUPath"
+                Set-GPLink -Name "$using:WKSWIN10BaselineGPOName" -Target "$using:WK10OUPath" -Order 1
+                Import-GPO -BackupId "$using:WKSWIN10BaselineGPOGUID" -TargetName "$using:WKSWIN10BaselineGPOName" -Path "C:\STIGS\$using:WKSWIN10BaselineGPOName"
+                Set-GPPermission -Name "$using:WKSWIN10BaselineGPOName" -TargetName "Authenticated Users" -Replace -TargetType Group -PermissionLevel GPORead
+                Set-GPPermission -Name "$using:WKSWIN10BaselineGPOName" -TargetName "2016_Workstations" -Replace -TargetType Group -PermissionLevel GPOApply
+                }
 
-
-# Link GPO's and set Order
-IF ($srv2016 -eq $null) {New-Gpo -Name "$(SVR2016Baselinev3)" | New-GPLink -Target "OU=Servers2016,OU=Servers,DC=$(Dom1ID),DC=$(Dom1IDRoot),DC=com"}
-IF ($srvtls -eq $null) {New-Gpo -Name "$(SVRDisableSSLTLSExceptTLS12TEST)" | New-GPLink -Target "OU=Servers,DC=$(Dom1ID),DC=$(Dom1IDRoot),DC=com"}
-
-Set-GPLink -Name "$(SVRDisableSSLTLSExceptTLS12TEST)" -Target "OU=Servers,DC=$(Dom1ID),DC=$(Dom1IDRoot),DC=com" -Order 1
-Set-GPLink -Name "$(SVR2016Baselinev3)" -Target "OU=Servers2016,OU=Servers,DC=$(Dom1ID),DC=$(Dom1IDRoot),DC=com" -Order 1
-
-# Import GPOs
-IF ($file2 -ne $null) {Import-GPO -BackupId 27764575-1F9E-4962-A039-EC6B650BEF43 -TargetName "$(SVR2016Baselinev3)" -path "C:\MachineConfig\$(SVR2016Baselinev3)"}
-IF ($file3 -ne $null) {Import-GPO -BackupId 9BE6002A-4B9F-4FB6-8CB6-DAA6BEF87AAD -TargetName "$(SVRDisableSSLTLSExceptTLS12TEST)" -path "C:\MachineConfig\$(SVRDisableSSLTLSExceptTLS12TEST)"}
-
-# Remove Apply Rights from GPO's for Authenticated Users
-Set-GPPermission -Name "$(SVR2016Baselinev3)" -TargetName "Authenticated Users" -Replace -TargetType Group -PermissionLevel GPORead
-Set-GPPermission -Name "$(SVRDisableSSLTLSExceptTLS12TEST)" -TargetName "Authenticated Users" -Replace -TargetType Group -PermissionLevel GPORead
-
-# Apply 2016 Server Security Filtering
-Set-GPPermission -Name "$(SVRBaselinev3)" -TargetName "$(Dom1ID)_2016_GPO" -Replace -TargetType Group -PermissionLevel GPOApply
-Set-GPPermission -Name "$(SVR2016Baselinev3)" -TargetName "$(Dom1ID)_2016_GPO" -Replace -TargetType Group -PermissionLevel GPOApply
-Set-GPPermission -Name "$(SVRDisableSSLTLSExceptTLS12TEST)" -TargetName "$(Dom1ID)_2016_GPO" -Replace -TargetType Group -PermissionLevel GPOApply
-
+                # Create and Link WKS Disbale SSL GPO
+                $WKSDisableSSLPolicy = Get-GPO -Name "$using:WKSDisableSSLGPOName" -ErrorAction 0
+                IF ($WKSDisableSSLPolicy -eq $null) {
+                New-Gpo -Name "$using:WKSDisableSSLGPOName" | New-GPLink -Target "$using:WKOUPath"
+                Set-GPLink -Name "$using:WKSDisableSSLGPOName" -Target "$using:WKOUPath" -Order 2
+                Import-GPO -BackupId "$using:WKSBaselineGPOGUID" -TargetName "$using:WKSDisableSSLGPOName" -Path "C:\STIGS\$using:WKSDisableSSLGPOName"
+                Set-GPPermission -Name "$using:WKSDisableSSLGPOName" -TargetName "Authenticated Users" -Replace -TargetType Group -PermissionLevel GPORead
+                Set-GPPermission -Name "$using:WKSDisableSSLGPOName" -TargetName "2016_Workstations" -Replace -TargetType Group -PermissionLevel GPOApply
+                }
             }
             GetScript =  { @{} }
             TestScript = { $false}
