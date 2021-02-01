@@ -63,7 +63,7 @@
                     "id":   "[variables('subnetId')]"
                     },
                 "publicIPAddress":  {
-                    "id":   "[variables('publicIPAddressName')]"
+                    "id":   "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('publicIPAddressName')))]"
                     }
                 }
             }
