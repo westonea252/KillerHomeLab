@@ -37,6 +37,9 @@
           "type": "Microsoft.Network/publicIPAddresses",
           "apiVersion": "2018-11-01",
           "location": "[parameters('location')]",
+          "sku": {
+            "name": "Standard"
+          },
           "properties": {
               "publicIPAllocationMethod": "Static"
           }
