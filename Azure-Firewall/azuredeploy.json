@@ -123,7 +123,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "VNet1",
+      "name": "DeployAzureFirewall",
       "dependsOn": [
         "VNet1"
       ],      
@@ -140,7 +140,7 @@
               "vnetName": {
                   "value": "[variables('vnet1Name')]"
               },
-              "subnet1Name": {
+              "subnetName": {
                   "value": "[variables('vnet1subnet1Name')]"
               },                          
               "location": {
@@ -152,7 +152,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "deployDC1VM",
+      "name": "deployVM",
       "dependsOn": [
         "VNet1"
       ],      
