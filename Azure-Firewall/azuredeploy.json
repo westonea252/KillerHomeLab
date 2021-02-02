@@ -209,7 +209,45 @@
               }
           }
       }
-    },        
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "UpdateSubnetRouteTable",
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/updatevnetroutetable.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "vnetName": {
+                  "value": "[variables('vnet1Name')]"
+              },
+              "vnetprefix": {
+                  "value": "[variables('vnet1Prefix')]"
+              },
+              "subnet1Name": {
+                  "value": "[variables('vnet1subnet1Name')]"
+              },
+              "subnet1Prefix": {
+                  "value": "[variables('vnet1subnet1Prefix')]"
+              },           
+              "BastionsubnetPrefix": {
+                "value": "[variables('vnet1BastionsubnetPrefix')]"
+              },     
+              "FirewallsubnetPrefix": {
+                "value": "[variables('vnet1FirewallsubnetPrefix')]"
+              },
+              "RouteTableName": {
+                  "value": "[variables('RouteTableName')]"
+              },                                          
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },            
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
