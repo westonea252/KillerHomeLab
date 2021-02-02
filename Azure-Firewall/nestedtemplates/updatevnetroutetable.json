@@ -52,7 +52,7 @@
       }
     },
   "variables": {
-      "RouteTableId": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('RouteTableName'))]"      
+      "RouteTableId": "[resourceId(resourceGroup().name, 'Microsoft.Network/routeTables', parameters('RouteTableName'))]"      
   },    
   "resources": [
     {
