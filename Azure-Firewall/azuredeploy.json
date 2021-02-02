@@ -80,9 +80,12 @@
     "vnet1BastionsubnetPrefix": "[concat(parameters('vnet1ID'),'.253.0/24')]",           
     "vnet1FirewallsubnetPrefix": "[concat(parameters('vnet1ID'),'.254.0/24')]",
     "FirewallName": "[concat(parameters('NamingConvention'),'-Firewall')]",                   
+    "RouteTableName": "[concat(parameters('NamingConvention'),'-RT1')]",                       
     "vmname": "[concat(parameters('NamingConvention'),'-vm-01')]",                      
     "vmIP": "[concat(parameters('vnet1ID'),'.1.',variables('vmlastoctet'))]", 
-    "vmlastoctet": "123"
+    "vmlastoctet": "123",
+    "fwIP": "[concat(parameters('vnet1ID'),'.254.',variables('fwlastoctet'))]",     
+    "fwlastoctet": "4"    
   },  
   "resources": [
     {
@@ -123,6 +126,38 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
+      "name": "BastionHost1",
+      "dependsOn": [
+        "VNet1"
+      ],
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/bastionhost.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "publicIPAddressName": {
+                "value": "[concat(variables('vnet1Name'),'-Bastion-pip')]"
+              },
+              "AllocationMethod": {
+                "value": "Static"
+              },              
+              "vnetName": {
+                  "value": "[variables('vnet1Name')]"
+              },
+              "subnetName": {
+                  "value": "AzureBastionSubnet"
+              },
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },        
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
       "name": "DeployAzureFirewall",
       "dependsOn": [
         "VNet1"
@@ -148,7 +183,33 @@
               }
           }
       }
-    },
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DeployRouteTable",
+      "dependsOn": [
+        "VNet1"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/RouteTable.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "FirewallIP": {
+                  "value": "[variables('fwIP')]"
+              },
+              "RouteTableName": {
+                  "value": "[variables('RouteTableName')]"
+              },                 
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },        
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
