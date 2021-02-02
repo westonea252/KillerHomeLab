@@ -70,11 +70,10 @@
           {
             "name": "[parameters('subnet1Name')]",
             "properties": {
-              "addressPrefix": "[parameters('subnet1Prefix')]"
-              
-            },
-            "RouteTable": {
-              "id": "[variables('RouteTableId')]"
+              "addressPrefix": "[parameters('subnet1Prefix')]",
+              "RouteTable": {
+                "id": "[variables('RouteTableId')]"
+              }              
             }
           },        
           {
