@@ -271,23 +271,33 @@
     "webname": "[concat(parameters('NamingConvention'),'-web-01')]",                      
     "webIP": "[concat(parameters('APPVNet1ID'),'.1.',variables('weblastoctet'))]", 
     "weblastoctet": "100",
-    "EXIP": "[concat(parameters('APPVNet1ID'),'.2.',variables('exlastoctet'))]", 
-    "exlastoctet": "100",
     "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",           
     "dc1IP": "[concat(parameters('APPVNet1ID'),'.4.',variables('dc1lastoctet'))]",        
     "dc2name": "[concat(parameters('NamingConvention'),'-dc-02')]",           
     "dc2IP": "[concat(parameters('APPVNet2ID'),'.4.',variables('dc2lastoctet'))]",            
+    "dc2lastoctet": "100",        
+    "DCDataDisk1Name": "NTDS",            
     "ReverseLookup1": "[concat('1.',parameters('ReverseLookup1'))]",    
     "ReverseLookup2": "[concat('1.',parameters('ReverseLookup2'))]",        
-    "dc1lastoctet": "100",        
-    "wk1lastoctet": "100",            
+    "dc1lastoctet": "100",
+
+
+    "EX1IP": "[concat(parameters('APPVNet1ID'),'.2.',variables('ex1lastoctet'))]", 
+    "ex1lastoctet": "100",
+    "EX2IP": "[concat(parameters('APPVNet2ID'),'.2.',variables('ex2lastoctet'))]", 
+    "ex2lastoctet": "100",        
+
+
     "wk1name": "[concat(parameters('NamingConvention'),'-wk-01')]",           
     "wk1IP": "[concat(parameters('APPVNet1ID'),'.7.',variables('wk1lastoctet'))]",        
-    "dc2lastoctet": "100",        
-    "wk2lastoctet": "100",            
+    "wk1lastoctet": "100",            
+
+    
     "wk2name": "[concat(parameters('NamingConvention'),'-wk-02')]",           
     "wk2IP": "[concat(parameters('APPVNet2ID'),'.7.',variables('wk2lastoctet'))]",        
-    "DCDataDisk1Name": "NTDS",            
+    "wk2lastoctet": "100",                
+
+
     "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
     "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]"     
@@ -670,10 +680,10 @@
                   "value": "[variables('webIP')]"
               },                               
               "OWAIP": {
-                  "value": "[variables('EXIP')]"
+                  "value": "[variables('EX1IP')]"
               },                          
               "SMTPIP": {
-                  "value": "[variables('EXIP')]"
+                  "value": "[variables('EX1IP')]"
               },                                                             
               "location": {
                   "value": "[resourceGroup().location]"
@@ -1032,7 +1042,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "updatevnet1dns",
+      "name": "UpdateAPPVNet1DNS",
       "dependsOn": [
         "promotedc1"
       ],            
@@ -1104,6 +1114,162 @@
               }
           }
       }
-    }              
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "UpdateAPPVNet2DNS",
+      "dependsOn": [
+        "promotedc1"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/updateappvnetdns.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "vnetName": {
+                  "value": "[variables('APPVNet2Name')]"
+              },
+              "vnetprefix": {
+                  "value": "[variables('APPVNet2Prefix')]"
+              },
+              "subnet1Name": {
+                  "value": "[variables('APPVNet2subnet1Name')]"
+              },
+              "subnet1Prefix": {
+                  "value": "[variables('APPVNet2subnet1Prefix')]"
+              },           
+              "subnet2Name": {
+                  "value": "[variables('APPVNet2subnet2Name')]"
+              },
+              "subnet2Prefix": {
+                  "value": "[variables('APPVNet2subnet2Prefix')]"
+              },           
+              "subnet3Name": {
+                  "value": "[variables('APPVNet2subnet3Name')]"
+              },
+              "subnet3Prefix": {
+                  "value": "[variables('APPVNet2subnet3Prefix')]"
+              },           
+              "subnet4Name": {
+                  "value": "[variables('APPVNet2subnet4Name')]"
+              },
+              "subnet4Prefix": {
+                  "value": "[variables('APPVNet2subnet4Prefix')]"
+              },           
+              "subnet5Name": {
+                  "value": "[variables('APPVNet2subnet5Name')]"
+              },
+              "subnet5Prefix": {
+                  "value": "[variables('APPVNet2subnet5Prefix')]"
+              },           
+              "subnet6Name": {
+                  "value": "[variables('APPVNet2subnet6Name')]"
+              },
+              "subnet6Prefix": {
+                  "value": "[variables('APPVNet2subnet6Prefix')]"
+              },      
+              "subnet7Name": {
+                  "value": "[variables('APPVNet2subnet7Name')]"
+              },
+              "subnet7Prefix": {
+                  "value": "[variables('APPVNet2subnet7Prefix')]"
+              },                                                                                 
+              "RouteTableName": {
+                  "value": "[variables('RouteTableName')]"
+              },                                          
+              "DNSServerIP": {
+                "value": [
+                  "[variables('dc1IP')]"
+                ]
+              },                                                                                                            
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "restartdc1",
+      "dependsOn": [
+        "UpdateAPPVNet1DNS",
+        "UpdateAPPVNet2DNS"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/restartvm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('dc1name')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                                                         
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "configdns",
+      "dependsOn": [
+        "restartdc1"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/configdns.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('dc1name')]"
+              },
+              "DomainName": {
+                "value": "[variables('DomainName')]"
+              },              
+              "ReverseLookup1": {
+                "value": "[variables('ReverseLookup1')]"
+              },                                                                                                            
+              "ReverseLookup2": {
+                "value": "[variables('ReverseLookup2')]"
+              },                                                                                                                          
+              "dc1lastoctet": {
+                "value": "[variables('dc1lastoctet')]"
+              },                                                                                                                          
+              "dc2lastoctet": {
+                "value": "[variables('dc2lastoctet')]"
+              },                                                                                                                                        
+              "ex1IP": {
+                "value": "[variables('ex1IP')]"
+              },                                                                                                                          
+              "ex2IP": {
+                "value": "[variables('ex2IP')]"
+              },                                                                                                                                                                                                                                                                                                        
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                                           
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },                      
   ]
 }
