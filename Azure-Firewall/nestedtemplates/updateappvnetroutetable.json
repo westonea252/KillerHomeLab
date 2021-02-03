@@ -1,0 +1,182 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "vnetName": {
+        "type": "string",
+        "metadata": {
+          "description": "VNet name"
+        }
+      },
+      "vnetprefix": {
+        "type": "string",
+        "metadata": {
+          "description": "VNet prefix"
+        }
+      },
+      "subnet1Name": {
+        "type": "string",
+        "metadata": {
+          "description": "Subnet 1 Name"
+        }
+      },      
+      "subnet1Prefix": {
+        "type": "string",
+        "metadata": {
+          "description": "Subnet 1 Prefix"
+        }
+      }, 
+      "subnet2Name": {
+        "type": "string",
+        "metadata": {
+          "description": "Subnet 2 Name"
+        }
+      },      
+      "subnet2Prefix": {
+        "type": "string",
+        "metadata": {
+          "description": "Subnet 2 Prefix"
+        }
+      }, 
+      "subnet3Name": {
+        "type": "string",
+        "metadata": {
+          "description": "Subnet 3 Name"
+        }
+      },      
+      "subnet3Prefix": {
+        "type": "string",
+        "metadata": {
+          "description": "Subnet 3 Prefix"
+        }
+      }, 
+      "subnet4Name": {
+        "type": "string",
+        "metadata": {
+          "description": "Subnet 4 Name"
+        }
+      },      
+      "subnet4Prefix": {
+        "type": "string",
+        "metadata": {
+          "description": "Subnet 4 Prefix"
+        }
+      }, 
+      "subnet5Name": {
+        "type": "string",
+        "metadata": {
+          "description": "Subnet 5 Name"
+        }
+      },      
+      "subnet5Prefix": {
+        "type": "string",
+        "metadata": {
+          "description": "Subnet 5 Prefix"
+        }
+      }, 
+      "subnet6Name": {
+        "type": "string",
+        "metadata": {
+          "description": "Subnet 6 Name"
+        }
+      },      
+      "subnet6Prefix": {
+        "type": "string",
+        "metadata": {
+          "description": "Subnet 6 Prefix"
+        }
+      },   
+      "RouteTableName": {
+        "type": "string",
+        "metadata": {
+          "description": "Route Table Name"
+        }
+      },                                                 
+      "location": {
+        "type": "string",
+        "metadata": {
+          "description": "Region of Resources"
+        }
+      }
+    },
+  "variables": {
+      "RouteTableId": "[resourceId(resourceGroup().name, 'Microsoft.Network/routeTables', parameters('RouteTableName'))]"      
+  },    
+  "resources": [
+    {
+      "type": "Microsoft.Network/virtualNetworks",
+      "name": "[parameters('vnetName')]",
+      "apiVersion": "2020-04-01",
+      "location": "[parameters('location')]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[parameters('vnetprefix')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[parameters('subnet1Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('subnet1Prefix')]",
+              "RouteTable": {
+                "id": "[variables('RouteTableId')]"
+              }              
+            }
+          },
+          {
+            "name": "[parameters('subnet2Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('subnet2Prefix')]",
+              "RouteTable": {
+                "id": "[variables('RouteTableId')]"
+              } 
+            }
+          },
+          {
+            "name": "[parameters('subnet3Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('subnet3Prefix')]",
+              "RouteTable": {
+                "id": "[variables('RouteTableId')]"
+              } 
+            }
+          },
+          {
+            "name": "[parameters('subnet4Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('subnet4Prefix')]",
+              "RouteTable": {
+                "id": "[variables('RouteTableId')]"
+              } 
+            }
+          },
+          {
+            "name": "[parameters('subnet5Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('subnet5Prefix')]",
+              "RouteTable": {
+                "id": "[variables('RouteTableId')]"
+              } 
+            }
+          },
+          {
+            "name": "[parameters('subnet6Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('subnet6Prefix')]",
+              "RouteTable": {
+                "id": "[variables('RouteTableId')]"
+              } 
+            }
+          }                                                  
+        ]
+      }
+    }
+  ],
+"outputs": {
+    "vnetName": {
+        "type": "string",
+        "value": "[parameters('vnetName')]"
+    }
+  }  
+}

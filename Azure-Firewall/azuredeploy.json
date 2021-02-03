@@ -32,13 +32,20 @@
         "description": "Environment Naming Convention"
       }
     },
-    "vnet1ID": {
+    "DMZVNet1ID": {
+      "type": "string",
+      "defaultValue": "10.0",
+      "metadata": {
+        "description": "DMZ VNet1 Prefix"
+      }
+    },    
+    "APPVNet1ID": {
       "type": "string",
       "defaultValue": "10.1",
       "metadata": {
-        "description": "VNet1 Prefix"
+        "description": "APP VNet1 Prefix"
       }
-    },    
+    },        
     "OSVersion": {
         "type": "string",
         "defaultValue": "2019-Datacenter",
@@ -73,49 +80,63 @@
     }    
   },
   "variables": {
-    "vnet1Name": "[concat(parameters('NamingConvention'),'-VNet1')]",
-    "vnet1Prefix": "[concat(parameters('vnet1ID'),'.0.0/16')]",
-    "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet1')]",    
-    "vnet1subnet1Prefix": "[concat(parameters('vnet1ID'),'.1.0/24')]",    
-    "vnet1BastionsubnetPrefix": "[concat(parameters('vnet1ID'),'.253.0/24')]",           
-    "vnet1FirewallsubnetPrefix": "[concat(parameters('vnet1ID'),'.254.0/24')]",
+    "DMZVNet1Name": "[concat(parameters('NamingConvention'),'-DMZ-VNet1')]",
+    "DMZVNet1Prefix": "[concat(parameters('DMZVNet1ID'),'.0.0/16')]",
+    "DMZVNet1subnet1Name": "[concat(parameters('NamingConvention'),'-DMZ-VNet1-Subnet1')]",    
+    "DMZVNet1subnet1Prefix": "[concat(parameters('DMZVNet1ID'),'.1.0/24')]",    
+    "DMZVNet1BastionsubnetPrefix": "[concat(parameters('DMZVNet1ID'),'.253.0/24')]",           
+    "DMZVNet1FirewallsubnetPrefix": "[concat(parameters('DMZVNet1ID'),'.254.0/24')]",
+    "APPVNet1Name": "[concat(parameters('NamingConvention'),'-APP-VNet1')]",
+    "APPVNet1Prefix": "[concat(parameters('APPVNet1ID'),'.0.0/16')]",
+    "APPVNet1subnet1Name": "[concat(parameters('NamingConvention'),'-APP-WEB-Subnet1')]",    
+    "APPVNet1subnet1Prefix": "[concat(parameters('APPVNet1ID'),'.1.0/24')]",    
+    "APPVNet1subnet2Name": "[concat(parameters('NamingConvention'),'-APP-EX-Subnet1')]",    
+    "APPVNet1subnet2Prefix": "[concat(parameters('APPVNet1ID'),'.2.0/24')]",
+    "APPVNet1subnet3Name": "[concat(parameters('NamingConvention'),'-APP-DB-Subnet1')]",    
+    "APPVNet1subnet3Prefix": "[concat(parameters('APPVNet1ID'),'.3.0/24')]",            
+    "APPVNet1subnet4Name": "[concat(parameters('NamingConvention'),'-APP-AD-Subnet1')]",    
+    "APPVNet1subnet4Prefix": "[concat(parameters('APPVNet1ID'),'.4.0/24')]",            
+    "APPVNet1subnet5Name": "[concat(parameters('NamingConvention'),'-APP-ID-Subnet1')]",    
+    "APPVNet1subnet5Prefix": "[concat(parameters('APPVNet1ID'),'.5.0/24')]",                
+    "APPVNet1subnet6Name": "[concat(parameters('NamingConvention'),'-APP-IF-Subnet1')]",    
+    "APPVNet1subnet6Prefix": "[concat(parameters('APPVNet1ID'),'.6.0/24')]",                
     "FirewallName": "[concat(parameters('NamingConvention'),'-Firewall')]",                   
-    "RouteTableName": "[concat(parameters('NamingConvention'),'-RT1')]",                       
-    "vmname": "[concat(parameters('NamingConvention'),'-vm-01')]",                      
-    "vmIP": "[concat(parameters('vnet1ID'),'.1.',variables('vmlastoctet'))]", 
-    "vmlastoctet": "123",
-    "fwIP": "[concat(parameters('vnet1ID'),'.254.',variables('fwlastoctet'))]",     
+    "RouteTableName": "[concat(parameters('NamingConvention'),'-APP-RT1')]",                       
+    "webname": "[concat(parameters('NamingConvention'),'-web-01')]",                      
+    "webIP": "[concat(parameters('APPVNet1ID'),'.1.',variables('weblastoctet'))]", 
+    "weblastoctet": "123",
+    "fwIP": "[concat(parameters('DMZVNet1ID'),'.254.',variables('fwlastoctet'))]",     
     "fwlastoctet": "4"    
   },  
   "resources": [
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "VNet1",
+      "name": "DMZVNet1",
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/vnet.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/dmzvnet.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
               "vnetName": {
-                  "value": "[variables('vnet1Name')]"
+                  "value": "[variables('DMZVNet1Name')]"
               },
               "vnetprefix": {
-                  "value": "[variables('vnet1Prefix')]"
+                  "value": "[variables('DMZVNet1Prefix')]"
               },
               "subnet1Name": {
-                  "value": "[variables('vnet1subnet1Name')]"
+                  "value": "[variables('DMZVNet1subnet1Name')]"
               },
               "subnet1Prefix": {
-                  "value": "[variables('vnet1subnet1Prefix')]"
+                  "value": "[variables('DMZVNet1subnet1Prefix')]"
               },           
               "BastionsubnetPrefix": {
-                "value": "[variables('vnet1BastionsubnetPrefix')]"
+                "value": "[variables('DMZVNet1BastionsubnetPrefix')]"
               },     
               "FirewallsubnetPrefix": {
-                "value": "[variables('vnet1FirewallsubnetPrefix')]"
+                "value": "[variables('DMZVNet1FirewallsubnetPrefix')]"
               },                            
               "location": {
                   "value": "[resourceGroup().location]"
@@ -126,9 +147,145 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
+      "name": "APPVNet1",
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/appvnet.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "vnetName": {
+                  "value": "[variables('APPVNet1Name')]"
+              },
+              "vnetprefix": {
+                  "value": "[variables('APPVNet1Prefix')]"
+              },
+              "subnet1Name": {
+                  "value": "[variables('APPVNet1subnet1Name')]"
+              },
+              "subnet1Prefix": {
+                  "value": "[variables('APPVNet1subnet1Prefix')]"
+              },           
+              "subnet2Name": {
+                  "value": "[variables('APPVNet1subnet2Name')]"
+              },
+              "subnet2Prefix": {
+                  "value": "[variables('APPVNet1subnet2Prefix')]"
+              },           
+              "subnet3Name": {
+                  "value": "[variables('APPVNet1subnet3Name')]"
+              },
+              "subnet3Prefix": {
+                  "value": "[variables('APPVNet1subnet3Prefix')]"
+              },           
+              "subnet4Name": {
+                  "value": "[variables('APPVNet1subnet4Name')]"
+              },
+              "subnet4Prefix": {
+                  "value": "[variables('APPVNet1subnet4Prefix')]"
+              },           
+              "subnet5Name": {
+                  "value": "[variables('APPVNet1subnet5Name')]"
+              },
+              "subnet5Prefix": {
+                  "value": "[variables('APPVNet1subnet5Prefix')]"
+              },           
+              "subnet6Name": {
+                  "value": "[variables('APPVNet1subnet6Name')]"
+              },
+              "subnet6Prefix": {
+                  "value": "[variables('APPVNet1subnet6Prefix')]"
+              },                                                                   
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    }, 
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "PeeringToSite2",
+      "dependsOn": [
+        "DMZVNet1",
+        "APPVNet1"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/peering.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "SourceVNetName": {
+                "value": "[variables('APPVNet1Name')]"
+              },
+              "TargetVNetName": {
+                "value": "[variables('DMZVNet1Name')]"
+              },              
+              "allowVirtualNetworkAccess": {
+                "value": "true"
+              },                                                                                                                                                                                                                                                                                                           
+              "allowForwardedTraffic": {
+                "value": "true"
+              },                                                                                                                                                                                                                                                                                                           
+              "allowGatewayTransit": {
+                "value": "false"
+              },
+              "useRemoteGateways": {
+                "value": "false"
+              },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "PeeringToSite1",
+      "dependsOn": [
+        "PeeringToSite2"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/peering.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "SourceVNetName": {
+                "value": "[variables('DMZVNet1Name')]"
+              },
+              "TargetVNetName": {
+                "value": "[variables('APPVNet1Name')]"
+              },              
+              "allowVirtualNetworkAccess": {
+                "value": "true"
+              },                                                                                                                                                                                                                                                                                                           
+              "allowForwardedTraffic": {
+                "value": "true"
+              },                                                                                                                                                                                                                                                                                                           
+              "allowGatewayTransit": {
+                "value": "false"
+              },
+              "useRemoteGateways": {
+                "value": "false"
+              },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },               
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
       "name": "BastionHost1",
       "dependsOn": [
-        "VNet1"
+        "DMZVNet1"
       ],
       "properties": {
           "mode": "Incremental",
@@ -138,13 +295,13 @@
           },
           "parameters": {
               "publicIPAddressName": {
-                "value": "[concat(variables('vnet1Name'),'-Bastion-pip')]"
+                "value": "[concat(variables('DMZVNet1Name'),'-Bastion-pip')]"
               },
               "AllocationMethod": {
                 "value": "Static"
               },              
               "vnetName": {
-                  "value": "[variables('vnet1Name')]"
+                  "value": "[variables('DMZVNet1Name')]"
               },
               "subnetName": {
                   "value": "AzureBastionSubnet"
@@ -160,7 +317,7 @@
       "apiVersion": "2019-10-01",
       "name": "DeployAzureFirewall",
       "dependsOn": [
-        "VNet1"
+        "DMZVNet1"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -173,7 +330,7 @@
                   "value": "[variables('FirewallName')]"
               },
               "vnetName": {
-                  "value": "[variables('vnet1Name')]"
+                  "value": "[variables('DMZVNet1Name')]"
               },
               "subnetName": {
                   "value": "AzureFirewallSubnet"
@@ -187,9 +344,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "DeployRouteTable",
+      "name": "DeployAPPRouteTable",
       "dependsOn": [
-        "VNet1"
+        "APPVNet1"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -215,33 +372,57 @@
       "apiVersion": "2019-10-01",
       "name": "UpdateSubnetRouteTable",
       "dependsOn": [
-        "DeployRouteTable"
+        "DeployAPPRouteTable"
       ],      
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/updatevnetroutetable.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/updateappvnetroutetable.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
               "vnetName": {
-                  "value": "[variables('vnet1Name')]"
+                  "value": "[variables('APPVNet1Name')]"
               },
               "vnetprefix": {
-                  "value": "[variables('vnet1Prefix')]"
+                  "value": "[variables('APPVNet1Prefix')]"
               },
               "subnet1Name": {
-                  "value": "[variables('vnet1subnet1Name')]"
+                  "value": "[variables('APPVNet1subnet1Name')]"
               },
               "subnet1Prefix": {
-                  "value": "[variables('vnet1subnet1Prefix')]"
+                  "value": "[variables('APPVNet1subnet1Prefix')]"
               },           
-              "BastionsubnetPrefix": {
-                "value": "[variables('vnet1BastionsubnetPrefix')]"
-              },     
-              "FirewallsubnetPrefix": {
-                "value": "[variables('vnet1FirewallsubnetPrefix')]"
+              "subnet2Name": {
+                  "value": "[variables('APPVNet1subnet2Name')]"
               },
+              "subnet2Prefix": {
+                  "value": "[variables('APPVNet1subnet2Prefix')]"
+              },           
+              "subnet3Name": {
+                  "value": "[variables('APPVNet1subnet3Name')]"
+              },
+              "subnet3Prefix": {
+                  "value": "[variables('APPVNet1subnet3Prefix')]"
+              },           
+              "subnet4Name": {
+                  "value": "[variables('APPVNet1subnet4Name')]"
+              },
+              "subnet4Prefix": {
+                  "value": "[variables('APPVNet1subnet4Prefix')]"
+              },           
+              "subnet5Name": {
+                  "value": "[variables('APPVNet1subnet5Name')]"
+              },
+              "subnet5Prefix": {
+                  "value": "[variables('APPVNet1subnet5Prefix')]"
+              },           
+              "subnet6Name": {
+                  "value": "[variables('APPVNet1subnet6Name')]"
+              },
+              "subnet6Prefix": {
+                  "value": "[variables('APPVNet1subnet6Prefix')]"
+              },                                                                   
               "RouteTableName": {
                   "value": "[variables('RouteTableName')]"
               },                                          
@@ -256,7 +437,7 @@
       "apiVersion": "2019-10-01",
       "name": "deployVM",
       "dependsOn": [
-        "VNet1"
+        "APPVNet1"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -266,10 +447,10 @@
           },
           "parameters": {
               "computerName": {
-                  "value": "[variables('vmname')]"
+                  "value": "[variables('webname')]"
               },
               "computerIP": {
-                  "value": "[variables('vmIP')]"
+                  "value": "[variables('webIP')]"
               },
               "Publisher": {
                   "value": "MicrosoftWindowsServer"
@@ -287,10 +468,10 @@
                 "value": "[parameters('VMSize')]"
               },
               "vnetName": {
-                "value": "[variables('vnet1Name')]"
+                "value": "[variables('APPVNet1Name')]"
               },            
               "subnetName": {
-                "value": "[variables('vnet1subnet1Name')]"
+                "value": "[variables('APPVNet1subnet1Name')]"
               },                                                                                                                   
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
