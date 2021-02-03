@@ -1390,7 +1390,7 @@
                 "value": "[variables('APPVNet2Name')]"
               },            
               "subnetName": {
-                "value": "[variables('APPVNet2subnet1Name')]"
+                "value": "[variables('APPVNet2subnet4Name')]"
               },            
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
