@@ -247,7 +247,7 @@
     "APPVNet1subnet6Name": "[concat(parameters('NamingConvention'),'-APP-VNet1-IF-Subnet1')]",    
     "APPVNet1subnet6Prefix": "[concat(parameters('APPVNet1ID'),'.6.0/24')]",                
     "APPVNet1subnet7Name": "[concat(parameters('NamingConvention'),'-APP-VNet1-WK-Subnet1')]",    
-    "APPVNet1subnet7Prefix": "[concat(parameters('APPVNet2ID'),'.7.0/24')]",          
+    "APPVNet1subnet7Prefix": "[concat(parameters('APPVNet1ID'),'.7.0/24')]",          
     "APPVNet2Name": "[concat(parameters('NamingConvention'),'-APP-VNet2')]",
     "APPVNet2Prefix": "[concat(parameters('APPVNet2ID'),'.0.0/16')]",
     "APPVNet2subnet1Name": "[concat(parameters('NamingConvention'),'-APP-VNet2-WEB-Subnet1')]",    
