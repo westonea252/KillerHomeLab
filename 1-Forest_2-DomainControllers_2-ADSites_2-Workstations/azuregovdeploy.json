@@ -424,13 +424,7 @@
               },            
               "subnetName": {
                 "value": "[variables('vnet1subnet1Name')]"
-              },            
-              "vnetprefix": {
-                "value": "[variables('vnet1Prefix')]"
-              },            
-              "subnetPrefix": {
-                "value": "[variables('vnet1subnet1Prefix')]"
-              },                                                                                                            
+              },                                                                                                             
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
               },                                                                                                            
@@ -842,13 +836,7 @@
               },            
               "subnetName": {
                 "value": "[variables('vnet2subnet1Name')]"
-              },            
-              "vnetprefix": {
-                "value": "[variables('vnet2Prefix')]"
-              },            
-              "subnetPrefix": {
-                "value": "[variables('vnet2subnet1Prefix')]"
-              },                                                                                                            
+              },                                                                                                                    
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
               },                                                                                                            
@@ -1020,13 +1008,7 @@
               },            
               "subnetName": {
                 "value": "[variables('vnet1subnet2Name')]"
-              },            
-              "vnetprefix": {
-                "value": "[variables('vnet1Prefix')]"
-              },            
-              "subnetPrefix": {
-                "value": "[variables('vnet1subnet2Prefix')]"
-              },                                                                                                            
+              },                                                                                                                 
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
               },                                                                                                            
@@ -1117,12 +1099,6 @@
               },            
               "subnetName": {
                 "value": "[variables('vnet2subnet2Name')]"
-              },            
-              "vnetprefix": {
-                "value": "[variables('vnet2Prefix')]"
-              },            
-              "subnetPrefix": {
-                "value": "[variables('vnet2subnet2Prefix')]"
               },                                                                                                            
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"

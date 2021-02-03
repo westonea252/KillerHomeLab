@@ -56,18 +56,6 @@
               "description": "Existing subnet name that contains the domain controller"
           }
       },
-      "vnetPrefix": {
-          "type": "string",
-          "metadata": {
-              "description": "VNet IP Prefix"
-          }
-      },
-      "subnetPrefix": {
-          "type": "string",
-          "metadata": {
-              "description": "Subnet IP Prefix"
-          }
-      },
       "adminUsername": {
           "type": "string",
           "metadata": {
@@ -94,7 +82,6 @@
       "imageOffer": "[parameters('Offer')]",
       "imageSKU": "[parameters('OSVersion')]",
       "subnetId": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]",
-      "virtualNetworkAddressRange": "[parameters('vnetPrefix')]",
       "NicName": "[concat(parameters('computerName'),'-nic')]",
       "NicIPAddress": "[parameters('computerIP')]"
   },
