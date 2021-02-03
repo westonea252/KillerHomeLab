@@ -46,29 +46,57 @@
     }
 },
 "variables": {
-    "publicIPAddressName": "[concat(parameters('FirewallName'),'-pip')]",
+    "webpublicIPAddressName": "[concat(parameters('FirewallName'),'-web-pip')]",
+    "wappublicIPAddressName": "[concat(parameters('FirewallName'),'-wap-pip')]",    
+    "smtppublicIPAddressName": "[concat(parameters('FirewallName'),'-smtp-pip')]",    
     "subnetId": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]"      
 },
 "resources": [
-      {
-          "name": "[variables('publicIPAddressName')]",
-          "type": "Microsoft.Network/publicIPAddresses",
-          "apiVersion": "2018-11-01",
-          "location": "[parameters('location')]",
-          "sku": {
-            "name": "Standard"
-          },
-          "properties": {
-              "publicIPAllocationMethod": "Static"
-          }
-      },
+    {
+        "name": "[variables('webpublicIPAddressName')]",
+        "type": "Microsoft.Network/publicIPAddresses",
+        "apiVersion": "2018-11-01",
+        "location": "[parameters('location')]",
+        "sku": {
+          "name": "Standard"
+        },
+        "properties": {
+            "publicIPAllocationMethod": "Static"
+        }
+    },
+    {
+        "name": "[variables('wappublicIPAddressName')]",
+        "type": "Microsoft.Network/publicIPAddresses",
+        "apiVersion": "2018-11-01",
+        "location": "[parameters('location')]",
+        "sku": {
+          "name": "Standard"
+        },
+        "properties": {
+            "publicIPAllocationMethod": "Static"
+        }
+    },    
+    {
+        "name": "[variables('smtppublicIPAddressName')]",
+        "type": "Microsoft.Network/publicIPAddresses",
+        "apiVersion": "2018-11-01",
+        "location": "[parameters('location')]",
+        "sku": {
+          "name": "Standard"
+        },
+        "properties": {
+            "publicIPAllocationMethod": "Static"
+        }
+    },    
     {
       "type": "Microsoft.Network/azureFirewalls",
       "apiVersion": "2020-04-01",
       "name": "[parameters('FirewallName')]",
       "location": "[parameters('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('publicIPAddressName')))]"
+        "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('webpublicIPAddressName')))]",
+        "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('wappublicIPAddressName')))]",
+        "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('smtppublicIPAddressName')))]"                
       ],
       "properties": {
         "sku": {
@@ -78,16 +106,38 @@
         "threatIntelMode": "Alert",
         "ipConfigurations": [
             {
-            "Name": "PrimaryIPConfiguration",
+            "Name": "WEB",
             "Properties":  {
                 "subnet":   {
                     "id":   "[variables('subnetId')]"
                     },
                 "publicIPAddress":  {
-                    "id":   "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('publicIPAddressName')))]"
+                    "id":   "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('webpublicIPAddressName')))]"
                     }
                 }
-            }
+            },
+            {
+            "Name": "WAP",
+            "Properties":  {
+                "subnet":   {
+                    "id":   "[variables('subnetId')]"
+                    },
+                "publicIPAddress":  {
+                    "id":   "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('wappublicIPAddressName')))]"
+                    }
+                }
+            },
+            {
+            "Name": "SMTP",
+            "Properties":  {
+                "subnet":   {
+                    "id":   "[variables('subnetId')]"
+                    },
+                "publicIPAddress":  {
+                    "id":   "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('smtppublicIPAddressName')))]"
+                    }
+                }
+            }                        
         ],
         "applicationRuleCollections": [
           {
@@ -99,7 +149,7 @@
               },
               "rules": [
                 {
-                  "name": "Azure-com-Portal",
+                  "name": "Azure-Portals",
                   "protocols": [
                     {
                       "protocolType": "Http",
@@ -111,22 +161,28 @@
                     }
                   ],
                   "targetFqdns": [
-                    "portal.azure.com"
+                    "portal.azure.com",
+                    "portal.azure.us"
                   ],
                   "sourceAddresses": [
                     "*"
                   ]
                 },
                 {
-                  "name": "Azure-gov-Portal",
+                  "name": "GitHub",
                   "protocols": [
+                    {
+                      "protocolType": "Http",
+                      "port": 80
+                    },
                     {
                       "protocolType": "Https",
                       "port": 443
                     }
                   ],
                   "targetFqdns": [
-                    "portal.azure.us"
+                    "raw.githubusercontent.com",
+                    "github.com"
                   ],
                   "sourceAddresses": [
                     "*"
@@ -174,7 +230,7 @@
                   "sourceAddresses": [
                     "*"
                   ],
-                  "destinationAddresses": [ "[reference(resourceId('Microsoft.Network/publicIPAddresses/', concat(variables('publicIPAddressName')))).ipAddress]" ],
+                  "destinationAddresses": [ "[reference(resourceId('Microsoft.Network/publicIPAddresses/', concat(variables('webpublicIPAddressName')))).ipAddress]" ],
                   "destinationPorts": [
                     "80"
                   ]
@@ -189,7 +245,7 @@
                   "sourceAddresses": [
                     "*"
                   ],
-                  "destinationAddresses": [ "[reference(resourceId('Microsoft.Network/publicIPAddresses/', concat(variables('publicIPAddressName')))).ipAddress]" ],
+                  "destinationAddresses": [ "[reference(resourceId('Microsoft.Network/publicIPAddresses/', concat(variables('wappublicIPAddressName')))).ipAddress]" ],
                   "destinationPorts": [
                     "443"
                   ]
@@ -204,7 +260,7 @@
                   "sourceAddresses": [
                     "*"
                   ],
-                  "destinationAddresses": [ "[reference(resourceId('Microsoft.Network/publicIPAddresses/', concat(variables('publicIPAddressName')))).ipAddress]" ],
+                  "destinationAddresses": [ "[reference(resourceId('Microsoft.Network/publicIPAddresses/', concat(variables('smtppublicIPAddressName')))).ipAddress]" ],
                   "destinationPorts": [
                     "25"
                   ]
