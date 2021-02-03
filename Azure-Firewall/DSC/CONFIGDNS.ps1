@@ -7,6 +7,8 @@
         [String]$dc2lastoctet,
         [String]$ex1IP,
         [String]$ex2IP,
+        [String]$icaIP,
+        [String]$ocspIP,
         [String]$domainName,
         [String]$ReverseLookup1,
         [String]$ReverseLookup2
@@ -50,6 +52,24 @@
             Type      = 'Ptr'
             Ensure    = 'Present'
             DependsOn = "[xDnsServerADZone]ReverseADZone2"
+        }
+
+        xDnsRecord crlrecord
+        {
+            Name      = "crl"
+            Zone      = "$domainName"
+            Target    = "$icaIP"
+            Type      = 'ARecord'
+            Ensure    = 'Present'
+        }
+
+        xDnsRecord ocsprecord
+        {
+            Name      = "ocsp"
+            Zone      = "$domainName"
+            Target    = "$ocspIP"
+            Type      = 'ARecord'
+            Ensure    = 'Present'
         }
 
         xDnsRecord owa2019record1

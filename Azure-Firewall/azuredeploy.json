@@ -280,24 +280,22 @@
     "ReverseLookup1": "[concat('1.',parameters('ReverseLookup1'))]",    
     "ReverseLookup2": "[concat('1.',parameters('ReverseLookup2'))]",        
     "dc1lastoctet": "100",
-
-
+    "rcaIP": "[concat(parameters('APPVNet1ID'),'.6.',variables('rcalastoctet'))]", 
+    "rcalastoctet": "100",
+    "icaIP": "[concat(parameters('APPVNet1ID'),'.6.',variables('icalastoctet'))]", 
+    "icalastoctet": "101",    
+    "ocspIP": "[concat(parameters('APPVNet1ID'),'.6.',variables('ocsplastoctet'))]", 
+    "ocsplastoctet": "102",        
     "EX1IP": "[concat(parameters('APPVNet1ID'),'.2.',variables('ex1lastoctet'))]", 
     "ex1lastoctet": "100",
     "EX2IP": "[concat(parameters('APPVNet2ID'),'.2.',variables('ex2lastoctet'))]", 
     "ex2lastoctet": "100",        
-
-
     "wk1name": "[concat(parameters('NamingConvention'),'-wk-01')]",           
     "wk1IP": "[concat(parameters('APPVNet1ID'),'.7.',variables('wk1lastoctet'))]",        
     "wk1lastoctet": "100",            
-
-    
     "wk2name": "[concat(parameters('NamingConvention'),'-wk-02')]",           
     "wk2IP": "[concat(parameters('APPVNet2ID'),'.7.',variables('wk2lastoctet'))]",        
     "wk2lastoctet": "100",                
-
-
     "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
     "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]"     
@@ -1258,7 +1256,13 @@
               },                                                                                                                          
               "ex2IP": {
                 "value": "[variables('ex2IP')]"
-              },                                                                                                                                                                                                                                                                                                        
+              },  
+              "icaIP": {
+                "value": "[variables('icaIP')]"
+              },                                                                                                                          
+              "ocspIP": {
+                "value": "[variables('ocspIP')]"
+              },                                                                                                                                                                                                                                                                                                                      
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
               },                                                                                                            
