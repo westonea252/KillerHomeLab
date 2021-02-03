@@ -104,7 +104,10 @@
     "RouteTableName": "[concat(parameters('NamingConvention'),'-APP-RT1')]",                       
     "webname": "[concat(parameters('NamingConvention'),'-web-01')]",                      
     "webIP": "[concat(parameters('APPVNet1ID'),'.1.',variables('weblastoctet'))]", 
-    "weblastoctet": "123",
+    "weblastoctet": "100",
+    "EXIP": "[concat(parameters('APPVNet1ID'),'.2.',variables('exlastoctet'))]", 
+    "exlastoctet": "100",
+
     "fwIP": "[concat(parameters('DMZVNet1ID'),'.254.',variables('fwlastoctet'))]",     
     "fwlastoctet": "4"    
   },  
@@ -334,7 +337,16 @@
               },
               "subnetName": {
                   "value": "AzureFirewallSubnet"
+              },         
+              "webIP": {
+                  "value": "[variables('webIP')]"
+              },                               
+              "OWAIP": {
+                  "value": "[variables('EXIP')]"
               },                          
+              "SMTPIP": {
+                  "value": "[variables('EXIP')]"
+              },                                                             
               "location": {
                   "value": "[resourceGroup().location]"
               }

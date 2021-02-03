@@ -13,13 +13,31 @@
         "metadata": {
             "description": "Existing VNET Name that contains the domain controller"
         }
-    },
+    },             
     "subnetName": {
         "type": "string",
         "metadata": {
             "description": "Existing subnet name that contains the domain controller"
         }
+    },  
+    "webIP": {
+        "type": "string",
+        "metadata": {
+            "description": "Web IP"
+        }
     },    
+    "OWAIP": {
+        "type": "string",
+        "metadata": {
+            "description": "OWA IP"
+        }
+    },        
+    "SMTPIP": {
+        "type": "string",
+        "metadata": {
+            "description": "SMTP IP"
+        }
+    },       
     "location": {
         "type": "string",
         "metadata": {
@@ -73,7 +91,7 @@
         ],
         "applicationRuleCollections": [
           {
-            "name": "web",
+            "name": "Allowed-Sites",
             "properties": {
               "priority": 100,
               "action": {
@@ -81,7 +99,7 @@
               },
               "rules": [
                 {
-                  "name": "wan-address",
+                  "name": "Azure-com-Portal",
                   "protocols": [
                     {
                       "protocolType": "Http",
@@ -93,33 +111,29 @@
                     }
                   ],
                   "targetFqdns": [
-                    "getmywanip.com"
+                    "portal.azure.com"
                   ],
                   "sourceAddresses": [
                     "*"
                   ]
                 },
                 {
-                  "name": "google",
+                  "name": "Azure-gov-Portal",
                   "protocols": [
-                    {
-                      "protocolType": "Http",
-                      "port": 80
-                    },
                     {
                       "protocolType": "Https",
                       "port": 443
                     }
                   ],
                   "targetFqdns": [
-                    "www.google.com"
+                    "portal.azure.us"
                   ],
                   "sourceAddresses": [
-                    "10.0.1.0/24"
+                    "*"
                   ]
                 },
                 {
-                  "name": "wupdate",
+                  "name": "WindowsUpdate",
                   "protocols": [
                     {
                       "protocolType": "Http",
@@ -143,7 +157,7 @@
         ],
         "natRuleCollections": [
           {
-            "name": "Coll-01",
+            "name": "Inbound-Traffic",
             "properties": {
               "priority": 100,
               "action": {
@@ -151,35 +165,50 @@
               },
               "rules": [
                 {
-                  "name": "rdp-01",
+                  "name": "Web-Inbound",
                   "protocols": [
                     "TCP"
                   ],
-                  "translatedAddress": "10.0.1.4",
-                  "translatedPort": "3389",
+                  "translatedAddress": "[parameters('webIP')]",
+                  "translatedPort": "80",
                   "sourceAddresses": [
                     "*"
                   ],
                   "destinationAddresses": [ "[reference(resourceId('Microsoft.Network/publicIPAddresses/', concat(variables('publicIPAddressName')))).ipAddress]" ],
                   "destinationPorts": [
-                    "3389"
+                    "80"
                   ]
                 },
                 {
-                  "name": "rdp-02",
+                  "name": "OWA-Inbound",
                   "protocols": [
                     "TCP"
                   ],
-                  "translatedAddress": "10.0.1.5",
-                  "translatedPort": "3389",
+                  "translatedAddress": "[parameters('OWAIP')]",
+                  "translatedPort": "443",
                   "sourceAddresses": [
                     "*"
                   ],
                   "destinationAddresses": [ "[reference(resourceId('Microsoft.Network/publicIPAddresses/', concat(variables('publicIPAddressName')))).ipAddress]" ],
                   "destinationPorts": [
-                    "3389"
+                    "443"
                   ]
-                }
+                },
+                {
+                  "name": "SMTP-Inbound",
+                  "protocols": [
+                    "TCP"
+                  ],
+                  "translatedAddress": "[parameters('SMTPIP')]",
+                  "translatedPort": "25",
+                  "sourceAddresses": [
+                    "*"
+                  ],
+                  "destinationAddresses": [ "[reference(resourceId('Microsoft.Network/publicIPAddresses/', concat(variables('publicIPAddressName')))).ipAddress]" ],
+                  "destinationPorts": [
+                    "25"
+                  ]
+                }                
               ]
             }
           }
