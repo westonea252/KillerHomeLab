@@ -97,7 +97,19 @@
         "metadata": {
           "description": "Subnet 7 Prefix"
         }
-      },                                                   
+      },                                                             
+      "RouteTableName": {
+        "type": "string",
+        "metadata": {
+          "description": "Route Table Name"
+        }
+      },  
+      "DNSServerIP": {
+        "type": "array",
+        "metadata": {
+          "description": "The DNS address(es) of the DNS Server(s) used by the VNET"
+        }
+      },      
       "location": {
         "type": "string",
         "metadata": {
@@ -105,6 +117,9 @@
         }
       }
     },
+  "variables": {
+      "RouteTableId": "[resourceId(resourceGroup().name, 'Microsoft.Network/routeTables', parameters('RouteTableName'))]"      
+  },    
   "resources": [
     {
       "type": "Microsoft.Network/virtualNetworks",
@@ -116,48 +131,63 @@
           "addressPrefixes": [
             "[parameters('vnetprefix')]"
           ]
-        },
+          },
+          "dhcpOptions": {
+            "dnsServers": "[parameters('DNSServerIP')]"
+          },        
         "subnets": [
           {
             "name": "[parameters('subnet1Name')]",
             "properties": {
-              "addressPrefix": "[parameters('subnet1Prefix')]"
-              
+              "addressPrefix": "[parameters('subnet1Prefix')]",
+              "RouteTable": {
+                "id": "[variables('RouteTableId')]"
+              }              
             }
           },
           {
             "name": "[parameters('subnet2Name')]",
             "properties": {
-              "addressPrefix": "[parameters('subnet2Prefix')]"
-              
+              "addressPrefix": "[parameters('subnet2Prefix')]",
+              "RouteTable": {
+                "id": "[variables('RouteTableId')]"
+              } 
             }
           },
           {
             "name": "[parameters('subnet3Name')]",
             "properties": {
-              "addressPrefix": "[parameters('subnet3Prefix')]"
-              
+              "addressPrefix": "[parameters('subnet3Prefix')]",
+              "RouteTable": {
+                "id": "[variables('RouteTableId')]"
+              } 
             }
           },
           {
             "name": "[parameters('subnet4Name')]",
             "properties": {
-              "addressPrefix": "[parameters('subnet4Prefix')]"
-              
+              "addressPrefix": "[parameters('subnet4Prefix')]",
+              "RouteTable": {
+                "id": "[variables('RouteTableId')]"
+              } 
             }
           },
           {
             "name": "[parameters('subnet5Name')]",
             "properties": {
-              "addressPrefix": "[parameters('subnet5Prefix')]"
-              
+              "addressPrefix": "[parameters('subnet5Prefix')]",
+              "RouteTable": {
+                "id": "[variables('RouteTableId')]"
+              } 
             }
           },
           {
             "name": "[parameters('subnet6Name')]",
             "properties": {
-              "addressPrefix": "[parameters('subnet6Prefix')]"
-              
+              "addressPrefix": "[parameters('subnet6Prefix')]",
+              "RouteTable": {
+                "id": "[variables('RouteTableId')]"
+              } 
             }
           },
           {

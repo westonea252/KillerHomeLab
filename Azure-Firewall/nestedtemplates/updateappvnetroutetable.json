@@ -91,7 +91,19 @@
         "metadata": {
           "description": "Route Table Name"
         }
-      },                                                 
+      },  
+      "subnet7Name": {
+        "type": "string",
+        "metadata": {
+          "description": "Subnet 7 Name"
+        }
+      },      
+      "subnet7Prefix": {
+        "type": "string",
+        "metadata": {
+          "description": "Subnet 7 Prefix"
+        }
+      },                                                      
       "location": {
         "type": "string",
         "metadata": {
@@ -168,7 +180,14 @@
                 "id": "[variables('RouteTableId')]"
               } 
             }
-          }                                                  
+          },
+          {
+            "name": "[parameters('subnet7Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('subnet7Prefix')]"
+              
+            }
+          }                                                            
         ]
       }
     }
