@@ -11,6 +11,9 @@ The Template deploys the folowing:
 - 1 - APP Virtual Network (6 Subnets - WEB, EX, DB, AD, ID, IF)
 - 1 - Azure Firewall
 - 3 - Azure Firewall Public IP Address
+- 1 - Bastion Host (DMZ VNet)
+- 6 - Network Security Groups
+- 6 - Application Security Groups
 - 1 - IIS Server
 
 Parameters that support changes

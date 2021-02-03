@@ -46,12 +46,25 @@
     }
 },
 "variables": {
+    "publicIPAddressName": "[concat(parameters('FirewallName'),'-pip')]",
     "webpublicIPAddressName": "[concat(parameters('FirewallName'),'-web-pip')]",
     "wappublicIPAddressName": "[concat(parameters('FirewallName'),'-wap-pip')]",    
     "smtppublicIPAddressName": "[concat(parameters('FirewallName'),'-smtp-pip')]",    
     "subnetId": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]"      
 },
 "resources": [
+    {
+        "name": "[variables('publicIPAddressName')]",
+        "type": "Microsoft.Network/publicIPAddresses",
+        "apiVersion": "2018-11-01",
+        "location": "[parameters('location')]",
+        "sku": {
+          "name": "Standard"
+        },
+        "properties": {
+            "publicIPAllocationMethod": "Static"
+        }
+    },
     {
         "name": "[variables('webpublicIPAddressName')]",
         "type": "Microsoft.Network/publicIPAddresses",
@@ -94,6 +107,7 @@
       "name": "[parameters('FirewallName')]",
       "location": "[parameters('location')]",
       "dependsOn": [
+        "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('publicIPAddressName')))]",
         "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('webpublicIPAddressName')))]",
         "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('wappublicIPAddressName')))]",
         "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('smtppublicIPAddressName')))]"                
@@ -106,7 +120,7 @@
         "threatIntelMode": "Alert",
         "ipConfigurations": [
             {
-            "Name": "WEB",
+            "Name": "PrimaryIPConfiguration",
             "Properties":  {
                 "subnet":   {
                     "id":   "[variables('subnetId')]"
@@ -117,11 +131,16 @@
                 }
             },
             {
+            "Name": "WEB",
+            "Properties":  {
+                "publicIPAddress":  {
+                    "id":   "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('webpublicIPAddressName')))]"
+                    }
+                }
+            },
+            {
             "Name": "WAP",
             "Properties":  {
-                "subnet":   {
-                    "id":   "[variables('subnetId')]"
-                    },
                 "publicIPAddress":  {
                     "id":   "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('wappublicIPAddressName')))]"
                     }
@@ -130,9 +149,6 @@
             {
             "Name": "SMTP",
             "Properties":  {
-                "subnet":   {
-                    "id":   "[variables('subnetId')]"
-                    },
                 "publicIPAddress":  {
                     "id":   "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('smtppublicIPAddressName')))]"
                     }

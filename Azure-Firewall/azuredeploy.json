@@ -502,6 +502,7 @@
       "apiVersion": "2019-10-01",
       "name": "InstallIIS",
       "dependsOn": [
+        "DeployAzureFirewall",
         "deployWEBVM"
       ],      
       "properties": {
