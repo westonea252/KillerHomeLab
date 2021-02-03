@@ -7,15 +7,18 @@ Click the button below to deploy
 
 The Template deploys the folowing:
 
-- 1 - Virtual Network
+- 1 - DMZ Virtual Network
+- 1 - APP Virtual Network (6 Subnets - WEB, EX, DB, AD, ID, IF)
 - 1 - Azure Firewall
-- 1 - Server
+- 3 - Azure Firewall Public IP Address
+- 1 - IIS Server
 
 Parameters that support changes
 - Admin Username.  Enter a valid Admin Username
 - Admin Password.  Enter a valid Admin Password
 - WindowsServerLicenseType.  Choose Windows Seer License Type (Example:  Windows_Server or None)
 - Naming Convention. Enter a name that will be used as a naming prefix for (Servers, VNets, etc) you are using.
-- Vnet1ID.  Enter first 2 octets of your desired Address Space for Virtual Network 1 (Example:  10.1)
+- DMZVNet1ID.  Enter first 2 octets of your desired Address Space for your DMZ Virtual Network 1 (Example:  10.0)
+- APPVNet1ID.  Enter first 2 octets of your desired Address Space for your DMZ Virtual Network 1 (Example:  10.1)
 - OSVersion.  Select 2016-Datacenter (Windows 2016) or 2019-Datacenter (Windows 2019) OS Version
 - VMSize.  Enter a Valid VM Size based on which Region the VM is deployed.
