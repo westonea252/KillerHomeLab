@@ -516,7 +516,7 @@
                   "value": "[variables('webname')]"
               },           
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               },                                          
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
