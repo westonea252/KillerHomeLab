@@ -1042,7 +1042,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "UpdateAPPVNet1DNS",
+      "name": "UpdateAPPVNet1DNS-1",
       "dependsOn": [
         "promotedc1"
       ],            
@@ -1118,7 +1118,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "UpdateAPPVNet2DNS",
+      "name": "UpdateAPPVNet2DNS-1",
       "dependsOn": [
         "promotedc1"
       ],            
@@ -1196,8 +1196,8 @@
       "apiVersion": "2019-10-01",
       "name": "restartdc1",
       "dependsOn": [
-        "UpdateAPPVNet1DNS",
-        "UpdateAPPVNet2DNS"
+        "UpdateAPPVNet1DNS-1",
+        "UpdateAPPVNet2DNS-1"
       ],            
       "properties": {
           "mode": "Incremental",
@@ -1270,6 +1270,284 @@
               }
           }
       }
-    },                      
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "createous",
+      "dependsOn": [
+        "configdns"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/createous.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('dc1name')]"
+              },
+              "BaseDN": {
+                "value": "[variables('BaseDN')]"
+              },              
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                                           
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "createsites",
+      "dependsOn": [
+        "createous"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/createsites.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('dc1name')]"
+              },
+              "NamingConvention": {
+                "value": "[parameters('NamingConvention')]"
+              },                                                                                                                          
+              "BaseDN": {
+                "value": "[variables('BaseDN')]"
+              },
+              "Site1Prefix": {
+                "value": "[variables('APPVNet1Prefix')]"
+              },                                                                                                                                                                                                                                                                                                           
+              "Site2Prefix": {
+                "value": "[variables('APPVNet2Prefix')]"
+              },                                                                                                                                                                                                                                                                                                           
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                                                                                                                                                                                                                           
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                                           
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "deployDC2VM",
+      "dependsOn": [
+        "createsites"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-2disk-vm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('dc2name')]"
+              },
+              "computerIP": {
+                  "value": "[variables('dc2IP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsServer"
+              },
+              "Offer": {
+                  "value": "WindowsServer"
+              },
+              "OSVersion": {
+                "value": "[parameters('DC2OSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "[parameters('WindowsServerLicenseType')]"
+              },            
+              "DataDisk1Name": {
+                "value": "[variables('DCDataDisk1Name')]"
+              },            
+              "VMSize": {
+                "value": "[parameters('DC2VMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('APPVNet2Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('APPVNet2subnet1Name')]"
+              },            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },        
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "promotedc2",
+      "dependsOn": [
+        "deployDC2VM"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/otherdc.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('dc2name')]"
+              },
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },
+              "domainName": {
+                "value": "[variables('domainName')]"
+            },              
+              "DNSServerIP": {
+                  "value": "[variables('dc1IP')]"
+              },
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                                                         
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "UpdateAPPVNet2DNS-2",
+      "dependsOn": [
+        "promotedc2"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/updateappvnetdns.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "vnetName": {
+                  "value": "[variables('APPVNet2Name')]"
+              },
+              "vnetprefix": {
+                  "value": "[variables('APPVNet2Prefix')]"
+              },
+              "subnet1Name": {
+                  "value": "[variables('APPVNet2subnet1Name')]"
+              },
+              "subnet1Prefix": {
+                  "value": "[variables('APPVNet2subnet1Prefix')]"
+              },           
+              "subnet2Name": {
+                  "value": "[variables('APPVNet2subnet2Name')]"
+              },
+              "subnet2Prefix": {
+                  "value": "[variables('APPVNet2subnet2Prefix')]"
+              },           
+              "subnet3Name": {
+                  "value": "[variables('APPVNet2subnet3Name')]"
+              },
+              "subnet3Prefix": {
+                  "value": "[variables('APPVNet2subnet3Prefix')]"
+              },           
+              "subnet4Name": {
+                  "value": "[variables('APPVNet2subnet4Name')]"
+              },
+              "subnet4Prefix": {
+                  "value": "[variables('APPVNet2subnet4Prefix')]"
+              },           
+              "subnet5Name": {
+                  "value": "[variables('APPVNet2subnet5Name')]"
+              },
+              "subnet5Prefix": {
+                  "value": "[variables('APPVNet2subnet5Prefix')]"
+              },           
+              "subnet6Name": {
+                  "value": "[variables('APPVNet2subnet6Name')]"
+              },
+              "subnet6Prefix": {
+                  "value": "[variables('APPVNet2subnet6Prefix')]"
+              },      
+              "subnet7Name": {
+                  "value": "[variables('APPVNet2subnet7Name')]"
+              },
+              "subnet7Prefix": {
+                  "value": "[variables('APPVNet2subnet7Prefix')]"
+              },                                                                                 
+              "RouteTableName": {
+                  "value": "[variables('RouteTableName')]"
+              },                                          
+              "DNSServerIP": {
+                "value": [
+                  "[variables('dc2IP')]"
+                ]
+              },                                                                                                            
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "restartdc2",
+      "dependsOn": [
+        "UpdateAPPVNet2DNS-2"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/restartvm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('dc1name')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                                                         
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    }                                 
   ]
 }
