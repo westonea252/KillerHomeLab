@@ -1592,7 +1592,7 @@
       "apiVersion": "2019-10-01",
       "name": "deploySQLVM",
       "dependsOn": [
-        "UpdateAPPVNet1DNS-1"
+        "createsites"
       ],        
       "properties": {
           "mode": "Incremental",
