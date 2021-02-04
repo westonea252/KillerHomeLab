@@ -242,7 +242,8 @@
                   "targetFqdns": [
                     "raw.githubusercontent.com",
                     "github.com",
-                    "killerhomelab.blob.core.windows.net"                                
+                    "killerhomelab.blob.core.windows.net",
+                    "aka.ms"                              
                   ],
                   "sourceAddresses": [
                     "*"
