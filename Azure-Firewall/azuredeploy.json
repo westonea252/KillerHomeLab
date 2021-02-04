@@ -35,7 +35,28 @@
       "metadata": {
           "description": "Windows Client OS License Type"
       }
-    },     
+    }, 
+    "SQLSASUrl": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Enter a valid URL that points to the SQL 2019 or 2017 .ISO"
+      }
+    },
+    "SQLNode": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "SQL Node Number"
+      }
+    },    
+    "sqllastoctet": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "SQL Node Last Octet"
+      }
+    },         
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
@@ -161,6 +182,17 @@
           "description": "Domain Controller2 OS Version"
       }
     },    
+    "SQLOSVersion": {
+        "type": "string",
+        "defaultValue": "2019-Datacenter",
+        "allowedValues": [
+          "2019-Datacenter",
+          "2016-Datacenter"
+        ],            
+        "metadata": {
+            "description": "SQL OS Version"
+        }
+    },    
     "WK1OSVersion": {
       "type": "string",
       "defaultValue": "19h1-pro",
@@ -180,7 +212,7 @@
       "metadata": {
         "description": "Workstation2 OS Version"
       }
-    },      
+    },          
     "DC1VMSize": {
         "type": "string",
         "defaultValue": "Standard_D2s_v3",
@@ -194,7 +226,14 @@
       "metadata": {
           "description": "Domain Controller2 VMSize"
       }
-    },            
+    },    
+    "SQLVMSize": {
+        "type": "string",
+        "defaultValue": "Standard_D8s_v3",
+        "metadata": {
+            "description": "SQL VMSize"
+        }
+    },             
     "WK1VMSize": {
       "type": "string",
       "defaultValue": "Standard_D2s_v3",
@@ -208,8 +247,7 @@
       "metadata": {
           "description": "Workstation2 VMSize"
       }
-    },      
-
+    },    
     "_artifactsLocation": {
       "type": "string",
       "metadata": {
@@ -273,13 +311,17 @@
     "weblastoctet": "100",
     "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",           
     "dc1IP": "[concat(parameters('APPVNet1ID'),'.4.',variables('dc1lastoctet'))]",        
+    "dc1lastoctet": "100",
     "dc2name": "[concat(parameters('NamingConvention'),'-dc-02')]",           
     "dc2IP": "[concat(parameters('APPVNet2ID'),'.4.',variables('dc2lastoctet'))]",            
     "dc2lastoctet": "100",        
     "DCDataDisk1Name": "NTDS",            
     "ReverseLookup1": "[concat('1.',parameters('ReverseLookup1'))]",    
     "ReverseLookup2": "[concat('1.',parameters('ReverseLookup2'))]",        
-    "dc1lastoctet": "100",
+
+    "sqlname": "[concat(parameters('NamingConvention'),'-sql-',parameters('sqlnode'))]",                      
+    "sqlIP": "[concat(parameters('APPVNet1ID'),'.3.',variables('sqllastoctet'))]", 
+    "sqllastoctet": "100",            
     "rcaIP": "[concat(parameters('APPVNet1ID'),'.6.',variables('rcalastoctet'))]", 
     "rcalastoctet": "100",
     "icaIP": "[concat(parameters('APPVNet1ID'),'.6.',variables('icalastoctet'))]", 
@@ -298,6 +340,7 @@
     "wk2lastoctet": "100",                
     "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
+    "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",    
     "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]"     
   },  
   "resources": [
@@ -674,6 +717,12 @@
               "subnetName": {
                   "value": "AzureFirewallSubnet"
               },         
+              "Site1Prefix": {
+                  "value": "[variables('APPVNet1Prefix')]"
+              },         
+              "Site2Prefix": {
+                  "value": "[variables('APPVNet2Prefix')]"
+              },                                                                        
               "webIP": {
                   "value": "[variables('webIP')]"
               },                               
@@ -682,7 +731,7 @@
               },                          
               "SMTPIP": {
                   "value": "[variables('EX1IP')]"
-              },                                                             
+              },                                      
               "location": {
                   "value": "[resourceGroup().location]"
               }
@@ -1552,6 +1601,146 @@
               }
           }
       }
-    }                                 
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "deploySQLVM",
+      "dependsOn": [
+        "UpdateAPPVNet1DNS-1"
+      ],        
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-3disk-vm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('sqlname')]"
+              },
+              "computerIP": {
+                  "value": "[variables('sqlIP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsServer"
+              },
+              "Offer": {
+                  "value": "WindowsServer"
+              },
+              "OSVersion": {
+                "value": "[parameters('SQLOSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "[parameters('WindowsServerLicenseType')]"
+              },   
+              "DataDisk1Name": {
+                "value": "SQLDatabases"
+              },            
+              "DataDisk2Name": {
+                "value": "SQLLogs"
+              },                       
+              "VMSize": {
+                "value": "[parameters('SQLVMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('APPVNet1Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('APPVNet1subnet3Name')]"
+              },            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    }, 
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DomainJoinSQL",
+      "dependsOn": [
+        "deploySQLVM"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/domainjoin.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('sqlname')]"
+              },
+              "domainName": {
+                  "value": "[variables('domainName')]"
+              },
+              "OUPath": {
+                  "value": "[variables('SRVOUPath')]"
+              },
+              "domainJoinOptions": {
+                  "value": 3
+              },
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                             
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "InstallSQL",
+      "dependsOn": [
+        "deploySQLVM",
+        "DomainJoinSQL"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/sql.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('sqlname')]"
+              },
+              "SQLSASUrl": {
+                  "value": "[parameters('SQLSASUrl')]"
+              },                            
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },                            
+
+              "location": {
+                  "value": "[resourceGroup().location]"
+              },                                          
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+          }
+      }
+    }                                       
   ]
 }

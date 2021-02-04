@@ -13,7 +13,19 @@
         "metadata": {
             "description": "Existing VNET Name that contains the domain controller"
         }
-    },             
+    },  
+    "Site1Prefix": {
+        "type": "string",
+        "metadata": {
+            "description": "Site1 Address Prefix"
+        }
+    },                 
+    "Site2Prefix": {
+        "type": "string",
+        "metadata": {
+            "description": "Site2 Address Prefix"
+        }
+    },                     
     "subnetName": {
         "type": "string",
         "metadata": {
@@ -155,6 +167,37 @@
                 }
             }                        
         ],
+        "networkRuleCollections": [
+          {
+            "name": "Internal-Traffic",
+            "properties": {
+              "priority": 100,
+              "action": {
+                "type": "Allow"
+              },
+              "rules": [
+                {
+                  "name": "Site1-To-Site2",
+                  "description": "string",
+                  "protocols": [
+                    "Any"
+                  ],
+                  "sourceAddresses": [
+                    "[parameters('Site1Prefix')]",
+                    "[parameters('Site2Prefix')]"
+                  ],
+                  "destinationAddresses": [
+                    "[parameters('Site1Prefix')]",
+                    "[parameters('Site2Prefix')]"
+                  ],
+                  "destinationPorts": [
+                    "*"
+                  ]
+                }
+              ]
+            }
+          }
+        ],        
         "applicationRuleCollections": [
           {
             "name": "Allowed-Sites",
