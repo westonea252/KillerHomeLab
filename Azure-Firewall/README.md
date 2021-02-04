@@ -44,10 +44,22 @@ AD OU Structure:
 Parameters that support changes
 - Admin Username.  Enter a valid Admin Username
 - Admin Password.  Enter a valid Admin Password
-- WindowsServerLicenseType.  Choose Windows Seer License Type (Example:  Windows_Server or None)
+- WindowsServerLicenseType.  Choose Windows Server License Type (Example:  Windows_Server or None)
+- WindowsClientLicenseType.  Choose Windows Client License Type (Example:  Windows_Client or None)
 - Naming Convention. Enter a name that will be used as a naming prefix for (Servers, VNets, etc) you are using.
+- Sub DNS Domain.  OPTIONALLY, enter a valid DNS Sub Domain. (Example:  sub1. or sub1.sub2.    This entry must end with a DOT )
+- Sub DNS BaseDN.  OPTIONALLY, enter a valid DNS Sub Base DN. (Example:  DC=sub1, or DC=sub1,DC=sub2,    This entry must end with a COMMA )
+- Net Bios Domain.  Enter a valid Net Bios Domain Name (Example:  killerhomelab).
+- Internal Domain.  Enter a valid Internal Domain (Exmaple:  killerhomelab)
+- TLD.  Select a valid Top-Level Domain using the Pull-Down Menu.
 - DMZVNet1ID.  Enter first 2 octets of your desired Address Space for your DMZ Virtual Network 1 (Example:  10.0)
 - APPVNet1ID.  Enter first 2 octets of your desired Address Space for your APP Virtual Network 1 (Example:  10.1)
 - APPVNet2ID.  Enter first 2 octets of your desired Address Space for your APP Virtual Network 2 (Example:  10.2)
-- OSVersion.  Select 2016-Datacenter (Windows 2016) or 2019-Datacenter (Windows 2019) OS Version
-- VMSize.  Enter a Valid VM Size based on which Region the VM is deployed.
+- Reverse Lookup1.  Enter first 2 octets of your desired Address Space in Reverse (Example:  1.19)
+- Reverse Lookup2.  Enter first 2 octets of your desired Address Space in Reverse (Example:  2.19)
+- DC1OSVersion.  Select 2016-Datacenter (Windows 2016) or 2019-Datacenter (Windows 2019) Domain Controller 1 OS Version
+- DC2OSVersion.  Select 2016-Datacenter (Windows 2016) or 2019-Datacenter (Windows 2019) Domain Controller 2 OS Version
+- WEBOSVersion.  Select 2016-Datacenter (Windows 2016) or 2019-Datacenter (Windows 2019) OS Version
+- DC1VMSize.  Enter a Valid VM Size based on which Region the VM is deployed.
+- DC2VMSize.  Enter a Valid VM Size based on which Region the VM is deployed.
+- WEBVMSize.  Enter a Valid VM Size based on which Region the VM is deployed.

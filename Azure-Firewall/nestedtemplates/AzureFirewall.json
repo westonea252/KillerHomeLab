@@ -228,7 +228,7 @@
                   ]
                 },
                 {
-                  "name": "GitHub",
+                  "name": "Deployment-Downloads",
                   "protocols": [
                     {
                       "protocolType": "Http",
@@ -241,7 +241,8 @@
                   ],
                   "targetFqdns": [
                     "raw.githubusercontent.com",
-                    "github.com"
+                    "github.com",
+                    "killerhomelab.blob.core.windows.net"                                
                   ],
                   "sourceAddresses": [
                     "*"
