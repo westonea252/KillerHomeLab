@@ -42,14 +42,7 @@
       "metadata": {
         "description": "Enter a valid URL that points to the SQL 2019 or 2017 .ISO"
       }
-    },
-    "SQLNode": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "SQL Node Number"
-      }
-    },           
+    },         
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
@@ -311,7 +304,7 @@
     "DCDataDisk1Name": "NTDS",            
     "ReverseLookup1": "[concat('1.',parameters('ReverseLookup1'))]",    
     "ReverseLookup2": "[concat('1.',parameters('ReverseLookup2'))]",        
-    "sqlname": "[concat(parameters('NamingConvention'),'-sql-',parameters('sqlnode'))]",                      
+    "sqlname": "[concat(parameters('NamingConvention'),'-sql-01')]",                      
     "sqlIP": "[concat(parameters('APPVNet1ID'),'.3.',variables('sqllastoctet'))]", 
     "sqllastoctet": "100",            
     "rcaIP": "[concat(parameters('APPVNet1ID'),'.6.',variables('rcalastoctet'))]", 
