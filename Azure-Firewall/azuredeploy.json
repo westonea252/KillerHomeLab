@@ -49,14 +49,7 @@
       "metadata": {
         "description": "SQL Node Number"
       }
-    },    
-    "sqllastoctet": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "SQL Node Last Octet"
-      }
-    },         
+    },           
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
@@ -318,7 +311,6 @@
     "DCDataDisk1Name": "NTDS",            
     "ReverseLookup1": "[concat('1.',parameters('ReverseLookup1'))]",    
     "ReverseLookup2": "[concat('1.',parameters('ReverseLookup2'))]",        
-
     "sqlname": "[concat(parameters('NamingConvention'),'-sql-',parameters('sqlnode'))]",                      
     "sqlIP": "[concat(parameters('APPVNet1ID'),'.3.',variables('sqllastoctet'))]", 
     "sqllastoctet": "100",            
