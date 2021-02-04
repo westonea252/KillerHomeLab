@@ -243,7 +243,9 @@
                     "raw.githubusercontent.com",
                     "github.com",
                     "killerhomelab.blob.core.windows.net",
-                    "aka.ms"                              
+                    "aka.ms",
+                    "redirectiontool.trafficmanager.net",
+                    "go.microsoft.com"                             
                   ],
                   "sourceAddresses": [
                     "*"
