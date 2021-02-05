@@ -8,11 +8,11 @@ Click the button below to deploy
 The Template deploys the folowing:
 
 - 1 - DMZ Virtual Network
-- 1 - APP Virtual Network (6 Subnets - WEB, EX, DB, AD, ID, IF)
+- 1 - APP Virtual Network (7 Subnets - WEB, EX, DB, AD, ID, IF, WK)
 - 1 - Azure Firewall
-- 3 - Azure Firewall Public IP Address
+- 4 - Azure Firewall Public IP Address
 - 1 - Bastion Host (DMZ VNet)
-- 6 - Network Security Groups
+- 7 - Network Security Groups
 - 6 - Application Security Groups
 
 The deployment leverages Desired State Configuration scripts to further customize the following:
