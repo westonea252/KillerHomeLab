@@ -422,7 +422,7 @@
     "fwIP": "[concat(parameters('DMZVNet1ID'),'.254.',variables('fwlastoctet'))]",     
     "fwlastoctet": "4",   
     "ubname": "[concat(parameters('NamingConvention'),'-ub-01')]",                      
-    "ubIP": "[concat(parameters('APPVNet1ID'),'.1.',variables('weblastoctet'))]", 
+    "ubIP": "[concat(parameters('APPVNet1ID'),'.1.',variables('ublastoctet'))]", 
     "ublastoctet": "101",     
     "webname": "[concat(parameters('NamingConvention'),'-web-01')]",                      
     "webIP": "[concat(parameters('APPVNet1ID'),'.1.',variables('weblastoctet'))]", 

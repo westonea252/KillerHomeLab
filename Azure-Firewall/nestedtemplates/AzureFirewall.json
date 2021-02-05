@@ -350,21 +350,35 @@
                   ]
                 },  
                 {
-                  "name": "UB-Inbound",
+                  "name": "UB-Inbound-HTTPS",
                   "protocols": [
                     "TCP"
                   ],
                   "translatedAddress": "[parameters('ubIP')]",
-                  "translatedPort": "25",
+                  "translatedPort": "443",
                   "sourceAddresses": [
                     "*"
                   ],
                   "destinationAddresses": [ "[reference(resourceId('Microsoft.Network/publicIPAddresses/', concat(variables('ubpublicIPAddressName')))).ipAddress]" ],
                   "destinationPorts": [
-                    "443",
+                    "443"
+                  ]
+                },
+                {
+                  "name": "UB-Inbound-SSH",
+                  "protocols": [
+                    "TCP"
+                  ],
+                  "translatedAddress": "[parameters('ubIP')]",
+                  "translatedPort": "22",
+                  "sourceAddresses": [
+                    "*"
+                  ],
+                  "destinationAddresses": [ "[reference(resourceId('Microsoft.Network/publicIPAddresses/', concat(variables('ubpublicIPAddressName')))).ipAddress]" ],
+                  "destinationPorts": [
                     "22"
                   ]
-                }                                
+                }                                                
               ]
             }
           }
