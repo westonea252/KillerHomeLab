@@ -163,6 +163,14 @@
                 }
             },
             {
+            "Name": "UB",
+            "Properties":  {
+                "publicIPAddress":  {
+                    "id":   "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('ubpublicIPAddressName')))]"
+                    }
+                }
+            },            
+            {
             "Name": "WEB",
             "Properties":  {
                 "publicIPAddress":  {
