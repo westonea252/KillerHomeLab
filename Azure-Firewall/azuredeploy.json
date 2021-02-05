@@ -185,7 +185,17 @@
       "metadata": {
           "description": "Issuing CA Key Length"
       }
-    },                
+    },  
+    "UBOSVersion": {
+        "type": "string",
+        "defaultValue": "20_10",
+        "allowedValues": [
+          "20_10"
+        ],            
+        "metadata": {
+            "description": "OS Version"
+        }
+    },                  
     "WEBOSVersion": {
         "type": "string",
         "defaultValue": "2019-Datacenter",
@@ -283,6 +293,13 @@
         "description": "Workstation2 OS Version"
       }
     },
+    "UBVMSize": {
+        "type": "string",
+        "defaultValue": "Standard_D2s_v3",
+        "metadata": {
+            "description": "VMSize"
+        }
+    },               
     "WEBVMSize": {
         "type": "string",
         "defaultValue": "Standard_D2s_v3",
@@ -403,7 +420,10 @@
     "FirewallName": "[concat(parameters('NamingConvention'),'-Firewall')]",                   
     "RouteTableName": "[concat(parameters('NamingConvention'),'-APP-RT1')]",                       
     "fwIP": "[concat(parameters('DMZVNet1ID'),'.254.',variables('fwlastoctet'))]",     
-    "fwlastoctet": "4",    
+    "fwlastoctet": "4",   
+    "ubname": "[concat(parameters('NamingConvention'),'-ub-01')]",                      
+    "ubIP": "[concat(parameters('APPVNet1ID'),'.1.',variables('weblastoctet'))]", 
+    "ublastoctet": "101",     
     "webname": "[concat(parameters('NamingConvention'),'-web-01')]",                      
     "webIP": "[concat(parameters('APPVNet1ID'),'.1.',variables('weblastoctet'))]", 
     "weblastoctet": "100",
@@ -823,7 +843,10 @@
               },         
               "Site2Prefix": {
                   "value": "[variables('APPVNet2Prefix')]"
-              },                                                                        
+              },
+              "UBIP": {
+                  "value": "[variables('ubIP')]"
+              },                                                                                         
               "webIP": {
                   "value": "[variables('webIP')]"
               },                               
@@ -1006,7 +1029,58 @@
               }
           }
       }
-    },                
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "name": "DeployRedHatVM",
+      "dependsOn": [
+        "VNet1",
+        "BastionHost1"
+      ],
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm-linux.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ubname')]"
+              },
+              "computerIP": {
+                  "value": "[variables('ubIP')]"
+              },
+              "Publisher": {
+                  "value": "canonical"
+              },
+              "Offer": {
+                  "value": "0001-com-ubuntu-server-groovy"
+              },
+              "OSVersion": {
+                "value": "[parameters('UBOSVersion')]"
+              },              
+              "VMSize": {
+                "value": "[parameters('UBVMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('APPVNet1Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('APPVNet1subnet1Name')]"
+              },            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
@@ -2333,6 +2407,47 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
           }
       }
-    }                                            
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "RequestSpartCert",
+      "dependsOn": [
+        "ConfigureOCSP"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/certrequest.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ocspname')]"
+              },                                                                                                                                                           
+              "RootDomainFQDN": {
+                  "value": "[variables('domainname')]"
+              },              
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },                            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                                                                                                      
+              "location": {
+                  "value": "[resourceGroup().location]"
+              },          
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          }
+      }
+    }                                                
   ]
 }

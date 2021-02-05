@@ -32,6 +32,12 @@
             "description": "Existing subnet name that contains the domain controller"
         }
     },  
+    "ubIP": {
+        "type": "string",
+        "metadata": {
+            "description": "UB IP"
+        }
+    }, 
     "webIP": {
         "type": "string",
         "metadata": {
@@ -62,6 +68,7 @@
     "webpublicIPAddressName": "[concat(parameters('FirewallName'),'-web-pip')]",
     "wappublicIPAddressName": "[concat(parameters('FirewallName'),'-wap-pip')]",    
     "smtppublicIPAddressName": "[concat(parameters('FirewallName'),'-smtp-pip')]",    
+    "ubpublicIPAddressName": "[concat(parameters('FirewallName'),'-ub-pip')]",        
     "subnetId": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]"      
 },
 "resources": [
@@ -77,6 +84,18 @@
             "publicIPAllocationMethod": "Static"
         }
     },
+    {
+        "name": "[variables('ubpublicIPAddressName')]",
+        "type": "Microsoft.Network/publicIPAddresses",
+        "apiVersion": "2018-11-01",
+        "location": "[parameters('location')]",
+        "sku": {
+          "name": "Standard"
+        },
+        "properties": {
+            "publicIPAllocationMethod": "Static"
+        }
+    },      
     {
         "name": "[variables('webpublicIPAddressName')]",
         "type": "Microsoft.Network/publicIPAddresses",
@@ -112,7 +131,7 @@
         "properties": {
             "publicIPAllocationMethod": "Static"
         }
-    },    
+    },       
     {
       "type": "Microsoft.Network/azureFirewalls",
       "apiVersion": "2020-04-01",
@@ -120,6 +139,7 @@
       "location": "[parameters('location')]",
       "dependsOn": [
         "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('publicIPAddressName')))]",
+        "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('ubpublicIPAddressName')))]",
         "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('webpublicIPAddressName')))]",
         "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('wappublicIPAddressName')))]",
         "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('smtppublicIPAddressName')))]"                
@@ -328,7 +348,23 @@
                   "destinationPorts": [
                     "25"
                   ]
-                }                
+                },  
+                {
+                  "name": "UB-Inbound",
+                  "protocols": [
+                    "TCP"
+                  ],
+                  "translatedAddress": "[parameters('ubIP')]",
+                  "translatedPort": "25",
+                  "sourceAddresses": [
+                    "*"
+                  ],
+                  "destinationAddresses": [ "[reference(resourceId('Microsoft.Network/publicIPAddresses/', concat(variables('ubpublicIPAddressName')))).ipAddress]" ],
+                  "destinationPorts": [
+                    "443",
+                    "22"
+                  ]
+                }                                
               ]
             }
           }
