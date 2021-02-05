@@ -1035,8 +1035,7 @@
       "apiVersion": "2015-01-01",
       "name": "DeployRedHatVM",
       "dependsOn": [
-        "VNet1",
-        "BastionHost1"
+        "APPVNet1"
       ],
       "properties": {
           "mode": "Incremental",
