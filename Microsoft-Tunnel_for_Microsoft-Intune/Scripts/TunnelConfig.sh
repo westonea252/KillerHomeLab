@@ -9,5 +9,3 @@ sudo wget --output-document=mst-readiness https://aka.ms/microsofttunnelready
 sudo chmod +x ./mst-readiness
 sudo ./mst-readiness network
 sudo apt-get install jq -y
-
-sudo ./mst-readiness account
