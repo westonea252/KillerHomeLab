@@ -1069,8 +1069,7 @@
       "apiVersion": "2019-10-01",
       "name": "DeployNSG",
       "dependsOn": [
-        "addocsppip",
-        "addex1pip"       
+        "DeployUbuntuGW"     
       ],      
       "properties": {
           "mode": "Incremental",
