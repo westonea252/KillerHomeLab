@@ -978,6 +978,7 @@
       "apiVersion": "2019-10-01",
       "name": "RequestSparkCert",
       "dependsOn": [
+        "ConfigureOCSP",
         "DomainJoinWEB"
       ],      
       "properties": {
