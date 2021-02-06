@@ -12,6 +12,7 @@ This Templates deploys a Single Forest/Domain:
 - 1 - Enterprise Certificate Authority Server
 - 1 - Online Certificate Status Protocol Server
 - 1 - Domain Joined Windows 10 Workstation
+- 1 - Microsoft VPN Intune Gateway
 
 The deployment leverages Desired State Configuration scripts to further customize the following:
 
