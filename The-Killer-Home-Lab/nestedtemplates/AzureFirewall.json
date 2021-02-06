@@ -1,0 +1,339 @@
+{
+"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+"contentVersion": "1.0.0.0",
+"parameters": {
+    "FirewallName": {
+        "type": "string",
+        "metadata": {
+            "description": "Resource Group Name"
+          }
+    }, 
+    "vnetName": {
+        "type": "string",
+        "metadata": {
+            "description": "Existing VNET Name that contains the domain controller"
+        }
+    },  
+    "Site1Prefix": {
+        "type": "string",
+        "metadata": {
+            "description": "Site1 Address Prefix"
+        }
+    },                 
+    "Site2Prefix": {
+        "type": "string",
+        "metadata": {
+            "description": "Site2 Address Prefix"
+        }
+    },                     
+    "subnetName": {
+        "type": "string",
+        "metadata": {
+            "description": "Existing subnet name that contains the domain controller"
+        }
+    },  
+    "webIP": {
+        "type": "string",
+        "metadata": {
+            "description": "Web IP"
+        }
+    },    
+    "OWAIP": {
+        "type": "string",
+        "metadata": {
+            "description": "OWA IP"
+        }
+    },        
+    "SMTPIP": {
+        "type": "string",
+        "metadata": {
+            "description": "SMTP IP"
+        }
+    },       
+    "location": {
+        "type": "string",
+        "metadata": {
+          "description": "Specifies the location in which to create the workspace."
+        }
+    }
+},
+"variables": {
+    "publicIPAddressName": "[concat(parameters('FirewallName'),'-pip')]",
+    "webpublicIPAddressName": "[concat(parameters('FirewallName'),'-web-pip')]",
+    "wappublicIPAddressName": "[concat(parameters('FirewallName'),'-wap-pip')]",    
+    "smtppublicIPAddressName": "[concat(parameters('FirewallName'),'-smtp-pip')]",
+    "subnetId": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]"      
+},
+"resources": [
+    {
+        "name": "[variables('publicIPAddressName')]",
+        "type": "Microsoft.Network/publicIPAddresses",
+        "apiVersion": "2018-11-01",
+        "location": "[parameters('location')]",
+        "sku": {
+          "name": "Standard"
+        },
+        "properties": {
+            "publicIPAllocationMethod": "Static"
+        }
+    },      
+    {
+        "name": "[variables('webpublicIPAddressName')]",
+        "type": "Microsoft.Network/publicIPAddresses",
+        "apiVersion": "2018-11-01",
+        "location": "[parameters('location')]",
+        "sku": {
+          "name": "Standard"
+        },
+        "properties": {
+            "publicIPAllocationMethod": "Static"
+        }
+    },
+    {
+        "name": "[variables('wappublicIPAddressName')]",
+        "type": "Microsoft.Network/publicIPAddresses",
+        "apiVersion": "2018-11-01",
+        "location": "[parameters('location')]",
+        "sku": {
+          "name": "Standard"
+        },
+        "properties": {
+            "publicIPAllocationMethod": "Static"
+        }
+    },    
+    {
+        "name": "[variables('smtppublicIPAddressName')]",
+        "type": "Microsoft.Network/publicIPAddresses",
+        "apiVersion": "2018-11-01",
+        "location": "[parameters('location')]",
+        "sku": {
+          "name": "Standard"
+        },
+        "properties": {
+            "publicIPAllocationMethod": "Static"
+        }
+    },       
+    {
+      "type": "Microsoft.Network/azureFirewalls",
+      "apiVersion": "2020-04-01",
+      "name": "[parameters('FirewallName')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('publicIPAddressName')))]",
+        "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('webpublicIPAddressName')))]",
+        "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('wappublicIPAddressName')))]",
+        "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('smtppublicIPAddressName')))]"                
+      ],
+      "properties": {
+        "sku": {
+          "name": "AZFW_VNet",
+          "tier": "Standard"
+        },
+        "threatIntelMode": "Alert",
+        "ipConfigurations": [
+            {
+            "Name": "PrimaryIPConfiguration",
+            "Properties":  {
+                "subnet":   {
+                    "id":   "[variables('subnetId')]"
+                    },
+                "publicIPAddress":  {
+                    "id":   "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('publicIPAddressName')))]"
+                    }
+                }
+            },
+            {
+            "Name": "WEB",
+            "Properties":  {
+                "publicIPAddress":  {
+                    "id":   "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('webpublicIPAddressName')))]"
+                    }
+                }
+            },
+            {
+            "Name": "WAP",
+            "Properties":  {
+                "publicIPAddress":  {
+                    "id":   "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('wappublicIPAddressName')))]"
+                    }
+                }
+            },
+            {
+            "Name": "SMTP",
+            "Properties":  {
+                "publicIPAddress":  {
+                    "id":   "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('smtppublicIPAddressName')))]"
+                    }
+                }
+            }                        
+        ],
+        "networkRuleCollections": [
+          {
+            "name": "Internal-Traffic",
+            "properties": {
+              "priority": 100,
+              "action": {
+                "type": "Allow"
+              },
+              "rules": [
+                {
+                  "name": "Site1-To-Site2",
+                  "description": "string",
+                  "protocols": [
+                    "Any"
+                  ],
+                  "sourceAddresses": [
+                    "[parameters('Site1Prefix')]",
+                    "[parameters('Site2Prefix')]"
+                  ],
+                  "destinationAddresses": [
+                    "[parameters('Site1Prefix')]",
+                    "[parameters('Site2Prefix')]"
+                  ],
+                  "destinationPorts": [
+                    "*"
+                  ]
+                }
+              ]
+            }
+          }
+        ],        
+        "applicationRuleCollections": [
+          {
+            "name": "Allowed-Sites",
+            "properties": {
+              "priority": 100,
+              "action": {
+                "type": "Allow"
+              },
+              "rules": [
+                {
+                  "name": "Azure-Portals",
+                  "protocols": [
+                    {
+                      "protocolType": "Http",
+                      "port": 80
+                    },
+                    {
+                      "protocolType": "Https",
+                      "port": 443
+                    }
+                  ],
+                  "targetFqdns": [
+                    "portal.azure.com",
+                    "portal.azure.us"
+                  ],
+                  "sourceAddresses": [
+                    "*"
+                  ]
+                },
+                {
+                  "name": "Deployment-Downloads",
+                  "protocols": [
+                    {
+                      "protocolType": "Http",
+                      "port": 80
+                    },
+                    {
+                      "protocolType": "Https",
+                      "port": 443
+                    }
+                  ],
+                  "targetFqdns": [
+                    "raw.githubusercontent.com",
+                    "github.com",
+                    "killerhomelab.blob.core.windows.net",
+                    "elliottf.blob.core.windows.net",                                         
+                    "aka.ms",
+                    "redirectiontool.trafficmanager.net",
+                    "go.microsoft.com"
+                  ],
+                  "sourceAddresses": [
+                    "*"
+                  ]
+                },
+                {
+                  "name": "WindowsUpdate",
+                  "protocols": [
+                    {
+                      "protocolType": "Http",
+                      "port": 80
+                    },
+                    {
+                      "protocolType": "Https",
+                      "port": 443
+                    }
+                  ],
+                  "fqdnTags": [
+                    "WindowsUpdate"
+                  ],
+                  "sourceAddresses": [
+                    "*"
+                  ]
+                }
+              ]
+            }
+          }
+        ],
+        "natRuleCollections": [
+          {
+            "name": "Inbound-Traffic",
+            "properties": {
+              "priority": 100,
+              "action": {
+                "type": "Dnat"
+              },
+              "rules": [
+                {
+                  "name": "Web-Inbound",
+                  "protocols": [
+                    "TCP"
+                  ],
+                  "translatedAddress": "[parameters('webIP')]",
+                  "translatedPort": "80",
+                  "sourceAddresses": [
+                    "*"
+                  ],
+                  "destinationAddresses": [ "[reference(resourceId('Microsoft.Network/publicIPAddresses/', concat(variables('webpublicIPAddressName')))).ipAddress]" ],
+                  "destinationPorts": [
+                    "80"
+                  ]
+                },
+                {
+                  "name": "OWA-Inbound",
+                  "protocols": [
+                    "TCP"
+                  ],
+                  "translatedAddress": "[parameters('OWAIP')]",
+                  "translatedPort": "443",
+                  "sourceAddresses": [
+                    "*"
+                  ],
+                  "destinationAddresses": [ "[reference(resourceId('Microsoft.Network/publicIPAddresses/', concat(variables('wappublicIPAddressName')))).ipAddress]" ],
+                  "destinationPorts": [
+                    "443"
+                  ]
+                },
+                {
+                  "name": "SMTP-Inbound",
+                  "protocols": [
+                    "TCP"
+                  ],
+                  "translatedAddress": "[parameters('SMTPIP')]",
+                  "translatedPort": "25",
+                  "sourceAddresses": [
+                    "*"
+                  ],
+                  "destinationAddresses": [ "[reference(resourceId('Microsoft.Network/publicIPAddresses/', concat(variables('smtppublicIPAddressName')))).ipAddress]" ],
+                  "destinationPorts": [
+                    "25"
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }    
+   ]
+}
