@@ -273,7 +273,7 @@
     "DCDataDisk1Name": "NTDS",         
     "CATemplateScriptUrl": "https://elliottf.blob.core.windows.net/github/Scripts/Create_CA_Templates.ps1",                                  
     "InternaldomainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('InternalTLD'))]",
-    "ExternaldomainName": "[concat(parameters('SubDNSDomain'),parameters('ExternalDomain'),'.',parameters('ExternalTLD'))]",    
+    "ExternaldomainName": "[concat(parameters('ExternalDomain'),'.',parameters('ExternalTLD'))]",    
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('InternalTLD'))]",
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
     "NSGName": "[concat(parameters('NamingConvention'),'-nsg01')]"
@@ -887,7 +887,7 @@
       "apiVersion": "2019-10-01",
       "name": "DeployWEBVM",
       "dependsOn": [
-        "VNet1"
+        "createous"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1220,7 +1220,10 @@
       "apiVersion": "2019-10-01",
       "name": "ConfigureSparkTunnel",
       "dependsOn": [
+        "RequestSparkCert",
+        "AddUbuntuGWPIP",
         "CreatePublicDNSZone"
+        
       ],      
       "properties": {
           "mode": "Incremental",
