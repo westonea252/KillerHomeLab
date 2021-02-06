@@ -8,12 +8,24 @@
                 "description": "Computer Name"
             }
         },
-        "domainName": {
+        "NetBiosDomain": {
+            "type": "string",
+            "metadata": {
+                "description": "NetBios Domain Name"
+            }
+        },         
+        "InternaldomainName": {
             "type": "string",
           "metadata": {
             "description": "The FQDN of the AD Domain created "
           }
         },
+        "ExternaldomainName": {
+            "type": "string",
+          "metadata": {
+            "description": "The External FQDN of the AD Domain created "
+          }
+        },        
         "ReverseLookup1": {
             "type": "string",
             "metadata": {
@@ -77,7 +89,9 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "computerName": "[parameters('computerName')]",
-                            "domainName": "[parameters('domainName')]",                                                        
+                            "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
+                            "InternaldomainName": "[parameters('InternaldomainName')]",                                                        
+                            "ExternaldomainName": "[parameters('ExternaldomainName')]",                                                                                    
                             "ReverseLookup1": "[parameters('ReverseLookup1')]",
                             "dc1lastoctet": "[parameters('dc1lastoctet')]",  
                             "ISSUINGCAIP": "[parameters('ISSUINGCAIP')]",

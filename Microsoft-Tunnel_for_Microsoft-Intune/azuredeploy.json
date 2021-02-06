@@ -538,9 +538,15 @@
               "computerName": {
                   "value": "[variables('dc1name')]"
               },
-              "DomainName": {
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },                 
+              "InternalDomainName": {
                 "value": "[variables('InternaldomainName')]"
-              },              
+              },       
+              "ExternalDomainName": {
+                "value": "[variables('ExternaldomainName')]"
+              },                            
               "ReverseLookup1": {
                 "value": "[variables('ReverseLookup1')]"
               },                                                                                                            
@@ -708,9 +714,12 @@
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },              
-              "RootDomainFQDN": {
+              "Internaldomainname": {
                   "value": "[variables('InternaldomainName')]"
               },          
+              "Externaldomainname": {
+                  "value": "[variables('InternaldomainName')]"
+              },                        
               "EnterpriseCAName": {
                   "value": "[parameters('EnterpriseCAName')]"
               },              
@@ -858,8 +867,11 @@
               "domainName": {
                   "value": "[variables('InternaldomainName')]"
               },   
-              "RootDomainFQDN": {
-                  "value": "[variables('ExternaldomainName')]"
+              "Internaldomainname": {
+                  "value": "[variables('InternaldomainName')]"
+              },          
+              "Externaldomainname": {
+                  "value": "[variables('InternaldomainName')]"
               },   
               "EnterpriseCAName": {
                   "value": "[parameters('EnterpriseCAName')]"

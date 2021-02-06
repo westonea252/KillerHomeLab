@@ -6,7 +6,8 @@ Configuration OCSP
         [String]$NamingConvention,
         [String]$NetBiosDomain,
         [String]$DomainName,
-        [String]$RootDomainFQDN,
+        [String]$InternaldomainName,
+        [String]$ExternaldomainName,
         [String]$EnterpriseCAName,
         [System.Management.Automation.PSCredential]$Admincreds
     )
@@ -119,10 +120,10 @@ Configuration OCSP
 
                 # Configure Online Responder
                 $EnterpriseCert = "C:\CertEnroll\$using:EnterpriseCAName.cer"
-                $EnterpriseCrl = "http://crl.$using:rootdomainfqdn/CertEnroll/$using:EnterpriseCAName.crl"
-                $EnterpriseDeltaCrl = "http://crl.$using:rootdomainfqdn/CertEnroll/$using:EnterpriseCAName+.crl"
-                $servername = "$using:NamingConvention-ocsp-01.$using:rootdomainfqdn"
-                $signingcertificate = "CN=$using:NamingConvention-ocsp-01.$using:rootdomainfqdn"
+                $EnterpriseCrl = "http://crl.$using:ExternaldomainName/CertEnroll/$using:EnterpriseCAName.crl"
+                $EnterpriseDeltaCrl = "http://crl.$using:ExternaldomainName/CertEnroll/$using:EnterpriseCAName+.crl"
+                $servername = "$using:NamingConvention-ocsp-01.$using:InternaldomainName"
+                $signingcertificate = "CN=$using:NamingConvention-ocsp-01.$using:InternaldomainName"
 
                 # Create a new certificate object
                 $SigningCert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate

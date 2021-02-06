@@ -14,12 +14,18 @@
                 "description": "NetBios Domain Name"
             }
         },        
-        "RootDomainFQDN": {
+        "InternaldomainName": {
             "type": "string",
-            "metadata": {
-                "description": "Root Domain Name FQDN"
-            }
+          "metadata": {
+            "description": "The FQDN of the AD Domain created "
+          }
         },
+        "ExternaldomainName": {
+            "type": "string",
+          "metadata": {
+            "description": "The External FQDN of the AD Domain created "
+          }
+        },      
         "EnterpriseCAName": {
             "type": "string",
             "metadata": {
@@ -97,7 +103,8 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",
-                            "RootDomainFQDN": "[parameters('RootDomainFQDN')]",
+                            "InternaldomainName": "[parameters('InternaldomainName')]",                                                        
+                            "ExternaldomainName": "[parameters('ExternaldomainName')]",                                                                                    
                             "EnterpriseCAName": "[parameters('EnterpriseCAName')]",
                             "EnterpriseCAHashAlgorithm": "[parameters('EnterpriseCAHashAlgorithm')]",                            
                             "EnterpriseCAKeyLength": "[parameters('EnterpriseCAKeyLength')]",   
