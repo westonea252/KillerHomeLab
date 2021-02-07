@@ -25,7 +25,6 @@
             DynamicUpdate = 'Secure'
             Ensure           = 'Present'
             ReplicationScope = 'Domain'
-            Credential = $DomainCreds
         }
 
         xDnsServerADZone ReverseADZone1
