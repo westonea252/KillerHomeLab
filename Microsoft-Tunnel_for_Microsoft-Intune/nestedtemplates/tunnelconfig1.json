@@ -44,8 +44,7 @@
                 "settings": {
                     "fileUris": [
                         "[variables('scriptUrl')]"
-                    ],
-                    "commandToExecute": "sh TunnelConfig.sh"
+                    ]
                 }
             }
         }
