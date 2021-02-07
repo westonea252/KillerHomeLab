@@ -3,7 +3,6 @@ Configuration OCSP
    param
    (
         [String]$computerName,
-        [String]$NamingConvention,
         [String]$NetBiosDomain,
         [String]$InternaldomainName,
         [String]$ExternaldomainName,
@@ -121,8 +120,8 @@ Configuration OCSP
                 $EnterpriseCert = "C:\CertEnroll\$using:EnterpriseCAName.cer"
                 $EnterpriseCrl = "http://crl.$using:ExternaldomainName/CertEnroll/$using:EnterpriseCAName.crl"
                 $EnterpriseDeltaCrl = "http://crl.$using:ExternaldomainName/CertEnroll/$using:EnterpriseCAName+.crl"
-                $servername = "$using:NamingConvention-ocsp-01.$using:InternaldomainName"
-                $signingcertificate = "CN=$using:NamingConvention-ocsp-01.$using:InternaldomainName"
+                $servername = "$using:computerName.$using:InternaldomainName"
+                $signingcertificate = "CN=$using:computerName.$using:InternaldomainName"
 
                 # Create a new certificate object
                 $SigningCert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate

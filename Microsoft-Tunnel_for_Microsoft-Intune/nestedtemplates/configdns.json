@@ -32,6 +32,12 @@
                 "description": "The name of Reverse Lookup Zone 1 Network ID"
             }
         },
+        "GWIP": {
+            "type": "string",
+            "metadata": {
+                "description": "Gateway IP Address"
+            }
+        },        
         "EnterpriseCAIP": {
             "type": "string",
             "metadata": {
@@ -106,6 +112,7 @@
                             "ExternaldomainName": "[parameters('ExternaldomainName')]",                                                                                    
                             "ReverseLookup1": "[parameters('ReverseLookup1')]",
                             "dc1lastoctet": "[parameters('dc1lastoctet')]",  
+                            "GWIP": "[parameters('GWIP')]",                            
                             "EnterpriseCAIP": "[parameters('EnterpriseCAIP')]",
                             "OCSPIP": "[parameters('OCSPIP')]",
                             "AdminCreds": {

@@ -553,6 +553,9 @@
               "dc1lastoctet": {
                 "value": "[variables('dc1lastoctet')]"
               },    
+              "GWIP": {
+                "value": "[variables('gwIP')]"
+              },               
               "EnterpriseCAIP": {
                 "value": "[variables('ecaIP')]"
               },                                                                                                                          
@@ -720,11 +723,8 @@
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },              
-              "Internaldomainname": {
-                  "value": "[variables('InternaldomainName')]"
-              },          
               "Externaldomainname": {
-                  "value": "[variables('InternaldomainName')]"
+                  "value": "[variables('ExternaldomainName')]"
               },                        
               "EnterpriseCAName": {
                   "value": "[parameters('EnterpriseCAName')]"
@@ -864,9 +864,6 @@
               "computerName": {
                   "value": "[variables('ocspname')]"
               },
-              "NamingConvention": {
-                  "value": "[parameters('NamingConvention')]"
-              },              
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },              
@@ -1204,13 +1201,67 @@
               }
           }
       }
-    },    
+    }, 
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "AddOCSPPIP",
+      "dependsOn": [
+        "updatevnet1nsg"    
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm-pip.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ocspname')]"
+              },
+              "computerIP": {
+                  "value": "[variables('ocspIP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsServer"
+              },
+              "Offer": {
+                  "value": "WindowsServer"
+              },
+              "OSVersion": {
+                "value": "[parameters('OCSPOSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "[parameters('WindowsServerLicenseType')]"
+              },            
+              "VMSize": {
+                "value": "[parameters('ocspVMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('vnet1Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('vnet1subnet1Name')]"
+              },                                                                                                                 
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },       
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "CreatePublicDNSZone",
       "dependsOn": [
-        "AddUbuntuGWPIP"
+        "AddUbuntuGWPIP",
+        "AddOCSPPIP"
       ],            
       "properties": {
           "mode": "Incremental",
@@ -1227,7 +1278,13 @@
               },
               "GWPublicIP": {
                   "value": "[reference('AddUbuntuGWPIP').outputs.PublicIP.value]"             
-              }                                                                                                                                    
+              },                                                                                                                                    
+              "OCSPRecord": {
+                  "value": "ocsp"
+              },
+              "OCSPPublicIP": {
+                  "value": "[reference('AddOCSPPIP').outputs.PublicIP.value]"             
+              }                                                                                                                                                  
           }
       }
     },
@@ -1238,6 +1295,7 @@
       "dependsOn": [
         "RequestSparkCert",
         "AddUbuntuGWPIP",
+        "AddOCSPPIP",
         "CreatePublicDNSZone"
         
       ],      

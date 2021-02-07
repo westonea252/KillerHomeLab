@@ -8,6 +8,7 @@
         [String]$InternaldomainName,
         [String]$ExternaldomainName,
         [String]$ReverseLookup1,
+        [String]$GWIP,
         [String]$EnterpriseCAIP,
         [String]$OCSPIP,
         [System.Management.Automation.PSCredential]$Admincreds
@@ -45,6 +46,15 @@
             DependsOn = "[xDnsServerADZone]ReverseADZone1"
         }
 
+        xDnsRecord crlrecord
+        {
+            Name      = "sparktunnel"
+            Zone      = "$ExternaldomainName"
+            Target    = "$GWIP"
+            Type      = 'ARecord'
+            Ensure    = 'Present'
+            DependsOn = '[xDnsServerADZone]ExternalDomain'
+        }
         xDnsRecord crlrecord
         {
             Name      = "crl"

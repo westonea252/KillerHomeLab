@@ -14,12 +14,6 @@
                 "description": "NetBios Domain Name"
             }
         },        
-        "InternaldomainName": {
-            "type": "string",
-          "metadata": {
-            "description": "The FQDN of the AD Domain created "
-          }
-        },
         "ExternaldomainName": {
             "type": "string",
           "metadata": {
@@ -103,7 +97,6 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",
-                            "InternaldomainName": "[parameters('InternaldomainName')]",                                                        
                             "ExternaldomainName": "[parameters('ExternaldomainName')]",                                                                                    
                             "EnterpriseCAName": "[parameters('EnterpriseCAName')]",
                             "EnterpriseCAHashAlgorithm": "[parameters('EnterpriseCAHashAlgorithm')]",                            

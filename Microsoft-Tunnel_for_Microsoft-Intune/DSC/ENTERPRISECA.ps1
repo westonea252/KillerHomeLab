@@ -3,7 +3,6 @@ Configuration ENTERPRISECA
    param
    (
         [String]$NetBiosDomain,
-        [String]$InternaldomainName,
         [String]$ExternaldomainName,
         [String]$EnterpriseCAHashAlgorithm,
         [String]$EnterpriseCAKeyLength,
