@@ -28,6 +28,7 @@
         }                
     },    
     "variables": {
+        "apiVersion": "2015-06-15",
         "scriptUrl": "[uri(parameters('_artifactsLocation'), concat('Scripts/TunnelConfig.sh', parameters('_artifactsLocationSasToken')))]"
     },
     "resources": [
@@ -44,30 +45,6 @@
                     "fileUris": [
                         "[variables('scriptUrl')]"
                     ]
-                }
-            }
-        },
-
-        {
-        "name": "[concat(parameters('computerName'), '/TunnelConfig')]",
-        "type": "Microsoft.Compute/virtualMachines/extensions",
-        "location": "[parameters('location')]",
-        "apiVersion": "2019-03-01",
-        "tags": {
-            "displayName": "TunnelConfig"
-        },
-        "properties": {
-            "publisher": "Microsoft.Azure.Extensions",
-            "type": "CustomScript",
-            "typeHandlerVersion": "2.1",
-            "autoUpgradeMinorVersion": true,
-                "settings": {          
-                    "commandToExecute": "sh TunnelConfig.sh",
-                    "fileUris": [
-                        "[variables('scriptUrl')]"
-                    ]                    
-            },
-            "protectedSettings": {
                 }
             }
         }
