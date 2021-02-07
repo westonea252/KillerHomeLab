@@ -104,7 +104,7 @@
             Address        = '127.0.0.1'
             InterfaceAlias = $InterfaceAlias
             AddressFamily  = 'IPv4'
-            DependsOn = "[xADDomain]FirstDS"
+            DependsOn = "[ADDomain]FirstDS"
         }
 
         TimeZone SetTimeZone
