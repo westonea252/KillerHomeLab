@@ -568,6 +568,9 @@
               "computerName": {
                   "value": "[variables('dc1name')]"
               },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },              
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },
