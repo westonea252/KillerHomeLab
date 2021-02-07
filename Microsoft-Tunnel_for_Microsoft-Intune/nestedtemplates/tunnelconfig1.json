@@ -45,7 +45,7 @@
                     "fileUris": [
                         "[variables('scriptUrl')]"
                     ],
-                    "commandToExecute": "./TunnelConfig.sh"
+                    "commandToExecute": "sh TunnelConfig.sh"
                 }
             }
         }
