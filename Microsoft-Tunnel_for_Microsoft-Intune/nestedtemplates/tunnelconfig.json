@@ -32,23 +32,6 @@
     },
     "resources": [
         {
-            "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "[concat(parameters('computerName'), '/azureVmUtils')]",
-            "apiVersion": "[variables('apiVersion')]",
-            "location": "[parameters('location')]",
-            "properties": {
-                "publisher": "Microsoft.OSTCExtensions",
-                "type": "CustomScriptForLinux",
-                "typeHandlerVersion": "1.4",
-                "settings": {
-                    "fileUris": [
-                        "[variables('scriptUrl')]"
-                    ]
-                }
-            }
-        },
-
-        {
         "name": "[concat(parameters('computerName'), '/TunnelConfig')]",
         "type": "Microsoft.Compute/virtualMachines/extensions",
         "location": "[parameters('location')]",
