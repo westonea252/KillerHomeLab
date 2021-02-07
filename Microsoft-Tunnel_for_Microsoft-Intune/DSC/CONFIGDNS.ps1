@@ -46,7 +46,7 @@
             DependsOn = "[xDnsServerADZone]ReverseADZone1"
         }
 
-        xDnsRecord crlrecord
+        xDnsRecord sparkrecord
         {
             Name      = "sparktunnel"
             Zone      = "$ExternaldomainName"
