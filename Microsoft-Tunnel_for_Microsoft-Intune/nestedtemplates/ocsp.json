@@ -20,18 +20,18 @@
                 "description": "NetBios Domain Name"
             }
         },                                        
-        "domainName": {
+        "InternaldomainName": {
             "type": "string",
           "metadata": {
             "description": "The FQDN of the AD Domain created "
           }
         },
-        "RootDomainFQDN": {
+        "ExternaldomainName": {
             "type": "string",
-            "metadata": {
-                "description": "Root Domain Name FQDN"
-            }
-        },
+          "metadata": {
+            "description": "The External FQDN of the AD Domain created "
+          }
+        },  
         "EnterpriseCAName": {
             "type": "string",
             "metadata": {
@@ -91,8 +91,8 @@
                             "computerName": "[parameters('computerName')]",
                             "NamingConvention": "[parameters('NamingConvention')]",                            
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                                                        
-                            "domainName": "[parameters('domainName')]",                            
-                            "RootDomainFQDN": "[parameters('RootDomainFQDN')]",
+                            "InternaldomainName": "[parameters('InternaldomainName')]",                                                        
+                            "ExternaldomainName": "[parameters('ExternaldomainName')]",                                                                                    
                             "EnterpriseCAName": "[parameters('EnterpriseCAName')]",
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",

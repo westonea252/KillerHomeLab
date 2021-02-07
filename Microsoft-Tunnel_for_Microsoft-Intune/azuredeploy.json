@@ -538,16 +538,22 @@
               "computerName": {
                   "value": "[variables('dc1name')]"
               },
-              "DomainName": {
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },                 
+              "InternalDomainName": {
                 "value": "[variables('InternaldomainName')]"
-              },              
+              },       
+              "ExternalDomainName": {
+                "value": "[variables('ExternaldomainName')]"
+              },                            
               "ReverseLookup1": {
                 "value": "[variables('ReverseLookup1')]"
               },                                                                                                            
               "dc1lastoctet": {
                 "value": "[variables('dc1lastoctet')]"
               },    
-              "ISSUINGCAIP": {
+              "EnterpriseCAIP": {
                 "value": "[variables('ecaIP')]"
               },                                                                                                                          
               "OCSPIP": {
@@ -708,9 +714,12 @@
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },              
-              "RootDomainFQDN": {
+              "Internaldomainname": {
                   "value": "[variables('InternaldomainName')]"
               },          
+              "Externaldomainname": {
+                  "value": "[variables('InternaldomainName')]"
+              },                        
               "EnterpriseCAName": {
                   "value": "[parameters('EnterpriseCAName')]"
               },              
@@ -855,10 +864,10 @@
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },              
-              "domainName": {
+              "Internaldomainname": {
                   "value": "[variables('InternaldomainName')]"
-              },   
-              "RootDomainFQDN": {
+              },          
+              "Externaldomainname": {
                   "value": "[variables('ExternaldomainName')]"
               },   
               "EnterpriseCAName": {
