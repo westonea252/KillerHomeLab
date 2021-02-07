@@ -2,13 +2,13 @@
 {
    param
    (
-        [String]$NetBiosDomain,
         [String]$computerName,
+        [String]$NetBiosDomain,
         [String]$dc1lastoctet,
         [String]$InternaldomainName,
         [String]$ExternaldomainName,
         [String]$ReverseLookup1,
-        [String]$ISSUINGCAIP,
+        [String]$EnterpriseCAIP,
         [String]$OCSPIP,
         [System.Management.Automation.PSCredential]$Admincreds
     )
@@ -50,7 +50,7 @@
         {
             Name      = "crl"
             Zone      = "$ExternaldomainName"
-            Target    = "$ISSUINGCAIP"
+            Target    = "$EnterpriseCAIP"
             Type      = 'ARecord'
             Ensure    = 'Present'
             DependsOn = '[xDnsServerADZone]ExternalDomain'

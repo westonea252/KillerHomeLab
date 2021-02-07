@@ -553,7 +553,7 @@
               "dc1lastoctet": {
                 "value": "[variables('dc1lastoctet')]"
               },    
-              "ISSUINGCAIP": {
+              "EnterpriseCAIP": {
                 "value": "[variables('ecaIP')]"
               },                                                                                                                          
               "OCSPIP": {
