@@ -5,7 +5,6 @@ Configuration OCSP
         [String]$computerName,
         [String]$NamingConvention,
         [String]$NetBiosDomain,
-        [String]$DomainName,
         [String]$InternaldomainName,
         [String]$ExternaldomainName,
         [String]$EnterpriseCAName,

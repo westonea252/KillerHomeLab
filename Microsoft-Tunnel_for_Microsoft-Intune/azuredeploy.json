@@ -864,14 +864,11 @@
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },              
-              "domainName": {
-                  "value": "[variables('InternaldomainName')]"
-              },   
               "Internaldomainname": {
                   "value": "[variables('InternaldomainName')]"
               },          
               "Externaldomainname": {
-                  "value": "[variables('InternaldomainName')]"
+                  "value": "[variables('ExternaldomainName')]"
               },   
               "EnterpriseCAName": {
                   "value": "[parameters('EnterpriseCAName')]"
