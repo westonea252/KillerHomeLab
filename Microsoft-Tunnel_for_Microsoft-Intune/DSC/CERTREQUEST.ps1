@@ -32,6 +32,9 @@
                 $Load = "$using:DomainCreds"
                 $Password = $DomainCreds.Password
 
+                # Update GPO's
+                gpupdate /force
+
                 # Get Certificate Spark Tunnel Certificate
                 $CertCheck = Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=sparktunnel.$using:RootDomainFQDN"}
                 IF ($CertCheck -eq $Null) {Get-Certificate -Template WebServer1 -SubjectName "CN=sparktunnel.$using:RootDomainFQDN" -DNSName "sparktunnel.$using:RootDomainFQDN" -CertStoreLocation "cert:\LocalMachine\My"}
