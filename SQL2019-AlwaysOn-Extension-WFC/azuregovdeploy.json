@@ -44,13 +44,6 @@
             "description": "Availability Set Name"
         }
     },    
-    "LoadBalancerName": {
-        "type": "string",
-        "defaultValue": "KHL-SQL-LB",
-        "metadata": {
-            "description": "Load Balancer Name"
-        }
-    },
     "ServiceAccount": {
         "type": "string",
         "defaultValue": "SQLSvc",        
@@ -78,21 +71,7 @@
       "metadata": {
         "description": "Windows Failover Cluster Name"
       }
-    },                                     
-    "SQLAGName": {
-      "type": "string",
-      "defaultValue": "KHL-AG",
-      "metadata": {
-        "description": "SQL Availability Group Name"
-      }
-    },                             
-    "SQLAPName": {
-      "type": "string",
-      "defaultValue": "KHL-AP",
-      "metadata": {
-        "description": "SQL Access Point Name"
-      }
-    },                                 
+    },                                                                      
     "SQLNode1": {
       "type": "string",
       "defaultValue": "01",
@@ -106,14 +85,7 @@
       "metadata": {
         "description": "SQL Node2 Number (Example:  02)"
       }
-    },
-    "SQLLastAPOctet": {
-      "type": "string",
-      "defaultValue": "10",
-      "metadata": {
-        "description": "SQL Access Point Last Octet (Example:  10)"
-      }
-    },                             
+    },                       
     "SQL1LastMgmtOctet": {
       "type": "string",
       "defaultValue": "11",
@@ -300,7 +272,6 @@
     "vnet1subnet2Prefix": "[concat(parameters('vnet1ID'),'.2.0/24')]",    
     "vnet1BastionsubnetPrefix": "[concat(parameters('vnet1ID'),'.253.0/24')]",                  
     "StorageAccountName": "[concat(parameters('StorageAccountPrefix'), uniqueString(resourceGroup().id))]",
-    "StorageEndpoint": "core.usgovcloudapi.net",                    
     "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]", 
     "dc1IP": "[concat(parameters('vnet1ID'),'.1.',variables('dc1lastoctet'))]",        
     "ReverseLookup1": "[concat('1.',parameters('ReverseLookup1'))]",    
@@ -311,10 +282,8 @@
     "DCDataDisk1Name": "NTDS",            
     "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
-    "sqldbname": "[concat(parameters('NamingConvention'),'-db01')]",         
     "sqlname1": "[concat(parameters('NamingConvention'),'-sql-',parameters('sqlnode1'))]",                      
     "sqlname2": "[concat(parameters('NamingConvention'),'-sql-',parameters('sqlnode2'))]",     
-    "sqlapIP": "[concat(parameters('vnet1ID'),'.2.',parameters('sqllastapoctet'))]", 
     "sql1mgmtIP": "[concat(parameters('vnet1ID'),'.1.',parameters('sql1lastmgmtoctet'))]",     
     "sql2mgmtIP": "[concat(parameters('vnet1ID'),'.1.',parameters('sql2lastmgmtoctet'))]",                                  
     "sql1dataIP": "[concat(parameters('vnet1ID'),'.2.',parameters('sql1lastdataoctet'))]", 
@@ -323,8 +292,7 @@
     "sql2DGdataIP": "[concat(parameters('vnet1ID'),'.2.',parameters('sql2DGlastdataoctet'))]",         
     "Subnet1ID": "[concat(parameters('vnet1ID'),'.1')]",             
     "Subnet2ID": "[concat(parameters('vnet1ID'),'.2')]",             
-    "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
-    "LoadBalancerSku": "Standard"                
+    "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]"           
   },  
   "resources": [
     {
