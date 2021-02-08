@@ -3,18 +3,47 @@
    param
    (
         [String]$ComputerName,
-        [String]$RootDomainFQDN,                
+        [String]$TimeZone,  
+        [String]$gwIP, 
+        [String]$domainName,                
         [String]$NetBiosDomain,
         [System.Management.Automation.PSCredential]$Admincreds
     )
+
+    Import-DscResource -Module ComputerManagementDsc # Used for TimeZone
+    Import-DscResource -Module xPSDesiredStateConfiguration
 
     [System.Management.Automation.PSCredential ]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosDomain}\$($Admincreds.UserName)", $Admincreds.Password)
 
     Node localhost
     {
+        Registry SchUseStrongCrypto
+        {
+            Key                         = 'HKLM:\SOFTWARE\Microsoft\.NETFramework\v4.0.30319'
+            ValueName                   = 'SchUseStrongCrypto'
+            ValueType                   = 'Dword'
+            ValueData                   =  '1'
+            Ensure                      = 'Present'
+        }
+
+        Registry SchUseStrongCrypto64
+        {
+            Key                         = 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework\v4.0.30319'
+            ValueName                   = 'SchUseStrongCrypto'
+            ValueType                   = 'Dword'
+            ValueData                   =  '1'
+            Ensure                      = 'Present'
+        }
+
         LocalConfigurationManager
         {
             RebootNodeIfNeeded = $true
+        }
+
+        TimeZone SetTimeZone
+        {
+            IsSingleInstance = 'Yes'
+            TimeZone         = $TimeZone
         }
 
         File Certificates
@@ -24,27 +53,51 @@
             Ensure = "Present"
         }
 
+        xRemoteFile cscp
+        {
+            DestinationPath = "C:\Certificates\cscp.exe"
+            Uri             = "https://the.earth.li/~sgtatham/putty/latest/w64/pscp.exe"
+            UserAgent       = "[Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer"
+            DependsOn = "[File]Certificates"
+        }
+
+        Script InstallUbuntu
+        {
+            SetScript =
+            {
+                $Load = "$using:DomainCreds"
+                $Username = $DomainCreds.GetNetworkCredential().Username
+                $Password = $DomainCreds.GetNetworkCredential().Password
+
+                # Download PSCP
+                echo y | c:\Certificates\pscp.exe -P 22 -l $Username -pw $Password "C:\Certificates\sparktunnel.$using:domainName.pfx" "$using:gwIP:/home/$Username"    
+            }
+            GetScript =  { @{} }
+            TestScript = { $false}
+        }
+
         Script ConfigureCertificate
         {
             SetScript =
             {
-                # Create Credentials
                 $Load = "$using:DomainCreds"
-                $Password = $DomainCreds.Password
+                $Domain = $DomainCreds.GetNetworkCredential().Domain
+                $Username = $DomainCreds.GetNetworkCredential().Username
+                $Password = $DomainCreds.GetNetworkCredential().Password
 
                 # Update GPO's
                 gpupdate /force
 
                 # Get Certificate Spark Tunnel Certificate
-                $CertCheck = Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=sparktunnel.$using:RootDomainFQDN"}
-                IF ($CertCheck -eq $Null) {Get-Certificate -Template WebServer1 -SubjectName "CN=sparktunnel.$using:RootDomainFQDN" -DNSName "sparktunnel.$using:RootDomainFQDN" -CertStoreLocation "cert:\LocalMachine\My"}
+                $CertCheck = Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=sparktunnel.$using:domainName"}
+                IF ($CertCheck -eq $Null) {Get-Certificate -Template WebServer1 -SubjectName "CN=sparktunnel.$using:domainName" -DNSName "sparktunnel.$using:domainName" -CertStoreLocation "cert:\LocalMachine\My"}
 
-                $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=sparktunnel.$using:RootDomainFQDN"}).Thumbprint
+                $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=sparktunnel.$using:domainName"}).Thumbprint
                 (Get-ChildItem -Path Cert:\LocalMachine\My\$thumbprint).FriendlyName = "Spark Tunnel Cert"
 
                 # Export Service Communication Certificate
-                $CertFile = Get-ChildItem -Path "C:\Certificates\sparktunnel.$using:RootDomainFQDN.pfx" -ErrorAction 0
-                IF ($CertFile -eq $Null) {Get-ChildItem -Path cert:\LocalMachine\my\$thumbprint | Export-PfxCertificate -FilePath "C:\Certificates\sparktunnel.$using:RootDomainFQDN.pfx" -Password $Password}
+                $CertFile = Get-ChildItem -Path "C:\Certificates\sparktunnel.$using:domainName.pfx" -ErrorAction 0
+                IF ($CertFile -eq $Null) {Get-ChildItem -Path cert:\LocalMachine\my\$thumbprint | Export-PfxCertificate -FilePath "C:\Certificates\sparktunnel.$using:domainName.pfx" -Password $Password}
 
                 # Share Certificate
                 $CertShare = Get-SmbShare -Name Certificates -ErrorAction 0

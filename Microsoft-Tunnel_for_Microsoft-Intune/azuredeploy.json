@@ -869,6 +869,9 @@
               "computerName": {
                   "value": "[variables('ecaname')]"
               },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },               
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },              
@@ -1013,6 +1016,9 @@
               "computerName": {
                   "value": "[variables('ocspname')]"
               },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },               
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },              
@@ -1152,9 +1158,15 @@
               "computerName": {
                   "value": "[variables('webname')]"
               },                                                                                                                                                           
-              "RootDomainFQDN": {
-                  "value": "[variables('Externaldomainname')]"
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },
+              "gwIP": {
+                  "value": "[variables('gwIP')]"
               },              
+              "domainName": {
+                  "value": "[variables('Externaldomainname')]"
+              },                                          
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },                            

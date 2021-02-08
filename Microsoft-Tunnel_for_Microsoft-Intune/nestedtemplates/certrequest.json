@@ -8,12 +8,24 @@
                 "description": "Computer Name"
             }
         },
-        "RootDomainFQDN": {
+        "TimeZone": {
+            "type": "string",      
+            "metadata": {
+                "description": "Time Zone"
+            }
+        },   
+        "GWIP": {
             "type": "string",
             "metadata": {
-                "description": "Root domain FQDN"
+                "description": "Gateway IP Address"
             }
-        },        
+        },           
+        "domainName": {
+            "type": "string",
+            "metadata": {
+                "description": "The External FQDN of the AD Domain created "
+          }
+        },         
         "NetBiosDomain": {
             "type": "string",
             "metadata": {
@@ -71,7 +83,9 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "ComputerName": "[parameters('ComputerName')]",
-                            "RootDomainFQDN": "[parameters('RootDomainFQDN')]",
+                            "TimeZone": "[parameters('TimeZone')]",                            
+                            "gwIP": "[parameters('gwIP')]",                                
+                            "domainName": "[parameters('domainName')]",                                                                                                                                                                                                
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",        
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",

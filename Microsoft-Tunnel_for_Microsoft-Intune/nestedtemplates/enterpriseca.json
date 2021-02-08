@@ -8,6 +8,12 @@
                 "description": "Computer Name"
             }
         },
+        "TimeZone": {
+            "type": "string",      
+            "metadata": {
+                "description": "Time Zone"
+            }
+        },            
         "NetBiosDomain": {
             "type": "string",
             "metadata": {
@@ -16,8 +22,8 @@
         },        
         "ExternaldomainName": {
             "type": "string",
-          "metadata": {
-            "description": "The External FQDN of the AD Domain created "
+            "metadata": {
+                "description": "The External FQDN of the AD Domain created "
           }
         },      
         "EnterpriseCAName": {
@@ -48,7 +54,7 @@
         },                                      
         "location": {
             "type": "string",
-          "metadata": {
+                "metadata": {
             "description": "Region of Resources"
           }
         },
@@ -60,8 +66,8 @@
         },
         "adminPassword": {
             "type": "securestring",
-          "metadata": {
-            "description": "The password for the Administrator account of the new VM and Domain"
+            "metadata": {
+                "description": "The password for the Administrator account of the new VM and Domain"
           }
         },         
         "_artifactsLocation": {
@@ -96,6 +102,7 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
+                            "TimeZone": "[parameters('TimeZone')]",
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",
                             "ExternaldomainName": "[parameters('ExternaldomainName')]",                                                                                    
                             "EnterpriseCAName": "[parameters('EnterpriseCAName')]",

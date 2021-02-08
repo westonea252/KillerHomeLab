@@ -3,6 +3,7 @@ Configuration OCSP
    param
    (
         [String]$computerName,
+        [String]$TimeZone,        
         [String]$NetBiosDomain,
         [String]$InternaldomainName,
         [String]$ExternaldomainName,
@@ -48,7 +49,7 @@ Configuration OCSP
         TimeZone SetTimeZone
         {
             IsSingleInstance = 'Yes'
-            TimeZone         = 'Eastern Standard Time'
+            TimeZone         = $TimeZone
         }
 
         Script BackupCryptoKeys

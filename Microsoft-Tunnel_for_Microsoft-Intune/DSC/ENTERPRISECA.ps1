@@ -2,6 +2,7 @@ Configuration ENTERPRISECA
 {
    param
    (
+        [String]$TimeZone,        
         [String]$NetBiosDomain,
         [String]$ExternaldomainName,
         [String]$EnterpriseCAHashAlgorithm,
@@ -101,7 +102,7 @@ Configuration ENTERPRISECA
         TimeZone SetTimeZone
         {
             IsSingleInstance = 'Yes'
-            TimeZone         = 'Eastern Standard Time'
+            TimeZone         = $TimeZone
         }
 
         File CopyEnterpriseCACRl
