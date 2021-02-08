@@ -55,7 +55,7 @@
 
         xRemoteFile cscp
         {
-            DestinationPath = "C:\Certificates\cscp.exe"
+            DestinationPath = "C:\Certificates\pscp.exe"
             Uri             = "https://the.earth.li/~sgtatham/putty/latest/w64/pscp.exe"
             UserAgent       = "[Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer"
             DependsOn = "[File]Certificates"
@@ -71,6 +71,7 @@
                 $PlainPassword = $DomainCreds.GetNetworkCredential().Password
                 $SecurePassword = $DomainCreds.Password
                 $RemoteLinux = "$using:gwIP"+":/home/"+$Username
+                $PCSPPath = "c:\Certificates\pscp.exe"
 
                 # Update Trusted CA's
                 gpupdate /force
@@ -91,7 +92,11 @@
                 IF ($CertShare -eq $Null) {New-SmbShare -Name Certificates -Path C:\Certificates -FullAccess Administrators}
 
                 # Copy Linux Cert
-                echo y | c:\Certificates\pscp.exe -P 22 -l "$Username" -pw "$PlainPassword" "C:\Certificates\sparktunnel.$using:domainName.pfx" "$RemoteLinux"  
+                $FileCheck = Get-ChildItem -Path "C:\Certificates\FileCopiedSuccessfully.txt"
+                IF ($FileCheck -eq $Null) {
+                C:\Certificates\pscp.exe -P 22 -l $Username -pw $PlainPassword "C:\Certificates\sparktunnel.$using:domainName.pfx" $RemoteLinux  
+                Set-Content -Path "C:\Certificates\FileCopiedSuccessfully.txt" -Value "File was copied successfully"
+                } 
             }
             GetScript =  { @{} }
             TestScript = { $false}
