@@ -2476,6 +2476,9 @@
               "computerName": {
                   "value": "[variables('ocspname')]"
               },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },                
               "NamingConvention": {
                   "value": "[parameters('NamingConvention')]"
               },              
