@@ -68,10 +68,11 @@
                 $Load = "$using:DomainCreds"
                 $Domain = $DomainCreds.GetNetworkCredential().Domain
                 $Username = $DomainCreds.GetNetworkCredential().Username
-                $Password = $DomainCreds.GetNetworkCredential().Password
+                $PlainPassword = $DomainCreds.GetNetworkCredential().Password
+                $SecurePassword = $DomainCreds.Password
                 $RemoteLinux = "$using:gwIP"+":/home/"+$Username
 
-                # Update GPO's
+                # Update Trusted CA's
                 gpupdate /force
 
                 # Get Certificate Spark Tunnel Certificate
@@ -83,14 +84,14 @@
 
                 # Export Service Communication Certificate
                 $CertFile = Get-ChildItem -Path "C:\Certificates\sparktunnel.$using:domainName.pfx" -ErrorAction 0
-                IF ($CertFile -eq $Null) {Get-ChildItem -Path cert:\LocalMachine\my\$thumbprint | Export-PfxCertificate -FilePath "C:\Certificates\sparktunnel.$using:domainName.pfx" -Password $Password}
+                IF ($CertFile -eq $Null) {Get-ChildItem -Path cert:\LocalMachine\my\$thumbprint | Export-PfxCertificate -FilePath "C:\Certificates\sparktunnel.$using:domainName.pfx" -Password $SecurePassword}
 
                 # Share Certificate
                 $CertShare = Get-SmbShare -Name Certificates -ErrorAction 0
                 IF ($CertShare -eq $Null) {New-SmbShare -Name Certificates -Path C:\Certificates -FullAccess Administrators}
 
                 # Copy Linux Cert
-                echo y | c:\Certificates\pscp.exe -P 22 -l "$Username" -pw "$Password" "C:\Certificates\sparktunnel.$using:domainName.pfx" "$RemoteLinux"  
+                echo y | c:\Certificates\pscp.exe -P 22 -l "$Username" -pw "$PlainPassword" "C:\Certificates\sparktunnel.$using:domainName.pfx" "$RemoteLinux"  
             }
             GetScript =  { @{} }
             TestScript = { $false}
