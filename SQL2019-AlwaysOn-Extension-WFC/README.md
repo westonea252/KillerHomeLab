@@ -1,4 +1,4 @@
-# SQL 2019 Always-On Lab Extension
+# SQL 2019 Always-On Lab Extension with WFC
 
 Click the button below to deploy
 
