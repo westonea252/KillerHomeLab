@@ -87,26 +87,12 @@
                 # Share Certificate
                 $CertShare = Get-SmbShare -Name Certificates -ErrorAction 0
                 IF ($CertShare -eq $Null) {New-SmbShare -Name Certificates -Path C:\Certificates -FullAccess Administrators}
+
+                # Copy Linux Cert
+                echo y | c:\Certificates\pscp.exe -P 22 -l $Username -pw "$Password" "C:\Certificates\sparktunnel.$using:domainName.pfx" "$using:gwIP:/home/$Username"  
             }
             GetScript =  { @{} }
             TestScript = { $false}
             DependsOn = '[File]Certificates'
         }
-
-        Script CopyCertToLinux
-        {
-            SetScript =
-            {
-                $Load = "$using:DomainCreds"
-                $Username = $DomainCreds.GetNetworkCredential().Username
-                $Password = $DomainCreds.GetNetworkCredential().Password
-
-                # Download PSCP
-                echo y | c:\Certificates\pscp.exe -P 22 -l $Username -pw "$Password" "C:\Certificates\sparktunnel.$using:domainName.pfx" "$using:gwIP:/home/$Username"    
-            }
-            GetScript =  { @{} }
-            TestScript = { $false}
-            DependsOn = '[Script]ConfigureCertificate'
-        }
-    }
 }
