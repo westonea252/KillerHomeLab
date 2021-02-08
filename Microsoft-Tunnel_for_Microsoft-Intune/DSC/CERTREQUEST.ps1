@@ -71,7 +71,6 @@
                 $PlainPassword = $DomainCreds.GetNetworkCredential().Password
                 $SecurePassword = $DomainCreds.Password
                 $RemoteLinux = "$using:gwIP"+":/home/"+$Username
-                $PCSPPath = "c:\Certificates\pscp.exe"
 
                 # Update Trusted CA's
                 gpupdate /force
@@ -94,7 +93,7 @@
                 # Copy Linux Cert
                 $FileCheck = Get-ChildItem -Path "C:\Certificates\FileCopiedSuccessfully.txt"
                 IF ($FileCheck -eq $Null) {
-                C:\Certificates\pscp.exe -P 22 -l $Username -pw $PlainPassword "C:\Certificates\sparktunnel.$using:domainName.pfx" $RemoteLinux  
+                echo y | C:\Certificates\pscp.exe -P 22 -l $Username -pw $PlainPassword "C:\Certificates\sparktunnel.$using:domainName.pfx" $RemoteLinux  
                 Set-Content -Path "C:\Certificates\FileCopiedSuccessfully.txt" -Value "File was copied successfully"
                 } 
             }
