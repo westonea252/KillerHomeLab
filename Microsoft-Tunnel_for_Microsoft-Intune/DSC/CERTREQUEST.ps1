@@ -95,4 +95,5 @@
             TestScript = { $false}
             DependsOn = '[File]Certificates'
         }
+    }
 }
