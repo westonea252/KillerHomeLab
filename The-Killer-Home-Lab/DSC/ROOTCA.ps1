@@ -2,7 +2,8 @@ Configuration ROOTCA
 {
    param
    (
-        [String]$RootDomainFQDN,
+        [String]$TimeZone,
+        [String]$domainName,
         [String]$RootCAHashAlgorithm,
         [String]$RootCAKeyLength,
         [String]$RootCAName,
@@ -10,9 +11,9 @@ Configuration ROOTCA
         [System.Management.Automation.PSCredential]$Admincreds
     )
  
-    Import-DscResource -Module ComputerManagementDsc
-    Import-DscResource -Module ActiveDirectoryCSDsc
-    Import-DscResource -Module xPSDesiredStateConfiguration
+    Import-DscResource -ModuleName ComputerManagementDsc
+    Import-DscResource -ModuleName ActiveDirectoryCSDsc
+    Import-DscResource -ModuleName xPSDesiredStateConfiguration
 
     [System.Management.Automation.PSCredential ]$Creds = New-Object System.Management.Automation.PSCredential ("$($AdminCreds.UserName)", $AdminCreds.Password)
  
@@ -74,7 +75,7 @@ Configuration ROOTCA
         TimeZone SetTimeZone
         {
             IsSingleInstance = 'Yes'
-            TimeZone         = 'Eastern Standard Time'
+            TimeZone         = $TimeZone
         }
 
         Script ConfigureRootCA
@@ -92,7 +93,7 @@ Configuration ROOTCA
 
                 # Check for and if not present add HTTP CDP Location
                 $HTTPCDPURI = Get-CACrlDistributionPoint | Where-object {$_.uri -like "http://crl"+"*"}
-                IF ($HTTPCDPURI.uri -eq $null){Add-CACRLDistributionPoint -Uri "http://crl.$using:rootdomainfqdn/CertEnroll/<CAName><CRLNameSuffix><DeltaCRLAllowed>.crl" -AddToCertificateCDP -AddToFreshestCrl -Force}
+                IF ($HTTPCDPURI.uri -eq $null){Add-CACRLDistributionPoint -Uri "http://crl.$using:domainName/CertEnroll/<CAName><CRLNameSuffix><DeltaCRLAllowed>.crl" -AddToCertificateCDP -AddToFreshestCrl -Force}
 
                 # Remove All Default AIA Locations
                 Get-CAAuthorityInformationAccess | Where-Object {$_.Uri -like 'ldap*'} | Remove-CAAuthorityInformationAccess -Force
@@ -105,11 +106,11 @@ Configuration ROOTCA
 
                 # Check for and if not present add HTTP AIA Location
                 $HTTPAIAURI = Get-CAAuthorityInformationaccess | Where-object {$_.uri -like "http://crl"+"*"}
-                IF ($HTTPAIAURI.uri -eq $null){Add-CAAuthorityInformationaccess -Uri "http://crl.$rootdomainfqdn/CertEnroll/<ServerDNSName>_<CAName><CertificateName>.crt" -AddToCertificateAia -Force}
+                IF ($HTTPAIAURI.uri -eq $null){Add-CAAuthorityInformationaccess -Uri "http://crl.$using:domainName/CertEnroll/<ServerDNSName>_<CAName><CertificateName>.crt" -AddToCertificateAia -Force}
 
                 # Check for and if not present add HTTP OCSP Location
                 $HTTPOCSPURI = Get-CAAuthorityInformationaccess | Where-object {$_.uri -like "http://ocsp"+"*"}
-                IF ($HTTPOCSPURI.uri -eq $null){Add-CAAuthorityInformationaccess -Uri "http://ocsp.$rootdomainfqdn/ocsp" -AddToCertificateOcsp -Force}
+                IF ($HTTPOCSPURI.uri -eq $null){Add-CAAuthorityInformationaccess -Uri "http://ocsp.$using:domainName/ocsp" -AddToCertificateOcsp -Force}
 
                 # Set CRL Publication Internal
                 certutil -setreg CA\CRLPeriodUnits 6

@@ -2,15 +2,16 @@
 {
    param
    (
+        [String]$TimeZone,        
         [String]$NetBiosDomain,
         [String]$SQLSASUrl,
         [System.Management.Automation.PSCredential]$Admincreds
     )
  
-    Import-DscResource -Module ComputerManagementDsc # Used for TimeZone
-    Import-DscResource -Module SqlServerDsc # Used for SQL
-    Import-DscResource -Module xStorage # Used for ISO
-    Import-DscResource -Module xPSDesiredStateConfiguration # Used for xRemote
+    Import-DscResource -ModuleName ComputerManagementDsc # Used for TimeZone
+    Import-DscResource -ModuleName SqlServerDsc # Used for SQL
+    Import-DscResource -ModuleName xStorage # Used for ISO
+    Import-DscResource -ModuleName xPSDesiredStateConfiguration # Used for xRemote
 
     [System.Management.Automation.PSCredential ]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosDomain}\$($AdminCreds.UserName)", $AdminCreds.Password)
  
@@ -171,7 +172,7 @@
         TimeZone SetTimeZone
         {
             IsSingleInstance = 'Yes'
-            TimeZone         = 'Eastern Standard Time'
+            TimeZone         = $TimeZone
         }
      }
   }

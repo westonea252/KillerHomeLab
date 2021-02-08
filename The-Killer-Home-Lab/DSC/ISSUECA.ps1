@@ -5,8 +5,6 @@ Configuration ISSUECA
         [String]$computerName,
         [String]$NamingConvention,
         [String]$NetBiosDomain,
-        [String]$RootDomainFQDN,
-        [String]$DomainName,
         [String]$IssuingCAName,
         [String]$RootCAName,
         [String]$RootCAIP,

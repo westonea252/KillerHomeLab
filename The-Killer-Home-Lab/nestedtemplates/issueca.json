@@ -20,18 +20,6 @@
                 "description": "NetBios Domain Name"
             }
         },
-        "RootDomainFQDN": {
-            "type": "string",
-            "metadata": {
-                "description": "Root Domain Name FQDN"
-            }
-        },
-        "domainName": {
-            "type": "string",
-          "metadata": {
-            "description": "The FQDN of the AD Domain created "
-          }
-        },
         "IssuingCAName": {
             "type": "string",
             "metadata": {
@@ -116,9 +104,7 @@
                         "Properties": {
                             "computerName": "[parameters('computerName')]",
                             "NamingConvention": "[parameters('NamingConvention')]",                            
-                            "NetBiosDomain": "[parameters('NetBiosDomain')]",                                                        
-                            "RootDomainFQDN": "[parameters('RootDomainFQDN')]",
-                            "domainName": "[parameters('domainName')]",                                                        
+                            "NetBiosDomain": "[parameters('NetBiosDomain')]",                                                                                                               
                             "IssuingCAName": "[parameters('IssuingCAName')]",
                             "RootCAName": "[parameters('RootCAName')]",                            
                             "RootCAIP": "[parameters('RootCAIP')]",     
