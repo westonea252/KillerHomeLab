@@ -61,6 +61,43 @@
             DependsOn = "[File]Certificates"
         }
 
+        xRemoteFile Downloadvsredist
+        {
+            DestinationPath = "C:\Certificates\vc_redist.x64.exe"
+            Uri             = "https://aka.ms/vs/16/release/vc_redist.x64.exe"
+            UserAgent       = "[Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer"
+            DependsOn = '[File]Certificates'
+        }
+
+        xRemoteFile DownloadOpenSSL
+        {
+            DestinationPath = "C:\Certificates\OpenSSL.exe"
+            Uri             = "https://slproweb.com/download/Win64OpenSSL_Light-1_1_1i.exe"
+            UserAgent       = "[Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer"
+            DependsOn = '[File]Certificates'
+        }
+
+        Package Installvsredist
+        {
+            Ensure      = "Present"  # You can also set Ensure to "Absent"
+            Path        = "C:\Certificates\vc_redist.x64.exe"
+            Name        = "Microsoft Visual C++ 2019 X64 Minimum Runtime - 14.28.29325"
+            ProductId   = "7D0362D5-C699-4403-BC09-0C1DAD1D93AB"
+            Arguments = "/passive"
+            DependsOn   = "[xRemoteFile]Downloadvsredist"
+        }
+
+        Script InstallOpenSSL
+        {
+            SetScript =
+            {
+                C:\Certificates\OpenSSL.exe /VERYSILENT
+            }
+            GetScript =  { @{} }
+            TestScript = { $false}
+            DependsOn = '[xRemoteFile]DownloadOpenSSL'
+        }
+
         Script ConfigureCertificate
         {
             SetScript =
@@ -71,7 +108,7 @@
                 $PlainPassword = $DomainCreds.GetNetworkCredential().Password
                 $SecurePassword = $DomainCreds.Password
                 $RemoteLinux = "$using:gwIP"+":/home/"+$Username
-                $PCSPPath = "c:\Certificates\pscp.exe"
+                $ProgramFiles = "Program Files"
 
                 # Update Trusted CA's
                 gpupdate /force
@@ -91,16 +128,19 @@
                 $CertShare = Get-SmbShare -Name Certificates -ErrorAction 0
                 IF ($CertShare -eq $Null) {New-SmbShare -Name Certificates -Path C:\Certificates -FullAccess Administrators}
 
+                # Convert PFX to PEM
+                C:\$ProgramFiles\OpenSSL-Win64\bin\openssl.exe pkcs12 -in "C:\Certificates\sparktunnel.$using:domainName.pfx" -out "C:\Certificates\sparktunnel.$using:domainName.pem" -passin pass:$PlainPassword -passout pass:$PlainPassword
+
                 # Copy Linux Cert
                 $FileCheck = Get-ChildItem -Path "C:\Certificates\FileCopiedSuccessfully.txt"
                 IF ($FileCheck -eq $Null) {
-                C:\Certificates\pscp.exe -P 22 -l $Username -pw $PlainPassword "C:\Certificates\sparktunnel.$using:domainName.pfx" $RemoteLinux  
+                C:\Certificates\pscp.exe -P 22 -l $Username -pw $PlainPassword "C:\Certificates\sparktunnel.$using:domainName.pem" $RemoteLinux  
                 Set-Content -Path "C:\Certificates\FileCopiedSuccessfully.txt" -Value "File was copied successfully"
                 } 
             }
             GetScript =  { @{} }
             TestScript = { $false}
-            DependsOn = '[File]Certificates'
+            DependsOn = '[Script]InstallOpenSSL'
         }
     }
 }
