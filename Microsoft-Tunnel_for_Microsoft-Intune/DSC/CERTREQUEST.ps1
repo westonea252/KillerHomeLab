@@ -136,9 +136,9 @@
                 $FileCheck = Get-ChildItem -Path "C:\Certificates\FileCopiedSuccessfully.txt" -ErrorAction 0
                 IF ($FileCheck -eq $Null) {
 
-                Set-Content -Path "C:\Certificates\pscp.cmd" -Value "echo y | C:\Certificates\pscp.exe -P 22 -l $Username -pw $PlainPassword $PEMPath $RemoteLinux"
-                C:\Certificates\pscp.cmd
-                Set-Content -Path "C:\Certificates\FileCopiedSuccessfully.txt" -Value "File was copied successfully"
+                # Set-Content -Path "C:\Certificates\pscp.cmd" -Value "echo y | C:\Certificates\pscp.exe -P 22 -l $Username -pw $PlainPassword $PEMPath $RemoteLinux"
+                # C:\Certificates\pscp.cmd
+                # Set-Content -Path "C:\Certificates\FileCopiedSuccessfully.txt" -Value "File was copied successfully"
                 } 
             }
             GetScript =  { @{} }
