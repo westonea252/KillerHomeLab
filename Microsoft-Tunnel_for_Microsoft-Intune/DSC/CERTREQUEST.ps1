@@ -122,8 +122,8 @@
                 (Get-ChildItem -Path Cert:\LocalMachine\My\$thumbprint).FriendlyName = "Spark Tunnel Cert"
 
                 # Export Service Communication Certificate
-                $CertFile = Get-ChildItem -Path "C:\Certificates\$PFXName" -ErrorAction 0
-                IF ($CertFile -eq $Null) {Get-ChildItem -Path cert:\LocalMachine\my\$thumbprint | Export-PfxCertificate -FilePath "C:\Certificates\$PFXName" -Password $SecurePassword}
+                $CertFile = Get-ChildItem -Path "$PFXPath" -ErrorAction 0
+                IF ($CertFile -eq $Null) {Get-ChildItem -Path cert:\LocalMachine\my\$thumbprint | Export-PfxCertificate -FilePath "$PFXPath" -Password $SecurePassword}
 
                 # Share Certificate
                 $CertShare = Get-SmbShare -Name Certificates -ErrorAction 0
