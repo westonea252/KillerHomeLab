@@ -135,8 +135,6 @@
                 $FileCheck = Get-ChildItem -Path "C:\Certificates\FileCopiedSuccessfully.txt" -ErrorAction 0
                 IF ($FileCheck -eq $Null) {
 
-                C:\Certificates\pscp.exe -P 22 -l $Username -pw $PlainPassword "C:\Certificates\sparktunnel.$using:domainName.pem" $RemoteLinux  
-
                 echo y | C:\Certificates\pscp.exe -P 22 -l $Username -pw $PlainPassword "C:\Certificates\sparktunnel.$using:domainName.pfx" $RemoteLinux  
                 Set-Content -Path "C:\Certificates\FileCopiedSuccessfully.txt" -Value "File was copied successfully"
                 } 
