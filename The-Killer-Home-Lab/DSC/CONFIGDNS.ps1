@@ -51,7 +51,7 @@
         {
             Name      = "$dc1lastoctet"
             Zone      = "$ReverseLookup1.in-addr.arpa"
-            Target    = "$computerName.$DomainName"
+            Target    = "$computerName.$InternaldomainName"
             Type      = 'Ptr'
             Ensure    = 'Present'
             DependsOn = "[xDnsServerADZone]ReverseADZone1"
@@ -61,7 +61,7 @@
         {
             Name      = "$dc2lastoctet"
             Zone      = "$ReverseLookup2.in-addr.arpa"
-            Target    = "$computerName.$DomainName"
+            Target    = "$computerName.$InternaldomainName"
             Type      = 'Ptr'
             Ensure    = 'Present'
             DependsOn = "[xDnsServerADZone]ReverseADZone2"
