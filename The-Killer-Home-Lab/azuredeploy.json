@@ -2946,11 +2946,14 @@
               "computerName": {
                   "value": "[variables('ex1name')]"
               },
-              "NetBiosDomain": {
-                  "value": "[parameters('NetBiosDomain')]"
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
               }, 
               "ExchangeSASUrl": {
                   "value": "[parameters('Exchange2019ISOUrl')]"
+              },                                 
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
               },                                    
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
@@ -3113,6 +3116,9 @@
               "computerName": {
                   "value": "[variables('ex2name')]"
               },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },                   
               "ExchangeSASUrl": {
                   "value": "[parameters('Exchange2019ISOUrl')]"
               },                                    
@@ -3235,6 +3241,9 @@
               "computerName": {
                   "value": "[variables('fs1name')]"
               },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },                
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },                                        
@@ -3268,6 +3277,9 @@
               "computerName": {
                   "value": "[variables('fs2name')]"
               },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },                
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },                                        
