@@ -242,12 +242,10 @@
                   "targetFqdns": [
                     "raw.githubusercontent.com",
                     "github.com",
-                    "killerhomelab.blob.core.windows.net",
-                    "elliottf.blob.core.windows.net",                                         
+                    "*.blob.core.windows.net",
                     "aka.ms",
                     "redirectiontool.trafficmanager.net",
-                    "go.microsoft.com",
-                    "download.microsoft.com"
+                    "*.microsoft.com"
                   ],
                   "sourceAddresses": [
                     "*"
