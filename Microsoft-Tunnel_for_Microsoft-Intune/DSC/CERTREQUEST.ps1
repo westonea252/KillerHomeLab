@@ -108,6 +108,8 @@
                 $PlainPassword = $DomainCreds.GetNetworkCredential().Password
                 $SecurePassword = $DomainCreds.Password
                 $RemoteLinux = "$using:gwIP"+":/home/"+$Username
+                $PFXPath = "C:\Certificates\sparktunnel."+"$using:domainName"+".pfx"
+                $PEMPath = "C:\Certificates\sparktunnel."+"$using:domainName"+".pem"
 
                 # Update Trusted CA's
                 gpupdate /force
@@ -120,21 +122,22 @@
                 (Get-ChildItem -Path Cert:\LocalMachine\My\$thumbprint).FriendlyName = "Spark Tunnel Cert"
 
                 # Export Service Communication Certificate
-                $CertFile = Get-ChildItem -Path "C:\Certificates\sparktunnel.$using:domainName.pfx" -ErrorAction 0
-                IF ($CertFile -eq $Null) {Get-ChildItem -Path cert:\LocalMachine\my\$thumbprint | Export-PfxCertificate -FilePath "C:\Certificates\sparktunnel.$using:domainName.pfx" -Password $SecurePassword}
+                $CertFile = Get-ChildItem -Path "C:\Certificates\$PFXName" -ErrorAction 0
+                IF ($CertFile -eq $Null) {Get-ChildItem -Path cert:\LocalMachine\my\$thumbprint | Export-PfxCertificate -FilePath "C:\Certificates\$PFXName" -Password $SecurePassword}
 
                 # Share Certificate
                 $CertShare = Get-SmbShare -Name Certificates -ErrorAction 0
                 IF ($CertShare -eq $Null) {New-SmbShare -Name Certificates -Path C:\Certificates -FullAccess Administrators}
 
                 # Convert PFX to PEM
-                & "C:\Program Files\OpenSSL-Win64\bin\openssl.exe" pkcs12 -in "C:\Certificates\sparktunnel.$using:domainName.pfx" -out "C:\Certificates\sparktunnel.$using:domainName.pem" -passin pass:$PlainPassword -passout pass:$PlainPassword
+                & "C:\Program Files\OpenSSL-Win64\bin\openssl.exe" pkcs12 -in "$PFXPath" -out "$PEMPath" -passin pass:$PlainPassword -passout pass:$PlainPassword
 
                 # Copy Linux Cert
                 $FileCheck = Get-ChildItem -Path "C:\Certificates\FileCopiedSuccessfully.txt" -ErrorAction 0
                 IF ($FileCheck -eq $Null) {
 
-                echo y | C:\Certificates\pscp.exe -batch -P 22 -l $Username -pw $PlainPassword -batch "C:\Certificates\sparktunnel.$using:domainName.pem" $RemoteLinux  
+                Set-Content -Path "C:\Certificates\pscp.cmd" -Value "echo y | C:\Certificates\pscp.exe -P 22 -l $Username -pw $PlainPassword -batch $PEMPath $RemoteLinux"
+                C:\Certificates\pscp.cmd
                 Set-Content -Path "C:\Certificates\FileCopiedSuccessfully.txt" -Value "File was copied successfully"
                 } 
             }
