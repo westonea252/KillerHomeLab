@@ -22,10 +22,7 @@
         }
     },    
     "variables": {
-        "commandToExecute1":    "sudo wget --output-document=mstunnel-setup https://aka.ms/microsofttunneldownload",
-        "commandToExecute2":    "sudo chmod +x ./mstunnel-setup",
-        "commandToExecute3":    "sudo ./mstunnel-setup",
-        "commandToExecute4":    "[concat('sudo cp', parameters('domainName'), '.pem ',  '/etc/mstunnel/private/sparktunnel', parameters('domainName'),'.pem')]"
+        "commandToExecute1":    "sudo wget --output-document=mstunnel-setup https://aka.ms/microsofttunneldownload"
     },
     "resources": [
         {
@@ -47,66 +44,6 @@
             "protectedSettings": {
                 }
             }
-        },
-        {
-        "name": "[concat(parameters('computerName'), '/SetMSTunnelPerms')]",
-        "type": "Microsoft.Compute/virtualMachines/extensions",
-        "location": "[parameters('location')]",
-        "apiVersion": "2019-03-01",
-        "tags": {
-            "displayName": "SetMSTunnelPerms"
-        },
-        "properties": {
-            "publisher": "Microsoft.Azure.Extensions",
-            "type": "CustomScript",
-            "typeHandlerVersion": "2.1",
-            "autoUpgradeMinorVersion": true,
-                "settings": {          
-                    "commandToExecute" : "[variables('commandToExecute2')]"                  
-            },
-            "protectedSettings": {
-                }
-            }
-        },
-        {
-        "name": "[concat(parameters('computerName'), '/RunMSTunnelPerms')]",
-        "type": "Microsoft.Compute/virtualMachines/extensions",
-        "location": "[parameters('location')]",
-        "apiVersion": "2019-03-01",
-        "tags": {
-            "displayName": "RunMSTunnelPerms"
-        },
-        "properties": {
-            "publisher": "Microsoft.Azure.Extensions",
-            "type": "CustomScript",
-            "typeHandlerVersion": "2.1",
-            "autoUpgradeMinorVersion": true,
-                "settings": {          
-                    "commandToExecute" : "[variables('commandToExecute3')]"                  
-            },
-            "protectedSettings": {
-                }
-            }
-        },
-        {
-        "name": "[concat(parameters('computerName'), '/CopyCert')]",
-        "type": "Microsoft.Compute/virtualMachines/extensions",
-        "location": "[parameters('location')]",
-        "apiVersion": "2019-03-01",
-        "tags": {
-            "displayName": "CopyCert"
-        },
-        "properties": {
-            "publisher": "Microsoft.Azure.Extensions",
-            "type": "CustomScript",
-            "typeHandlerVersion": "2.1",
-            "autoUpgradeMinorVersion": true,
-                "settings": {          
-                    "commandToExecute" : "[variables('commandToExecute4')]"                  
-            },
-            "protectedSettings": {
-                }
-            }
-        }                      
+        }
     ]
 }
