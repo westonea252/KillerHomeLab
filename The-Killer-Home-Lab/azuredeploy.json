@@ -754,13 +754,13 @@
     "DAG19Name": "[concat(parameters('NamingConvention'),'-19-dag01')]",
 
     "adcname": "[concat(parameters('NamingConvention'),'-adc-01')]",           
-    "adcIP": "[concat(parameters('APPVNet1ID'),'.6.',variables('adclastoctet'))]", 
+    "adcIP": "[concat(parameters('APPVNet1ID'),'.5.',variables('adclastoctet'))]", 
     "adclastoctet": "100",           
     "adfs1name": "[concat(parameters('NamingConvention'),'-adfs-01')]",           
-    "adfs1IP": "[concat(parameters('APPVNet1ID'),'.6.',variables('adfs1lastoctet'))]",  
+    "adfs1IP": "[concat(parameters('APPVNet1ID'),'.5.',variables('adfs1lastoctet'))]",  
     "adfs1lastoctet": "101",                                                              
     "adfs2name": "[concat(parameters('NamingConvention'),'-adfs-02')]",           
-    "adfs2IP": "[concat(parameters('APPVNet2ID'),'.6.',variables('adfs2lastoctet'))]",       
+    "adfs2IP": "[concat(parameters('APPVNet2ID'),'.5.',variables('adfs2lastoctet'))]",       
     "adfs2lastoctet": "101",                                
     "wap1name": "[concat(parameters('NamingConvention'),'-wap-01')]",           
     "wap1IP": "[concat(parameters('DMZVNet1ID'),'.1.',variables('wap1lastoctet'))]",            
@@ -3728,7 +3728,7 @@
                 "value": "[variables('APPVNet1Name')]"
               },            
               "subnetName": {
-                "value": "[variables('APPVNet1subnet6Name')]"
+                "value": "[variables('APPVNet1subnet5Name')]"
               },            
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
@@ -3857,7 +3857,7 @@
                 "value": "[variables('APPVNet1Name')]"
               },            
               "subnetName": {
-                "value": "[variables('APPVNet1subnet6Name')]"
+                "value": "[variables('APPVNet1subnet5Name')]"
               },            
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
@@ -3999,7 +3999,7 @@
                 "value": "[variables('APPVNet2Name')]"
               },            
               "subnetName": {
-                "value": "[variables('APPVNet2subnet6Name')]"
+                "value": "[variables('APPVNet2subnet5Name')]"
               },            
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
