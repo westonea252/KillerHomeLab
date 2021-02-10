@@ -3637,7 +3637,7 @@
       "name": "restartex2-2",
       "dependsOn": [
         "configexchange2"
-      ],            
+      ],          
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -3664,6 +3664,9 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "createFSGMSA",
+      "dependsOn": [
+        "createous"
+      ],              
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -3695,7 +3698,10 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "deployADCVM",    
+      "name": "deployADCVM", 
+      "dependsOn": [
+        "createous"
+      ],          
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -3824,7 +3830,11 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "deployADFS1VM",   
+      "name": "deployADFS1VM", 
+      "dependsOn": [
+        "createous",
+        "createFSGMSA"
+      ],         
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -3966,7 +3976,11 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "deployADFS2VM",     
+      "name": "deployADFS2VM",
+      "dependsOn": [
+        "createous",
+        "createFSGMSA"
+      ],                   
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -4113,6 +4127,9 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "deployWAP1VM",
+      "dependsOn": [
+        "configureotheradfs"
+      ],               
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -4217,6 +4234,9 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "deployWAP2VM",
+      "dependsOn": [
+        "configureotheradfs"
+      ],       
       "properties": {
           "mode": "Incremental",
           "templateLink": {
