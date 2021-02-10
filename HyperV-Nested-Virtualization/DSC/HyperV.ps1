@@ -59,7 +59,7 @@
                 $Adapter = Get-NetAdapter | Where-Object {$_.Name -like '*InternalNAT*'}
                 
                 #  Create NAT Gateway
-                New-NetIPAddress -IPAddress $HyperVNATIP -PrefixLength 24 -InterfaceAlias $Adapter.ifIndex
+                New-NetIPAddress -IPAddress $HyperVNATIP -PrefixLength 24 -InterfaceAlias $Adapter.InterfaceAlias
 
                 # Create NAT Network
                 New-NetNat -Name "InternalNat" -InternalIPInterfaceAddressPrefix $HyperVSubnetPrefix

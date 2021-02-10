@@ -50,11 +50,5 @@ Configuration DOWNLOADAADDC
             UserAgent       = "[Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer"
             DependsOn =    "[File]ADConnectInstall"
         }
-
-        TimeZone SetTimeZone
-        {
-            IsSingleInstance = 'Yes'
-            TimeZone         = 'Eastern Standard Time'
-        }
      }
   }
