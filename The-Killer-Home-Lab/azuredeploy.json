@@ -4725,6 +4725,69 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
           }
       }
-    }    
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "createpublicdns",
+      "dependsOn": [
+        "DeployAzureFirewall1",
+        "DeployAzureFirewall2"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/PublicDNSZone.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "ZoneName": {
+                  "value": "[variables('ExternaldomainName')]"
+              },
+              "WEBRecord": {
+                  "value": "www"
+              },
+              "OCSPRecord": {
+                  "value": "ocsp"
+              },                                                                                                                                      
+              "OWARecord": {
+                  "value": "owa2019"
+              },
+              "AutoDiscoverRecord": {
+                  "value": "autodiscover"
+              },
+              "OutlookRecord": {
+                  "value": "outlook2019"
+              },
+              "EASRecord": {
+                  "value": "eas2019"
+              },
+              "SMTP1Record": {
+                  "value": "smtp1"
+              },    
+              "SMTP2Record": {
+                  "value": "smtp2"
+              },    
+              "OCSPPublicIP": {
+                  "value": "[reference('DeployAzureFirewall1').outputs.OCSPPublicIP.value]"             
+              },      
+              "WEBPublicIP": {
+                  "value": "[reference('DeployAzureFirewall1').outputs.WEBPublicIP.value]"             
+              },                                                
+              "WAP1PublicIP": {
+                  "value": "[reference('DeployAzureFirewall1').outputs.WAPPublicIP.value]"             
+              },                                                                                                                                      
+              "WAP2PublicIP": {
+                  "value": "[reference('DeployAzureFirewall2').outputs.WAPPublicIP.value]"             
+              },                                                                                                                                                                  
+              "SMTP1PublicIP": {
+                  "value": "[reference('DeployAzureFirewall1').outputs.SMTPPublicIP.value]"             
+              },                                                                                                                                      
+              "SMTP2PublicIP": {
+                  "value": "[reference('DeployAzureFirewall2').outputs.SMTPPublicIP.value]"             
+              }                                                                                                                                                                                
+          }
+      }
+    }      
   ]
 }

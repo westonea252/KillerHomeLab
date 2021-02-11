@@ -393,5 +393,23 @@
         ]
       }
     }    
-   ]
+   ],
+"outputs": {
+    "WebPublicIP": {
+        "type": "string",
+        "value": "[reference(resourceId(resourceGroup().name, 'Microsoft.Network/publicIPAddresses', variables('webpublicIPAddressName'))).ipAddress]"
+    },
+    "OCSPPublicIP": {
+        "type": "string",
+        "value": "[reference(resourceId(resourceGroup().name, 'Microsoft.Network/publicIPAddresses', variables('ocsppublicIPAddressName'))).ipAddress]"
+    },
+    "WAPPublicIP": {
+        "type": "string",
+        "value": "[reference(resourceId(resourceGroup().name, 'Microsoft.Network/publicIPAddresses', variables('wappublicIPAddressName'))).ipAddress]"
+    },
+    "SMTPPublicIP": {
+        "type": "string",
+        "value": "[reference(resourceId(resourceGroup().name, 'Microsoft.Network/publicIPAddresses', variables('smtppublicIPAddressName'))).ipAddress]"
+    }        
+  }
 }
