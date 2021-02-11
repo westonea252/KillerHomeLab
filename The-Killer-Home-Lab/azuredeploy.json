@@ -150,9 +150,9 @@
     },
     "Location2": {
       "type": "string",
-      "defaultValue": "USGovVirginia",
+      "defaultValue": "USGovTexas",
       "metadata": {
-        "description": "Choose Region (Example: USGovVirginia)"
+        "description": "Choose Region (Example: USGovTexas)"
       }
     },     
     "ExchangeOrgName": {
