@@ -123,26 +123,34 @@
     },                                
     "DC1OSVersion": {
         "type": "string",
-        "defaultValue": "2019-Datacenter",
+        "defaultValue": "2016-Datacenter",
         "allowedValues": [
-          "2019-Datacenter",
           "2016-Datacenter"
         ],
         "metadata": {
             "description": "Domain Controller1 OS Version"
         }
-    },
+    },    
     "DC2OSVersion": {
       "type": "string",
-      "defaultValue": "2019-Datacenter",
+      "defaultValue": "2016-Datacenter",
       "allowedValues": [
-        "2019-Datacenter",
         "2016-Datacenter"
       ],
       "metadata": {
           "description": "Domain Controller2 OS Version"
       }
-    },    
+    },
+    "ServerBuild": {
+        "type": "string",
+        "defaultValue": "14393.4046.2010301518",
+        "allowedValues": [
+          "14393.4046.2010301518"
+        ],
+        "metadata": {
+            "description": "OS Build"
+        }
+    },        
     "WK1OSVersion": {
       "type": "string",
       "defaultValue": "19h1-pro",
@@ -407,6 +415,9 @@
               "Offer": {
                   "value": "WindowsServer"
               },
+              "Build": {
+                  "value": "[parameters('ServerBuild')]"
+              },              
               "OSVersion": {
                 "value": "[parameters('DC1OSVersion')]"
               },              
@@ -424,7 +435,7 @@
               },            
               "subnetName": {
                 "value": "[variables('vnet1subnet1Name')]"
-              },                                                                                                                     
+              },                                                                                                             
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
               },                                                                                                            
@@ -821,7 +832,10 @@
               },
               "OSVersion": {
                 "value": "[parameters('DC2OSVersion')]"
-              },              
+              },   
+              "Build": {
+                  "value": "[parameters('ServerBuild')]"
+              },                            
               "LicenseType": {
                 "value": "[parameters('WindowsServerLicenseType')]"
               },           
@@ -836,7 +850,7 @@
               },            
               "subnetName": {
                 "value": "[variables('vnet2subnet1Name')]"
-              },                                                                                                              
+              },                                                                                                                    
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
               },                                                                                                            
@@ -1008,7 +1022,7 @@
               },            
               "subnetName": {
                 "value": "[variables('vnet1subnet2Name')]"
-              },                                                                                                          
+              },                                                                                                                 
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
               },                                                                                                            
@@ -1099,7 +1113,7 @@
               },            
               "subnetName": {
                 "value": "[variables('vnet2subnet2Name')]"
-              },                                                                                                                   
+              },                                                                                                            
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
               },                                                                                                            
