@@ -144,9 +144,6 @@
     "ServerBuild": {
         "type": "string",
         "defaultValue": "14393.4046.2010301518",
-        "allowedValues": [
-          "14393.4046.2010301518"
-        ],
         "metadata": {
             "description": "OS Build"
         }
