@@ -1125,7 +1125,7 @@
           },
           "parameters": {
               "computerName": {
-                  "value": "[variables('dc1name')]"
+                  "value": "[variables('dc2name')]"
               },
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
