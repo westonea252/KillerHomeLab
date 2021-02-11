@@ -4394,6 +4394,7 @@
       "name": "configurefirstadfs",
       "dependsOn": [
         "createFSGMSA",
+        "ReplicateAD",
         "DomainJoinADFS1"
       ],      
       "properties": {
