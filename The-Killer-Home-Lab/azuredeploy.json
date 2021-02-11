@@ -1400,6 +1400,86 @@
           }
       }
     },     
+
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "APPVNet1ToAPPVNet2Peering",
+      "dependsOn": [
+        "APPVNet1",
+        "APPVNet2"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/peering.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "SourceVNetName": {
+                "value": "[variables('APPVNet1Name')]"
+              },
+              "TargetVNetName": {
+                "value": "[variables('APPVNet2Name')]"
+              },              
+              "allowVirtualNetworkAccess": {
+                "value": "true"
+              },                                                                                                                                                                                                                                                                                                           
+              "allowForwardedTraffic": {
+                "value": "true"
+              },                                                                                                                                                                                                                                                                                                           
+              "allowGatewayTransit": {
+                "value": "false"
+              },
+              "useRemoteGateways": {
+                "value": "false"
+              },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },  
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "APPVNet2ToAPPVNet1Peering",
+      "dependsOn": [
+        "APPVNet2",
+        "APPVNet1"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/peering.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "SourceVNetName": {
+                "value": "[variables('APPVNet2Name')]"
+              },
+              "TargetVNetName": {
+                "value": "[variables('APPVNet1Name')]"
+              },              
+              "allowVirtualNetworkAccess": {
+                "value": "true"
+              },                                                                                                                                                                                                                                                                                                           
+              "allowForwardedTraffic": {
+                "value": "true"
+              },                                                                                                                                                                                                                                                                                                           
+              "allowGatewayTransit": {
+                "value": "false"
+              },
+              "useRemoteGateways": {
+                "value": "false"
+              },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },               
+
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
