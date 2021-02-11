@@ -147,7 +147,14 @@
       "metadata": {
           "description": "Time Zone"
       }
-    }, 
+    },
+    "Location2": {
+      "type": "string",
+      "defaultValue": "USGovVirginia",
+      "metadata": {
+        "description": "Choose Region (Example: USGovVirginia)"
+      }
+    },     
     "ExchangeOrgName": {
       "type": "string",
       "defaultValue": "49ers",
@@ -291,11 +298,18 @@
     },                                                  
     "DMZVNet1ID": {
       "type": "string",
-      "defaultValue": "10.0",
+      "defaultValue": "100.1",
       "metadata": {
         "description": "DMZ VNet1 Prefix"
       }
     },    
+    "DMZVNet2ID": {
+      "type": "string",
+      "defaultValue": "100.2",
+      "metadata": {
+        "description": "DMZ VNet2 Prefix"
+      }
+    },      
     "APPVNet1ID": {
       "type": "string",
       "defaultValue": "10.1",
@@ -669,6 +683,15 @@
     "DMZVNet1subnet1Prefix": "[concat(parameters('DMZVNet1ID'),'.1.0/24')]",    
     "DMZVNet1BastionsubnetPrefix": "[concat(parameters('DMZVNet1ID'),'.253.0/24')]",           
     "DMZVNet1FirewallsubnetPrefix": "[concat(parameters('DMZVNet1ID'),'.254.0/24')]",
+
+    "DMZVNet2Name": "[concat(parameters('NamingConvention'),'-DMZ-VNet2')]",
+    "DMZVNet2Prefix": "[concat(parameters('DMZVNet2ID'),'.0.0/16')]",
+    "DMZVNet2subnet1Name": "[concat(parameters('NamingConvention'),'-DMZ-VNet2-Subnet1')]",    
+    "DMZVNet2subnet1Prefix": "[concat(parameters('DMZVNet2ID'),'.1.0/24')]",    
+    "DMZVNet2BastionsubnetPrefix": "[concat(parameters('DMZVNet2ID'),'.253.0/24')]",           
+    "DMZVNet2FirewallsubnetPrefix": "[concat(parameters('DMZVNet2ID'),'.254.0/24')]",
+
+
     "APPVNet1Name": "[concat(parameters('NamingConvention'),'-APP-VNet1')]",
     "APPVNet1Prefix": "[concat(parameters('APPVNet1ID'),'.0.0/16')]",
     "APPVNet1subnet1Name": "[concat(parameters('NamingConvention'),'-APP-VNet1-WEB-Subnet1')]",    
@@ -701,7 +724,8 @@
     "APPVNet2subnet6Prefix": "[concat(parameters('APPVNet2ID'),'.6.0/24')]", 
     "APPVNet2subnet7Name": "[concat(parameters('NamingConvention'),'-APP-VNet2-WK-Subnet1')]",    
     "APPVNet2subnet7Prefix": "[concat(parameters('APPVNet2ID'),'.7.0/24')]",          
-    "FirewallName": "[concat(parameters('NamingConvention'),'-Firewall')]",  
+    "FirewallName1": "[concat(parameters('NamingConvention'),'-Firewall-01')]",  
+    "FirewallName2": "[concat(parameters('NamingConvention'),'-Firewall-02')]",      
     "NSG1Name": "[concat(parameters('NamingConvention'),'-nsg01')]",
     "NSG2Name": "[concat(parameters('NamingConvention'),'-nsg02')]",                     
     "NSG3Name": "[concat(parameters('NamingConvention'),'-nsg03')]",
@@ -709,9 +733,12 @@
     "NSG5Name": "[concat(parameters('NamingConvention'),'-nsg05')]",
     "NSG6Name": "[concat(parameters('NamingConvention'),'-nsg06')]",                     
     "NSG7Name": "[concat(parameters('NamingConvention'),'-nsg07')]",
-    "RouteTableName": "[concat(parameters('NamingConvention'),'-APP-RT1')]",                       
-    "fwIP": "[concat(parameters('DMZVNet1ID'),'.254.',variables('fwlastoctet'))]",     
-    "fwlastoctet": "4",   
+    "RouteTableName1": "[concat(parameters('NamingConvention'),'-APP-RT1')]",                       
+    "RouteTableName2": "[concat(parameters('NamingConvention'),'-APP-RT2')]",                           
+    "fw1IP": "[concat(parameters('DMZVNet1ID'),'.254.',variables('fw1lastoctet'))]",     
+    "fw1lastoctet": "4",   
+    "fw2IP": "[concat(parameters('DMZVNet2ID'),'.254.',variables('fw2lastoctet'))]",     
+    "fw2lastoctet": "4",       
     "webname": "[concat(parameters('NamingConvention'),'-web-01')]",                      
     "webIP": "[concat(parameters('APPVNet1ID'),'.1.',variables('weblastoctet'))]", 
     "weblastoctet": "100",
@@ -818,6 +845,41 @@
           }
       }
     },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DMZVNet2",
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/dmzvnet.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "vnetName": {
+                  "value": "[variables('DMZVNet2Name')]"
+              },
+              "vnetprefix": {
+                  "value": "[variables('DMZVNet2Prefix')]"
+              },
+              "subnet1Name": {
+                  "value": "[variables('DMZVNet2subnet1Name')]"
+              },
+              "subnet1Prefix": {
+                  "value": "[variables('DMZVNet2subnet1Prefix')]"
+              },           
+              "BastionsubnetPrefix": {
+                "value": "[variables('DMZVNet2BastionsubnetPrefix')]"
+              },     
+              "FirewallsubnetPrefix": {
+                "value": "[variables('DMZVNet2FirewallsubnetPrefix')]"
+              },                            
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },    
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
@@ -943,11 +1005,89 @@
                   "value": "[variables('APPVNet2subnet7Prefix')]"
               },                                                                                 
               "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DMZVNet1ToDMZVNet2Peering",
+      "dependsOn": [
+        "DMZVNet1",
+        "DMZVNet2"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/peering.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "SourceVNetName": {
+                "value": "[variables('DMZVNet1Name')]"
+              },
+              "TargetVNetName": {
+                "value": "[variables('DMZVNet2Name')]"
+              },              
+              "allowVirtualNetworkAccess": {
+                "value": "true"
+              },                                                                                                                                                                                                                                                                                                           
+              "allowForwardedTraffic": {
+                "value": "true"
+              },                                                                                                                                                                                                                                                                                                           
+              "allowGatewayTransit": {
+                "value": "false"
+              },
+              "useRemoteGateways": {
+                "value": "false"
+              },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+              "location": {
                   "value": "[resourceGroup().location]"
               }
           }
       }
-    },     
+    },   
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DMZVNet2ToDMZVNet1Peering",
+      "dependsOn": [
+        "DMZVNet1",
+        "DMZVNet2"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/peering.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "SourceVNetName": {
+                "value": "[variables('DMZVNet2Name')]"
+              },
+              "TargetVNetName": {
+                "value": "[variables('DMZVNet1Name')]"
+              },              
+              "allowVirtualNetworkAccess": {
+                "value": "true"
+              },                                                                                                                                                                                                                                                                                                           
+              "allowForwardedTraffic": {
+                "value": "true"
+              },                                                                                                                                                                                                                                                                                                           
+              "allowGatewayTransit": {
+                "value": "false"
+              },
+              "useRemoteGateways": {
+                "value": "false"
+              },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },    
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
@@ -986,13 +1126,53 @@
               }
           }
       }
-    },    
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "APPVNet1ToDMZVNet2Peering",
+      "dependsOn": [
+        "DMZVNet2",
+        "APPVNet1"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/peering.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "SourceVNetName": {
+                "value": "[variables('APPVNet1Name')]"
+              },
+              "TargetVNetName": {
+                "value": "[variables('DMZVNet2Name')]"
+              },              
+              "allowVirtualNetworkAccess": {
+                "value": "true"
+              },                                                                                                                                                                                                                                                                                                           
+              "allowForwardedTraffic": {
+                "value": "true"
+              },                                                                                                                                                                                                                                                                                                           
+              "allowGatewayTransit": {
+                "value": "false"
+              },
+              "useRemoteGateways": {
+                "value": "false"
+              },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "APPVNet2ToDMZVNet1Peering",
       "dependsOn": [
-        "APPVNet1ToDMZVNet1Peering"
+        "DMZVNet2",
+        "APPVNet2"
       ],            
       "properties": {
           "mode": "Incremental",
@@ -1020,18 +1200,58 @@
                 "value": "false"
               },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[parameters('Location2')]"
               }
           }
       }
-    },        
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "APPVNet2ToDMZVNet2Peering",
+      "dependsOn": [
+        "DMZVNet2",
+        "APPVNet2"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/peering.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "SourceVNetName": {
+                "value": "[variables('APPVNet2Name')]"
+              },
+              "TargetVNetName": {
+                "value": "[variables('DMZVNet2Name')]"
+              },              
+              "allowVirtualNetworkAccess": {
+                "value": "true"
+              },                                                                                                                                                                                                                                                                                                           
+              "allowForwardedTraffic": {
+                "value": "true"
+              },                                                                                                                                                                                                                                                                                                           
+              "allowGatewayTransit": {
+                "value": "false"
+              },
+              "useRemoteGateways": {
+                "value": "false"
+              },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    }, 
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DMZVNet1ToAPPVNet1Peering",
       "dependsOn": [
-        "APPVNet2ToDMZVNet1Peering"
-      ],            
+        "DMZVNet1",
+        "APPVNet1"
+      ],             
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -1068,7 +1288,8 @@
       "apiVersion": "2019-10-01",
       "name": "DMZVNet1ToAPPVNet2Peering",
       "dependsOn": [
-        "DMZVNet1ToAPPVNet1Peering"
+        "DMZVNet1",
+        "APPVNet2"
       ],            
       "properties": {
           "mode": "Incremental",
@@ -1100,7 +1321,85 @@
               }
           }
       }
-    },                   
+    },  
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DMZVNet2ToAPPVNet1Peering",
+      "dependsOn": [
+        "DMZVNet2",
+        "APPVNet1"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/peering.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "SourceVNetName": {
+                "value": "[variables('DMZVNet2Name')]"
+              },
+              "TargetVNetName": {
+                "value": "[variables('APPVNet1Name')]"
+              },              
+              "allowVirtualNetworkAccess": {
+                "value": "true"
+              },                                                                                                                                                                                                                                                                                                           
+              "allowForwardedTraffic": {
+                "value": "true"
+              },                                                                                                                                                                                                                                                                                                           
+              "allowGatewayTransit": {
+                "value": "false"
+              },
+              "useRemoteGateways": {
+                "value": "false"
+              },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },               
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DMZVNet2ToAPPVNet2Peering",
+      "dependsOn": [
+        "DMZVNet2",
+        "APPVNet2"
+      ],             
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/peering.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "SourceVNetName": {
+                "value": "[variables('DMZVNet2Name')]"
+              },
+              "TargetVNetName": {
+                "value": "[variables('APPVNet2Name')]"
+              },              
+              "allowVirtualNetworkAccess": {
+                "value": "true"
+              },                                                                                                                                                                                                                                                                                                           
+              "allowForwardedTraffic": {
+                "value": "true"
+              },                                                                                                                                                                                                                                                                                                           
+              "allowGatewayTransit": {
+                "value": "false"
+              },
+              "useRemoteGateways": {
+                "value": "false"
+              },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },     
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
@@ -1133,10 +1432,11 @@
           }
       }
     },        
+
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "DeployAzureFirewall",
+      "name": "DeployAzureFirewall1",
       "dependsOn": [
         "DMZVNet1"
       ],      
@@ -1148,7 +1448,7 @@
           },
           "parameters": {
               "FirewallName": {
-                  "value": "[variables('FirewallName')]"
+                  "value": "[variables('FirewallName1')]"
               },
               "vnetName": {
                   "value": "[variables('DMZVNet1Name')]"
@@ -1156,18 +1456,27 @@
               "subnetName": {
                   "value": "AzureFirewallSubnet"
               },         
-              "Site1Prefix": {
+              "APPVNet1Prefix": {
                   "value": "[variables('APPVNet1Prefix')]"
               },         
-              "Site2Prefix": {
+              "APPVNet2Prefix": {
                   "value": "[variables('APPVNet2Prefix')]"
               },
+              "DMZVNet1Prefix": {
+                  "value": "[variables('DMZVNet1Prefix')]"
+              },         
+              "DMZVNet2Prefix": {
+                  "value": "[variables('DMZVNet2Prefix')]"
+              },              
               "webIP": {
                   "value": "[variables('webIP')]"
               },                               
-              "OWAIP": {
-                  "value": "[variables('EX1IP')]"
-              },                          
+              "OCSPIP": {
+                  "value": "[variables('OCSPIP')]"
+              },     
+              "WAPIP": {
+                  "value": "[variables('WAP1IP')]"
+              },                                                             
               "SMTPIP": {
                   "value": "[variables('EX1IP')]"
               },                                      
@@ -1176,11 +1485,64 @@
               }
           }
       }
-    },    
+    },  
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "DeployAPPRouteTable",
+      "name": "DeployAzureFirewall2",
+      "dependsOn": [
+        "DMZVNet2"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/AzureFirewall.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "FirewallName": {
+                  "value": "[variables('FirewallName2')]"
+              },
+              "vnetName": {
+                  "value": "[variables('DMZVNet2Name')]"
+              },
+              "subnetName": {
+                  "value": "AzureFirewallSubnet"
+              },         
+              "APPVNet1Prefix": {
+                  "value": "[variables('APPVNet1Prefix')]"
+              },         
+              "APPVNet2Prefix": {
+                  "value": "[variables('APPVNet2Prefix')]"
+              },
+              "DMZVNet1Prefix": {
+                  "value": "[variables('DMZVNet1Prefix')]"
+              },         
+              "DMZVNet2Prefix": {
+                  "value": "[variables('DMZVNet2Prefix')]"
+              },              
+              "webIP": {
+                  "value": "[variables('webIP')]"
+              },                               
+              "OCSPIP": {
+                  "value": "[variables('OCSPIP')]"
+              },     
+              "WAPIP": {
+                  "value": "[variables('WAP2IP')]"
+              },                                                             
+              "SMTPIP": {
+                  "value": "[variables('EX2IP')]"
+              },                                      
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },           
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DeployAPP1RouteTable",
       "dependsOn": [
         "APPVNet1"
       ],      
@@ -1192,10 +1554,10 @@
           },
           "parameters": {
               "FirewallIP": {
-                  "value": "[variables('fwIP')]"
+                  "value": "[variables('fw1IP')]"
               },
               "RouteTableName": {
-                  "value": "[variables('RouteTableName')]"
+                  "value": "[variables('RouteTableName1')]"
               },                 
               "location": {
                   "value": "[resourceGroup().location]"
@@ -1206,9 +1568,36 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
+      "name": "DeployAPP2RouteTable",
+      "dependsOn": [
+        "APPVNet2"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/RouteTable.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "FirewallIP": {
+                  "value": "[variables('fw2IP')]"
+              },
+              "RouteTableName": {
+                  "value": "[variables('RouteTableName2')]"
+              },                 
+              "location": {
+                  "value": "[parameters('Location2')]"
+                  
+              }
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
       "name": "UpdateAPPVNet1SubnetsRouteTables",
       "dependsOn": [
-        "DeployAPPRouteTable"
+        "DeployAPP1RouteTable"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1266,7 +1655,7 @@
                   "value": "[variables('APPVNet1subnet7Prefix')]"
               },                                                                                 
               "RouteTableName": {
-                  "value": "[variables('RouteTableName')]"
+                  "value": "[variables('RouteTableName1')]"
               },                                          
               "location": {
                   "value": "[resourceGroup().location]"
@@ -1279,7 +1668,7 @@
       "apiVersion": "2019-10-01",
       "name": "UpdateAPPVNet2SubnetsRouteTables",
       "dependsOn": [
-        "DeployAPPRouteTable"
+        "DeployAPP2RouteTable"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1337,10 +1726,10 @@
                   "value": "[variables('APPVNet2subnet7Prefix')]"
               },                                                                                 
               "RouteTableName": {
-                  "value": "[variables('RouteTableName')]"
+                  "value": "[variables('RouteTableName2')]"
               },                                          
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[parameters('Location2')]"
               }
           }
       }
@@ -1591,7 +1980,7 @@
                   "value": "[variables('APPVNet1subnet7Prefix')]"
               },                                                                                 
               "RouteTableName": {
-                  "value": "[variables('RouteTableName')]"
+                  "value": "[variables('RouteTableName1')]"
               },                                          
               "DNSServerIP": {
                 "value": [
@@ -1667,7 +2056,7 @@
                   "value": "[variables('APPVNet2subnet7Prefix')]"
               },                                                                                 
               "RouteTableName": {
-                  "value": "[variables('RouteTableName')]"
+                  "value": "[variables('RouteTableName2')]"
               },                                          
               "DNSServerIP": {
                 "value": [
@@ -1675,7 +2064,7 @@
                 ]
               },                                                                                                            
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[parameters('Location2')]"
               }
           }
       }
@@ -1902,7 +2291,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[parameters('Location2')]"
               }
           }
       }
@@ -1949,7 +2338,7 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                                         
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[parameters('Location2')]"
               }
           }
       }
@@ -2017,7 +2406,7 @@
                   "value": "[variables('APPVNet2subnet7Prefix')]"
               },                                                                                 
               "RouteTableName": {
-                  "value": "[variables('RouteTableName')]"
+                  "value": "[variables('RouteTableName2')]"
               },                                          
               "DNSServerIP": {
                 "value": [
@@ -2025,7 +2414,7 @@
                 ]
               },                                                                                                            
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[parameters('Location2')]"
               }
           }
       }
@@ -2054,7 +2443,7 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                                         
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[parameters('Location2')]"
               }
           }
       }
@@ -2867,7 +3256,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[parameters('Location2')]"
               }
           }
       }
@@ -2905,7 +3294,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                                                                                                                                                             
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[parameters('Location2')]"
               }
           }
       }
@@ -3134,7 +3523,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[parameters('Location2')]"
               }
           }
       }
@@ -3172,7 +3561,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                                                                                                                                                             
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[parameters('Location2')]"
               }
           }
       }
@@ -3210,7 +3599,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                                                                                                                                                                                                                 
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[parameters('Location2')]"
               },          
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
@@ -3245,7 +3634,7 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                                         
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[parameters('Location2')]"
               }
           }
       }
@@ -3362,7 +3751,7 @@
                   "value": "[parameters('NetBiosDomain')]"
               },                                        
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[parameters('Location2')]"
               },          
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
@@ -3514,7 +3903,7 @@
                   "value": "[variables('dc2name')]"
               },                                                      
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[parameters('Location2')]"
               },          
               "DBName": {
                   "value": "[variables('db2name')]"
@@ -3591,7 +3980,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                                                                                                                                                                                                                                      
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[parameters('Location2')]"
               },          
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
@@ -3655,7 +4044,7 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                                         
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[parameters('Location2')]"
               }
           }
       }
@@ -4022,7 +4411,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[parameters('Location2')]"
               }
           }
       }
@@ -4060,7 +4449,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                                                                                                                                                             
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[parameters('Location2')]"
               }
           }
       }
@@ -4112,7 +4501,7 @@
                 "value": "[parameters('adminPassword')]"
               },
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[parameters('Location2')]"
               },                            
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
@@ -4266,10 +4655,10 @@
                 "value": "[parameters('WAP2VMSize')]"
               },
               "vnetName": {
-                "value": "[variables('DMZVNet1Name')]"
+                "value": "[variables('DMZVNet2Name')]"
               },            
               "subnetName": {
-                "value": "[variables('DMZVNet1subnet1Name')]"
+                "value": "[variables('DMZVNet2subnet1Name')]"
               },            
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
@@ -4278,7 +4667,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[parameters('Location2')]"
               }
           }
       }
@@ -4320,7 +4709,7 @@
                   "value": "[parameters('RootCAName')]"
               },
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[parameters('Location2')]"
               },                                          
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"

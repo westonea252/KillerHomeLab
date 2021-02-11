@@ -14,18 +14,30 @@
             "description": "Existing VNET Name that contains the domain controller"
         }
     },  
-    "Site1Prefix": {
+    "APPVNet1Prefix": {
         "type": "string",
         "metadata": {
-            "description": "Site1 Address Prefix"
+            "description": "APP VNet1 Address Prefix"
         }
     },                 
-    "Site2Prefix": {
+    "APPVNet2Prefix": {
         "type": "string",
         "metadata": {
-            "description": "Site2 Address Prefix"
+            "description": "APP VNet2 Address Prefix"
         }
     },                     
+    "DMZVNet1Prefix": {
+        "type": "string",
+        "metadata": {
+            "description": "DMZ VNet1 Address Prefix"
+        }
+    },                 
+    "DMZVNet2Prefix": {
+        "type": "string",
+        "metadata": {
+            "description": "DMZ VNet2 Address Prefix"
+        }
+    },                         
     "subnetName": {
         "type": "string",
         "metadata": {
@@ -37,11 +49,17 @@
         "metadata": {
             "description": "Web IP"
         }
-    },    
-    "OWAIP": {
+    },  
+    "OCSPIP": {
         "type": "string",
         "metadata": {
-            "description": "OWA IP"
+            "description": "OCSP IP"
+        }
+    },      
+    "WAPIP": {
+        "type": "string",
+        "metadata": {
+            "description": "WAP IP"
         }
     },        
     "SMTPIP": {
@@ -60,6 +78,7 @@
 "variables": {
     "publicIPAddressName": "[concat(parameters('FirewallName'),'-pip')]",
     "webpublicIPAddressName": "[concat(parameters('FirewallName'),'-web-pip')]",
+    "ocsppublicIPAddressName": "[concat(parameters('FirewallName'),'-ocsp-pip')]",    
     "wappublicIPAddressName": "[concat(parameters('FirewallName'),'-wap-pip')]",    
     "smtppublicIPAddressName": "[concat(parameters('FirewallName'),'-smtp-pip')]",
     "subnetId": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]"      
@@ -89,6 +108,18 @@
             "publicIPAllocationMethod": "Static"
         }
     },
+    {
+        "name": "[variables('ocsppublicIPAddressName')]",
+        "type": "Microsoft.Network/publicIPAddresses",
+        "apiVersion": "2018-11-01",
+        "location": "[parameters('location')]",
+        "sku": {
+          "name": "Standard"
+        },
+        "properties": {
+            "publicIPAllocationMethod": "Static"
+        }
+    },    
     {
         "name": "[variables('wappublicIPAddressName')]",
         "type": "Microsoft.Network/publicIPAddresses",
@@ -121,6 +152,7 @@
       "dependsOn": [
         "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('publicIPAddressName')))]",
         "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('webpublicIPAddressName')))]",
+        "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('ocsppublicIPAddressName')))]",        
         "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('wappublicIPAddressName')))]",
         "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('smtppublicIPAddressName')))]"                
       ],
@@ -150,6 +182,14 @@
                     }
                 }
             },
+            {
+            "Name": "OCSP",
+            "Properties":  {
+                "publicIPAddress":  {
+                    "id":   "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('ocsppublicIPAddressName')))]"
+                    }
+                }
+            },            
             {
             "Name": "WAP",
             "Properties":  {
@@ -183,12 +223,16 @@
                     "Any"
                   ],
                   "sourceAddresses": [
-                    "[parameters('Site1Prefix')]",
-                    "[parameters('Site2Prefix')]"
+                    "[parameters('APPVNet1Prefix')]",
+                    "[parameters('APPVNet2Prefix')]",
+                    "[parameters('DMZVNet1Prefix')]",
+                    "[parameters('DMZVNet2Prefix')]"                    
                   ],
                   "destinationAddresses": [
-                    "[parameters('Site1Prefix')]",
-                    "[parameters('Site2Prefix')]"
+                    "[parameters('APPVNet1Prefix')]",
+                    "[parameters('APPVNet2Prefix')]",
+                    "[parameters('DMZVNet1Prefix')]",
+                    "[parameters('DMZVNet2Prefix')]"                    
                   ],
                   "destinationPorts": [
                     "*"
@@ -299,11 +343,26 @@
                   ]
                 },
                 {
+                  "name": "OCSP-Inbound",
+                  "protocols": [
+                    "TCP"
+                  ],
+                  "translatedAddress": "[parameters('ocspIP')]",
+                  "translatedPort": "80",
+                  "sourceAddresses": [
+                    "*"
+                  ],
+                  "destinationAddresses": [ "[reference(resourceId('Microsoft.Network/publicIPAddresses/', concat(variables('ocsppublicIPAddressName')))).ipAddress]" ],
+                  "destinationPorts": [
+                    "80"
+                  ]
+                },                
+                {
                   "name": "OWA-Inbound",
                   "protocols": [
                     "TCP"
                   ],
-                  "translatedAddress": "[parameters('OWAIP')]",
+                  "translatedAddress": "[parameters('wapIP')]",
                   "translatedPort": "443",
                   "sourceAddresses": [
                     "*"
