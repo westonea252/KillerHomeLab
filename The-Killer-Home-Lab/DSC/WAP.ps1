@@ -140,11 +140,11 @@ Configuration WAP
                 
                 $OWARule = Get-WebApplicationProxyApplication -Name 'OWA' -ErrorAction 0
                 IF ($0WARule -eq $null) {
-                Add-WebApplicationProxyApplication -BackendServerURL "https://owa2019.$using:ExternaldomainName/owa/" -ExternalCertificateThumbprint $exchangethumbprint -ExternalURL "https://owa2019.$using:ExternaldomainName/owa/" -Name 'OWA' -ExternalPreAuthentication ADFS  -ADFSRelyingPartyName 'Outlook Web App'
+                Add-WebApplicationProxyApplication -BackendServerURL "https://owa2019.$using:ExternaldomainName/owa/" -ExternalCertificateThumbprint $exchangethumbprint -ExternalURL "https://owa2019.$using:ExternaldomainName/owa/" -Name 'OWA' -ExternalPreAuthentication ADFS  -ADFSRelyingPartyName 'Outlook Web App 2019'
                 }
                 $ECPRule = Get-WebApplicationProxyApplication -Name 'ECP' -ErrorAction 0
                 IF ($ECPRule -eq $null) {
-                Add-WebApplicationProxyApplication -BackendServerURL "https://owa2019.$using:ExternaldomainName/ecp/" -ExternalCertificateThumbprint $exchangethumbprint -ExternalURL "https://owa2019.$using:ExternaldomainName/ecp/" -Name 'ECP' -ExternalPreAuthentication ADFS  -ADFSRelyingPartyName 'Exchange Admin Center (EAC)'
+                Add-WebApplicationProxyApplication -BackendServerURL "https://owa2019.$using:ExternaldomainName/ecp/" -ExternalCertificateThumbprint $exchangethumbprint -ExternalURL "https://owa2019.$using:ExternaldomainName/ecp/" -Name 'ECP' -ExternalPreAuthentication ADFS  -ADFSRelyingPartyName 'Exchange Admin Center (EAC) 2019'
                 }
             }
             GetScript =  { @{} }
