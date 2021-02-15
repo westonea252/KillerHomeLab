@@ -4864,6 +4864,61 @@
               }                                                                                                                                                                                
           }
       }
-    }      
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "createprivatedns",
+      "dependsOn": [
+        "DMZVNet1",
+        "DMZVNet2",
+        "createpublicdns"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/PrivateDNSZone.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "ZoneName": {
+                  "value": "[variables('ExternaldomainName')]"
+              },
+              "vnet1Name": {
+                "value": "[variables('DMZVNet1Name')]"
+              },    
+              "vnet2Name": {
+                "value": "[variables('DMZVNet2Name')]"
+              },                                                                                                                                                                 
+              "OWARecord": {
+                  "value": "owa2019"
+              },
+              "AutoDiscoverRecord": {
+                  "value": "autodiscover"
+              },
+              "OutlookRecord": {
+                  "value": "outlook2019"
+              },
+              "EASRecord": {
+                  "value": "eas2019"
+              },
+              "ADFSRecord": {
+                  "value": "adfs"
+              },              
+              "EX1PrivateIP": {
+                "value": "[variables('EX1IP')]"
+              },                             
+              "EX2PrivateIP": {
+                "value": "[variables('EX2IP')]"
+              },  
+              "ADFS1PrivateIP": {
+                "value": "[variables('adfs1IP')]"
+              },                             
+              "ADFS2PrivateIP": {
+                "value": "[variables('adfs2IP')]"
+              }                                                                                                                                                                              
+          }
+      }
+    }          
   ]
 }
