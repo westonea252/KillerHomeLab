@@ -78,10 +78,9 @@ Configuration WAP
         File CopyExchangeCert
         {
             Ensure = "Present"
-            Type = "Directory"
-            Recurse = $true
-            SourcePath = "\\$EXServerIP\c$\Certificates"
-            DestinationPath = "C:\Certificates\"
+            Type = "File"
+            SourcePath = "\\$EXServerIP\c$\Certificates\owa2019.$ExternaldomainName.pfx"
+            DestinationPath = "C:\Certificates\owa2019.$ExternaldomainName.pfx"
             Credential = $Admincreds
             DependsOn = '[File]Certificates'
         }
