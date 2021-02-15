@@ -139,7 +139,7 @@ Configuration WAP
                 $exchangethumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like 'CN=owa2019*'}).Thumbprint
                 
                 $OWARule = Get-WebApplicationProxyApplication -Name 'OWA' -ErrorAction 0
-                IF ($0WARule -eq $null) {
+                IF ($OWARule -eq $null) {
                 Add-WebApplicationProxyApplication -BackendServerURL "https://owa2019.$using:ExternaldomainName/owa/" -ExternalCertificateThumbprint $exchangethumbprint -ExternalURL "https://owa2019.$using:ExternaldomainName/owa/" -Name 'OWA' -ExternalPreAuthentication ADFS  -ADFSRelyingPartyName 'Outlook Web App 2019'
                 }
                 $ECPRule = Get-WebApplicationProxyApplication -Name 'ECP' -ErrorAction 0

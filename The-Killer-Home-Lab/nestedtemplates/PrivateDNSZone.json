@@ -19,49 +19,13 @@
             "metadata": {
                 "description": "Existing DMZ VNET2 Name"
             }            
-        },             
-        "OWARecord": {
-            "type": "string",
-            "metadata": {
-                "description": "OWA Internal DNS Record"
-              }
-        },
-        "AutoDiscoverRecord": {
-            "type": "string",
-            "metadata": {
-                "description": "AutoDiscover EXternal DNS Record"
-              }
-        },        
-        "OutlookRecord": {
-            "type": "string",
-            "metadata": {
-                "description": "Outlook EXternal DNS Record"
-              }
-        },                
-        "EASRecord": {
-            "type": "string",
-            "metadata": {
-                "description": "EAS EXternal DNS Record"
-              }
-        },  
+        },              
         "ADFSRecord": {
             "type": "string",
             "metadata": {
                 "description": "ADFS Internal DNS Record"
               }
-        },                                      
-        "EX1PrivateIP": {
-            "type": "string",
-            "metadata": {
-                "description": "Exchange1 Internal IP"
-              }
-        },
-        "EX2PrivateIP": {
-            "type": "string",
-            "metadata": {
-                "description": "Exchange2 Internal IP"
-              }
-        },        
+        },                                            
         "ADFS1PrivateIP": {
             "type": "string",
             "metadata": {
@@ -103,89 +67,9 @@
             "resources": []
           },
           {
-          "type": "Microsoft.Network/dnszones/a",
-          "name": "[concat(parameters('ZoneName'), '/', parameters('OWARecord'))]",
-          "apiVersion": "2018-05-01",
-          "location": "global",
-          "dependsOn": [
-              "[parameters('ZoneName')]"
-          ],
-          "properties": {
-              "TTL": 900,
-              "ARecords": [
-                  {
-                      "ipv4Address": "[parameters('EX1PrivateIP')]"
-                  },
-                  {
-                      "ipv4Address": "[parameters('EX2PrivateIP')]"
-                  }                  
-                  ]
-              }
-          },
-          {
-          "type": "Microsoft.Network/dnszones/a",
-          "name": "[concat(parameters('ZoneName'), '/', parameters('AutoDiscoverRecord'))]",
-          "apiVersion": "2018-05-01",
-          "location": "global",
-          "dependsOn": [
-              "[parameters('ZoneName')]"
-          ],
-          "properties": {
-              "TTL": 900,
-              "ARecords": [
-                  {
-                      "ipv4Address": "[parameters('EX1PrivateIP')]"
-                  },
-                  {
-                      "ipv4Address": "[parameters('EX2PrivateIP')]"
-                  }                  
-                  ]
-              }
-          },                     
-          {
-          "type": "Microsoft.Network/dnszones/a",
-          "name": "[concat(parameters('ZoneName'), '/', parameters('OutlookRecord'))]",
-          "apiVersion": "2018-05-01",
-          "location": "global",
-          "dependsOn": [
-              "[parameters('ZoneName')]"
-          ],
-          "properties": {
-              "TTL": 900,
-              "ARecords": [
-                  {
-                      "ipv4Address": "[parameters('EX1PrivateIP')]"
-                  },
-                  {
-                      "ipv4Address": "[parameters('EX2PrivateIP')]"
-                  }                  
-                  ]
-              }
-          },          
-          {
-          "type": "Microsoft.Network/dnszones/a",
-          "name": "[concat(parameters('ZoneName'), '/', parameters('EASRecord'))]",
-          "apiVersion": "2018-05-01",
-          "location": "global",
-          "dependsOn": [
-              "[parameters('ZoneName')]"
-          ],
-          "properties": {
-              "TTL": 900,
-              "ARecords": [
-                  {
-                      "ipv4Address": "[parameters('EX1PrivateIP')]"
-                  },
-                  {
-                      "ipv4Address": "[parameters('EX2PrivateIP')]"
-                  }                  
-                  ]
-              }
-          },
-          {
-          "type": "Microsoft.Network/dnszones/a",
+          "type": "Microsoft.Network/privateDnsZones/a",
           "name": "[concat(parameters('ZoneName'), '/', parameters('ADFSRecord'))]",
-          "apiVersion": "2018-05-01",
+          "apiVersion": "2018-09-01",
           "location": "global",
           "dependsOn": [
               "[parameters('ZoneName')]"
