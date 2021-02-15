@@ -25,7 +25,13 @@
             "metadata": {
                 "description": "ADFS IP"
             }
-        },                          
+        },  
+        "EXServerIP": {
+            "type": "string",
+            "metadata": {
+                "description": "Exchange IP"
+            }
+        },                                
         "ExternaldomainName": {
             "type": "string",
             "metadata": {
@@ -96,7 +102,8 @@
                         "Properties": {
                             "TimeZone": "[parameters('TimeZone')]",
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                                                        
-                            "ADFSServerIP": "[parameters('ADFSServerIP')]",                            
+                            "ADFSServerIP": "[parameters('ADFSServerIP')]",    
+                            "EXServerIP": "[parameters('EXServerIP')]",                                                     
                             "ExternaldomainName": "[parameters('ExternaldomainName')]",                            
                             "IssuingCAName": "[parameters('IssuingCAName')]",
                             "RootCAName": "[parameters('RootCAName')]",                                                        

@@ -5,6 +5,7 @@ Configuration WAP
         [String]$TimeZone,
         [String]$NetBiosDomain,
         [String]$ADFSServerIP,
+        [String]$EXServerIP,
         [String]$ExternaldomainName,
         [String]$IssuingCAName,
         [String]$RootCAName,     
@@ -74,6 +75,17 @@ Configuration WAP
             DependsOn = '[File]Certificates'
         }
 
+        File CopyExchangeCert
+        {
+            Ensure = "Present"
+            Type = "Directory"
+            Recurse = $true
+            SourcePath = "\\$EXServerIP\c$\Certificates"
+            DestinationPath = "C:\Certificates\"
+            Credential = $Admincreds
+            DependsOn = '[File]Certificates'
+        }
+
         Script ConfigureWAPCertificates
         {
             SetScript =
@@ -81,9 +93,6 @@ Configuration WAP
                 # Create Credentials
                 $LoadCreds = "$using:AdminCreds"
                 $Password = $AdminCreds.Password
-
-                # Add Host Record for Resolution
-                Add-Content C:\Windows\System32\Drivers\Etc\Hosts "$using:ADFSServerIP adfs.$using:ExternaldomainName"
 
                 #Check if ADFS Service Communication Certificate already exists if NOT Create
                 $adfsthumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like 'CN=adfs*'}).Thumbprint
@@ -95,10 +104,14 @@ Configuration WAP
 
                 $importissuingca = (Get-ChildItem -Path Cert:\LocalMachine\CA | Where-Object {$_.Subject -like "CN=$using:IssuingCAName*"}).Thumbprint
                 IF ($importissuingca -eq $null) {Import-Certificate -FilePath "C:\Certificates\$using:IssuingCAName.cer" -CertStoreLocation Cert:\LocalMachine\CA}
+
+                #Check if Exchange Certificate already exists if NOT Create
+                $exthumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like 'CN=owa2019*'}).Thumbprint
+                IF ($exthumbprint -eq $null) {Import-PfxCertificate -FilePath "C:\Certificates\owa2019.$using:ExternaldomainName.pfx" -CertStoreLocation Cert:\LocalMachine\My -Password $Password}
             }
             GetScript =  { @{} }
             TestScript = { $false}
-            DependsOn = '[File]CopyServiceCommunicationCertFromADFS'
+            DependsOn = '[File]CopyServiceCommunicationCertFromADFS', '[File]CopyExchangeCert'
         }
 
         Script ConfigureWAPADFSTrust
@@ -117,6 +130,27 @@ Configuration WAP
             GetScript =  { @{} }
             TestScript = { $false}
             DependsOn = '[Script]ConfigureWAPCertificates'
+        }
+
+        Script AddExchangePublishingRules
+        {
+            SetScript =
+            {
+                # Get ADFS Service Communication Certificate
+                $exchangethumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like 'CN=owa2019*'}).Thumbprint
+                
+                $OWARule = Get-WebApplicationProxyApplication -Name 'OWA' -ErrorAction 0
+                IF ($0WARule -eq $null) {
+                Add-WebApplicationProxyApplication -BackendServerURL "https://owa2019.$using:ExternaldomainName/owa/" -ExternalCertificateThumbprint $exchangethumbprint -ExternalURL "https://owa2019.$using:ExternaldomainName/owa/" -Name 'OWA' -ExternalPreAuthentication ADFS  -ADFSRelyingPartyName 'Outlook Web App'
+                }
+                $ECPRule = Get-WebApplicationProxyApplication -Name 'ECP' -ErrorAction 0
+                IF ($ECPRule -eq $null) {
+                Add-WebApplicationProxyApplication -BackendServerURL "https://owa2019.$using:ExternaldomainName/ecp/" -ExternalCertificateThumbprint $exchangethumbprint -ExternalURL "https://owa2019.$using:ExternaldomainName/ecp/" -Name 'ECP' -ExternalPreAuthentication ADFS  -ADFSRelyingPartyName 'Exchange Admin Center (EAC)'
+                }
+            }
+            GetScript =  { @{} }
+            TestScript = { $false}
+            DependsOn = '[Script]ConfigureWAPADFSTrust'
         }
     }
   }

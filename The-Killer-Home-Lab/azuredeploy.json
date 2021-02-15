@@ -4672,7 +4672,10 @@
               },                            
               "ADFSServerIP": {
                   "value": "[variables('adfs1IP')]"
-              },          
+              },     
+              "EXServerIP": {
+                  "value": "[variables('ex1IP')]"
+              },                   
               "ExternaldomainName": {
                   "value": "[variables('ExternaldomainName')]"
               },         
@@ -4780,6 +4783,9 @@
               "ADFSServerIP": {
                   "value": "[variables('adfs1IP')]"
               },          
+              "EXServerIP": {
+                  "value": "[variables('ex2IP')]"
+              },                                 
               "ExternaldomainName": {
                   "value": "[variables('ExternaldomainName')]"
               },        
