@@ -70,13 +70,12 @@
           "type": "Microsoft.Network/privateDnsZones/a",
           "name": "[concat(parameters('ZoneName'), '/', parameters('ADFSRecord'))]",
           "apiVersion": "2018-09-01",
-          "location": "global",
           "dependsOn": [
               "[parameters('ZoneName')]"
           ],
           "properties": {
               "TTL": 900,
-              "ARecords": [
+              "aRecords": [
                   {
                       "ipv4Address": "[parameters('ADFS1PrivateIP')]"
                   },
