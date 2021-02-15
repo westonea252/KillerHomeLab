@@ -683,15 +683,12 @@
     "DMZVNet1subnet1Prefix": "[concat(parameters('DMZVNet1ID'),'.1.0/24')]",    
     "DMZVNet1BastionsubnetPrefix": "[concat(parameters('DMZVNet1ID'),'.253.0/24')]",           
     "DMZVNet1FirewallsubnetPrefix": "[concat(parameters('DMZVNet1ID'),'.254.0/24')]",
-
     "DMZVNet2Name": "[concat(parameters('NamingConvention'),'-DMZ-VNet2')]",
     "DMZVNet2Prefix": "[concat(parameters('DMZVNet2ID'),'.0.0/16')]",
     "DMZVNet2subnet1Name": "[concat(parameters('NamingConvention'),'-DMZ-VNet2-Subnet1')]",    
     "DMZVNet2subnet1Prefix": "[concat(parameters('DMZVNet2ID'),'.1.0/24')]",    
     "DMZVNet2BastionsubnetPrefix": "[concat(parameters('DMZVNet2ID'),'.253.0/24')]",           
     "DMZVNet2FirewallsubnetPrefix": "[concat(parameters('DMZVNet2ID'),'.254.0/24')]",
-
-
     "APPVNet1Name": "[concat(parameters('NamingConvention'),'-APP-VNet1')]",
     "APPVNet1Prefix": "[concat(parameters('APPVNet1ID'),'.0.0/16')]",
     "APPVNet1subnet1Name": "[concat(parameters('NamingConvention'),'-APP-VNet1-WEB-Subnet1')]",    
@@ -779,7 +776,6 @@
     "DB1Name": "[concat(parameters('NamingConvention'),'-19-db01')]",
     "DB2Name": "[concat(parameters('NamingConvention'),'-19-db02')]" ,             
     "DAG19Name": "[concat(parameters('NamingConvention'),'-19-dag01')]",
-
     "adcname": "[concat(parameters('NamingConvention'),'-adc-01')]",           
     "adcIP": "[concat(parameters('APPVNet1ID'),'.5.',variables('adclastoctet'))]", 
     "adclastoctet": "100",           
@@ -793,9 +789,8 @@
     "wap1IP": "[concat(parameters('DMZVNet1ID'),'.1.',variables('wap1lastoctet'))]",            
     "wap1lastoctet": "101",
     "wap2name": "[concat(parameters('NamingConvention'),'-wap-02')]",           
-    "wap2IP": "[concat(parameters('DMZVNet1ID'),'.1.',variables('wap2lastoctet'))]",            
+    "wap2IP": "[concat(parameters('DMZVNet2ID'),'.1.',variables('wap2lastoctet'))]",            
     "wap2lastoctet": "102",
-
     "wk1name": "[concat(parameters('NamingConvention'),'-wk-01')]",           
     "wk1IP": "[concat(parameters('APPVNet1ID'),'.7.',variables('wk1lastoctet'))]",        
     "wk1lastoctet": "100",            
@@ -4875,6 +4870,61 @@
               }                                                                                                                                                                                
           }
       }
-    }      
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "createprivatedns",
+      "dependsOn": [
+        "DMZVNet1",
+        "DMZVNet2",
+        "createpublicdns"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/PrivateDNSZone.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "ZoneName": {
+                  "value": "[variables('ExternaldomainName')]"
+              },
+              "vnet1Name": {
+                "value": "[variables('DMZVNet1Name')]"
+              },    
+              "vnet2Name": {
+                "value": "[variables('DMZVNet2Name')]"
+              },                                                                                                                                                                 
+              "OWARecord": {
+                  "value": "owa2019"
+              },
+              "AutoDiscoverRecord": {
+                  "value": "autodiscover"
+              },
+              "OutlookRecord": {
+                  "value": "outlook2019"
+              },
+              "EASRecord": {
+                  "value": "eas2019"
+              },
+              "ADFSRecord": {
+                  "value": "adfs"
+              },              
+              "EX1PrivateIP": {
+                "value": "[variables('EX1IP')]"
+              },                             
+              "EX2PrivateIP": {
+                "value": "[variables('EX2IP')]"
+              },  
+              "ADFS1PrivateIP": {
+                "value": "[variables('adfs1IP')]"
+              },                             
+              "ADFS2PrivateIP": {
+                "value": "[variables('adfs2IP')]"
+              }                                                                                                                                                                              
+          }
+      }
+    }          
   ]
 }
