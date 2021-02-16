@@ -93,9 +93,6 @@ Configuration WAP
                 $LoadCreds = "$using:AdminCreds"
                 $Password = $AdminCreds.Password
 
-                # Add Host Record for Resolution
-                Add-Content C:\Windows\System32\Drivers\Etc\Hosts "$using:ADFSServerIP adfs.$using:ExternaldomainName"
-
                 #Check if ADFS Service Communication Certificate already exists if NOT Create
                 $adfsthumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like 'CN=adfs*'}).Thumbprint
                 IF ($adfsthumbprint -eq $null) {Import-PfxCertificate -FilePath "C:\Certificates\adfs.$using:ExternaldomainName.pfx" -CertStoreLocation Cert:\LocalMachine\My -Password $Password}
