@@ -4849,7 +4849,10 @@
               },    
               "SMTP2Record": {
                   "value": "smtp2"
-              },    
+              },   
+              "ADFSRecord": {
+                  "value": "adfs"
+              },                
               "OCSPPublicIP": {
                   "value": "[reference('DeployAzureFirewall1').outputs.OCSPPublicIP.value]"             
               },      

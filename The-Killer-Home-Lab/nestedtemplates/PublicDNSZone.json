@@ -43,7 +43,13 @@
             "metadata": {
                 "description": "EAS EXternal DNS Record"
               }
-        },                        
+        },   
+        "ADFSRecord": {
+            "type": "string",
+            "metadata": {
+                "description": "ADFS EXternal DNS Record"
+              }
+        },                             
         "SMTP1Record": {
             "type": "string",
             "metadata": {
@@ -273,6 +279,26 @@
             }            
         ]
             }
-        }                                        
+        },
+        {
+        "type": "Microsoft.Network/dnszones/a",
+        "name": "[concat(parameters('ZoneName'), '/', parameters('ADFSRecord'))]",
+        "apiVersion": "2018-05-01",
+        "location": "global",
+        "dependsOn": [
+            "[parameters('ZoneName')]"
+        ],
+        "properties": {
+            "TTL": 900,
+            "ARecords": [
+                {
+                    "ipv4Address": "[parameters('WAP1PublicIP')]"
+                },
+                {
+                    "ipv4Address": "[parameters('WAP2PublicIP')]"
+                }
+                ]
+            }
+        }                                                
     ]
 }
