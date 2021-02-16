@@ -1218,7 +1218,7 @@
                 "value": "[variables('VNet1Name')]"
               },            
               "subnetName": {
-                "value": "[variables('VNet1subnet2Name')]"
+                "value": "[variables('VNet1subnet1Name')]"
               },            
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
