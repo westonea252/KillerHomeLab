@@ -1,0 +1,49 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "computerName": {
+            "type": "string",
+            "metadata": {
+                "description": "Computer Name"
+            }
+        },  
+        "domainName": {
+            "type": "string",
+            "metadata": {
+                "description": "The FQDN of the AD Domain created "
+          }
+        },                
+        "location": {
+            "type": "string",
+          "metadata": {
+            "description": "Region of Resources"
+          }
+        }
+    },    
+    "variables": {
+        "commandToExecute1":    "sudo wget --output-document=mstunnel-setup https://aka.ms/microsofttunneldownload"
+    },
+    "resources": [
+        {
+        "name": "[concat(parameters('computerName'), '/DownloadMSTunnel')]",
+        "type": "Microsoft.Compute/virtualMachines/extensions",
+        "location": "[parameters('location')]",
+        "apiVersion": "2019-03-01",
+        "tags": {
+            "displayName": "DownloadMSTunnel"
+        },
+        "properties": {
+            "publisher": "Microsoft.Azure.Extensions",
+            "type": "CustomScript",
+            "typeHandlerVersion": "2.1",
+            "autoUpgradeMinorVersion": true,
+                "settings": {          
+                    "commandToExecute" : "[variables('commandToExecute1')]"                  
+            },
+            "protectedSettings": {
+                }
+            }
+        }
+    ]
+}

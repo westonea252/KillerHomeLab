@@ -141,6 +141,16 @@
           "description": "Domain Controller2 OS Version"
       }
     },
+    "KFOSVersion": {
+        "type": "string",
+        "defaultValue": "20_10",
+        "allowedValues": [
+          "20_10"
+        ],            
+        "metadata": {
+            "description": "OS Version"
+        }
+    },     
     "ServerBuild": {
         "type": "string",
         "defaultValue": "14393.4046.2010301518",
@@ -181,7 +191,14 @@
       "metadata": {
           "description": "Domain Controller2 VMSize"
       }
-    },            
+    },   
+    "KFVMSize": {
+        "type": "string",
+        "defaultValue": "Standard_D2s_v3",
+        "metadata": {
+            "description": "VMSize"
+        }
+    },             
     "WK1VMSize": {
       "type": "string",
       "defaultValue": "Standard_D2s_v3",
@@ -229,7 +246,7 @@
     "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",           
     "dc1IP": "[concat(parameters('vnet1ID'),'.1.',variables('dc1lastoctet'))]",        
     "dc2name": "[concat(parameters('NamingConvention'),'-dc-02')]",           
-    "dc2IP": "[concat(parameters('vnet2ID'),'.1.',variables('dc2lastoctet'))]",            
+    "dc2IP": "[concat(parameters('vnet2ID'),'.1.',variables('dc2lastoctet'))]",  
     "ReverseLookup1": "[concat('1.',parameters('ReverseLookup1'))]",    
     "ReverseLookup2": "[concat('1.',parameters('ReverseLookup2'))]",        
     "dc1lastoctet": "101",        
@@ -243,7 +260,11 @@
     "DCDataDisk1Name": "NTDS",            
     "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
-    "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]"
+    "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
+    "kfname": "[concat(parameters('NamingConvention'),'-kf-01')]",                      
+    "kfIP": "[concat(parameters('VNet1ID'),'.1.',variables('kflastoctet'))]", 
+    "kflastoctet": "102"     
+
   },  
   "resources": [
     {
@@ -1157,6 +1178,56 @@
               },                                                                                                                                                                                                                                                                             
               "location": {
                   "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DeployKafkaServer",
+      "dependsOn": [
+        "createsites"
+      ],
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm-linux.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('kfname')]"
+              },
+              "computerIP": {
+                  "value": "[variables('kfIP')]"
+              },
+              "Publisher": {
+                  "value": "canonical"
+              },
+              "Offer": {
+                  "value": "0001-com-ubuntu-server-groovy"
+              },
+              "OSVersion": {
+                "value": "[parameters('KFOSVersion')]"
+              },              
+              "VMSize": {
+                "value": "[parameters('KFVMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('VNet1Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('VNet1subnet2Name')]"
+              },            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[resourceGroup().location]"
               }
           }
       }
