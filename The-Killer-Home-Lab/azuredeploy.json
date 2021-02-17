@@ -3888,6 +3888,7 @@
       "apiVersion": "2019-10-01",
       "name": "configexchange1",
       "dependsOn": [
+        "restartdc1",
         "installexchange1"
       ],      
       "properties": {
@@ -4003,6 +4004,7 @@
       "apiVersion": "2019-10-01",
       "name": "configexchange2",
       "dependsOn": [
+        "restartdc2",
         "installexchange2"
       ],      
       "properties": {
