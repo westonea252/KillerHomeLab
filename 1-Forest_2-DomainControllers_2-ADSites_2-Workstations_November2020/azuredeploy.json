@@ -954,7 +954,7 @@
           },
           "parameters": {
               "computerName": {
-                  "value": "[variables('dc1name')]"
+                  "value": "[variables('dc2name')]"
               },
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
@@ -963,11 +963,69 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                                         
               "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "InstallNetmonDC1",
+      "dependsOn": [
+        "restartdc2"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/installnetmon.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('dc1name')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+              "location": {
                   "value": "[resourceGroup().location]"
               }
           }
       }
-    },                
+    },                                                                                                                       
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "InstallNetmonDC2",
+      "dependsOn": [
+        "restartdc2"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/installnetmon.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('dc2name')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },                                                                                                                   
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
