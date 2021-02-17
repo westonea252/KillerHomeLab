@@ -32,7 +32,7 @@
         xRemoteFile DownloadNetmon
         {
             DestinationPath = "C:\Tools\NM34_x64.exe"
-            Uri             = "https://www.microsoft.com/en-us/download/confirmation.aspx?id=4865&6B49FDFB-8E5B-4B07-BC31-15695C5A2143=1"
+            Uri             = "https://download.microsoft.com/download/7/1/0/7105C7FF-768E-4472-AFD5-F29108D1E383/NM34_x64.exe"
             UserAgent       = "[Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer"
             DependsOn = '[Registry]SchUseStrongCrypto'
         }
