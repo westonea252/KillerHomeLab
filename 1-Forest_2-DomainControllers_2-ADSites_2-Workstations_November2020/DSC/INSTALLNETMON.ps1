@@ -31,7 +31,7 @@
 
         xRemoteFile DownloadNetmon
         {
-            DestinationPath = "C:\Tools\NM34_ia64.exe"
+            DestinationPath = "C:\Tools\NM34_x64.exe"
             Uri             = "https://www.microsoft.com/en-us/download/confirmation.aspx?id=4865&6B49FDFB-8E5B-4B07-BC31-15695C5A2143=1"
             UserAgent       = "[Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer"
             DependsOn = '[Registry]SchUseStrongCrypto'
@@ -42,7 +42,7 @@
             SetScript =
             {
                 # Install Netmon
-                C:\Tools\NM34_ia64.exe /q
+                C:\Tools\NM34_x64.exe /q
             }
             GetScript =  { @{} }
             TestScript = { $false}
