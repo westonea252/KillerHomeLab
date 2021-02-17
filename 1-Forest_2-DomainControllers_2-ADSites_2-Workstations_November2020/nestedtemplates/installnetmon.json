@@ -46,18 +46,10 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
-                            "DomainName": "[parameters('domainName')]",
-                            "NetBiosDomain": "[parameters('NetBiosDomain')]",
-                            "DnsServerIP": "[parameters('DnsServerIP')]",                            
-                        "AdminCreds": {
-                            "UserName": "[parameters('adminUsername')]",
-                            "Password": "PrivateSettingsRef:AdminPassword"
-                        }
                         }
                 },
                 "protectedSettings": {
                     "Items": {
-                        "AdminPassword": "[parameters('adminPassword')]"
                     }
                 }                
             }
