@@ -261,9 +261,12 @@
     "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
     "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
-    "kfname": "[concat(parameters('NamingConvention'),'-kf-01')]",                      
-    "kfIP": "[concat(parameters('VNet1ID'),'.1.',variables('kflastoctet'))]", 
-    "kflastoctet": "102"     
+    "kf1name": "[concat(parameters('NamingConvention'),'-kf-01')]",                      
+    "kf1IP": "[concat(parameters('VNet1ID'),'.1.',variables('kf1lastoctet'))]", 
+    "kf2name": "[concat(parameters('NamingConvention'),'-kf-02')]",                      
+    "kf2IP": "[concat(parameters('VNet1ID'),'.1.',variables('kf2lastoctet'))]",     
+    "kf1lastoctet": "102",
+    "kf2lastoctet": "103"         
 
   },  
   "resources": [
@@ -1211,7 +1214,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "DeployKafkaServer",
+      "name": "DeployKafkaServer1",
       "dependsOn": [
         "createsites"
       ],
@@ -1223,10 +1226,10 @@
           },
           "parameters": {
               "computerName": {
-                  "value": "[variables('kfname')]"
+                  "value": "[variables('kf1name')]"
               },
               "computerIP": {
-                  "value": "[variables('kfIP')]"
+                  "value": "[variables('kf1IP')]"
               },
               "Publisher": {
                   "value": "canonical"
@@ -1257,6 +1260,56 @@
               }
           }
       }
-    }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DeployKafkaServer1",
+      "dependsOn": [
+        "createsites"
+      ],
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm-linux.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('kf2name')]"
+              },
+              "computerIP": {
+                  "value": "[variables('kf2IP')]"
+              },
+              "Publisher": {
+                  "value": "canonical"
+              },
+              "Offer": {
+                  "value": "0001-com-ubuntu-server-groovy"
+              },
+              "OSVersion": {
+                "value": "[parameters('KFOSVersion')]"
+              },              
+              "VMSize": {
+                "value": "[parameters('KFVMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('VNet1Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('VNet1subnet1Name')]"
+              },            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    }    
   ]
 }
