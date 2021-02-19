@@ -145,7 +145,10 @@
         "type": "string",
         "defaultValue": "20_10",
         "allowedValues": [
-          "20_10"
+          "20_10",
+          "18_04",
+          "16_04",
+          "14_04"
         ],            
         "metadata": {
             "description": "OS Version"
