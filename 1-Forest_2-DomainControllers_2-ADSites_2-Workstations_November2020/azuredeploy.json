@@ -141,19 +141,42 @@
           "description": "Domain Controller2 OS Version"
       }
     },
-    "KFOSVersion": {
+    "KF1OSVersion": {
         "type": "string",
-        "defaultValue": "20_10",
+        "defaultValue": "14.04.5-LTS",
         "allowedValues": [
-          "20_10",
-          "18_04",
-          "16_04",
-          "14_04"
+          "18.04-LTS",
+          "16.04-LTS",
+          "14.04.5-LTS"
         ],            
         "metadata": {
             "description": "OS Version"
         }
     },     
+    "KF2OSVersion": {
+        "type": "string",
+        "defaultValue": "16.04-LTS",
+        "allowedValues": [
+          "18.04-LTS",
+          "16.04-LTS",
+          "14.04.5-LTS"
+        ],            
+        "metadata": {
+            "description": "OS Version"
+        }
+    },     
+    "KF3OSVersion": {
+        "type": "string",
+        "defaultValue": "18.04-LTS",
+        "allowedValues": [
+          "18.04-LTS",
+          "16.04-LTS",
+          "14.04.5-LTS"
+        ],            
+        "metadata": {
+            "description": "OS Version"
+        }
+    },             
     "ServerBuild": {
         "type": "string",
         "defaultValue": "14393.4046.2010301518",
@@ -266,13 +289,13 @@
     "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
     "kf1name": "[concat(parameters('NamingConvention'),'-kf-01')]",                      
     "kf1IP": "[concat(parameters('VNet1ID'),'.1.',variables('kf1lastoctet'))]", 
-    "kf1lastoctet": "102",    
+    "kf1lastoctet": "111",    
     "kf2name": "[concat(parameters('NamingConvention'),'-kf-02')]",                      
     "kf2IP": "[concat(parameters('VNet1ID'),'.1.',variables('kf2lastoctet'))]",     
-    "kf2lastoctet": "103",
+    "kf2lastoctet": "112",
     "kf3name": "[concat(parameters('NamingConvention'),'-kf-03')]",                      
     "kf3IP": "[concat(parameters('VNet1ID'),'.1.',variables('kf3lastoctet'))]",     
-    "kf3lastoctet": "104"             
+    "kf3lastoctet": "113"             
 
   },  
   "resources": [
@@ -1241,10 +1264,10 @@
                   "value": "canonical"
               },
               "Offer": {
-                  "value": "0001-com-ubuntu-server-groovy"
+                  "value": "UbuntuServer"
               },
               "OSVersion": {
-                "value": "[parameters('KFOSVersion')]"
+                "value": "[parameters('KF1OSVersion')]"
               },              
               "VMSize": {
                 "value": "[parameters('KFVMSize')]"
@@ -1291,10 +1314,10 @@
                   "value": "canonical"
               },
               "Offer": {
-                  "value": "0001-com-ubuntu-server-groovy"
+                  "value": "UbuntuServer"
               },
               "OSVersion": {
-                "value": "[parameters('KFOSVersion')]"
+                "value": "[parameters('KF2OSVersion')]"
               },              
               "VMSize": {
                 "value": "[parameters('KFVMSize')]"
@@ -1341,10 +1364,10 @@
                   "value": "canonical"
               },
               "Offer": {
-                  "value": "0001-com-ubuntu-server-groovy"
+                  "value": "UbuntuServer"
               },
               "OSVersion": {
-                "value": "[parameters('KFOSVersion')]"
+                "value": "[parameters('KF3OSVersion')]"
               },              
               "VMSize": {
                 "value": "[parameters('KFVMSize')]"

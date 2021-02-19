@@ -9,8 +9,11 @@ This Templates deploys a Single Forest/Domain:
 
 - 1 - Active Directory Forest/Domain
 - 2 - Active Directory Sites
-- 2 - Domain Controllers (1 within each AD Site)
+- 2 - Domain Controllers (1 within each AD Site) (Build:  14393.4046.2010301518)
 - 2 - Domain Joined Windows 10 Workstations (1 within each AD Site)
+- 1 - Ubuntu Server Version (14.04.5-LTS)
+- 1 - Ubuntu Server Version (16.04-LTS)
+- 1 - Ubuntu Server Version (18.04-LTS)
 
 The deployment leverages Desired State Configuration scripts to further customize the following:
 
