@@ -1,4 +1,4 @@
-# Multi AD Sites Lab November 2020 Build
+# Multi AD Sites Lab Legacy Build Test Lab
 
 Click the button below to deploy
 

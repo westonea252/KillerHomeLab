@@ -19,14 +19,10 @@ sudo reboot
 
 sudo realm discover dir.ad.killerhomelab.com
 
-sudo realm join -U dom-admin dir.ad.killerhomelab.com
+sudo realm join -v -U dom-admin dir.ad.killerhomelab.com
 
 sudo bash -c "cat > /usr/share/pam-configs/mkhomedir" <<EOF
 EOF
-
-sudo pam-auth-update
-
-sudo systemctl restart sssd
 
 sudo realm permit dom-admin@dir.ad.killerhomelab.com
 
