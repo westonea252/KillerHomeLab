@@ -72,7 +72,7 @@
         xRemoteFile DownloadOpenSSL
         {
             DestinationPath = "C:\Certificates\OpenSSL.exe"
-            Uri             = "https://slproweb.com/download/Win64OpenSSL_Light-1_1_1i.exe"
+            Uri             = "https://slproweb.com/download/Win64OpenSSL_Light-1_1_1j.exe"
             UserAgent       = "[Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer"
             DependsOn = '[File]Certificates'
         }
@@ -136,7 +136,7 @@
                 $FileCheck = Get-ChildItem -Path "C:\Certificates\FileCopiedSuccessfully.txt" -ErrorAction 0
                 IF ($FileCheck -eq $Null) {
 
-                # Set-Content -Path "C:\Certificates\pscp.cmd" -Value "echo y | C:\Certificates\pscp.exe -P 22 -l $Username -pw $PlainPassword $PEMPath $RemoteLinux"
+                # Set-Content -Path "C:\Certificates\pscp.cmd" -Value "echo y | C:\Certificates\pscp.exe -P 22 -l $Username -pw $PlainPassword $PFXPath $RemoteLinux"
                 # C:\Certificates\pscp.cmd
                 # Set-Content -Path "C:\Certificates\FileCopiedSuccessfully.txt" -Value "File was copied successfully"
                 } 
