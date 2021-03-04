@@ -53,8 +53,7 @@
         {
             SetScript =
             {
-                # Install .Net 4.8
-                S:\ExchangeInstall\ndp48-x86-x64-allos-enu.exe /q
+                S:\ExchangeInstall\Exchange2016-KB5000871-x64-en.msp /quiet
             }
             GetScript =  { @{} }
             TestScript = { $false}
@@ -65,8 +64,7 @@
         {
             SetScript =
             {
-                # Install .Net 4.8
-                S:\ExchangeInstall\ndp48-x86-x64-allos-enu.exe /q
+                S:\ExchangeInstall\HealthChecker.ps1
             }
             GetScript =  { @{} }
             TestScript = { $false}
