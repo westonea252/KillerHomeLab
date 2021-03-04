@@ -1134,7 +1134,7 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },                                                                                                                                                                                                                                                                                                                         
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[parameters('Location2')]"
               }
           }
       }
