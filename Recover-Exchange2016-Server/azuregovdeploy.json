@@ -18,7 +18,7 @@
     },
     "ExchangeServerIP": {
       "type": "string",
-      "defaultValue": "16.1.2.111",
+      "defaultValue": "16.1.2.110",
       "metadata": {
         "description": "Exchange Netbios Server Name"
       }
