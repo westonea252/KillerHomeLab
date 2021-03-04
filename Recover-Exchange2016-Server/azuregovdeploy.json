@@ -2,6 +2,13 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {          
+    "ExchangeServerLocation": {
+      "type": "string",
+      "defaultValue": "USGovTexas",
+      "metadata": {
+        "description": "Choose Region (Example:  USGovTexas)"
+      }
+    }, 
     "Exchange2016ISOUrl": {
       "type": "string",
       "defaultValue": "",
@@ -198,7 +205,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[parameters('ExchangeServerLocation')]"
               }
           }
       }
@@ -236,7 +243,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                                                                                                                                                             
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[parameters('ExchangeServerLocation')]"
               }
           }
       }
@@ -271,7 +278,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                                                                                                                                                                                                                 
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[parameters('ExchangeServerLocation')]"
               },          
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
@@ -303,7 +310,7 @@
                   "value": "[parameters('NetBiosDomain')]"
               },                                  
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[parameters('ExchangeServerLocation')]"
               },          
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
