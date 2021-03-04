@@ -18,7 +18,7 @@
     },
     "ExchangeServerName": {
       "type": "string",
-      "defaultValue": "khl-ex-02",
+      "defaultValue": "khl-ex16-02",
       "metadata": {
         "description": "Exchange Netbios Server Name"
       }
