@@ -1,14 +1,7 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
-  "parameters": {
-    "Location2": {
-      "type": "string",
-      "defaultValue": "USGovTexas",
-      "metadata": {
-        "description": "Choose Region (Example:  USGovTexas)"
-      }
-    },           
+  "parameters": {          
     "Exchange2016ISOUrl": {
       "type": "string",
       "defaultValue": "",
@@ -30,6 +23,17 @@
         "description": "Exchange Netbios Server Name"
       }
     },
+    "VNetNumber": {
+      "type": "string",
+      "defaultValue": "1",
+      "allowedValues": [
+        "1",
+        "2"
+      ],       
+      "metadata": {
+        "description": "Exchange Netbios Server Name"
+      }
+    },    
     "adminUsername": {
         "type": "string",
         "metadata": {
@@ -102,21 +106,7 @@
       "metadata": {
           "description": "Top-Level Domain Name"
       }
-    },                     
-    "vnet1ID": {
-      "type": "string",
-      "defaultValue": "16.1",
-      "metadata": {
-        "description": "VNet1 Prefix"
-      }
-    },    
-    "vnet2ID": {
-      "type": "string",
-      "defaultValue": "16.2",
-      "metadata": {
-        "description": "VNet1 Prefix"
-      }
-    },            
+    },                             
     "EXOSVersion": {
       "type": "string",
       "defaultValue": "2016-Datacenter",
@@ -150,10 +140,8 @@
     }    
   },
   "variables": {
-    "vnet1Name": "[concat(parameters('NamingConvention'),'-VNet1')]",
-    "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet1')]",    
-    "vnet2Name": "[concat(parameters('NamingConvention'),'-VNet2')]",
-    "vnet2subnet1Name": "[concat(parameters('NamingConvention'),'-VNet2-Subnet1')]",    
+    "vnetName": "[concat(parameters('NamingConvention'),'-VNet',parameters('VNetNumber'))]",
+    "vnetsubnet1Name": "[concat(parameters('NamingConvention'),'-VNet',parameters('VNetNumber'),'-Subnet1')]",    
     "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]"
@@ -198,10 +186,10 @@
                 "value": "[parameters('exVMSize')]"
               },
               "vnetName": {
-                "value": "[variables('vnet2Name')]"
+                "value": "[variables('vnetName')]"
               },            
               "subnetName": {
-                "value": "[variables('vnet2subnet1Name')]"
+                "value": "[variables('vnetsubnet1Name')]"
               },            
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
@@ -210,7 +198,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[parameters('Location2')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -248,7 +236,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                                                                                                                                                             
               "location": {
-                  "value": "[parameters('Location2')]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
@@ -283,7 +271,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                                                                                                                                                                                                                 
               "location": {
-                  "value": "[parameters('Location2')]"
+                  "value": "[resourceGroup().location]"
               },          
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
@@ -315,7 +303,7 @@
                   "value": "[parameters('NetBiosDomain')]"
               },                                  
               "location": {
-                  "value": "[parameters('Location2')]"
+                  "value": "[resourceGroup().location]"
               },          
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
