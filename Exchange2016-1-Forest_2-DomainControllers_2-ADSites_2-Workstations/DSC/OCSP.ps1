@@ -3,17 +3,17 @@ Configuration OCSP
    param
    (
         [String]$computerName,
-        [String]$NamingConvention,
+        [String]$TimeZone,
         [String]$NetBiosDomain,
-        [String]$DomainName,
-        [String]$RootDomainFQDN,
+        [String]$InternaldomainName,
+        [String]$ExternaldomainName,
         [String]$IssuingCAName,
         [String]$RootCAName,
         [System.Management.Automation.PSCredential]$Admincreds
     )
  
-    Import-DscResource -Module ActiveDirectoryCSDsc # Used for Certificate Authority
-    Import-DscResource -Module ComputerManagementDsc # Used for TimeZone
+    Import-DscResource -ModuleName ActiveDirectoryCSDsc # Used for Certificate Authority
+    Import-DscResource -ModuleName ComputerManagementDsc # Used for TimeZone
 
     [System.Management.Automation.PSCredential ]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosDomain}\$($AdminCreds.UserName)", $AdminCreds.Password)
  
@@ -50,14 +50,14 @@ Configuration OCSP
         TimeZone SetTimeZone
         {
             IsSingleInstance = 'Yes'
-            TimeZone         = 'Eastern Standard Time'
+            TimeZone         = $TimeZone
         }
 
         Script BackupCryptoKeys
         {
             SetScript =
             {
-                # Update GPO's
+                # Update CA's
                 gpupdate /force
 
                 # Move Crypto Keys
@@ -121,11 +121,11 @@ Configuration OCSP
                 # Configure Online Responder
                 $IssuingCert = "C:\CertEnroll\$using:IssuingCAName.cer"
                 $RootCert = "C:\CertEnroll\$using:RootCAName.cer"
-                $IssuingCrl = "http://crl.$using:rootdomainfqdn/CertEnroll/$using:IssuingCAName.crl"
-                $IssuingDeltaCrl = "http://crl.$using:rootdomainfqdn/CertEnroll/$using:IssuingCAName+.crl"
-                $RootCrl = "http://crl.$using:rootdomainfqdn/CertEnroll/$using:RootCAName.crl"
-                $servername = "$using:NamingConvention-ocsp-01.$using:rootdomainfqdn"
-                $signingcertificate = "CN=$using:NamingConvention-ocsp-01.$using:rootdomainfqdn"
+                $IssuingCrl = "http://crl.$using:ExternaldomainName/CertEnroll/$using:IssuingCAName.crl"
+                $IssuingDeltaCrl = "http://crl.$using:ExternaldomainName/CertEnroll/$using:IssuingCAName+.crl"
+                $RootCrl = "http://crl.$using:ExternaldomainName/CertEnroll/$using:RootCAName.crl"
+                $servername = "$using:computerName.$using:InternaldomainName"
+                $signingcertificate = "CN=$using:computerName.$using:InternaldomainName"
 
                 # Create a new certificate object
                 $SigningCert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate

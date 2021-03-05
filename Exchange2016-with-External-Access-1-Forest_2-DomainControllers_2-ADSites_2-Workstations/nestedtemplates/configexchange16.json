@@ -32,12 +32,18 @@
                 "description": "Site 1 File Share Witness Name"
             }
         },                                        
-        "RootDomainFQDN": {
+        "InternaldomainName": {
             "type": "string",
-            "metadata": {
-                "description": "Root domain FQDN"
-            }
-        },        
+          "metadata": {
+            "description": "The FQDN of the AD Domain created "
+          }
+        },
+        "ExternaldomainName": {
+            "type": "string",
+          "metadata": {
+            "description": "The External FQDN of the AD Domain created "
+          }
+        },       
         "NetBiosDomain": {
             "type": "string",
             "metadata": {
@@ -129,7 +135,8 @@
                             "Site2DC": "[parameters('Site2DC')]",                                                        
                             "ConfigDC": "[parameters('ConfigDC')]",                                                                                    
                             "Site1FSW": "[parameters('Site1FSW')]",                                                                            
-                            "RootDomainFQDN": "[parameters('RootDomainFQDN')]",
+                            "InternaldomainName": "[parameters('InternaldomainName')]",                                                        
+                            "ExternaldomainName": "[parameters('ExternaldomainName')]",   
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",        
                             "BaseDN": "[parameters('BaseDN')]",                                                        
                             "DAGName": "[parameters('DAGName')]",                    

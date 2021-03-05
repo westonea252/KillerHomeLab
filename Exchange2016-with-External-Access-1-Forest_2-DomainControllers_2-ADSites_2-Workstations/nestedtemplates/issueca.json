@@ -13,24 +13,12 @@
             "metadata": {
                 "description": "Domain Naming Convention"
             }
-        },        
+        },         
         "NetBiosDomain": {
             "type": "string",
             "metadata": {
                 "description": "NetBios Domain Name"
             }
-        },
-        "RootDomainFQDN": {
-            "type": "string",
-            "metadata": {
-                "description": "Root Domain Name FQDN"
-            }
-        },
-        "domainName": {
-            "type": "string",
-          "metadata": {
-            "description": "The FQDN of the AD Domain created "
-          }
         },
         "IssuingCAName": {
             "type": "string",
@@ -49,7 +37,21 @@
             "metadata": {
                 "description": "Root CA IP"
             }
-        },                        
+        },     
+        "IssuingCAHashAlgorithm": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Issuing CA Algorithm"
+        }
+        },   
+        "IssuingCAKeyLength": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Issuing CA Key Length"
+        }
+        },                            
         "location": {
             "type": "string",
           "metadata": {
@@ -102,12 +104,12 @@
                         "Properties": {
                             "computerName": "[parameters('computerName')]",
                             "NamingConvention": "[parameters('NamingConvention')]",                            
-                            "NetBiosDomain": "[parameters('NetBiosDomain')]",                                                        
-                            "RootDomainFQDN": "[parameters('RootDomainFQDN')]",
-                            "domainName": "[parameters('domainName')]",                                                        
+                            "NetBiosDomain": "[parameters('NetBiosDomain')]",                                                                                                               
                             "IssuingCAName": "[parameters('IssuingCAName')]",
                             "RootCAName": "[parameters('RootCAName')]",                            
-                            "RootCAIP": "[parameters('RootCAIP')]",                                                        
+                            "RootCAIP": "[parameters('RootCAIP')]",     
+                            "IssuingCAHashAlgorithm": "[parameters('IssuingCAHashAlgorithm')]",                            
+                            "IssuingCAKeyLength": "[parameters('IssuingCAKeyLength')]",                                                                                                                                       
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"                                                                                   

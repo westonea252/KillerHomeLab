@@ -2,7 +2,8 @@
 {
    param
    (
-        [String]$ExchangeSASUrl,     
+        [String]$ExchangeSASUrl,   
+        [String]$TimeZone,           
         [String]$NetBiosDomain,
         [System.Management.Automation.PSCredential]$Admincreds
     )
@@ -298,7 +299,7 @@
         TimeZone SetTimeZone
         {
             IsSingleInstance = 'Yes'
-            TimeZone         = 'Eastern Standard Time'
+            TimeZone         = $TimeZone
         }
 
         File CreateSoftwareFolder
