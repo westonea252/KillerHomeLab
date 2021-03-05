@@ -2645,7 +2645,13 @@
               },                                                                                                                                             
               "DAGIPAddress": {
                   "value": "[variables('dag16ip')]"
-              },                                                                                                                                             
+              },   
+              "PassiveDAGNode": {
+                  "value": "[variables('ex2name')]"
+              },  
+              "DBName": {
+                  "value": "[variables('DB1Name')]"
+              },                                                                                                                                                             
               "CAServerIP": {
                   "value": "[variables('icaIP')]"
               },                                                                                                                                                                                       
@@ -2763,7 +2769,13 @@
               },                                                                                                                                             
               "DAGIPAddress": {
                   "value": "[variables('dag16ip')]"
-              },                                                                                                                                             
+              },  
+              "PassiveDAGNode": {
+                  "value": "[variables('ex1name')]"
+              },  
+              "DBName": {
+                  "value": "[variables('DB2Name')]"
+              },                                                                                                                                                                         
               "CAServerIP": {
                   "value": "[variables('icaIP')]"
               },                                                                                                                                                                                       
