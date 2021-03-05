@@ -2,6 +2,13 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "Location2": {
+      "type": "string",
+      "defaultValue": "USGovTexas",
+      "metadata": {
+        "description": "Choose Region (Example: USGovTexas)"
+      }
+    },  
     "TimeZone": {
       "type": "string",
       "defaultValue": "Eastern Standard Time",
@@ -147,14 +154,7 @@
       "metadata": {
           "description": "Time Zone"
       }
-    },
-    "Location2": {
-      "type": "string",
-      "defaultValue": "USGovTexas",
-      "metadata": {
-        "description": "Choose Region (Example: USGovTexas)"
-      }
-    },           
+    },         
     "ExchangeOrgName": {
       "type": "string",
       "defaultValue": "49ers",
