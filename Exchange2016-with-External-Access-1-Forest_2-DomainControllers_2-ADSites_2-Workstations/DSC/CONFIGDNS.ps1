@@ -3,7 +3,6 @@
    param
    (
         [String]$computerName,
-        [String]$NetBiosDomain,
         [String]$InternaldomainName,
         [String]$ExternaldomainName,
         [String]$ReverseLookup1,
@@ -13,13 +12,10 @@
         [String]$icaIP,
         [String]$ocspIP,
         [String]$ex1IP,
-        [String]$ex2IP,
-        [System.Management.Automation.PSCredential]$Admincreds
+        [String]$ex2IP
     )
 
     Import-DscResource -Module xDnsServer
-
-    [System.Management.Automation.PSCredential ]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosDomain}\$($AdminCreds.UserName)", $AdminCreds.Password)
 
     Node localhost
     {

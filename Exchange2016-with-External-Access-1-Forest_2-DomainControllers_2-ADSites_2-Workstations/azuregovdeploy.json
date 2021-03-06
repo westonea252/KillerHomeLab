@@ -1000,10 +1000,7 @@
           "parameters": {
               "computerName": {
                   "value": "[variables('dc1name')]"
-              },
-              "NetBiosDomain": {
-                  "value": "[parameters('NetBiosDomain')]"
-              },              
+              },          
               "InternalDomainName": {
                 "value": "[variables('InternaldomainName')]"
               },       
@@ -1034,12 +1031,6 @@
               "ocspIP": {
                 "value": "[variables('ocspIP')]"
               },   
-              "adminUsername": {
-                "value": "[parameters('adminUsername')]"
-              },                                                                                                            
-              "adminPassword": {
-                "value": "[parameters('adminPassword')]"
-              },                                                                                                                                                                                                                                                                                                                       
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
               },                                                                                                            
@@ -1913,7 +1904,7 @@
       "apiVersion": "2019-10-01",
       "name": "deployfs1",
       "dependsOn": [
-        "createsites"
+        "ReplicateAD"
       ],      
       "properties": {
           "mode": "Incremental",

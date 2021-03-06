@@ -7,13 +7,7 @@
             "metadata": {
                 "description": "Computer Name"
             }
-        },
-        "NetBiosDomain": {
-            "type": "string",
-            "metadata": {
-                "description": "NetBios Domain Name"
-            }
-        },         
+        },   
         "InternaldomainName": {
             "type": "string",
           "metadata": {
@@ -79,19 +73,7 @@
           "metadata": {
             "description": "Region of Resources"
           }
-        }, 
-        "adminUsername": {
-            "type": "string",
-            "metadata": {
-                "description": "The name of the Administrator of the new VM and Domain"
-            }
-        },
-        "adminPassword": {
-            "type": "securestring",
-          "metadata": {
-            "description": "The password for the Administrator account of the new VM and Domain"
-          }
-        },          
+        },      
         "_artifactsLocation": {
             "type": "string",
             "metadata": {
@@ -125,7 +107,6 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "computerName": "[parameters('computerName')]",
-                            "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
                             "InternaldomainName": "[parameters('InternaldomainName')]",                                                        
                             "ExternaldomainName": "[parameters('ExternaldomainName')]",                                                                                    
                             "ReverseLookup1": "[parameters('ReverseLookup1')]",
@@ -135,16 +116,11 @@
                             "icaIP": "[parameters('icaIP')]",                                                        
                             "ocspIP": "[parameters('ocspIP')]",                                                                                                                              
                             "ex1IP": "[parameters('ex1IP')]",                            
-                            "ex2IP": "[parameters('ex2IP')]",
-                            "AdminCreds": {
-                                "UserName": "[parameters('adminUsername')]",
-                                "Password": "PrivateSettingsRef:AdminPassword"                                                                                   
-                            }                                                                                                                                      
+                            "ex2IP": "[parameters('ex2IP')]"                                                                                                                                      
                         }
                     },
                     "protectedSettings": {
                         "Items": {
-                            "AdminPassword": "[parameters('adminPassword')]"
                         }                        
                     }
                 }
