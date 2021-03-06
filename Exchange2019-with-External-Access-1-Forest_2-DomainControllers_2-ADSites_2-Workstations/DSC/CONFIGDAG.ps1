@@ -2,7 +2,8 @@
 {
    param
    (
-        [String]$ComputerName,              
+        [String]$ComputerName,  
+        [String]$InternaldomainName,                    
         [String]$NetBiosDomain,
         [String]$BaseDN,
         [String]$Site1DC,
@@ -26,6 +27,10 @@
             {
                 repadmin /replicate "$using:Site1DC" "$using:Site2DC" "$using:BaseDN"
                 repadmin /replicate "$using:Site2DC" "$using:Site1DC" "$using:BaseDN"
+
+                # Connect to Exchange
+                $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri "http://$using:computerName.$using:InternalDomainName/PowerShell/"
+                Import-PSSession $Session
 
                 # Create DAG
                 $DAGCheck = Get-DatabaseAvailabilityGroup -Identity "$using:DAGName" -DomainController "$using:ConfigDC" -ErrorAction 0

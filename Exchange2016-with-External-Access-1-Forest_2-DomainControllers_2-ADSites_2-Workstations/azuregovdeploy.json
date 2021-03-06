@@ -2777,6 +2777,9 @@
               "computerName": {
                   "value": "[variables('ex1name')]"
               },
+              "InternaldomainName": {
+                  "value": "[variables('InternaldomainName')]"
+              },               
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },              
