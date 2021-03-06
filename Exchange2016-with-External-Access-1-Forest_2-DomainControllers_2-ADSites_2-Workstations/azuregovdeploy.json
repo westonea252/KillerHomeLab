@@ -1895,7 +1895,7 @@
       "apiVersion": "2019-10-01",
       "name": "deployfs1",
       "dependsOn": [
-        "restartdc1"
+        "createsites"
       ],      
       "properties": {
           "mode": "Incremental",
