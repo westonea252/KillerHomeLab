@@ -20,7 +20,7 @@
 
     Node localhost
     {
-        Script ConfigureDAG2016
+        Script ConfigureDAGandDatabaseCopies
         {
             SetScript =
             {
@@ -32,6 +32,7 @@
                 IF ($DAGCheck -eq $null) {
                 New-DatabaseAvailabilityGroup -Name "$using:DAGName" -WitnessServer "$using:Site1FSW" -WitnessDirectory C:\FSWs -DomainController "$using:ConfigDC"
                 Add-DatabaseAvailabilityGroupServer -Identity "$using:DAGName" -MailboxServer "$using:computerName" -DomainController "$using:ConfigDC"
+                Add-DatabaseAvailabilityGroupServer -Identity "$using:DAGName" -MailboxServer "$using:PassiveDAGNode" -DomainController "$using:ConfigDC"
                 }
 
                 # Create Database Copies
