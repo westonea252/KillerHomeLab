@@ -616,7 +616,6 @@
     "DB1Name": "[concat(parameters('NamingConvention'),'-16-db01')]",
     "DB2Name": "[concat(parameters('NamingConvention'),'-16-db02')]" ,             
     "DAG16Name": "[concat(parameters('NamingConvention'),'-16-dag01')]",
-    "dag16IP": "255.255.255.255",
     "NSG1Name": "[concat(parameters('NamingConvention'),'-nsg01')]",
     "NSG2Name": "[concat(parameters('NamingConvention'),'-nsg02')]",
     "FromEmail": "[concat(parameters('adminUserName'),'@',variables('InternaldomainName'))]"            
