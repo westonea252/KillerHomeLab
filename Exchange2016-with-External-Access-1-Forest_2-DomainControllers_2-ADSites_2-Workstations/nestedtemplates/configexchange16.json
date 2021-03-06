@@ -68,6 +68,18 @@
                 "description": "Database Availability Group IP"
             }
         },  
+        "PassiveDAGNode": {
+            "type": "string",
+            "metadata": {
+                "description": "Passive DAG Node"
+            }
+        },     
+        "DBName": {
+            "type": "string",
+            "metadata": {
+                "description": "Database  Name"
+            }
+        },              
         "CAServerIP": {
             "type": "string",
             "metadata": {
@@ -140,7 +152,9 @@
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",        
                             "BaseDN": "[parameters('BaseDN')]",                                                        
                             "DAGName": "[parameters('DAGName')]",                    
-                            "DAGIPAddress": "[parameters('DAGIPAddress')]",    
+                            "DAGIPAddress": "[parameters('DAGIPAddress')]",
+                            "PassiveDAGNode": "[parameters('PassiveDAGNode')]",                            
+                            "DBName": "[parameters('DBName')]",                                                            
                             "CAServerIP": "[parameters('CAServerIP')]",                                                                                                                                                                                
                             "Site": "[parameters('Site')]",                                                                                                                                                                            
                             "AdminCreds": {

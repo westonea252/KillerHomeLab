@@ -86,9 +86,11 @@ Configuration OCSP
 
                 # Create Scheduled Task
                 $scheduledtask = Get-ScheduledTask "Get OCSP Certificate" -ErrorAction 0
+                IF ($scheduledtask -eq $null) {
                 $action = New-ScheduledTaskAction -Execute Powershell -Argument '.\Get_OCSP_Certificate.ps1' -WorkingDirectory 'C:\CertEnroll'
                 Register-ScheduledTask -Action $action -TaskName "Get OCSP Certificate" -Description "Get OCSP Certificate" -User $Domain\$Username -Password $Password
                 Start-ScheduledTask "Get OCSP Certificate"
+                }
             }
             GetScript =  { @{} }
             TestScript = { $false}

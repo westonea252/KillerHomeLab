@@ -26,7 +26,7 @@
         {
             SetScript =
             {
-                Set-Content -Path S:\ExchangeInstall\RecoverExchange.cmd -Value "J:\Setup.exe /Mode:RecoverServer"
+                Set-Content -Path S:\ExchangeInstall\RecoverExchange.cmd -Value "J:\Setup.exe /Mode:RecoverServer /IAcceptExchangeServerLicenseTerms"
                 S:\ExchangeInstall\RecoverExchange.cmd
             }
             GetScript =  { @{} }

@@ -1,8 +1,11 @@
-﻿configuration REPLICATEAD
+﻿configuration PREPARERECOVERY16
 {
    param
    (
+        [String]$ComputerName,
         [String]$NetBiosDomain,
+        [String]$DAGName,
+        [String]$DBName,
         [System.Management.Automation.PSCredential]$Admincreds
     )
 
@@ -10,16 +13,17 @@
 
     Node localhost
     {
-        Script ReplicateAllDCs
+        Script PrepareRecovery
         {
             SetScript =
             {
-                # Create Exchange AD Deployment
-                (Get-ADDomainController -Filter *).Name | Foreach-Object { repadmin /syncall $_ (Get-ADDomain).DistinguishedName /AdeP }
+                Remove-MailboxDatabaseCopy "$using:DBName\$using:ComputerName"
+                Remove-DatabaseAvailabilityGroupServer -Identity "$using:DAGName" -MailboxServer "$using:ComputerName"
             }
             GetScript =  { @{} }
             TestScript = { $false}
             PsDscRunAsCredential = $DomainCreds
         }
+
     }
 }
