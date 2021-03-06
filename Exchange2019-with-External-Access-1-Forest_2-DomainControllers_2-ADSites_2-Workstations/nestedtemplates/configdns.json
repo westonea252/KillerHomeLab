@@ -7,13 +7,19 @@
             "metadata": {
                 "description": "Computer Name"
             }
-        },
-        "domainName": {
+        },   
+        "InternaldomainName": {
             "type": "string",
           "metadata": {
             "description": "The FQDN of the AD Domain created "
           }
         },
+        "ExternaldomainName": {
+            "type": "string",
+          "metadata": {
+            "description": "The External FQDN of the AD Domain created "
+          }
+        },        
         "ReverseLookup1": {
             "type": "string",
             "metadata": {
@@ -67,7 +73,7 @@
           "metadata": {
             "description": "Region of Resources"
           }
-        }, 
+        },      
         "_artifactsLocation": {
             "type": "string",
             "metadata": {
@@ -101,18 +107,21 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "computerName": "[parameters('computerName')]",
-                            "domainName": "[parameters('domainName')]",                                                        
+                            "InternaldomainName": "[parameters('InternaldomainName')]",                                                        
+                            "ExternaldomainName": "[parameters('ExternaldomainName')]",                                                                                    
                             "ReverseLookup1": "[parameters('ReverseLookup1')]",
+                            "ReverseLookup2": "[parameters('ReverseLookup2')]",                            
                             "dc1lastoctet": "[parameters('dc1lastoctet')]",
-                            "ex1IP": "[parameters('ex1IP')]",                            
+                            "dc2lastoctet": "[parameters('dc2lastoctet')]",              
                             "icaIP": "[parameters('icaIP')]",                                                        
-                            "ocspIP": "[parameters('ocspIP')]",                                                                                    
-                            "ReverseLookup2": "[parameters('ReverseLookup2')]",
-                            "dc2lastoctet": "[parameters('dc2lastoctet')]",
-                            "ex2IP": "[parameters('ex2IP')]"                                                                                                               
+                            "ocspIP": "[parameters('ocspIP')]",                                                                                                                              
+                            "ex1IP": "[parameters('ex1IP')]",                            
+                            "ex2IP": "[parameters('ex2IP')]"                                                                                                                                      
                         }
                     },
                     "protectedSettings": {
+                        "Items": {
+                        }                        
                     }
                 }
         }

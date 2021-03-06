@@ -8,6 +8,30 @@
                 "description": "Computer Name"
             }
         },
+        "InternaldomainName": {
+            "type": "string",
+          "metadata": {
+            "description": "The FQDN of the AD Domain created "
+          }
+        },
+        "ExternaldomainName": {
+            "type": "string",
+          "metadata": {
+            "description": "The External FQDN of the AD Domain created "
+          }
+        },       
+        "NetBiosDomain": {
+            "type": "string",
+            "metadata": {
+                "description": "NetBios Domain Name"
+            }
+        },        
+        "BaseDN": {
+            "type": "string",
+            "metadata": {
+                "description": "Base Domain Distiguished Name"
+            }
+        },                        
         "Site1DC": {
             "type": "string",
             "metadata": {
@@ -25,37 +49,7 @@
             "metadata": {
                 "description": "Domain Controller used for Exchange Config"
             }
-        },                   
-        "Site1FSW": {
-            "type": "string",
-            "metadata": {
-                "description": "Site 1 File Share Witness Name"
-            }
-        },                                        
-        "RootDomainFQDN": {
-            "type": "string",
-            "metadata": {
-                "description": "Root domain FQDN"
-            }
-        },        
-        "NetBiosDomain": {
-            "type": "string",
-            "metadata": {
-                "description": "NetBios Domain Name"
-            }
-        },
-        "BaseDN": {
-            "type": "string",
-            "metadata": {
-                "description": "Base Domain Distiguished Name"
-            }
-        },                
-        "DAGName": {
-            "type": "string",
-            "metadata": {
-                "description": "Database Availability Group Name"
-            }
-        },                             
+        },                                                         
         "CAServerIP": {
             "type": "string",
             "metadata": {
@@ -100,8 +94,8 @@
         }                
     },
     "variables": {
-        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/CONFIGEXCHANGE19.zip', parameters('_artifactsLocationSasToken')))]",
-        "ConfigurationFunction": "CONFIGEXCHANGE19.ps1\\CONFIGEXCHANGE19"
+        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/CONFIGEXCHANGE16.zip', parameters('_artifactsLocationSasToken')))]",
+        "ConfigurationFunction": "CONFIGEXCHANGE16.ps1\\CONFIGEXCHANGE16"
     },
     "resources": [
         {
@@ -119,14 +113,13 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "ComputerName": "[parameters('ComputerName')]",
+                            "InternaldomainName": "[parameters('InternaldomainName')]",                                                        
+                            "ExternaldomainName": "[parameters('ExternaldomainName')]",   
+                            "NetBiosDomain": "[parameters('NetBiosDomain')]",        
+                            "BaseDN": "[parameters('BaseDN')]",                                                                                                               
                             "Site1DC": "[parameters('Site1DC')]",
                             "Site2DC": "[parameters('Site2DC')]",                                                        
-                            "ConfigDC": "[parameters('ConfigDC')]",                                                                                    
-                            "Site1FSW": "[parameters('Site1FSW')]",                                                                            
-                            "RootDomainFQDN": "[parameters('RootDomainFQDN')]",
-                            "NetBiosDomain": "[parameters('NetBiosDomain')]",        
-                            "BaseDN": "[parameters('BaseDN')]",                                                        
-                            "DAGName": "[parameters('DAGName')]",                    
+                            "ConfigDC": "[parameters('ConfigDC')]",                                                                                     
                             "CAServerIP": "[parameters('CAServerIP')]",                                                                                                                                                                                
                             "Site": "[parameters('Site')]",                                                                                                                                                                            
                             "AdminCreds": {

@@ -2,11 +2,20 @@
 {
    param
    (
+        [String]$TimeZone,
         [String]$NetBiosDomain
     )
 
+    Import-DscResource -Module ComputerManagementDsc
+
     Node localhost
     {
+        TimeZone SetTimeZone
+        {
+            IsSingleInstance = 'Yes'
+            TimeZone         = $TimeZone
+        }
+
         Script IssueCARequest
         {
             SetScript =

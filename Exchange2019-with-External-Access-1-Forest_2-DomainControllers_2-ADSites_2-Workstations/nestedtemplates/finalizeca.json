@@ -32,7 +32,7 @@
                 "description": "Certificate Authority Name"
             }
         },
-        "RootDomainFQDN": {
+        "domainName": {
             "type": "string",
             "metadata": {
                 "description": "Root Domain Name FQDN"
@@ -98,7 +98,7 @@
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                                                        
                             "IssuingCAName": "[parameters('IssuingCAName')]",
                             "RootCAName": "[parameters('RootCAName')]",                            
-                            "RootDomainFQDN": "[parameters('RootDomainFQDN')]",
+                            "domainName": "[parameters('domainName')]",
                             "CATemplateScriptUrl": "[parameters('CATemplateScriptUrl')]",                            
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",

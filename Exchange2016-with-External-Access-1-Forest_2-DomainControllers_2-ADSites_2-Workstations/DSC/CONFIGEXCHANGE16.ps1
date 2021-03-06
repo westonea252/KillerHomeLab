@@ -10,11 +10,6 @@
         [String]$Site1DC,
         [String]$Site2DC,
         [String]$ConfigDC,
-        [String]$Site1FSW,
-        [String]$DAGName,
-        [String]$DAGIPAddress,
-        [String]$PassiveDAGNode,
-        [String]$DBName,
         [String]$CAServerIP,
         [String]$Site,
         [System.Management.Automation.PSCredential]$Admincreds
@@ -103,20 +98,6 @@
 
                 # Enable Exchange 2016 Certificate
                 Enable-ExchangeCertificate -Thumbprint $thumbprint -Services IIS -Confirm:$False
-
-                # Create DAG
-                $DAGCheck = Get-DatabaseAvailabilityGroup -Identity "$using:DAGName" -DomainController "$using:ConfigDC" -ErrorAction 0
-                IF ($DAGCheck -eq $null) {
-                New-DatabaseAvailabilityGroup -Name "$using:DAGName" -WitnessServer "$using:Site1FSW" -WitnessDirectory C:\FSWs -DomainController "$using:ConfigDC"
-                Set-DatabaseAvailabilityGroup -Identity "$using:DAGName" -DatabaseAvailabilityGroupIpAddresses "$using:DAGIPAddress" -DomainController "$using:ConfigDC"
-                Add-DatabaseAvailabilityGroupServer -Identity "$using:DAGName" -MailboxServer "$using:computerName" -DomainController "$using:ConfigDC"
-                }
-
-                # Create Database Copy
-                $DBCopyCheck = Get-MailboxDatabase -Server "$using:PassiveDAGNode" | Where-Object {$_.Name -like "$using:DBName"}
-                IF ($DBCopyCheck -eq $null) {
-                Add-MailboxDatabaseCopy -Identity "$using:DBName" -MailboxServer "$using:PassiveDAGNode"
-                }
 
                 # Create Connectors
                 $LocalRelayRecieveConnector = Get-ReceiveConnector "LocalRelay $using:computerName" -DomainController "$using:ConfigDC" -ErrorAction 0

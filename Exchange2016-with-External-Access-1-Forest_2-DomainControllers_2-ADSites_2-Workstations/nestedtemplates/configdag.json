@@ -7,19 +7,7 @@
             "metadata": {
                 "description": "Computer Name"
             }
-        },
-        "InternaldomainName": {
-            "type": "string",
-          "metadata": {
-            "description": "The FQDN of the AD Domain created "
-          }
-        },
-        "ExternaldomainName": {
-            "type": "string",
-          "metadata": {
-            "description": "The External FQDN of the AD Domain created "
-          }
-        },       
+        },      
         "NetBiosDomain": {
             "type": "string",
             "metadata": {
@@ -50,18 +38,36 @@
                 "description": "Domain Controller used for Exchange Config"
             }
         },                                                         
-        "CAServerIP": {
+        "Site1FSW": {
             "type": "string",
             "metadata": {
-                "description": "CA Server IP"
+                "description": "Site1 File Share Witeness"
             }
         },                                             
-        "Site": {
+        "DAGName": {
             "type": "string",
             "metadata": {
-                "description": "Site Name"
+                "description": "Database Availability Group Name"
             }
-        },                                                                                                        
+        },                                                 
+        "PassiveDAGNode": {
+            "type": "string",
+            "metadata": {
+                "description": "Passive Mailbox Server"
+            }
+        },             
+        "DB1Name": {
+            "type": "string",
+            "metadata": {
+                "description": "Database 1 Name"
+            }
+        },                                     
+        "DB2Name": {
+            "type": "string",
+            "metadata": {
+                "description": "Database 2 Name"
+            }
+        },                                                                                           
         "adminUsername": {
             "type": "string",
             "metadata": {
@@ -113,15 +119,17 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "ComputerName": "[parameters('ComputerName')]",
-                            "InternaldomainName": "[parameters('InternaldomainName')]",                                                        
-                            "ExternaldomainName": "[parameters('ExternaldomainName')]",   
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",        
                             "BaseDN": "[parameters('BaseDN')]",                                                                                                               
                             "Site1DC": "[parameters('Site1DC')]",
                             "Site2DC": "[parameters('Site2DC')]",                                                        
-                            "ConfigDC": "[parameters('ConfigDC')]",                                                                                     
-                            "CAServerIP": "[parameters('CAServerIP')]",                                                                                                                                                                                
-                            "Site": "[parameters('Site')]",                                                                                                                                                                            
+                            "ConfigDC": "[parameters('ConfigDC')]",        
+
+                            "Site1FSW": "[parameters('Site1FSW')]",                                                                                                                                                                                
+                            "DAGName": "[parameters('DAGName')]",                                                                                                                                                                            
+                            "PassiveDAGNode": "[parameters('PassiveDAGNode')]",                                                                                                                                                                                                        
+                            "DB1Name": "[parameters('DB1Name')]",                                                                                                                                                                                                        
+                            "DB2Name": "[parameters('DB2Name')]",                                                                                                                                                                                                                                                                
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"
