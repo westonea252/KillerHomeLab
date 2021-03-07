@@ -11,24 +11,6 @@
 
     Node localhost
     {
-        Registry SchUseStrongCrypto
-        {
-            Key                         = 'HKLM:\SOFTWARE\Microsoft\.NETFramework\v4.0.30319'
-            ValueName                   = 'SchUseStrongCrypto'
-            ValueType                   = 'Dword'
-            ValueData                   =  '1'
-            Ensure                      = 'Present'
-        }
-
-        Registry SchUseStrongCrypto64
-        {
-            Key                         = 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework\v4.0.30319'
-            ValueName                   = 'SchUseStrongCrypto'
-            ValueType                   = 'Dword'
-            ValueData                   =  '1'
-            Ensure                      = 'Present'
-        }
-
         LocalConfigurationManager
         {
             RebootNodeIfNeeded = $true
@@ -37,14 +19,14 @@
         xRemoteFile CUPatch
         {
             DestinationPath = "S:\ExchangeInstall\Exchange2016-KB5000871-x64-en.msp"
-            Uri             = $CUPatchUrl
+            Uri             = "$CUPatchUrl"
             UserAgent       = "[Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer"
         }
 
         xRemoteFile CUHealthCheck
         {
             DestinationPath = "S:\ExchangeInstall\HealthChecker.ps1"
-            Uri             = $CUPatchScriptUrl
+            Uri             = "$CUPatchScriptUrl"
             UserAgent       = "[Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer"
             DependsOn = '[xRemoteFile]CUPatch'
         }        
@@ -69,13 +51,6 @@
             GetScript =  { @{} }
             TestScript = { $false}
             DependsOn = '[Script]CUPatchInstall','[xRemoteFile]CUHealthCheck'
-        }
-
-        # Check if a reboot is needed before installing Exchange
-        xPendingReboot BeforeExchangeInstall
-        {
-            Name       = 'BeforeExchangeInstall'
-            DependsOn  = "[Script]CUHealthCheck"
         }
     }
 }
