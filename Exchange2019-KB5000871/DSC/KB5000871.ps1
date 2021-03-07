@@ -68,14 +68,14 @@
             }
             GetScript =  { @{} }
             TestScript = { $false}
-            DependsOn = '[Script]CUPatchInstall'
+            DependsOn = '[Script]CUPatchInstall','[xRemoteFile]CUHealthCheck'
         }
 
         # Check if a reboot is needed before installing Exchange
         xPendingReboot BeforeExchangeInstall
         {
             Name       = 'BeforeExchangeInstall'
-            DependsOn  = "[Package]Installvsredist2013"
+            DependsOn  = "[Script]CUHealthCheck"
         }
     }
 }
