@@ -40,6 +40,9 @@
                 Add-DatabaseAvailabilityGroupServer -Identity "$using:DAGName" -MailboxServer "$using:PassiveDAGNode" -DomainController "$using:ConfigDC"
                 }
 
+                repadmin /replicate "$using:Site1DC" "$using:Site2DC" "$using:BaseDN"
+                repadmin /replicate "$using:Site2DC" "$using:Site1DC" "$using:BaseDN"
+
                 # Create Database Copies
                 $DB1CopyCheck = Get-MailboxDatabase -Server "$using:PassiveDAGNode" | Where-Object {$_.Name -like "$using:DB1Name"}
                 IF ($DB1CopyCheck -eq $null) {
@@ -50,7 +53,6 @@
                 IF ($DB2CopyCheck -eq $null) {
                 Add-MailboxDatabaseCopy -Identity "$using:DB2Name" -MailboxServer "$using:ComputerName"
                 }
-
             }
             GetScript =  { @{} }
             TestScript = { $false}
