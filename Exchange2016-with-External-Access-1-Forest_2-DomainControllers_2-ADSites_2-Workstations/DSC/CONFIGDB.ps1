@@ -1,4 +1,4 @@
-﻿configuration CONFIGDAG
+﻿configuration CONFIGDB
 {
    param
    (
@@ -8,8 +8,7 @@
         [String]$Site1DC,
         [String]$Site2DC,
         [String]$ConfigDC,
-        [String]$Site1FSW,
-        [String]$DAGName,
+        [String]$DBName,
         [System.Management.Automation.PSCredential]$Admincreds
     )
 
@@ -27,14 +26,13 @@
                 $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri "http://$using:computerName.$using:InternalDomainName/PowerShell/"
                 Import-PSSession $Session
 
-                # Create DAG
-                $DAGCheck = Get-DatabaseAvailabilityGroup -Identity "$using:DAGName" -DomainController "$using:ConfigDC" -ErrorAction 0
-                IF ($DAGCheck -eq $null) {
-                New-DatabaseAvailabilityGroup -Name "$using:DAGName" -WitnessServer "$using:Site1FSW" -WitnessDirectory C:\FSWs -DomainController "$using:ConfigDC"
-                }
-                Add-DatabaseAvailabilityGroupServer -Identity "$using:DAGName" -MailboxServer "$using:computerName" -DomainController "$using:ConfigDC"
+                # Create Database Copies
+                $DBCopyCheck = Get-MailboxDatabase -Server "$using:ComputerName" -DomainController "$using:ConfigDC" | Where-Object {$_.Name -like "$using:DBName"}
+                IF ($DBCopyCheck -eq $null) {
+                Add-MailboxDatabaseCopy -Identity "$using:DBName" -MailboxServer "$using:ComputerName" -DomainController "$using:ConfigDC"
 
-                (Get-ADDomainController -Filter *).Name | Foreach-Object { repadmin /syncall $_ (Get-ADDomain).DistinguishedName /AdeP }
+            (Get-ADDomainController -Filter *).Name | Foreach-Object { repadmin /syncall $_ (Get-ADDomain).DistinguishedName /AdeP }
+                }
             }
             GetScript =  { @{} }
             TestScript = { $false}

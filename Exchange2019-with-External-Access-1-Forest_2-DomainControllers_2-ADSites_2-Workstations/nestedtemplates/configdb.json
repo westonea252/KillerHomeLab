@@ -38,18 +38,12 @@
                 "description": "Domain Controller used for Exchange Config"
             }
         },                                                         
-        "Site1FSW": {
+        "DBName": {
             "type": "string",
             "metadata": {
-                "description": "Site1 File Share Witeness"
+                "description": "Database Name"
             }
-        },                                             
-        "DAGName": {
-            "type": "string",
-            "metadata": {
-                "description": "Database Availability Group Name"
-            }
-        },                                                  
+        },                                                                                              
         "adminUsername": {
             "type": "string",
             "metadata": {
@@ -82,8 +76,8 @@
         }                
     },
     "variables": {
-        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/CONFIGDAG.zip', parameters('_artifactsLocationSasToken')))]",
-        "ConfigurationFunction": "CONFIGDAG.ps1\\CONFIGDAG"
+        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/CONFIGDB.zip', parameters('_artifactsLocationSasToken')))]",
+        "ConfigurationFunction": "CONFIGDB.ps1\\CONFIGDB"
     },
     "resources": [
         {
@@ -106,8 +100,7 @@
                             "Site1DC": "[parameters('Site1DC')]",
                             "Site2DC": "[parameters('Site2DC')]",                                                        
                             "ConfigDC": "[parameters('ConfigDC')]",        
-                            "Site1FSW": "[parameters('Site1FSW')]",                                                                                                                                                                                
-                            "DAGName": "[parameters('DAGName')]",                                                                                                                                                                            
+                            "DBName": "[parameters('DBName')]",                                                                                                                                                                                
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"

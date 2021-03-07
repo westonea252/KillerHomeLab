@@ -6,7 +6,7 @@
       "type": "string",
       "defaultValue": "WestUS",
       "metadata": {
-        "description": "Choose Region (Example:  WestUS)"
+        "description": "Choose Region (Example: WestUS)"
       }
     },   
     "TimeZone": {
@@ -2763,7 +2763,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "ConfigDAG",
+      "name": "ConfigDAGEX1",
       "dependsOn": [
         "configexchange2"
       ],      
@@ -2783,9 +2783,6 @@
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },              
-              "BaseDN": {
-                  "value": "[variables('BaseDN')]"
-              },
               "Site1DC": {
                   "value": "[variables('dc1name')]"
               },                                                     
@@ -2800,16 +2797,115 @@
               },                                                                                                                                                           
               "DAGName": {
                   "value": "[variables('dag19name')]"
-              },                                                                                                                                             
-              "PassiveDAGNode": {
+              },                                                                                                                                                           "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                                                                                                      
+              "location": {
+                  "value": "[resourceGroup().location]"
+              },          
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          }
+      }
+    },        
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "ConfigDAGEX2",
+      "dependsOn": [
+        "ConfigDAGEX1"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/configdag.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
                   "value": "[variables('ex2name')]"
-              },  
-              "DB1Name": {
-                  "value": "[variables('DB1Name')]"
-              },                                                                                                                                                                                       
-              "DB2Name": {
+              },
+              "InternaldomainName": {
+                  "value": "[variables('InternaldomainName')]"
+              },               
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },              
+              "Site1DC": {
+                  "value": "[variables('dc2name')]"
+              },                                                     
+              "Site2DC": {
+                  "value": "[variables('dc1name')]"
+              },                                                     
+              "ConfigDC": {
+                  "value": "[variables('dc2name')]"
+              },       
+              "Site1FSW": {
+                  "value": "[variables('fs1name')]"
+              },                                                                                                                                                           
+              "DAGName": {
+                  "value": "[variables('dag19name')]"
+              },                                                                                                                                                                                                                                                                                                                                               
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                                                                                                      
+              "location": {
+                  "value": "[parameters('Location2')]"
+              },          
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          }
+      }
+    },            
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "ConfigDB1",
+      "dependsOn": [
+        "ConfigDAGEX2"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/configdb.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ex1name')]"
+              },
+              "InternaldomainName": {
+                  "value": "[variables('InternaldomainName')]"
+              },               
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },              
+              "Site1DC": {
+                  "value": "[variables('dc1name')]"
+              },                                                     
+              "Site2DC": {
+                  "value": "[variables('dc2name')]"
+              },                                                     
+              "ConfigDC": {
+                  "value": "[variables('dc1name')]"
+              },       
+              "DBName": {
                   "value": "[variables('DB2Name')]"
-              },                                                                                                                                                                                                     
+              },                                                                                                                                                                                       
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
               },                                                                                                            
@@ -2827,13 +2923,66 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
           }
       }
-    },             
+    }, 
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "ConfigDB2",
+      "dependsOn": [
+        "ConfigDB1"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/configdb.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ex2name')]"
+              },
+              "InternaldomainName": {
+                  "value": "[variables('InternaldomainName')]"
+              },               
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },              
+              "Site1DC": {
+                  "value": "[variables('dc2name')]"
+              },                                                     
+              "Site2DC": {
+                  "value": "[variables('dc1name')]"
+              },                                                     
+              "ConfigDC": {
+                  "value": "[variables('dc2name')]"
+              },       
+              "DBName": {
+                  "value": "[variables('DB1Name')]"
+              },                                                                                                                                                                                       
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                                                                                                      
+              "location": {
+                  "value": "[parameters('Location2')]"
+              },          
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          }
+      }
+    },                    
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "restartex1-2",
       "dependsOn": [
-        "configdag"
+        "configdb2"
       ],            
       "properties": {
           "mode": "Incremental",
@@ -2856,13 +3005,13 @@
               }
           }
       }
-    },  
+    },   
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "restartex2-2",
       "dependsOn": [
-        "configdag"
+        "configdb2"
       ],            
       "properties": {
           "mode": "Incremental",
@@ -2885,7 +3034,7 @@
               }
           }
       }
-    },                   
+    },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
