@@ -7,7 +7,6 @@
     )
 
     Import-DscResource -Module xPSDesiredStateConfiguration # Used for xRemoteFile
-    Import-DscResource -Module xPendingReboot # Used for Reboots
 
     Node localhost
     {
@@ -18,7 +17,7 @@
 
         xRemoteFile CUPatch
         {
-            DestinationPath = "S:\ExchangeInstall\Exchange2016-KB5000871-x64-en.msp"
+            DestinationPath = "S:\ExchangeInstall\Exchange2019-KB5000871-x64-en.msp"
             Uri             = "$CUPatchUrl"
             UserAgent       = "[Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer"
         }
@@ -35,7 +34,7 @@
         {
             SetScript =
             {
-                S:\ExchangeInstall\Exchange2016-KB5000871-x64-en.msp /quiet
+                S:\ExchangeInstall\Exchange2019-KB5000871-x64-en.msp /quiet
             }
             GetScript =  { @{} }
             TestScript = { $false}
