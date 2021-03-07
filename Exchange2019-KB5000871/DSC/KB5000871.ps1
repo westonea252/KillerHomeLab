@@ -3,7 +3,7 @@
    param
    (
         [String]$CUPatchUrl,     
-        [String]$ScriptUrl
+        [String]$CUPatchScriptUrl
     )
 
     Import-DscResource -Module xPSDesiredStateConfiguration # Used for xRemoteFile
