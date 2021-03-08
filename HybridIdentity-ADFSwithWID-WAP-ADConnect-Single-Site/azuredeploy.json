@@ -364,7 +364,7 @@
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },              
-              "InternalDomainName": {
+              "DomainName": {
                 "value": "[variables('InternaldomainName')]"
               },
               "location": {
