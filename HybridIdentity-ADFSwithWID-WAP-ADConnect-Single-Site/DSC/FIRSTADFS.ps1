@@ -2,8 +2,9 @@
 {
    param
    (
-        [String]$RootDomainFQDN,
+        [String]$TimeZone,        
         [String]$NetBiosDomain,
+        [String]$DomainName,
         [String]$IssuingCAName,
         [String]$RootCAName,     
         [System.Management.Automation.PSCredential]$Admincreds
@@ -31,7 +32,7 @@
         TimeZone SetTimeZone
         {
             IsSingleInstance = 'Yes'
-            TimeZone         = 'Eastern Standard Time'
+            TimeZone         = $TimeZone
         }
 
         File MachineConfig
@@ -68,13 +69,13 @@
                 Get-ChildItem $dest1 -exclude "Temp" | Move-Item -Destination $dest2
 
                 # Check if Service Communication Certificate Exists
-                $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=adfs.$using:RootDomainFQDN"}).Thumbprint
+                $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=adfs.$using:DomainName"}).Thumbprint
 
                 # Get Service Communication Certificate
-                IF ($thumbprint -eq $null) {Get-Certificate -Template WebServer1 -SubjectName "CN=adfs.$using:rootdomainfqdn" -DNSName "adfs.$using:rootdomainfqdn" -CertStoreLocation "cert:\LocalMachine\My"}
+                IF ($thumbprint -eq $null) {Get-Certificate -Template WebServer1 -SubjectName "CN=adfs.$using:DomainName" -DNSName "adfs.$using:DomainName" -CertStoreLocation "cert:\LocalMachine\My"}
 
                 # Get Service Communication Certificate
-                $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=adfs.$using:RootDomainFQDN"}).Thumbprint
+                $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=adfs.$using:DomainName"}).Thumbprint
 
                 # Grant FsGmsa Full Access to Service Communication Certificate Private Keys
                 Start-Sleep -s 60
@@ -92,7 +93,7 @@
                 Remove-Item $dest2 -Force -ErrorAction 0
 
                 # Export Service Communication Certificate
-                Get-ChildItem -Path cert:\LocalMachine\my\$thumbprint | Export-PfxCertificate -FilePath "C:\Certificates\adfs.$using:RootDomainFQDN.pfx" -Password $Password
+                Get-ChildItem -Path cert:\LocalMachine\my\$thumbprint | Export-PfxCertificate -FilePath "C:\Certificates\adfs.$using:DomainName.pfx" -Password $Password
 
                 $RootExport = Get-ChildItem -Path cert:\Localmachine\Root\ | Where-Object {$_.Subject -like "CN=$using:RootCAName*"}
                 Export-Certificate -Cert $RootExport -FilePath "C:\Certificates\$using:RootCAName.cer" -Type CER
@@ -106,10 +107,10 @@
                 Get-ChildItem $dest1 -exclude "Temp" | Move-Item -Destination $dest2
 
                 # Check if Token Signing Certificate Exists
-                $signthumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=adfs-signing.$using:RootDomainFQDN"}).Thumbprint
+                $signthumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=adfs-signing.$using:DomainName"}).Thumbprint
 
                 # Get Token Signing Certificate
-                IF ($signthumbprint -eq $null) {Get-Certificate -Template WebServer1 -SubjectName "CN=adfs-signing.$using:rootdomainfqdn" -DNSName "adfs-signing.$using:rootdomainfqdn" -CertStoreLocation "cert:\LocalMachine\My"}
+                IF ($signthumbprint -eq $null) {Get-Certificate -Template WebServer1 -SubjectName "CN=adfs-signing.$using:DomainName" -DNSName "adfs-signing.$using:DomainName" -CertStoreLocation "cert:\LocalMachine\My"}
 
                 # Grant FsGmsa Full Access to Signing Certificate Private Keys
                 Start-Sleep -s 60
@@ -127,10 +128,10 @@
                 Remove-Item $dest2 -Force -ErrorAction 0
 
                 # Check if Token Signing Certificate Exists
-                $signthumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=adfs-signing.$using:RootDomainFQDN"}).Thumbprint
+                $signthumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=adfs-signing.$using:DomainName"}).Thumbprint
 
                 # Export Token Signing Certificate
-                Get-ChildItem -Path cert:\LocalMachine\my\$signthumbprint | Export-PfxCertificate -FilePath "C:\Certificates\adfs-signing.$using:RootDomainFQDN.pfx" -Password $Password
+                Get-ChildItem -Path cert:\LocalMachine\my\$signthumbprint | Export-PfxCertificate -FilePath "C:\Certificates\adfs-signing.$using:DomainName.pfx" -Password $Password
             }
             GetScript =  { @{} }
             TestScript = { $false}
@@ -153,21 +154,21 @@
                 Add-Content -Path C:\MachineConfig\IssuanceTransformRules.txt -Value '=> issue(store = "Active Directory", types = ("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn"), query = ";userPrincipalName;{0}", param = c.Value);'
 
                 # Get Service Communication Certificate
-                $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=adfs.$using:RootDomainFQDN"}).Thumbprint
+                $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=adfs.$using:DomainName"}).Thumbprint
 
                 # Get Token Signing Certificate
-                $signthumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=adfs-signing.$using:RootDomainFQDN"}).Thumbprint
+                $signthumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=adfs-signing.$using:DomainName"}).Thumbprint
 
                 Import-Module ADFS
-                Install-AdfsFarm -CertificateThumbprint $thumbprint -FederationServiceName "adfs.$using:RootDomainFQDN" -GroupServiceAccountIdentifier "$using:NetBiosDomain\FsGmsa$"
+                Install-AdfsFarm -CertificateThumbprint $thumbprint -FederationServiceName "adfs.$using:DomainName" -GroupServiceAccountIdentifier "$using:NetBiosDomain\FsGmsa$"
                 
                 # Create Relying Pary Trust Script
                 [string]$IssuanceAuthorizationRules=Get-Content -Path C:\MachineConfig\IssuanceAuthorizationRules.txt
                 [string]$IssuanceTransformRules=Get-Content -Path C:\MachineConfig\IssuanceTransformRules.txt
 
                 # Create Relying Party Trusts
-                Add-ADFSRelyingPartyTrust -Name 'Outlook Web App 2019' -Enabled $true -Notes "This is a trust for https://owa2019.$using:RootDomainFQDN/owa" -WSFedEndpoint "https://owa2019.$using:RootDomainFQDN/owa" -Identifier "https://owa2019.$using:RootDomainFQDN/owa" -IssuanceTransformRules $IssuanceTransformRules -IssuanceAuthorizationRules $IssuanceAuthorizationRules
-                Add-ADFSRelyingPartyTrust -Name 'Exchange Admin Center (EAC) 2019' -Enabled $true -Notes "This is a trust for https://owa2019.$using:RootDomainFQDN/ecp" -WSFedEndpoint "https://owa2019.$using:RootDomainFQDN/ecp" -Identifier "https://owa2019.$using:RootDomainFQDN/ecp" -IssuanceTransformRules $IssuanceTransformRules -IssuanceAuthorizationRules $IssuanceAuthorizationRules
+                Add-ADFSRelyingPartyTrust -Name 'Outlook Web App 2019' -Enabled $true -Notes "This is a trust for https://owa2019.$using:DomainName/owa" -WSFedEndpoint "https://owa2019.$using:DomainName/owa" -Identifier "https://owa2019.$using:DomainName/owa" -IssuanceTransformRules $IssuanceTransformRules -IssuanceAuthorizationRules $IssuanceAuthorizationRules
+                Add-ADFSRelyingPartyTrust -Name 'Exchange Admin Center (EAC) 2019' -Enabled $true -Notes "This is a trust for https://owa2019.$using:DomainName/ecp" -WSFedEndpoint "https://owa2019.$using:DomainName/ecp" -Identifier "https://owa2019.$using:DomainName/ecp" -IssuanceTransformRules $IssuanceTransformRules -IssuanceAuthorizationRules $IssuanceAuthorizationRules
 
                 # Turn off Certificate Auto Certificate Rollover
                 Set-ADFSProperties -AutoCertificateRollover $False

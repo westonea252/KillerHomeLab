@@ -4,7 +4,8 @@ Configuration FIRSTWAP
    (
         [String]$NetBiosDomain,
         [String]$ADFSServerIP,
-        [String]$RootDomainFQDN,
+        [String]$TimeZone,
+        [String]$DomainName,
         [String]$IssuingCAName,
         [String]$RootCAName,     
         [System.Management.Automation.PSCredential]$Admincreds
@@ -46,7 +47,7 @@ Configuration FIRSTWAP
         TimeZone SetTimeZone
         {
             IsSingleInstance = 'Yes'
-            TimeZone         = 'Eastern Standard Time'
+            TimeZone         = $TimeZone
         }
                 
         # Install Web Application Proxy
@@ -82,11 +83,11 @@ Configuration FIRSTWAP
                 $Password = $AdminCreds.Password
 
                 # Add Host Record for Resolution
-                Add-Content C:\Windows\System32\Drivers\Etc\Hosts "$using:ADFSServerIP adfs.$using:RootDomainFQDN"
+                Add-Content C:\Windows\System32\Drivers\Etc\Hosts "$using:ADFSServerIP adfs.$using:DomainName"
 
                 #Check if ADFS Service Communication Certificate already exists if NOT Create
                 $adfsthumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like 'CN=adfs*'}).Thumbprint
-                IF ($adfsthumbprint -eq $null) {Import-PfxCertificate -FilePath "C:\Certificates\adfs.$using:RootDomainFQDN.pfx" -CertStoreLocation Cert:\LocalMachine\My -Password $Password}
+                IF ($adfsthumbprint -eq $null) {Import-PfxCertificate -FilePath "C:\Certificates\adfs.$using:DomainName.pfx" -CertStoreLocation Cert:\LocalMachine\My -Password $Password}
 
                 #Check if Certificate Chain Certs already exists if NOT Create
                 $importrootca = (Get-ChildItem -Path Cert:\LocalMachine\Root | Where-Object {$_.Subject -like "CN=$using:RootCAName*"}).Thumbprint
@@ -111,7 +112,7 @@ Configuration FIRSTWAP
                 
                 # Configure ADFS/WAP Trust
                 $waphealth = Get-WebApplicationProxyHealth
-                IF ($waphealth[0].HealthState -eq "Error") {Install-WebApplicationProxy –CertificateThumbprint $servicethumbprint -FederationServiceName "adfs.$using:RootDomainFQDN" -FederationServiceTrustCredential $Creds}
+                IF ($waphealth[0].HealthState -eq "Error") {Install-WebApplicationProxy –CertificateThumbprint $servicethumbprint -FederationServiceName "adfs.$using:DomainName" -FederationServiceTrustCredential $Creds}
             }
             GetScript =  { @{} }
             TestScript = { $false}

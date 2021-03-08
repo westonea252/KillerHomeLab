@@ -2,6 +2,7 @@ Configuration DOWNLOADAADDC
 {
    param
    (
+        [String]$TimeZone,
         [String]$AzureADConnectDownloadUrl,
         [System.Management.Automation.PSCredential]$Admincreds
     )
@@ -47,7 +48,7 @@ Configuration DOWNLOADAADDC
         TimeZone SetTimeZone
         {
             IsSingleInstance = 'Yes'
-            TimeZone         = 'Eastern Standard Time'
+            TimeZone         = $TimeZone
         }
      }
   }

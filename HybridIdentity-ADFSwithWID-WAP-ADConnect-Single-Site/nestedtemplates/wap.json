@@ -13,19 +13,25 @@
             "metadata": {
                 "description": "NetBios Domain Name"
             }
-        },        
+        },  
+        "TimeZone": {
+            "type": "string",      
+            "metadata": {
+                "description": "Time Zone"
+            }
+        },
+        "domainName": {
+            "type": "string",
+            "metadata": {
+                "description": "The FQDN of the AD Domain created "
+          }
+        },                       
         "ADFSServerIP": {
             "type": "string",
             "metadata": {
                 "description": "ADFS IP"
             }
         },                          
-        "RootDomainFQDN": {
-            "type": "string",
-            "metadata": {
-                "description": "Root Domain Name FQDN"
-            }
-        },
         "IssuingCAName": {
             "type": "string",
             "metadata": {
@@ -90,7 +96,8 @@
                         "Properties": {
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                                                        
                             "ADFSServerIP": "[parameters('ADFSServerIP')]",                            
-                            "RootDomainFQDN": "[parameters('RootDomainFQDN')]",
+                            "TimeZone": "[parameters('TimeZone')]",
+                            "DomainName": "[parameters('domainName')]",
                             "IssuingCAName": "[parameters('IssuingCAName')]",
                             "RootCAName": "[parameters('RootCAName')]",                                                        
                             "AdminCreds": {

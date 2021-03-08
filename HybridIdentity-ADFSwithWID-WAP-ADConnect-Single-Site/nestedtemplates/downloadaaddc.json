@@ -8,6 +8,12 @@
                 "description": "Computer Name"
             }
         },
+        "TimeZone": {
+            "type": "string",      
+            "metadata": {
+                "description": "Time Zone"
+            }
+        },         
         "AzureADConnectDownloadUrl": {
             "type": "string",
             "metadata": {
@@ -64,6 +70,7 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
+                            "TimeZone": "[parameters('TimeZone')]",
                             "AzureADConnectDownloadUrl": "[parameters('AzureADConnectDownloadUrl')]",
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",

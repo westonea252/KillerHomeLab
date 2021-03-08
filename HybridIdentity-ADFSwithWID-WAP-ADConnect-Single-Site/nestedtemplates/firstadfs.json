@@ -8,12 +8,18 @@
                 "description": "Computer Name"
             }
         },
-        "RootDomainFQDN": {
+        "TimeZone": {
+            "type": "string",      
+            "metadata": {
+                "description": "Time Zone"
+            }
+        },   
+        "domainName": {
             "type": "string",
             "metadata": {
-                "description": "Root domain FQDN"
-            }
-        },        
+                "description": "The FQDN of the AD Domain created "
+          }
+        },            
         "NetBiosDomain": {
             "type": "string",
             "metadata": {
@@ -82,7 +88,8 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
-                            "RootDomainFQDN": "[parameters('RootDomainFQDN')]",                            
+                            "TimeZone": "[parameters('TimeZone')]",
+                            "DomainName": "[parameters('domainName')]",
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",  
                             "IssuingCAName": "[parameters('IssuingCAName')]",
                             "RootCAName": "[parameters('RootCAName')]",                                                                                  
