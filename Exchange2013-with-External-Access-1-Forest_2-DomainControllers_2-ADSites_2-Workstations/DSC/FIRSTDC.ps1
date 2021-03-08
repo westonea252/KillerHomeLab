@@ -2,7 +2,7 @@
 {
    param
    (
-        [String]$TimeZone,        
+
         [String]$DomainName,
         [String]$NetBiosDomain,
         [System.Management.Automation.PSCredential]$Admincreds,
@@ -11,13 +11,13 @@
         [Int]$RetryIntervalSec=30
     )
 
-    Import-DscResource -ModuleName ActiveDirectoryDsc
-    Import-DscResource -ModuleName xStorage
-    Import-DscResource -ModuleName xNetworking
-    Import-DscResource -ModuleName xPendingReboot
-    Import-DscResource -ModuleName ComputerManagementDsc
-    Import-DscResource -ModuleName xPSDesiredStateConfiguration
-    Import-DscResource -ModuleName xDNSServer
+    Import-DscResource -Module xActiveDirectory
+    Import-DscResource -Module xStorage
+    Import-DscResource -Module xNetworking
+    Import-DscResource -Module PSDesiredStateConfiguration
+    Import-DscResource -Module xPendingReboot
+    Import-DscResource -Module ComputerManagementDsc
+    Import-DscResource -Module xPSDesiredStateConfiguration
 
     [System.Management.Automation.PSCredential ]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosDomain}\$($Admincreds.UserName)", $Admincreds.Password)
     $Interface=Get-NetAdapter|Where-Object Name -Like "Ethernet*"|Select-Object -First 1
@@ -88,10 +88,10 @@
             DependsOn = "[WindowsFeature]ADDSTools"
         }
 
-        ADDomain FirstDS
+        xADDomain FirstDS
         {
             DomainName = $DomainName
-            Credential = $DomainCreds
+            DomainAdministratorCredential = $DomainCreds
             SafemodeAdministratorPassword = $DomainCreds
             DatabasePath = "N:\NTDS"
             LogPath = "N:\NTDS"
@@ -99,18 +99,18 @@
             DependsOn = @("[WindowsFeature]ADDSInstall", "[xDisk]ADDataDisk")
         }
 
-        xDnsServerAddress DnsServerAddress
+            xDnsServerAddress DnsServerAddress
         {
             Address        = '127.0.0.1'
             InterfaceAlias = $InterfaceAlias
             AddressFamily  = 'IPv4'
-            DependsOn = "[ADDomain]FirstDS"
+            DependsOn = "[xADDomain]FirstDS"
         }
 
         TimeZone SetTimeZone
         {
             IsSingleInstance = 'Yes'
-            TimeZone         = $TimeZone
+            TimeZone         = 'Eastern Standard Time'
         }
 
         Script UpdateDNSSettings
