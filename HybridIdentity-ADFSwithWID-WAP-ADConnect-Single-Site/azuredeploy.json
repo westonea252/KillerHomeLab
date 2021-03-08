@@ -331,8 +331,6 @@
   "variables": {
     "vnet1Name": "[concat(parameters('NamingConvention'),'-VNet1')]",
     "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet1')]",    
-    "vnet2Name": "[concat(parameters('NamingConvention'),'-VNet2')]",
-    "vnet2subnet1Name": "[concat(parameters('NamingConvention'),'-VNet2-Subnet1')]",    
     "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",                      
     "adcname": "[concat(parameters('NamingConvention'),'-adc-01')]",           
     "adcIP": "[concat(parameters('vnet1ID'),'.1.',variables('adclastoctet'))]", 
