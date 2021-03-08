@@ -40,8 +40,8 @@
         }                
     },
     "variables": {
-        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/KB5000871.zip', parameters('_artifactsLocationSasToken')))]",
-        "ConfigurationFunction": "KB5000871.ps1\\KB5000871"
+        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/PATCH.zip', parameters('_artifactsLocationSasToken')))]",
+        "ConfigurationFunction": "PATCH.ps1\\PATCH"
     },
     "resources": [
         {
