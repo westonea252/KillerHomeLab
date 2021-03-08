@@ -61,7 +61,7 @@
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedTemplates/KB5000871.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedTemplates/patch.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -73,7 +73,7 @@
               },
               "CUPatchScriptUrl": {
                   "value": "[parameters('CUPatchScriptUrl')]"
-              },              
+              },                                                                                                                                                                                                                                                                                                                                                                   
               "location": {
                   "value": "[resourceGroup().location]"
               },          
@@ -89,14 +89,14 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "PatchEX2", 
+      "name": "PatchEX2",  
       "dependsOn": [
         "PatchEX1"
-      ],              
+      ],                
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedTemplates/KB5000871.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedTemplates/patch.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -120,6 +120,6 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
           }
       }
-    }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+    }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
   ]
 }
