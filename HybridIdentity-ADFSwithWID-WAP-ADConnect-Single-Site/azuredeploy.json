@@ -775,10 +775,7 @@
               },              
               "WAP1PublicIP": {
                   "value": "[reference('deployWAP1VM').outputs.PublicIP.value]"             
-              },                                                                                                                                      
-              "WAP2PublicIP": {
-                  "value": "[reference('deployWAP2VM').outputs.PublicIP.value]"             
-              }                                                                                                                                                                                                                                                                                                                                                  
+              }                                                                                                                                                                                                                                                                                                                                                
           }
       }
     }                

@@ -19,13 +19,7 @@
             "metadata": {
                 "description": "ADFS 1 EXternal Public IP"
               }
-        },                          
-        "WAP2PublicIP": {
-            "type": "string",
-            "metadata": {
-                "description": "Exchange 2 EXternal Public IP"
-              }
-        }                 
+        }            
     },
     "resources": [
         {
@@ -51,9 +45,6 @@
             "ARecords": [
                 {
                     "ipv4Address": "[parameters('WAP1PublicIP')]"
-                },
-                {
-                    "ipv4Address": "[parameters('WAP2PublicIP')]"
                 }
                 ]
             }
