@@ -9,8 +9,6 @@ This Templates IS MEANT TO BE USED AS AN ADD-ON to the following labs:
 **** THE PARAMETERS SPECIFIED FOR THIS ADD-ON LAB MUST MATCH THE PARAMETERS OF THE BASE LAB THAT IT WILL BE ADDED TO ****
 
 - PKI_2-Tier_CA_With_OCSP_1-Workstation
-- Exchange2016-with-External-Access-1-Forest_2-DomainControllers_2-ADSites_2-Workstations
-- Exchange2019-with-External-Access-1-Forest_2-DomainControllers_2-ADSites_2-Workstations
 
 The Template deploys the folowing:
 
