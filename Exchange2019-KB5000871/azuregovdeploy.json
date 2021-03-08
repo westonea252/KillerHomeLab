@@ -57,7 +57,42 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "PatchEX2",       
+      "name": "PatchEX1",       
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedTemplates/patch.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ex1name')]"
+              },
+              "CUPatchUrl": {
+                  "value": "[parameters('CUPatchUrl')]"
+              },
+              "CUPatchScriptUrl": {
+                  "value": "[parameters('CUPatchScriptUrl')]"
+              },                                                                                                                                                                                                                                                                                                                                                                   
+              "location": {
+                  "value": "[resourceGroup().location]"
+              },          
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "PatchEX2",  
+      "dependsOn": [
+        "PatchEX1"
+      ],                
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -85,6 +120,6 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
           }
       }
-    }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+    }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
   ]
 }
