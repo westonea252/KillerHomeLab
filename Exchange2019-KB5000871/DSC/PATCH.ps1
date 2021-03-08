@@ -1,4 +1,4 @@
-﻿configuration KB5000871
+﻿configuration PATCH
 {
    param
    (
