@@ -22,6 +22,7 @@ This Templates deploys a Single Forest/Domain:
 - 2 - Domain Joined Windows 10 Workstations (1 within each AD Site)
 - 1 - Azure DNS Zone (Created based on NetBiosDomain and TLD Parameters)
 - 2 - Network Security Groups (1 Created in each Region)
+- 1 - Bastion Host (VNet1)(Can be used to connect to VNet2 VM's since Peered)
 
 The deployment also makes the following customizations:
 - Adds Public IP Address to OCSP and Exchange Servers.
