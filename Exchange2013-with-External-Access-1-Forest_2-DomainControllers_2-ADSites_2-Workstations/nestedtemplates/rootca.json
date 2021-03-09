@@ -8,13 +8,33 @@
                 "description": "Computer Name"
             }
         },
+        "TimeZone": {
+            "type": "string",      
+            "metadata": {
+                "description": "Time Zone"
+            }
+        },         
         "RootCAName": {
             "type": "string",
             "metadata": {
                 "description": "Certificate Authority Name"
             }
         },
-        "RootDomainFQDN": {
+        "RootCAHashAlgorithm": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Offline Root CA Algorithm"
+        }
+        },   
+        "RootCAKeyLength": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Offline Root CA Key Length"
+        }
+        },                    
+        "domainName": {
             "type": "string",
             "metadata": {
                 "description": "Root Domain Name FQDN"
@@ -76,13 +96,16 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
-                            "RootDomainFQDN": "[parameters('RootDomainFQDN')]",
+                            "TimeZone": "[parameters('TimeZone')]",
+                            "domainName": "[parameters('domainName')]",
                             "RootCAName": "[parameters('RootCAName')]",
+                            "RootCAHashAlgorithm": "[parameters('RootCAHashAlgorithm')]",                            
+                            "RootCAKeyLength": "[parameters('RootCAKeyLength')]",                                                        
                             "BaseDN": "[parameters('BaseDN')]",                            
-                        "AdminCreds": {
-                            "UserName": "[parameters('adminUsername')]",
-                            "Password": "PrivateSettingsRef:AdminPassword"                                                                                   
-                        }
+                            "AdminCreds": {
+                                "UserName": "[parameters('adminUsername')]",
+                                "Password": "PrivateSettingsRef:AdminPassword"                                                                                   
+                            }
 
                         }
                 },

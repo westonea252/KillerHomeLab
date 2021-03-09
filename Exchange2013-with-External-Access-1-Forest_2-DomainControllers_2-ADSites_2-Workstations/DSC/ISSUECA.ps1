@@ -3,13 +3,14 @@ Configuration ISSUECA
    param
    (
         [String]$computerName,
+        [String]$TimeZone,
         [String]$NamingConvention,
         [String]$NetBiosDomain,
-        [String]$RootDomainFQDN,
-        [String]$DomainName,
         [String]$IssuingCAName,
         [String]$RootCAName,
         [String]$RootCAIP,
+        [String]$IssuingCAHashAlgorithm,
+        [String]$IssuingCAKeyLength,
         [System.Management.Automation.PSCredential]$Admincreds
     )
  
@@ -60,7 +61,8 @@ Configuration ISSUECA
             CACommonName = $IssuingCAName
             CADistinguishedNameSuffix = $Node.CADistinguishedNameSuffix
             OverwriteExistingCAinDS  = $True
-            KeyLength = 4096
+            HashAlgorithmName = $IssuingCAHashAlgorithm
+            KeyLength = $IssuingCAKeyLength
             IsSingleInstance = 'Yes'
             OutputCertRequestFile = "C:\CertEnroll\$IssuingCAName.req"
             DependsOn = '[File]CertEnroll'
@@ -99,7 +101,7 @@ Configuration ISSUECA
         TimeZone SetTimeZone
         {
             IsSingleInstance = 'Yes'
-            TimeZone         = 'Eastern Standard Time'
+            TimeZone         = $TimeZone
         }
 
         File CopyFilesFromRootCA
