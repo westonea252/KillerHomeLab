@@ -1873,7 +1873,7 @@
       "apiVersion": "2019-10-01",
       "name": "deployfs1",
       "dependsOn": [
-        "restartdc1"
+        "ReplicateAD"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -2055,7 +2055,7 @@
       "apiVersion": "2019-10-01",
       "name": "deployex1",
       "dependsOn": [
-        "restartdc1"
+        "ReplicateAD"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -3005,7 +3005,7 @@
       "apiVersion": "2019-10-01",
       "name": "deployWK1VM",
       "dependsOn": [
-        "restartdc1"
+        "ReplicateAD"
       ],      
       "properties": {
           "mode": "Incremental",
