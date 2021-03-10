@@ -617,6 +617,7 @@
     "DB1Name": "[concat(parameters('NamingConvention'),'-13-db01')]",
     "DB2Name": "[concat(parameters('NamingConvention'),'-13-db02')]" ,             
     "DAG13Name": "[concat(parameters('NamingConvention'),'-13-dag01')]",
+    "DAG13IP": "255.255.255.255",    
     "NSG1Name": "[concat(parameters('NamingConvention'),'-nsg01')]",
     "NSG2Name": "[concat(parameters('NamingConvention'),'-nsg02')]",
     "FromEmail": "[concat(parameters('adminUserName'),'@',variables('InternaldomainName'))]"            
@@ -2754,7 +2755,11 @@
               },                                                                                                                                                           
               "DAGName": {
                   "value": "[variables('dag13name')]"
-              },                                                                                                                                                           "adminUsername": {
+              },     
+              "DAGIP": {
+                  "value": "[variables('dag13ip')]"
+              },                                                                                                                                                   
+              "adminUsername": {
                 "value": "[parameters('adminUsername')]"
               },                                                                                                            
               "adminPassword": {
@@ -2782,7 +2787,7 @@
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/configdag.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/configdag13.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -2809,7 +2814,10 @@
               },                                                                                                                                                           
               "DAGName": {
                   "value": "[variables('dag13name')]"
-              },                                                                                                                                                                                                                                                                                                                                               
+              },      
+              "DAGIP": {
+                  "value": "[variables('dag13ip')]"
+              },                                                                                                                                                                                                                                                                                                                                                          
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
               },                                                                                                            
