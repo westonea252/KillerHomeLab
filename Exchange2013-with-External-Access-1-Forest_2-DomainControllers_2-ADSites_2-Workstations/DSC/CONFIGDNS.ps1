@@ -12,19 +12,36 @@
         [String]$icaIP,
         [String]$ocspIP,
         [String]$ex1IP,
-        [String]$ex2IP
+        [String]$ex2IP,
+        [Int]$RetryCount=20,
+        [Int]$RetryIntervalSec=30
     )
 
     Import-DscResource -Module xDnsServer
+    Import-DscResource -ModuleName ActiveDirectoryDsc
 
     Node localhost
     {
+        LocalConfigurationManager
+        {
+            RebootNodeIfNeeded = $true
+        }
+
+        WaitForADDomain DscForestWait
+        {
+            DomainName = $DomainName
+            Credential= $DomainCreds
+            RestartCount = $RetryCount
+            WaitTimeout = $RetryIntervalSec
+        }
+
         xDnsServerADZone ExternalDomain
         {
             Name             = "$ExternaldomainName"
             DynamicUpdate = 'Secure'
             Ensure           = 'Present'
             ReplicationScope = 'Domain'
+            DependsOn = '[WaitForADDomain]DscForestWait'
         }
 
         xDnsServerADZone ReverseADZone1
@@ -33,6 +50,7 @@
             DynamicUpdate = 'Secure'
             Ensure           = 'Present'
             ReplicationScope = 'Domain'
+            DependsOn = '[WaitForADDomain]DscForestWait'
         }
 
         xDnsServerADZone ReverseADZone2
@@ -41,6 +59,7 @@
             DynamicUpdate = 'Secure'
             Ensure           = 'Present'
             ReplicationScope = 'Domain'
+            DependsOn = '[WaitForADDomain]DscForestWait'
         }
 
         xDnsRecord DC1PtrRecord
@@ -70,6 +89,7 @@
             Target    = "$icaIP"
             Type      = 'ARecord'
             Ensure    = 'Present'
+            DependsOn = '[xDnsServerADZone]ExternalDomain'
         }
 
         xDnsRecord ocsprecord
@@ -79,6 +99,7 @@
             Target    = "$ocspIP"
             Type      = 'ARecord'
             Ensure    = 'Present'
+            DependsOn = '[xDnsServerADZone]ExternalDomain'
         }
 
         xDnsRecord owa2013record1
@@ -88,6 +109,7 @@
             Target    = "$ex1IP"
             Type      = 'ARecord'
             Ensure    = 'Present'
+            DependsOn = '[xDnsServerADZone]ExternalDomain'
         }
 
         xDnsRecord owa2013record2
@@ -97,6 +119,7 @@
             Target    = "$ex2IP"
             Type      = 'ARecord'
             Ensure    = 'Present'
+            DependsOn = '[xDnsServerADZone]ExternalDomain'
         }
 
         xDnsRecord autodiscover2013record1
@@ -106,6 +129,7 @@
             Target    = "$ex1IP"
             Type      = 'ARecord'
             Ensure    = 'Present'
+            DependsOn = '[xDnsServerADZone]ExternalDomain'
         }
 
         xDnsRecord autodiscover2013record2
@@ -115,6 +139,7 @@
             Target    = "$ex2IP"
             Type      = 'ARecord'
             Ensure    = 'Present'
+            DependsOn = '[xDnsServerADZone]ExternalDomain'
         }
 
         xDnsRecord outlook2013record1
@@ -124,6 +149,7 @@
             Target    = "$ex1IP"
             Type      = 'ARecord'
             Ensure    = 'Present'
+            DependsOn = '[xDnsServerADZone]ExternalDomain'
          }
 
         xDnsRecord outlook2013record2
@@ -133,6 +159,7 @@
             Target    = "$ex2IP"
             Type      = 'ARecord'
             Ensure    = 'Present'
+            DependsOn = '[xDnsServerADZone]ExternalDomain'
          }
 
         xDnsRecord eas2013record1
@@ -142,6 +169,7 @@
             Target    = "$ex1IP"
             Type      = 'ARecord'
             Ensure    = 'Present'
+            DependsOn = '[xDnsServerADZone]ExternalDomain'
          }
 
         xDnsRecord eas2013record2
@@ -151,6 +179,7 @@
             Target    = "$ex2IP"
             Type      = 'ARecord'
             Ensure    = 'Present'
+            DependsOn = '[xDnsServerADZone]ExternalDomain'
          }
 
         xDnsRecord smtprecord1
@@ -160,6 +189,7 @@
             Target    = "$ex1IP"
             Type      = 'ARecord'
             Ensure    = 'Present'
+            DependsOn = '[xDnsServerADZone]ExternalDomain'
          }
 
         xDnsRecord smtprecord2
@@ -169,6 +199,7 @@
             Target    = "$ex2IP"
             Type      = 'ARecord'
             Ensure    = 'Present'
+            DependsOn = '[xDnsServerADZone]ExternalDomain'
          }
 
     }
