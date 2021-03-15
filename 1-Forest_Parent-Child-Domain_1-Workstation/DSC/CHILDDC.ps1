@@ -105,7 +105,7 @@
             SetScript =
             {
                 # Reset DNS
-                Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ResetServerAddresses
+                Set-DnsClientServerAddress -InterfaceAlias "$using:InterfaceAlias" -ResetServerAddresses
             }
             GetScript =  { @{} }
             TestScript = { $false}
