@@ -29,7 +29,7 @@
 
         WaitForADDomain DscForestWait
         {
-            DomainName = $DomainName
+            DomainName = $InternaldomainName
             Credential= $DomainCreds
             RestartCount = $RetryCount
             WaitTimeout = $RetryIntervalSec
