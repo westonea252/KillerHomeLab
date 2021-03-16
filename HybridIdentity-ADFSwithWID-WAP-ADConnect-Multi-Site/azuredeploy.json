@@ -914,7 +914,7 @@
           },
           "parameters": {
               "computerName": {
-                  "value": "[variables('adfs1name')]"
+                  "value": "[variables('adfs2name')]"
               },
               "TimeZone": {
                   "value": "[parameters('TimeZone')]"
