@@ -2,7 +2,7 @@
 {
    param
    (
-        [Sting]$ComputerName,
+        [String]$ComputerName,
         [String]$InternaldomainName,
         [String]$ExternaldomainName,                                
         [String]$NetBiosDomain,
