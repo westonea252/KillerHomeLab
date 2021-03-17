@@ -20,6 +20,18 @@
             "description": "The External FQDN of the AD Domain created "
           }
         },           
+        "NetBiosDomain": {
+            "type": "string",
+            "metadata": {
+                "description": "NetBios Domain Name"
+            }
+        },
+        "BaseDN": {
+            "type": "string",
+            "metadata": {
+                "description": "Base Domain Distiguished Name"
+            }
+        },        
         "Site1DC": {
             "type": "string",
             "metadata": {
@@ -37,31 +49,13 @@
             "metadata": {
                 "description": "Domain Controller used for Exchange Config"
             }
-        },                   
-        "Site1FSW": {
+        },                                                                         
+        "CAServerIP": {
             "type": "string",
             "metadata": {
-                "description": "Site 1 File Share Witness Name"
+                "description": "CA Server IP"
             }
-        },                        
-        "RootDomainFQDN": {
-            "type": "string",
-            "metadata": {
-                "description": "Root domain FQDN"
-            }
-        },        
-        "NetBiosDomain": {
-            "type": "string",
-            "metadata": {
-                "description": "NetBios Domain Name"
-            }
-        },
-        "BaseDN": {
-            "type": "string",
-            "metadata": {
-                "description": "Base Domain Distiguished Name"
-            }
-        },        
+        },                                             
         "IssuingCAServer": {
             "type": "string",
             "metadata": {
@@ -74,24 +68,6 @@
                 "description": "Issuing CA Name"
             }
         },                                     
-        "DAGName": {
-            "type": "string",
-            "metadata": {
-                "description": "Database Availability Group Name"
-            }
-        },                             
-        "DAGIPAddress": {
-            "type": "string",
-            "metadata": {
-                "description": "Database Availability Group IP"
-            }
-        },                                             
-        "CAServerIP": {
-            "type": "string",
-            "metadata": {
-                "description": "CA Server IP"
-            }
-        },                                             
         "Site": {
             "type": "string",
             "metadata": {
@@ -151,18 +127,14 @@
                             "ComputerName": "[parameters('ComputerName')]",
                             "InternaldomainName": "[parameters('InternaldomainName')]",                                                        
                             "ExternaldomainName": "[parameters('ExternaldomainName')]",                               
+                            "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
+                            "BaseDN": "[parameters('BaseDN')]",                                                        
                             "Site1DC": "[parameters('Site1DC')]",
                             "Site2DC": "[parameters('Site2DC')]",                                                        
                             "ConfigDC": "[parameters('ConfigDC')]",                                                                                    
-                            "Site1FSW": "[parameters('Site1FSW')]",                            
-                            "RootDomainFQDN": "[parameters('RootDomainFQDN')]",
-                            "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
-                            "BaseDN": "[parameters('BaseDN')]",                                                        
+                            "CAServerIP": "[parameters('CAServerIP')]",                  
                             "IssuingCAServer": "[parameters('IssuingCAServer')]",                                                        
-                            "IssuingCAName": "[parameters('IssuingCAName')]",                                                                                    
-                            "DAGName": "[parameters('DAGName')]",                    
-                            "DAGIPAddress": "[parameters('DAGIPAddress')]",                                                                                                                                                    
-                            "CAServerIP": "[parameters('CAServerIP')]",                                                                                                                                                                                
+                            "IssuingCAName": "[parameters('IssuingCAName')]",                                                                                                                                                         
                             "Site": "[parameters('Site')]",
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",

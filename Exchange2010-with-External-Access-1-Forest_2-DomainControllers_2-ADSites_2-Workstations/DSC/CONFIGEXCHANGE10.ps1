@@ -11,6 +11,8 @@
         [String]$Site2DC,
         [String]$ConfigDC,
         [String]$CAServerIP,
+        [String]$IssuingCAServer,
+        [String]$IssuingCAName,
         [String]$Site,
         [System.Management.Automation.PSCredential]$Admincreds
     )

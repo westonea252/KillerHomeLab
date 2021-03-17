@@ -2763,7 +2763,13 @@
               },       
               "CAServerIP": {
                   "value": "[variables('icaIP')]"
-              },                                                                                                                                                                                       
+              },                                        
+              "IssuingCAServer": {
+                  "value": "[variables('icaname')]"
+              },                                 
+              "IssuingCAName": {
+                  "value": "[parameters('IssuingCAName')]"
+              },                                                                                                                                                                                                     
               "Site": {
                   "value": "Site1"
               },                            
@@ -2869,7 +2875,13 @@
               },       
               "CAServerIP": {
                   "value": "[variables('icaIP')]"
-              },                                                                                                                                                                                       
+              },
+              "IssuingCAServer": {
+                  "value": "[variables('icaname')]"
+              },                                 
+              "IssuingCAName": {
+                  "value": "[parameters('IssuingCAName')]"
+              },                                                                                                                                                                                                                   
               "Site": {
                   "value": "Site1"
               },                            
