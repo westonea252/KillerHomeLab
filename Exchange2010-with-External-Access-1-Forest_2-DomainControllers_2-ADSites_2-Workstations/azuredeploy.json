@@ -4,11 +4,157 @@
   "parameters": {
       "Location2": {
       "type": "string",
-      "defaultValue": "USGovTexas",
+      "defaultValue": "WestUS",
       "metadata": {
-        "description": "Choose Region (Example: USGovTexas)"
+        "description": "Choose Region (Example: WestUS)"
       }
-    }, 
+    },
+    "TimeZone": {
+      "type": "string",
+      "defaultValue": "Eastern Standard Time",
+      "allowedValues": [
+        "Afghanistan Standard Time",
+        "Alaskan Standard Time",
+        "Aleutian Standard Time",
+        "Altai Standard Time",
+        "Arab Standard Time",
+        "Arabian Standard Time",
+        "Arabic Standard Time",
+        "Argentina Standard Time",
+        "Astrakhan Standard Time",
+        "Atlantic Standard Time",
+        "AUS Central Standard Time",
+        "Aus Central W. Standard Time",
+        "AUS Eastern Standard Time",
+        "Azerbaijan Standard Time",
+        "Azores Standard Time",
+        "Bahia Standard Time",
+        "Bangladesh Standard Time",
+        "Belarus Standard Time",
+        "Bougainville Standard Time",
+        "Canada Central Standard Time",
+        "Cape Verde Standard Time",
+        "Caucasus Standard Time",
+        "Cen. Australia Standard Time",
+        "Central America Standard Time",
+        "Central Asia Standard Time",
+        "Central Brazilian Standard Time",
+        "Central Europe Standard Time",
+        "Central European Standard Time",
+        "Central Pacific Standard Time",
+        "Central Standard Time (Mexico)",
+        "Central Standard Time",
+        "Chatham Islands Standard Time",
+        "China Standard Time",
+        "Cuba Standard Time",
+        "Dateline Standard Time",
+        "E. Africa Standard Time",
+        "E. Australia Standard Time",
+        "E. Europe Standard Time",
+        "E. South America Standard Time",
+        "Easter Island Standard Time",
+        "Eastern Standard Time (Mexico)",
+        "Eastern Standard Time",
+        "Egypt Standard Time",
+        "Ekaterinburg Standard Time",
+        "Fiji Standard Time",
+        "FLE Standard Time",
+        "Georgian Standard Time",
+        "GMT Standard Time",
+        "Greenland Standard Time",
+        "Greenwich Standard Time",
+        "GTB Standard Time",
+        "Haiti Standard Time",
+        "Hawaiian Standard Time",
+        "India Standard Time",
+        "Iran Standard Time",
+        "Israel Standard Time",
+        "Jordan Standard Time",
+        "Kaliningrad Standard Time",
+        "Korea Standard Time",
+        "Libya Standard Time",
+        "Line Islands Standard Time",
+        "Lord Howe Standard Time",
+        "Magadan Standard Time",
+        "Magallanes Standard Time",
+        "Marquesas Standard Time",
+        "Mauritius Standard Time",
+        "Middle East Standard Time",
+        "Montevideo Standard Time",
+        "Morocco Standard Time",
+        "Mountain Standard Time (Mexico)",
+        "Mountain Standard Time",
+        "Myanmar Standard Time",
+        "N. Central Asia Standard Time",
+        "Namibia Standard Time",
+        "Nepal Standard Time",
+        "New Zealand Standard Time",
+        "Newfoundland Standard Time",
+        "Norfolk Standard Time",
+        "North Asia East Standard Time",
+        "North Asia Standard Time",
+        "North Korea Standard Time",
+        "Omsk Standard Time",
+        "Pacific SA Standard Time",
+        "Pacific Standard Time (Mexico)",
+        "Pacific Standard Time",
+        "Pakistan Standard Time",
+        "Paraguay Standard Time",
+        "Qyzylorda Standard Time",
+        "Romance Standard Time",
+        "Russia Time Zone 10",
+        "Russia Time Zone 11",
+        "Russia Time Zone 3",
+        "Russian Standard Time",
+        "SA Eastern Standard Time",
+        "SA Pacific Standard Time",
+        "SA Western Standard Time",
+        "Saint Pierre Standard Time",
+        "Sakhalin Standard Time",
+        "Samoa Standard Time",
+        "Sao Tome Standard Time",
+        "Saratov Standard Time",
+        "SE Asia Standard Time",
+        "Singapore Standard Time",
+        "South Africa Standard Time",
+        "Sri Lanka Standard Time",
+        "Sudan Standard Time",
+        "Syria Standard Time",
+        "Taipei Standard Time",
+        "Tasmania Standard Time",
+        "Tocantins Standard Time",
+        "Tokyo Standard Time",
+        "Tomsk Standard Time",
+        "Tonga Standard Time",
+        "Transbaikal Standard Time",
+        "Turkey Standard Time",
+        "Turks And Caicos Standard Time",
+        "Ulaanbaatar Standard Time",
+        "US Eastern Standard Time",
+        "US Mountain Standard Time",
+        "UTC",
+        "UTC+12",
+        "UTC+13",
+        "UTC-02",
+        "UTC-08",
+        "UTC-09",
+        "UTC-11",
+        "Venezuela Standard Time",
+        "Vladivostok Standard Time",
+        "Volgograd Standard Time",
+        "W. Australia Standard Time",
+        "W. Central Africa Standard Time",
+        "W. Europe Standard Time",
+        "W. Mongolia Standard Time",
+        "West Asia Standard Time",
+        "West Bank Standard Time",
+        "West Pacific Standard Time",
+        "Yakutsk Standard Time"
+      ],      
+      "metadata": {
+          "description": "Time Zone"
+      }
+    },                         
     "ExchangeOrgName": {
       "type": "string",
       "defaultValue": "49ers",
@@ -45,7 +191,14 @@
       "metadata": {
           "description": "Windows Server OS License Type"
       }
-    },    
+    }, 
+    "ToEmail": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Enter Email Address to send completed status"
+      }
+    },         
     "WindowsClientLicenseType": {
       "type": "string",
       "defaultValue": "None",
@@ -56,14 +209,7 @@
       "metadata": {
           "description": "Windows Client OS License Type"
       }
-    }, 
-    "ToEmail": {
-      "type": "string",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Enter Email Address to send completed status"
-      }
-    },                   
+    },                  
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
@@ -98,8 +244,8 @@
       "metadata": {
           "description": "NetBios Domain Name"
       }
-    },        
-    "TLD": {
+    },      
+    "InternalTLD": {
       "type": "string",
       "defaultValue": "com",
       "allowedValues": [
@@ -111,9 +257,31 @@
         "mil"
       ],      
       "metadata": {
-          "description": "Top-Level Domain Name"
+          "description": "Internal Top-Level Domain Name"
       }
-    },                        
+    },    
+    "ExternalDomain": {
+      "type": "string",
+      "defaultValue": "killerhomelab",
+      "metadata": {
+          "description": "External DNS Domain"
+      }
+    },    
+    "ExternalTLD": {
+      "type": "string",
+      "defaultValue": "com",
+      "allowedValues": [
+        "com",
+        "net",
+        "org",
+        "edu",
+        "gov",
+        "mil"
+      ],      
+      "metadata": {
+          "description": "External Top-Level Domain Name"
+      }
+    },                                                  
     "vnet1ID": {
       "type": "string",
       "defaultValue": "10.1",
@@ -155,7 +323,51 @@
       "metadata": {
           "description": "Issuing CA Name"
       }
-    },                                        
+    },
+    "RootCAHashAlgorithm": {
+      "type": "string",
+      "defaultValue": "SHA256",
+        "allowedValues": [
+          "SHA256",
+          "SHA1"
+        ],
+      "metadata": {
+          "description": "Offline Root CA Algorithm"
+      }
+    },    
+    "RootCAKeyLength": {
+      "type": "string",
+      "defaultValue": "4096",
+        "allowedValues": [
+          "4096",
+          "2048"
+        ],
+      "metadata": {
+          "description": "Offline Root CA Key Length"
+      }
+    },                                
+    "IssuingCAHashAlgorithm": {
+      "type": "string",
+      "defaultValue": "SHA256",
+        "allowedValues": [
+          "SHA256",
+          "SHA1"
+        ],
+      "metadata": {
+          "description": "Issuing CA Algorithm"
+      }
+    },    
+    "IssuingCAKeyLength": {
+      "type": "string",
+      "defaultValue": "4096",
+        "allowedValues": [
+          "4096",
+          "2048"
+        ],
+      "metadata": {
+          "description": "Issuing CA Key Length"
+      }
+    },                                                                                       
     "DC1OSVersion": {
       "type": "string",
       "defaultValue": "2016-Datacenter",
@@ -393,8 +605,9 @@
     "ReverseLookup1": "[concat('1.',parameters('ReverseLookup1'))]",    
     "ReverseLookup2": "[concat('1.',parameters('ReverseLookup2'))]",        
     "DCDataDisk1Name": "NTDS",            
-    "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
-    "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
+    "InternaldomainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('InternalTLD'))]",
+    "ExternaldomainName": "[concat(parameters('ExternalDomain'),'.',parameters('ExternalTLD'))]", 
+    "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('InternalTLD'))]",
     "PWSEXPolGPOName":  "PowerShell-ExecutionPolicy",
     "PWSEXPolGPOGUID": "EC04DF04-A647-4A3E-9247-51B4CB137F5F",
     "PWSEXPolGPOSASUrl": "https://elliottf.blob.core.windows.net/github/GPOs/PowerShell-ExecutionPolicy.zip",
@@ -409,12 +622,12 @@
     "dag10lastoctet": "210",
     "NSG1Name": "[concat(parameters('NamingConvention'),'-nsg01')]",
     "NSG2Name": "[concat(parameters('NamingConvention'),'-nsg02')]",
-    "FromEmail": "[concat(parameters('adminUserName'),'@',variables('domainName'))]"    
+    "FromEmail": "[concat(parameters('adminUserName'),'@',variables('InternaldomainName'))]"            
   },  
   "resources": [
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "VNet1",
       "properties": {
           "mode": "Incremental",
@@ -452,7 +665,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "VNet2",
       "properties": {
           "mode": "Incremental",
@@ -490,7 +703,7 @@
     },    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "BastionHost1",
       "dependsOn": [
         "VNet1"
@@ -522,39 +735,7 @@
     },        
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "name": "BastionHost2",
-      "dependsOn": [
-        "VNet2"
-      ],
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/bastionhost.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "publicIPAddressName": {
-                "value": "[concat(variables('vnet2Name'),'-Bastion-pip')]"
-              },
-              "AllocationMethod": {
-                "value": "Static"
-              },              
-              "vnetName": {
-                  "value": "[variables('vnet2Name')]"
-              },
-              "subnetName": {
-                  "value": "AzureBastionSubnet"
-              },
-              "location": {
-                  "value": "[parameters('Location2')]"
-              }
-          }
-      }
-    },            
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployDC1VM",
       "dependsOn": [
         "VNet1"
@@ -610,7 +791,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "promotedc1",
       "dependsOn": [
         "DeployDC1VM"
@@ -625,12 +806,15 @@
               "computerName": {
                   "value": "[variables('dc1name')]"
               },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },                 
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },
               "DomainName": {
-                "value": "[variables('DomainName')]"
-              },              
+                "value": "[variables('InternalDomainName')]"
+              },                
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
               },                                                                                                            
@@ -651,7 +835,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "updatevnet1dns",
       "dependsOn": [
         "promotedc1"
@@ -697,7 +881,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "updatevnet2dns",
       "dependsOn": [
         "promotedc1"
@@ -743,7 +927,7 @@
     },    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "restartdc1",
       "dependsOn": [
         "updatevnet1dns",
@@ -773,7 +957,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "configdns",
       "dependsOn": [
         "restartdc1"
@@ -788,9 +972,12 @@
               "computerName": {
                   "value": "[variables('dc1name')]"
               },
-              "DomainName": {
-                "value": "[variables('DomainName')]"
-              },              
+              "InternalDomainName": {
+                "value": "[variables('InternaldomainName')]"
+              },       
+              "ExternalDomainName": {
+                "value": "[variables('ExternaldomainName')]"
+              },                         
               "ReverseLookup1": {
                 "value": "[variables('ReverseLookup1')]"
               },                                                                                                            
@@ -829,7 +1016,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "createous",
       "dependsOn": [
         "configdns"
@@ -861,7 +1048,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "createsites",
       "dependsOn": [
         "createous"
@@ -902,7 +1089,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "PowerShellExecutionPolicy",
       "dependsOn": [
         "createsites"
@@ -943,7 +1130,7 @@
     },            
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "PeeringToSite2",
       "dependsOn": [
         "PowerShellExecutionPolicy"
@@ -981,7 +1168,7 @@
     },    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "PeeringToSite1",
       "dependsOn": [      
         "PeeringToSite2"
@@ -1019,7 +1206,7 @@
     },        
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployDC2VM",
       "dependsOn": [
         "PeeringToSite1"
@@ -1075,7 +1262,7 @@
     },        
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "promotedc2",
       "dependsOn": [
         "deployDC2VM"
@@ -1090,12 +1277,15 @@
               "computerName": {
                   "value": "[variables('dc2name')]"
               },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },                    
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },
               "domainName": {
-                "value": "[variables('domainName')]"
-            },              
+                "value": "[variables('InternaldomainName')]"
+              },                 
               "DNSServerIP": {
                   "value": "[variables('dc1IP')]"
               },
@@ -1119,7 +1309,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "updatevnet2dns-2",
       "dependsOn": [
         "promotedc2"
@@ -1165,7 +1355,7 @@
     },    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "restartdc2",
       "dependsOn": [
         "updatevnet2dns-2"
@@ -1194,7 +1384,7 @@
     },     
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployrootca",
       "dependsOn": [
         "configdns"
@@ -1247,7 +1437,7 @@
     },  
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "configurerootca",
       "dependsOn": [
         "deployrootca"
@@ -1262,12 +1452,21 @@
               "computerName": {
                   "value": "[variables('rcaname')]"
               },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },              
               "RootCAName": {
                   "value": "[parameters('RootCAName')]"
               },
-              "RootDomainFQDN": {
-                  "value": "[variables('domainName')]"
-              },
+              "RootCAHashAlgorithm": {
+                  "value": "[parameters('RootCAHashAlgorithm')]"
+              },  
+              "RootCAKeyLength": {
+                  "value": "[parameters('RootCAKeyLength')]"
+              },                            
+              "domainName": {
+                  "value": "[variables('ExternaldomainName')]"
+              }, 
               "BaseDN": {
                   "value": "[variables('BaseDN')]"
               },
@@ -1291,7 +1490,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployissuingca",
       "dependsOn": [
         "configurerootca"
@@ -1344,7 +1543,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DomainJoinIssuingCA",
       "dependsOn": [
         "deployissuingca"
@@ -1360,7 +1559,7 @@
                   "value": "[variables('icaname')]"
               },
               "domainName": {
-                  "value": "[variables('domainName')]"
+                  "value": "[variables('InternaldomainName')]"
               },
               "OUPath": {
                   "value": "[variables('SRVOUPath')]"
@@ -1382,8 +1581,8 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "name": "configureissueca",
+      "apiVersion": "2019-10-01",
+      "name": "ConfigureIssueCA",
       "dependsOn": [
         "DomainJoinIssuingCA"
       ],      
@@ -1397,18 +1596,15 @@
               "computerName": {
                   "value": "[variables('icaname')]"
               },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },                
               "NamingConvention": {
                   "value": "[parameters('NamingConvention')]"
               },              
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },              
-              "RootDomainFQDN": {
-                  "value": "[variables('domainName')]"
-              },          
-              "DomainName": {
-                  "value": "[variables('domainName')]"
-              },
               "IssuingCAName": {
                   "value": "[parameters('IssuingCAName')]"
               },              
@@ -1418,6 +1614,12 @@
               "RootCAIP": {
                   "value": "[variables('rcaIP')]"
               },
+              "IssuingCAHashAlgorithm": {
+                  "value": "[parameters('IssuingCAHashAlgorithm')]"
+              },  
+              "IssuingCAKeyLength": {
+                  "value": "[parameters('IssuingCAKeyLength')]"
+              },                
               "location": {
                   "value": "[resourceGroup().location]"
               },              
@@ -1438,7 +1640,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "grantcarequest",
       "dependsOn": [
         "configureissueca"
@@ -1476,10 +1678,10 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "name": "finalizeca",
+      "apiVersion": "2019-10-01",
+      "name": "FinalizeCA",
       "dependsOn": [
-        "grantcarequest"
+        "GrantCARequest"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1503,8 +1705,8 @@
               "RootCAName": {
                   "value": "[parameters('RootCAName')]"
               },
-              "RootDomainFQDN": {
-                  "value": "[variables('domainName')]"
+              "domainName": {
+                  "value": "[variables('ExternaldomainName')]"
               },   
               "CATemplateScriptUrl": {
                   "value": "[variables('CATemplateScriptUrl')]"
@@ -1529,7 +1731,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployocsp",
       "dependsOn": [
         "finalizeca"
@@ -1582,7 +1784,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DomainJoinOCSP",
       "dependsOn": [
         "deployocsp"
@@ -1598,7 +1800,7 @@
                   "value": "[variables('ocspname')]"
               },
               "domainName": {
-                  "value": "[variables('domainName')]"
+                  "value": "[variables('InternaldomainName')]"
               },
               "OUPath": {
                   "value": "[variables('SRVOUPath')]"
@@ -1620,8 +1822,8 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
-      "name": "configureocsp",
+      "apiVersion": "2019-10-01",
+      "name": "ConfigureOCSP",
       "dependsOn": [
         "DomainJoinOCSP"
       ],      
@@ -1635,17 +1837,17 @@
               "computerName": {
                   "value": "[variables('ocspname')]"
               },
-              "NamingConvention": {
-                  "value": "[parameters('NamingConvention')]"
-              },              
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },                         
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },              
-              "domainName": {
-                  "value": "[variables('domainName')]"
-              },   
-              "RootDomainFQDN": {
-                  "value": "[variables('domainName')]"
+              "Internaldomainname": {
+                  "value": "[variables('InternaldomainName')]"
+              },          
+              "Externaldomainname": {
+                  "value": "[variables('ExternaldomainName')]"
               },   
               "IssuingCAName": {
                   "value": "[parameters('IssuingCAName')]"
@@ -1670,10 +1872,10 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
           }
       }
-    },   
+    },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "ReplicateAD",
       "dependsOn": [
         "configureocsp"
@@ -1711,10 +1913,10 @@
     },      
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployfs1",
       "dependsOn": [
-        "restartdc1"
+        "ReplicateAD"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1764,7 +1966,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DomainJoinFS1",
       "dependsOn": [
         "deployfs1"
@@ -1780,7 +1982,7 @@
                   "value": "[variables('fs1name')]"
               },
               "domainName": {
-                  "value": "[variables('domainName')]"
+                  "value": "[variables('InternaldomainName')]"
               },
               "OUPath": {
                   "value": "[variables('SRVOUPath')]"
@@ -1802,7 +2004,7 @@
     },                
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployfs2",
       "dependsOn": [
         "restartdc2"
@@ -1855,7 +2057,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DomainJoinFS2",
       "dependsOn": [
         "deployfs2"
@@ -1871,7 +2073,7 @@
                   "value": "[variables('fs2name')]"
               },
               "domainName": {
-                  "value": "[variables('domainName')]"
+                  "value": "[variables('InternaldomainName')]"
               },
               "OUPath": {
                   "value": "[variables('SRVOUPath')]"
@@ -1893,10 +2095,10 @@
     },                    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployex1",
       "dependsOn": [
-        "restartdc1"
+        "ReplicateAD"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1952,7 +2154,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DomainJoinEX1",
       "dependsOn": [
         "deployex1"
@@ -1968,7 +2170,7 @@
                   "value": "[variables('ex1name')]"
               },
               "domainName": {
-                  "value": "[variables('domainName')]"
+                  "value": "[variables('InternaldomainName')]"
               },
               "OUPath": {
                   "value": "[variables('SRVOUPath')]"
@@ -1990,7 +2192,7 @@
     },                
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployex2",
       "dependsOn": [
         "restartdc2"
@@ -2049,7 +2251,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DomainJoinEX2",
       "dependsOn": [
         "deployex2"
@@ -2065,7 +2267,7 @@
                   "value": "[variables('ex2name')]"
               },
               "domainName": {
-                  "value": "[variables('domainName')]"
+                  "value": "[variables('InternaldomainName')]"
               },
               "OUPath": {
                   "value": "[variables('SRVOUPath')]"
@@ -2087,7 +2289,7 @@
     },    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "configex1disk",
       "dependsOn": [
         "PowerShellExecutionPolicy",
@@ -2103,6 +2305,9 @@
               "computerName": {
                   "value": "[variables('ex1name')]"
               },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },              
               "EXDiskPartUrl": {
                   "value": "[variables('EXDiskPartUrl')]"
               },              
@@ -2120,7 +2325,7 @@
     },                           
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "configex2disk",
       "dependsOn": [
         "PowerShellExecutionPolicy",        
@@ -2136,6 +2341,9 @@
               "computerName": {
                   "value": "[variables('ex2name')]"
               },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },              
               "EXDiskPartUrl": {
                   "value": "[variables('EXDiskPartUrl')]"
               },                            
@@ -2153,10 +2361,10 @@
     },                               
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "downloadexchange10s1",
       "dependsOn": [
-        "PowerShellExecutionPolicy"
+        "ReplicateAD"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -2185,7 +2393,7 @@
     },                           
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "downloadexchange10s2",
       "dependsOn": [
         "restartdc2"
@@ -2217,12 +2425,11 @@
     },                                   
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "prepareadexchange10",
       "dependsOn": [
         "ReplicateAD",
-        "downloadexchange10s1",
-        "downloadexchange10s2"        
+        "downloadexchange10s1"     
       ],      
       "properties": {
           "mode": "Incremental",
@@ -2260,7 +2467,7 @@
     }, 
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "prepareexchange10s1",
       "dependsOn": [
         "configex1disk",
@@ -2299,10 +2506,39 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
           }
       }
-    },                                                
+    },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
+      "name": "restartex1-1",
+      "dependsOn": [
+        "prepareexchange13s1"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/restartvm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ex1name')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                                                         
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },                                                                     
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
       "name": "prepareexchange10s2",
       "dependsOn": [
         "configex2disk",
@@ -2344,7 +2580,36 @@
     },   
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
+      "name": "restartex2-1",
+      "dependsOn": [
+        "prepareexchange13s2"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/restartvm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ex2name')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                                                         
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },                                                                     
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
       "name": "grantextrustedsub1",
       "dependsOn": [
         "DomainJoinFS1",
@@ -2360,6 +2625,9 @@
               "computerName": {
                   "value": "[variables('fs1name')]"
               },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },               
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },                                        
@@ -2377,7 +2645,7 @@
     },       
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "grantextrustedsub2",
       "dependsOn": [
         "DomainJoinFS2",
@@ -2393,6 +2661,9 @@
               "computerName": {
                   "value": "[variables('fs2name')]"
               },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },               
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },                                        
@@ -2410,7 +2681,7 @@
     },       
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "installexchange1",
       "dependsOn": [
         "prepareexchange10s1"
@@ -2454,7 +2725,7 @@
     }, 
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "configexchange1",
       "dependsOn": [
         "installexchange1"
@@ -2469,21 +2740,18 @@
               "computerName": {
                   "value": "[variables('ex1name')]"
               },
-              "RootDomainFQDN": {
-                  "value": "[variables('domainname')]"
+              "InternaldomainName": {
+                  "value": "[variables('InternaldomainName')]"
               },              
+              "ExternaldomainName": {
+                  "value": "[variables('ExternaldomainName')]"
+              },                
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },
               "BaseDN": {
                   "value": "[variables('BaseDN')]"
               },                            
-              "IssuingCAServer": {
-                  "value": "[variables('icaname')]"
-              },                               
-              "IssuingCAName": {
-                  "value": "[parameters('IssuingCAName')]"
-              },                                             
               "Site1DC": {
                   "value": "[variables('dc1name')]"
               },                                                     
@@ -2493,15 +2761,6 @@
               "ConfigDC": {
                   "value": "[variables('dc1name')]"
               },       
-              "Site1FSW": {
-                  "value": "[variables('fs1name')]"
-              },                                                                                                                                             
-              "DAGName": {
-                  "value": "[variables('dag10name')]"
-              },                                                                                                                                             
-              "DAGIPAddress": {
-                  "value": "[variables('dag10ip')]"
-              },                                                                                                                                             
               "CAServerIP": {
                   "value": "[variables('icaIP')]"
               },                                                                                                                                                                                       
@@ -2528,7 +2787,7 @@
     },    
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "installexchange2",
       "dependsOn": [
         "configexchange1"
@@ -2572,7 +2831,7 @@
     },      
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "configexchange2",
       "dependsOn": [
         "installexchange2"
@@ -2580,51 +2839,39 @@
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/configexchange10.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/configexchange19.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
               "computerName": {
                   "value": "[variables('ex2name')]"
               },
-              "RootDomainFQDN": {
-                  "value": "[variables('domainname')]"
+              "InternaldomainName": {
+                  "value": "[variables('InternaldomainName')]"
               },              
+              "ExternaldomainName": {
+                  "value": "[variables('ExternaldomainName')]"
+              },                
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },
               "BaseDN": {
                   "value": "[variables('BaseDN')]"
               },                            
-              "IssuingCAServer": {
-                  "value": "[variables('icaname')]"
-              },    
-              "IssuingCAName": {
-                  "value": "[parameters('IssuingCAName')]"
-              },                                                                                      
               "Site1DC": {
-                  "value": "[variables('dc1name')]"
+                  "value": "[variables('dc2name')]"
               },                                                     
               "Site2DC": {
-                  "value": "[variables('dc2name')]"
+                  "value": "[variables('dc1name')]"
               },                                                     
               "ConfigDC": {
                   "value": "[variables('dc2name')]"
               },       
-              "Site1FSW": {
-                  "value": "[variables('fs1name')]"
-              },                                                                                                                                             
-              "DAGName": {
-                  "value": "[variables('dag10name')]"
-              },                                                                                                                                             
-              "DAGIPAddress": {
-                  "value": "[variables('dag10ip')]"
-              },                                                                                                                                             
               "CAServerIP": {
                   "value": "[variables('icaIP')]"
               },                                                                                                                                                                                       
               "Site": {
-                  "value": "Site2"
+                  "value": "Site1"
               },                            
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
@@ -2643,10 +2890,292 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
           }
       }
-    },                                                                                                                        
+    },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
+      "name": "ConfigDAGEX1",
+      "dependsOn": [
+        "configexchange2"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/configdag.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ex1name')]"
+              },
+              "InternaldomainName": {
+                  "value": "[variables('InternaldomainName')]"
+              },               
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },              
+              "Site1DC": {
+                  "value": "[variables('dc1name')]"
+              },                                                     
+              "Site2DC": {
+                  "value": "[variables('dc2name')]"
+              },                                                     
+              "ConfigDC": {
+                  "value": "[variables('dc1name')]"
+              },       
+              "Site1FSW": {
+                  "value": "[variables('fs1name')]"
+              },                                                                                                                                                           
+              "DAGName": {
+                  "value": "[variables('dag10name')]"
+              },   
+              "DAGIP": {
+                  "value": "[variables('dag10ip')]"
+              },                                                                                                                                                                      
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                                                                                                      
+              "location": {
+                  "value": "[resourceGroup().location]"
+              },          
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          }
+      }
+    },        
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "ConfigDAGEX2",
+      "dependsOn": [
+        "ConfigDAGEX1"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/configdag.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ex2name')]"
+              },
+              "InternaldomainName": {
+                  "value": "[variables('InternaldomainName')]"
+              },               
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },              
+              "Site1DC": {
+                  "value": "[variables('dc2name')]"
+              },                                                     
+              "Site2DC": {
+                  "value": "[variables('dc1name')]"
+              },                                                     
+              "ConfigDC": {
+                  "value": "[variables('dc2name')]"
+              },       
+              "Site1FSW": {
+                  "value": "[variables('fs1name')]"
+              },                                                                                                                                                           
+              "DAGName": {
+                  "value": "[variables('dag10name')]"
+              },    
+              "DAGIP": {
+                  "value": "[variables('dag10ip')]"
+              },                                                                                                                                                                                                                                                                                                                                                             
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                                                                                                      
+              "location": {
+                  "value": "[parameters('Location2')]"
+              },          
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          }
+      }
+    },   
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "ConfigDB1",
+      "dependsOn": [
+        "ConfigDAGEX2"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/configdb.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ex1name')]"
+              },
+              "InternaldomainName": {
+                  "value": "[variables('InternaldomainName')]"
+              },               
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },              
+              "Site1DC": {
+                  "value": "[variables('dc1name')]"
+              },                                                     
+              "Site2DC": {
+                  "value": "[variables('dc2name')]"
+              },                                                     
+              "ConfigDC": {
+                  "value": "[variables('dc1name')]"
+              },       
+              "DBName": {
+                  "value": "[variables('DB2Name')]"
+              },                                                                                                                                                                                       
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                                                                                                      
+              "location": {
+                  "value": "[resourceGroup().location]"
+              },          
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          }
+      }
+    }, 
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "ConfigDB2",
+      "dependsOn": [
+        "ConfigDB1"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/configdb.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ex2name')]"
+              },
+              "InternaldomainName": {
+                  "value": "[variables('InternaldomainName')]"
+              },               
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },              
+              "Site1DC": {
+                  "value": "[variables('dc2name')]"
+              },                                                     
+              "Site2DC": {
+                  "value": "[variables('dc1name')]"
+              },                                                     
+              "ConfigDC": {
+                  "value": "[variables('dc2name')]"
+              },       
+              "DBName": {
+                  "value": "[variables('DB1Name')]"
+              },                                                                                                                                                                                       
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                                                                                                      
+              "location": {
+                  "value": "[parameters('Location2')]"
+              },          
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          }
+      }
+    },      
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "restartex1-2",
+      "dependsOn": [
+        "configdb2"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/restartvm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ex1name')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                                                         
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },      
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "restartex2-2",
+      "dependsOn": [
+        "configdb2"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/restartvm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ex2name')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                                                         
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },                                                                                       
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
       "name": "deployWK1VM",
       "dependsOn": [
         "restartdc1"
@@ -2699,7 +3228,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DomainJoinWK1VM",
       "dependsOn": [
         "DeployWK1VM"
@@ -2715,7 +3244,7 @@
                   "value": "[variables('wk1name')]"
               },
               "domainName": {
-                  "value": "[variables('domainName')]"
+                  "value": "[variables('InternaldomainName')]"
               },
               "OUPath": {
                   "value": "[variables('WKOUPath')]"
@@ -2737,7 +3266,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployWK2VM",
       "dependsOn": [
         "restartdc2"
@@ -2790,7 +3319,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "DomainJoinWK2VM",
       "dependsOn": [
         "DeployWK2VM"
@@ -2806,7 +3335,7 @@
                   "value": "[variables('wk2name')]"
               },
               "domainName": {
-                  "value": "[variables('domainName')]"
+                  "value": "[variables('InternaldomainName')]"
               },
               "OUPath": {
                   "value": "[variables('WKOUPath')]"
@@ -2828,7 +3357,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "addocsppip",
       "dependsOn": [
         "configureocsp"
@@ -2881,7 +3410,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "addex1pip",
       "dependsOn": [
         "configexchange2"
@@ -2940,7 +3469,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "addex2pip",
       "dependsOn": [
         "configexchange2"
@@ -2999,7 +3528,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deploynsg1",
       "dependsOn": [
         "addocsppip",
@@ -3029,7 +3558,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deploynsg2",
       "dependsOn": [
         "addex2pip"
@@ -3058,7 +3587,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "updatevnet1nsg",
       "dependsOn": [
         "deploynsg1"
@@ -3107,7 +3636,7 @@
     },                                                                                                                                                                                                                            
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "updatevnet2nsg",
       "dependsOn": [
         "deploynsg2"
@@ -3156,7 +3685,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "createpublicdns",
       "dependsOn": [
         "updatevnet1nsg"
@@ -3169,7 +3698,7 @@
           },
           "parameters": {
               "ZoneName": {
-                  "value": "[variables('domainName')]"
+                  "value": "[variables('ExternaldomainName')]"
               },
               "OCSPRecord": {
                   "value": "ocsp"
@@ -3206,7 +3735,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "sendcompletionemail",
       "dependsOn": [
         "createpublicdns"
@@ -3239,8 +3768,8 @@
               "RootCAName": {
                   "value": "[parameters('RootCAName')]"
               },
-              "RootDomainFQDN": {
-                  "value": "[variables('domainName')]"
+              "ExternalDomainName": {
+                  "value": "[variables('ExternaldomainName')]"
               },
               "ExchangeServerName": {
                   "value": "[variables('ex1name')]"

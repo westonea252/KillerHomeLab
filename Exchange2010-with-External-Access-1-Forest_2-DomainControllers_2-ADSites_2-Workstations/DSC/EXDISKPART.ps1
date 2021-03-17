@@ -2,10 +2,12 @@
 {
    param
    (
-        [String]$EXDiskPartUrl
+        [String]$EXDiskPartUrl,
+        [String]$TimeZone
     )
 
     Import-DscResource -Module xPSDesiredStateConfiguration # Used for xRemoteFile
+    Import-DscResource -ModuleName ComputerManagementDsc
 
     Node localhost
     {
@@ -26,6 +28,13 @@
             ValueData                   =  '1'
             Ensure                      = 'Present'
         }
+
+        TimeZone SetTimeZone
+        {
+            IsSingleInstance = 'Yes'
+            TimeZone         = $TimeZone
+        }
+
         File DiskConfig
         {
             Type = 'Directory'
