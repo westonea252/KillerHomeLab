@@ -2512,7 +2512,7 @@
       "apiVersion": "2019-10-01",
       "name": "restartex1-1",
       "dependsOn": [
-        "prepareexchange13s1"
+        "prepareexchange10s1"
       ],            
       "properties": {
           "mode": "Incremental",
@@ -2583,7 +2583,7 @@
       "apiVersion": "2019-10-01",
       "name": "restartex2-1",
       "dependsOn": [
-        "prepareexchange13s2"
+        "prepareexchange10s2"
       ],            
       "properties": {
           "mode": "Incremental",
