@@ -2355,7 +2355,7 @@
           }
       }
     },
-        {
+    {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "restartex2-1",
