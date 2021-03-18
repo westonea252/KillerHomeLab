@@ -14,7 +14,8 @@
         [String]$ex1IP,
         [String]$ex2IP,
         [Int]$RetryCount=20,
-        [Int]$RetryIntervalSec=30
+        [Int]$RetryIntervalSec=30,
+        [System.Management.Automation.PSCredential]$Admincreds
     )
 
     Import-DscResource -Module xDnsServer
@@ -30,7 +31,7 @@
         WaitForADDomain DscForestWait
         {
             DomainName = $InternaldomainName
-            Credential= $DomainCreds
+            Credential= $Admincreds
             RestartCount = $RetryCount
             WaitTimeout = $RetryIntervalSec
         }

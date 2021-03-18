@@ -1001,7 +1001,13 @@
               },                                                                                                                          
               "ocspIP": {
                 "value": "[variables('ocspIP')]"
-              },                                                                                                                                                                                                                                                                                                           
+              },    
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                                                                      
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
               },                                                                                                            

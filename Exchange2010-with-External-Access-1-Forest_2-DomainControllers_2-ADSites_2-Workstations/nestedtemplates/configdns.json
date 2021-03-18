@@ -74,6 +74,18 @@
             "description": "Region of Resources"
           }
         }, 
+        "adminUsername": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the Administrator of the new VM and Domain"
+            }
+        },
+        "adminPassword": {
+            "type": "securestring",
+          "metadata": {
+            "description": "The password for the Administrator account of the new VM and Domain"
+          }
+        },        
         "_artifactsLocation": {
             "type": "string",
             "metadata": {
@@ -116,10 +128,15 @@
                             "ocspIP": "[parameters('ocspIP')]",                                                                                    
                             "ReverseLookup2": "[parameters('ReverseLookup2')]",
                             "dc2lastoctet": "[parameters('dc2lastoctet')]",
-                            "ex2IP": "[parameters('ex2IP')]"                                                                                                               
+                            "ex2IP": "[parameters('ex2IP')]",
+                            "AdminCreds": {
+                                "UserName": "[parameters('adminUsername')]",
+                                "Password": "PrivateSettingsRef:AdminPassword"
+                            }                                                                                                                                         
                         }
                     },
                     "protectedSettings": {
+                        "AdminPassword": "[parameters('adminPassword')]"                        
                     }
                 }
         }
