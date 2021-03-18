@@ -75,7 +75,7 @@
                 (Get-ChildItem -Path Cert:\LocalMachine\My\$thumbprint).FriendlyName = "Exchange 2010 SAN Cert"
 
                 # Set Virtual Directories
-                $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri "http://$using:computername.$using:ExternalDomainName/PowerShell/"
+                $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri "http://$using:computername.$using:InternalDomainName/PowerShell/"
                 Import-PSSession $Session
                 Set-ClientAccessServer "$using:computername" –AutodiscoverServiceInternalUri "https://autodiscover2010.$using:ExternalDomainName/Autodiscover/Autodiscover.xml"
                 Set-OWAVirtualDirectory –Identity "$using:computername\owa (Default Web Site)" –InternalURL "https://owa2010.$using:ExternalDomainName/OWA" -ExternalURL "https://owa2010.$using:ExternalDomainName/OWA" -ExternalAuthenticationMethods NTLM -FormsAuthentication:$False -BasicAuthentication:$False –WindowsAuthentication:$True
