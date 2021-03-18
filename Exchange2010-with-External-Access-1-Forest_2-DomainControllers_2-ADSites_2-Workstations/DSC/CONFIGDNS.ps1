@@ -14,7 +14,7 @@
         [String]$ex1IP,
         [String]$ex2IP,
         [Int]$RetryCount=20,
-        [Int]$RetryIntervalSec=30,
+        [Int]$RetryIntervalSec=120,
         [System.Management.Automation.PSCredential]$Admincreds
     )
 
