@@ -2684,7 +2684,7 @@
       "apiVersion": "2019-10-01",
       "name": "installexchange1",
       "dependsOn": [
-        "prepareexchange10s1"
+        "restartex1-1"
       ],      
       "properties": {
           "mode": "Incremental",
