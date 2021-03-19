@@ -14,7 +14,7 @@
         [String]$ex1IP,
         [String]$ex2IP,
         [Int]$RetryCount=20,
-        [Int]$RetryIntervalSec=120,
+        [Int]$RetryIntervalSec=30,
         [System.Management.Automation.PSCredential]$Admincreds
     )
 
@@ -23,11 +23,6 @@
 
     Node localhost
     {
-        LocalConfigurationManager
-        {
-            RebootNodeIfNeeded = $true
-        }
-
         WaitForADDomain DscForestWait
         {
             DomainName = $InternaldomainName
