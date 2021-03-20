@@ -3,6 +3,7 @@
    param
    (
         [String]$computerName,
+        [String]$NetBiosDomain,
         [String]$InternaldomainName,
         [String]$ExternaldomainName,
         [String]$ReverseLookup1,
@@ -13,20 +14,22 @@
         [String]$ocspIP,
         [String]$ex1IP,
         [String]$ex2IP,
-        [Int]$RetryCount=100,
-        [Int]$RetryIntervalSec=600,
+        [Int]$RetryCount=20,
+        [Int]$RetryIntervalSec=30,
         [System.Management.Automation.PSCredential]$Admincreds
     )
 
     Import-DscResource -Module xDnsServer
     Import-DscResource -ModuleName ActiveDirectoryDsc
 
+    [System.Management.Automation.PSCredential ]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosDomain}\$($Admincreds.UserName)", $Admincreds.Password)
+
     Node localhost
     {
         WaitForADDomain DscForestWait
         {
             DomainName = $InternaldomainName
-            Credential= $Admincreds
+            Credential= $DomainCreds
             RestartCount = $RetryCount
             WaitTimeout = $RetryIntervalSec
         }

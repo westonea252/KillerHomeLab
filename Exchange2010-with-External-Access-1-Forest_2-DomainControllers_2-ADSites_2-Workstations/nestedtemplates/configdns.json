@@ -8,6 +8,12 @@
                 "description": "Computer Name"
             }
         },
+        "NetBiosDomain": {
+            "type": "string",
+            "metadata": {
+                "description": "NetBios Domain Name"
+            }
+        },        
         "InternaldomainName": {
             "type": "string",
           "metadata": {
@@ -119,6 +125,7 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "computerName": "[parameters('computerName')]",
+                            "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
                             "InternaldomainName": "[parameters('InternaldomainName')]",                                                        
                             "ExternaldomainName": "[parameters('ExternaldomainName')]",                                                                                    
                             "ReverseLookup1": "[parameters('ReverseLookup1')]",
