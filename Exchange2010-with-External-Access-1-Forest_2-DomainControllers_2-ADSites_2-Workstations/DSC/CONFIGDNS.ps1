@@ -13,8 +13,8 @@
         [String]$ocspIP,
         [String]$ex1IP,
         [String]$ex2IP,
-        [Int]$RetryCount=20,
-        [Int]$RetryIntervalSec=30,
+        [Int]$RetryCount=100,
+        [Int]$RetryIntervalSec=600,
         [System.Management.Automation.PSCredential]$Admincreds
     )
 
