@@ -14,7 +14,7 @@
         [String]$ocspIP,
         [String]$ex1IP,
         [String]$ex2IP,
-        [Int]$RetryIntervalSec=30,
+        [Int]$RetryIntervalSec=420,
         [System.Management.Automation.PSCredential]$Admincreds
     )
 
