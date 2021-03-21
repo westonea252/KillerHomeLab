@@ -8,7 +8,13 @@
                 "description": "Computer Name"
             }
         },
-        "domainName": {
+        "NetBiosDomain": {
+            "type": "string",
+            "metadata": {
+                "description": "NetBios Domain Name"
+            }
+        },            
+        "InternalDomainName": {
             "type": "string",
           "metadata": {
             "description": "The FQDN of the AD Domain created "
@@ -32,6 +38,18 @@
             "description": "Region of Resources"
           }
         }, 
+        "adminUsername": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the Administrator of the new VM and Domain"
+            }
+        },
+        "adminPassword": {
+            "type": "securestring",
+          "metadata": {
+            "description": "The password for the Administrator account of the new VM and Domain"
+          }
+        },        
         "_artifactsLocation": {
             "type": "string",
             "metadata": {
@@ -65,11 +83,21 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "computerName": "[parameters('computerName')]",
-                            "domainName": "[parameters('domainName')]",                                                        
+                            "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
+                            "InternalDomainName": "[parameters('InternalDomainName')]",                                                        
                             "ReverseLookup1": "[parameters('ReverseLookup1')]",
-                            "dc1lastoctet": "[parameters('dc1lastoctet')]"                            
+                            "dc1lastoctet": "[parameters('dc1lastoctet')]",
+                            "AdminCreds": {
+                                "UserName": "[parameters('adminUsername')]",
+                                "Password": "PrivateSettingsRef:AdminPassword"
+                            }                                                        
                         }
-                }
+                },
+                "protectedSettings": {
+                    "Items": {
+                        "AdminPassword": "[parameters('adminPassword')]"
+                    }
+                }                   
             }
         }
     ]

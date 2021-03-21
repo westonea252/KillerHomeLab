@@ -71,7 +71,7 @@
           "description": "NetBios Domain Name"
       }
     },       
-    "TLD": {
+    "InternalTLD": {
       "type": "string",
       "defaultValue": "com",
       "allowedValues": [
@@ -167,8 +167,8 @@
     "wk1name": "[concat(parameters('NamingConvention'),'-wk-01')]",           
     "wk1IP": "[concat(parameters('vnet1ID'),'.2.',variables('wk1lastoctet'))]",        
     "DCDataDisk1Name": "NTDS",            
-    "domainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('TLD'))]",
-    "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('TLD'))]",
+    "InternaldomainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('InternalTLD'))]",
+    "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('InternalTLD'))]",
     "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]"
   },  
   "resources": [
@@ -319,7 +319,7 @@
                   "value": "[parameters('NetBiosDomain')]"
               },
               "DomainName": {
-                "value": "[variables('DomainName')]"
+                "value": "[variables('InternaldomainName')]"
               },              
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
@@ -431,15 +431,24 @@
               "computerName": {
                   "value": "[variables('dc1name')]"
               },
-              "DomainName": {
-                "value": "[variables('DomainName')]"
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },              
+              "InternalDomainName": {
+                "value": "[variables('InternalDomainName')]"
               },              
               "ReverseLookup1": {
                 "value": "[variables('ReverseLookup1')]"
               },                                                                                                            
               "dc1lastoctet": {
                 "value": "[variables('dc1lastoctet')]"
-              },                                                                                                                          
+              },  
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                       
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
               },                                                                                                            
@@ -555,7 +564,7 @@
                   "value": "[variables('wk1name')]"
               },
               "domainName": {
-                  "value": "[variables('domainName')]"
+                  "value": "[variables('InternalDomainName')]"
               },
               "OUPath": {
                   "value": "[variables('WKOUPath')]"
