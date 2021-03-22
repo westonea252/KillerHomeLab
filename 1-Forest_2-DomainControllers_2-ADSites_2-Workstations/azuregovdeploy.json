@@ -1024,6 +1024,9 @@
               "computerName": {
                   "value": "[variables('dc2name')]"
               },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },               
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },

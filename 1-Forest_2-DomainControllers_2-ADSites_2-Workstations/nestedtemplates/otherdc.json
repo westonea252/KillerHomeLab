@@ -8,6 +8,12 @@
                 "description": "Computer Name"
             }
         },
+        "TimeZone": {
+            "type": "string",      
+            "metadata": {
+                "description": "Time Zone"
+            }
+        },         
         "NetBiosDomain": {
             "type": "string",
             "metadata": {
@@ -77,6 +83,7 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "DomainName": "[parameters('domainName')]",
+                            "TimeZone": "[parameters('TimeZone')]",                            
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",
                             "DnsServerIP": "[parameters('DnsServerIP')]",                            
                         "AdminCreds": {
