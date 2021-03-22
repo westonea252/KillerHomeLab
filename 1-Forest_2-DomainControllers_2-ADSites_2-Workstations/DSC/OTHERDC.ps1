@@ -76,8 +76,8 @@
         {
             DomainName = $DomainName
             Credential= $DomainCreds
-            RestartCount =  = $RetryCount
-            WaitTimeout =  = $RetryIntervalSec
+            RestartCount = $RetryCount
+            WaitTimeout = $RetryIntervalSec
             DependsOn = '[xDNSServerAddress]DnsServerAddress'
         }
 
