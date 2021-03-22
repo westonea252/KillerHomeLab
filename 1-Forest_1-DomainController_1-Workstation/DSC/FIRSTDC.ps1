@@ -3,6 +3,7 @@
    param
    (
 
+        [String]$TimeZone,        
         [String]$DomainName,
         [String]$NetBiosDomain,
         [System.Management.Automation.PSCredential]$Admincreds,
@@ -11,13 +12,14 @@
         [Int]$RetryIntervalSec=30
     )
 
-    Import-DscResource -Module xActiveDirectory
+    Import-DscResource -Module ActiveDirectoryDsc
     Import-DscResource -Module xStorage
     Import-DscResource -Module xNetworking
     Import-DscResource -Module PSDesiredStateConfiguration
     Import-DscResource -Module xPendingReboot
     Import-DscResource -Module ComputerManagementDsc
     Import-DscResource -Module xPSDesiredStateConfiguration
+    Import-DscResource -Module xDNSServer
 
     [System.Management.Automation.PSCredential ]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosDomain}\$($Admincreds.UserName)", $Admincreds.Password)
     $Interface=Get-NetAdapter|Where-Object Name -Like "Ethernet*"|Select-Object -First 1
@@ -88,10 +90,10 @@
             DependsOn = "[WindowsFeature]ADDSTools"
         }
 
-        xADDomain FirstDS
+        ADDomain FirstDS
         {
             DomainName = $DomainName
-            DomainAdministratorCredential = $DomainCreds
+            Credential = $DomainCreds
             SafemodeAdministratorPassword = $DomainCreds
             DatabasePath = "N:\NTDS"
             LogPath = "N:\NTDS"
@@ -110,7 +112,7 @@
         TimeZone SetTimeZone
         {
             IsSingleInstance = 'Yes'
-            TimeZone         = 'Eastern Standard Time'
+            TimeZone         = $TimeZone
         }
 
         Script UpdateDNSSettings

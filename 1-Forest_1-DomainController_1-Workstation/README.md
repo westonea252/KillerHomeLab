@@ -35,6 +35,7 @@ AD OU Structure:
 - --- Windows7
 
 Parameters that support changes
+- TimeZone.  Select an appropriate Time Zone.
 - Admin Username.  Enter a valid Admin Username
 - Admin Password.  Enter a valid Admin Password
 - WindowsServerLicenseType.  Choose Windows Server License Type (Example:  Windows_Server or None)
