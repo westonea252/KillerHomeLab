@@ -4,28 +4,30 @@
    (
     )
 
+    Import-DscResource -Module xPendingReboot # Used for Reboots
+
     Node localhost
     {
-        File Machineconfig
+        LocalConfigurationManager 
         {
-            Type = 'Directory'
-            DestinationPath = 'C:\MachineConfig'
-            Ensure = "Present"
+           RebootNodeIfNeeded = $true
         }
 
-        Script RestartVM
+        xPendingReboot Reboot
         {
-            SetScript =
-            {
-                # Restart VM
-                $Path = Get-Item -Path C:\MachineConfig\RebootComplete.txt
-                IF ($Path -eq $Null) {Restart-Computer -Force}
+           Name = "Reboot"
+        }
 
-                Set-Content -Path C:\MachineConfig\RebootComplete.txt -Value "Complete"
+        Script Reboot
+        {
+            TestScript = {
+            return (Test-Path HKLM:\SOFTWARE\MyMainKey\RebootKey)
             }
-            GetScript =  { @{} }
-            TestScript = { $false}
+            SetScript = {
+			        New-Item -Path HKLM:\SOFTWARE\MyMainKey\RebootKey -Force
+			        $global:DSCMachineStatus = 1 
+                }
+            GetScript = { return @{result = 'result'}}
         }
-
     }
 }
