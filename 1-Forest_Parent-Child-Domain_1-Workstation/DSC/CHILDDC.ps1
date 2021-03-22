@@ -2,6 +2,7 @@
 {
    param
     (
+        [String]$TimeZone,        
         [String]$DomainName,
         [String]$DNSServerIP,
         [String]$ChildNetBiosDomain,
@@ -11,12 +12,13 @@
         [Int]$RetryIntervalSec=30
     )
 
-    Import-DscResource -Module xStorage
-    Import-DscResource -Module xNetworking
-    Import-DscResource -Module xPSDesiredStateConfiguration
-    Import-DscResource -Module ComputerManagementDsc
-    Import-DscResource -Module xActiveDirectory
-    Import-DscResource -Module xPendingReboot    
+    Import-DscResource -ModuleName ActiveDirectoryDsc
+    Import-DscResource -ModuleName xStorage
+    Import-DscResource -ModuleName xNetworking
+    Import-DscResource -ModuleName xPendingReboot
+    Import-DscResource -ModuleName ComputerManagementDsc
+    Import-DscResource -ModuleName xPSDesiredStateConfiguration
+    Import-DscResource -ModuleName xDNSServer
 
     [System.Management.Automation.PSCredential ]$DomainCreds = New-Object System.Management.Automation.PSCredential ("$($Admincreds.UserName)@${DomainName}", $Admincreds.Password)
 
@@ -72,32 +74,31 @@
             DependsOn="[WindowsFeature]ADDSInstall"
         }
 
-        xWaitForADDomain DscForestWait
+        WaitForADDomain DscForestWait
         {
             DomainName = $DomainName
-            DomainUserCredential= $DomainCreds
-            RetryCount = $RetryCount
-            RetryIntervalSec = $RetryIntervalSec
+            Credential= $DomainCreds
+            WaitTimeout = $RetryIntervalSec
             DependsOn = '[xDNSServerAddress]DnsServerAddress'
         }
 
 
-        xADDomain CHILD
+        ADDomain CHILD
         {
             DomainName = $ChildNetBiosDomain
-            DomainAdministratorCredential = $DomainCreds
+            Credential = $DomainCreds
             SafemodeAdministratorPassword = $DomainCreds
             DatabasePath = "N:\NTDS"
             LogPath = "N:\NTDS"
             SysvolPath = "N:\SYSVOL"
             ParentDomainName = $DomainName
-            DependsOn = "[xWaitForADDomain]DscForestWait"
+            DependsOn = "[WaitForADDomain]DscForestWait"
         }
 
         TimeZone SetTimeZone
         {
             IsSingleInstance = 'Yes'
-            TimeZone         = 'Eastern Standard Time'
+            TimeZone         = $TimeZone
         }
 
         Script UpdateDNSSettings
