@@ -755,7 +755,10 @@
               },      
               "DC2Name": {
                   "value": "[variables('dc2name')]"
-              },                            
+              }, 
+              "NetBiosDomain": {
+                  "value": "[parameters('ParentNetBiosDomain')]"
+              },                                         
               "DomainName": {
                 "value": "[variables('ParentDomainName')]"
               },              

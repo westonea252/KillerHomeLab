@@ -8,6 +8,12 @@
                 "description": "Computer Name"
             }
         },
+        "NetBiosDomain": {
+            "type": "string",
+            "metadata": {
+                "description": "NetBios Domain Name"
+            }
+        },         
         "DC1Name": {
             "type": "string",
             "metadata": {
@@ -101,7 +107,8 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "DC1Name": "[parameters('DC1Name')]",
-                            "DC2Name": "[parameters('DC2Name')]",                            
+                            "DC2Name": "[parameters('DC2Name')]",
+                            "NetBiosDomain": "[parameters('NetBiosDomain')]",                                                                                    
                             "domainName": "[parameters('domainName')]",                                                        
                             "ReverseLookup1": "[parameters('ReverseLookup1')]",
                             "ReverseLookup2": "[parameters('ReverseLookup2')]",                            

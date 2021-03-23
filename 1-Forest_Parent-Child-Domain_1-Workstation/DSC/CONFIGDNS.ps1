@@ -2,6 +2,7 @@
 {
    param
    (
+        [String]$NetBiosDomain,
         [String]$DC1Name,
         [String]$DC2Name,
         [String]$dc1lastoctet,
