@@ -388,7 +388,7 @@
     "wk1name": "[concat(parameters('NamingConvention'),'-wk-01')]",           
     "wk1IP": "[concat(parameters('vnet1ID'),'.2.',variables('wk1lastoctet'))]",        
     "wk2lastoctet": "201",            
-    "wk2name": "[concat(parameters('ChildNetBiosDomain'),'-wk-02')]",           
+    "wk2name": "[concat(parameters('ChildNetBiosDomain'),'-wk-01')]",           
     "wk2IP": "[concat(parameters('vnet2ID'),'.2.',variables('wk2lastoctet'))]",        
     "DCDataDisk1Name": "NTDS",            
     "ParentDomainName": "[concat(parameters('SubDNSDomain'),parameters('ParentDomain'),'.',parameters('TLD'))]",
