@@ -3,6 +3,8 @@
    param
    (
         [String]$computerName,
+        [String]$DC2Name,
+        [String]$NetBiosDomain,
         [String]$InternaldomainName,
         [String]$ExternaldomainName,
         [String]$ReverseLookup1,
@@ -13,25 +15,21 @@
         [String]$ocspIP,
         [String]$ex1IP,
         [String]$ex2IP,
-        [Int]$RetryCount=20,
-        [Int]$RetryIntervalSec=30
+        [Int]$RetryIntervalSec=420,
+        [System.Management.Automation.PSCredential]$Admincreds
     )
 
     Import-DscResource -Module xDnsServer
-    Import-DscResource -ModuleName ActiveDirectoryDsc
+    Import-DscResource -Module ActiveDirectoryDsc
+
+    [System.Management.Automation.PSCredential ]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosDomain}\$($Admincreds.UserName)", $Admincreds.Password)
 
     Node localhost
     {
-        LocalConfigurationManager
-        {
-            RebootNodeIfNeeded = $true
-        }
-
         WaitForADDomain DscForestWait
         {
             DomainName = $InternaldomainName
             Credential= $DomainCreds
-            RestartCount = $RetryCount
             WaitTimeout = $RetryIntervalSec
         }
 
@@ -66,7 +64,7 @@
         {
             Name      = "$dc1lastoctet"
             Zone      = "$ReverseLookup1.in-addr.arpa"
-            Target    = "$computerName.$InternaldomainName"
+            Target    = "$DC2Name.$InternaldomainName"
             Type      = 'Ptr'
             Ensure    = 'Present'
             DependsOn = "[xDnsServerADZone]ReverseADZone1"
@@ -76,7 +74,7 @@
         {
             Name      = "$dc2lastoctet"
             Zone      = "$ReverseLookup2.in-addr.arpa"
-            Target    = "$computerName.$InternaldomainName"
+            Target    = "$DC2Name.$InternaldomainName"
             Type      = 'Ptr'
             Ensure    = 'Present'
             DependsOn = "[xDnsServerADZone]ReverseADZone2"

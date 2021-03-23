@@ -2,13 +2,13 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "Location2": {
+      "Location2": {
       "type": "string",
-      "defaultValue": "WestUS",
+      "defaultValue": "USGovTexas",
       "metadata": {
-        "description": "Choose Region (Example: WestUS)"
+        "description": "Choose Region (Example: USGovTexas)"
       }
-    },    
+    },
     "TimeZone": {
       "type": "string",
       "defaultValue": "Eastern Standard Time",
@@ -154,7 +154,7 @@
       "metadata": {
           "description": "Time Zone"
       }
-    },    
+    },                         
     "ExchangeOrgName": {
       "type": "string",
       "defaultValue": "49ers",
@@ -162,13 +162,13 @@
         "description": "Enter an Exchange Organization Name"
       }
     },
-    "Exchange2013ISOUrl": {
+    "ExchangeSP3ISOUrl": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Enter a valid URL that points to the Exchange 2013.ISO"
+        "description": "Enter a valid URL that points to the Exchange 2010 SP3 ISO"
       }
-    },   
+    },
     "adminUsername": {
         "type": "string",
         "metadata": {
@@ -187,7 +187,7 @@
       "metadata": {
         "description": "Enter Email Address to send completed status"
       }
-    },    
+    },       
     "WindowsServerLicenseType": {
       "type": "string",
       "defaultValue": "None",
@@ -198,7 +198,7 @@
       "metadata": {
           "description": "Windows Server OS License Type"
       }
-    },    
+    },       
     "WindowsClientLicenseType": {
       "type": "string",
       "defaultValue": "None",
@@ -209,12 +209,12 @@
       "metadata": {
           "description": "Windows Client OS License Type"
       }
-    },                 
+    },                  
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
       "metadata": {
-        "description": "Environment Naming Convention"
+        "description": "c"
       }
     },
     "SubDNSDomain": {
@@ -230,7 +230,7 @@
       "metadata": {
           "description": "Sub DNS Domain Name Example:  DC=sub2,DC=sub1, must include COMMA AT END"
       }
-    },        
+    },     
     "NetBiosDomain": {
       "type": "string",
       "defaultValue": "killerhomelab",
@@ -281,31 +281,31 @@
       "metadata": {
           "description": "External Top-Level Domain Name"
       }
-    },                                                                            
+    },                                                  
     "vnet1ID": {
       "type": "string",
-      "defaultValue": "13.1",
+      "defaultValue": "10.1",
       "metadata": {
         "description": "VNet1 Prefix"
       }
     },    
     "vnet2ID": {
       "type": "string",
-      "defaultValue": "13.2",
+      "defaultValue": "10.2",
       "metadata": {
         "description": "VNet1 Prefix"
       }
-    },        
+    },
     "ReverseLookup1": {
       "type": "string",
-      "defaultValue": "1.13",
+      "defaultValue": "1.10",
       "metadata": {
           "description": "DNS Reverse Lookup Zone1 Prefix"
       }
     },                    
     "ReverseLookup2": {
       "type": "string",
-      "defaultValue": "2.13",
+      "defaultValue": "2.10",
       "metadata": {
           "description": "DNS Reverse Lookup Zone2 Prefix"
       }
@@ -323,7 +323,7 @@
       "metadata": {
           "description": "Issuing CA Name"
       }
-    },  
+    },
     "RootCAHashAlgorithm": {
       "type": "string",
       "defaultValue": "SHA256",
@@ -367,13 +367,11 @@
       "metadata": {
           "description": "Issuing CA Key Length"
       }
-    },                                            
-
+    },                                                                                       
     "DC1OSVersion": {
       "type": "string",
       "defaultValue": "2016-Datacenter",
       "allowedValues": [
-        "2019-Datacenter",
         "2016-Datacenter"
       ],      
       "metadata": {
@@ -384,7 +382,6 @@
       "type": "string",
       "defaultValue": "2016-Datacenter",
       "allowedValues": [
-        "2019-Datacenter",
         "2016-Datacenter"
       ],      
       "metadata": {
@@ -437,9 +434,9 @@
     },                        
     "EXOSVersion": {
       "type": "string",
-      "defaultValue": "2012-R2-Datacenter",
+      "defaultValue": "2008-R2-SP1",
       "allowedValues": [
-        "2012-R2-Datacenter"
+        "2008-R2-SP1"
       ],      
       "metadata": {
           "description": "Exchange Server OS Version"
@@ -464,7 +461,7 @@
       "metadata": {
           "description": "Worksation2 OS Version"
       }
-    },  
+    },      
     "DC1VMSize": {
         "type": "string",
         "defaultValue": "Standard_D2s_v3",
@@ -474,7 +471,7 @@
     },        
     "DC2VMSize": {
       "type": "string",
-      "defaultValue": "Standard_D2s_v3",
+      "defaultValue": "Standard_DS11_v2",
       "metadata": {
           "description": "Domain Controller2 VMSize"
       }
@@ -493,13 +490,6 @@
             "description": "Issuing CA VMSize"
         }
     },            
-    "OCSPVMSize": {
-        "type": "string",
-        "defaultValue": "Standard_D2s_v3",
-        "metadata": {
-            "description": "OCSP VMSize"
-        }
-    },        
     "FS1VMSize": {
         "type": "string",
         "defaultValue": "Standard_D2s_v3",
@@ -509,11 +499,18 @@
     },                        
     "EX1VMSize": {
         "type": "string",
-        "defaultValue": "Standard_D8s_v3",
+        "defaultValue": "Standard_D2s_v3",
         "metadata": {
             "description": "Exchange Server1 VMSize"
         }
-    },                                                               
+    },                                            
+    "OCSPVMSize": {
+        "type": "string",
+        "defaultValue": "Standard_D2s_v3",
+        "metadata": {
+            "description": "OCSP VMSize"
+        }
+    },                       
     "WK1VMSize": {
       "type": "string",
       "defaultValue": "Standard_D2s_v3",
@@ -530,18 +527,18 @@
     },                        
     "EX2VMSize": {
         "type": "string",
-        "defaultValue": "Standard_D8s_v3",
+        "defaultValue": "Standard_D2s_v3",
         "metadata": {
             "description": "Exchange Server2 VMSize"
         }
     },                                                    
     "WK2VMSize": {
       "type": "string",
-      "defaultValue": "Standard_D2s_v3",
+      "defaultValue": "Standard_DS11_v2",
       "metadata": {
           "description": "Workstation2 VMSize"
       }
-    },                
+    },                               
     "_artifactsLocation": {
       "type": "string",
       "metadata": {
@@ -587,7 +584,7 @@
     "fs1name": "[concat(parameters('NamingConvention'),'-fs-01')]",           
     "fs1IP": "[concat(parameters('vnet1ID'),'.1.',variables('fs1lastoctet'))]",  
     "fs1lastoctet": "104",                                                              
-    "ex1name": "[concat(parameters('NamingConvention'),'-ex13-01')]",           
+    "ex1name": "[concat(parameters('NamingConvention'),'-ex10-01')]",           
     "ex1IP": "[concat(parameters('vnet1ID'),'.1.',variables('ex1lastoctet'))]",         
     "ex1lastoctet": "110",    
     "wk1name": "[concat(parameters('NamingConvention'),'-wk-01')]",           
@@ -599,7 +596,7 @@
     "fs2name": "[concat(parameters('NamingConvention'),'-fs-02')]",           
     "fs2IP": "[concat(parameters('vnet2ID'),'.1.',variables('fs2lastoctet'))]",       
     "fs2lastoctet": "104",                                                         
-    "ex2name": "[concat(parameters('NamingConvention'),'-ex13-02')]",           
+    "ex2name": "[concat(parameters('NamingConvention'),'-ex10-02')]",           
     "ex2IP": "[concat(parameters('vnet2ID'),'.1.',variables('ex2lastoctet'))]",  
     "ex2lastoctet": "110",                                    
     "wk2name": "[concat(parameters('NamingConvention'),'-wk-02')]",           
@@ -608,16 +605,21 @@
     "ReverseLookup1": "[concat('1.',parameters('ReverseLookup1'))]",    
     "ReverseLookup2": "[concat('1.',parameters('ReverseLookup2'))]",        
     "DCDataDisk1Name": "NTDS",            
-    "CATemplateScriptUrl": "https://elliottf.blob.core.windows.net/github/Scripts/Create_CA_Templates.ps1",    
     "InternaldomainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('InternalTLD'))]",
     "ExternaldomainName": "[concat(parameters('ExternalDomain'),'.',parameters('ExternalTLD'))]", 
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('InternalTLD'))]",
+    "PWSEXPolGPOName":  "PowerShell-ExecutionPolicy",
+    "PWSEXPolGPOGUID": "EC04DF04-A647-4A3E-9247-51B4CB137F5F",
+    "PWSEXPolGPOSASUrl": "https://elliottf.blob.core.windows.net/github/GPOs/PowerShell-ExecutionPolicy.zip",
+    "CATemplateScriptUrl": "https://elliottf.blob.core.windows.net/github/Scripts/Create_CA_Templates.ps1",
+    "EXDiskPartUrl": "https://elliottf.blob.core.windows.net/github/Scripts/ExchangeDiskpart.txt",    
     "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
-    "DB1Name": "[concat(parameters('NamingConvention'),'-13-db01')]",
-    "DB2Name": "[concat(parameters('NamingConvention'),'-13-db02')]" ,             
-    "DAG13Name": "[concat(parameters('NamingConvention'),'-13-dag01')]",
-    "DAG13IP": "255.255.255.255",    
+    "DB1Name": "[concat(parameters('NamingConvention'),'-10-db01')]",
+    "DB2Name": "[concat(parameters('NamingConvention'),'-10-db02')]" ,             
+    "DAG10Name": "[concat(parameters('NamingConvention'),'-10-dag01')]",
+    "dag10IP": "[concat(parameters('vnet1ID'),'.1.',variables('dag10lastoctet'))]",            
+    "dag10lastoctet": "210",
     "NSG1Name": "[concat(parameters('NamingConvention'),'-nsg01')]",
     "NSG2Name": "[concat(parameters('NamingConvention'),'-nsg02')]",
     "FromEmail": "[concat(parameters('adminUserName'),'@',variables('InternaldomainName'))]"            
@@ -664,7 +666,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "VNet2",     
+      "name": "VNet2",
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -762,7 +764,7 @@
               },              
               "LicenseType": {
                 "value": "[parameters('WindowsServerLicenseType')]"
-              },            
+              },           
               "DataDisk1Name": {
                 "value": "[variables('DCDataDisk1Name')]"
               },            
@@ -806,13 +808,13 @@
               },
               "TimeZone": {
                   "value": "[parameters('TimeZone')]"
-              },              
+              },                 
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },
               "DomainName": {
                 "value": "[variables('InternalDomainName')]"
-              },                 
+              },                
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
               },                                                                                                            
@@ -969,19 +971,19 @@
           "parameters": {
               "computerName": {
                   "value": "[variables('dc1name')]"
-              },        
+              },
               "DC2Name": {
                   "value": "[variables('dc2name')]"
               },              
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
-              },                  
+              },              
               "InternalDomainName": {
                 "value": "[variables('InternaldomainName')]"
               },       
               "ExternalDomainName": {
                 "value": "[variables('ExternaldomainName')]"
-              },              
+              },                         
               "ReverseLookup1": {
                 "value": "[variables('ReverseLookup1')]"
               },                                                                                                            
@@ -1005,13 +1007,13 @@
               },                                                                                                                          
               "ocspIP": {
                 "value": "[variables('ocspIP')]"
-              },   
+              },    
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
               },                                                                                                            
               "adminPassword": {
                 "value": "[parameters('adminPassword')]"
-              },              
+              },                                                                                                                                                                                                                                                                                                                      
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
               },                                                                                                            
@@ -1100,9 +1102,50 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "PeeringToSite2",
+      "name": "PowerShellExecutionPolicy",
       "dependsOn": [
         "createsites"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/gpo.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('dc1name')]"
+              },
+              "GPOName": {
+                "value": "[variables('PWSEXPolGPOName')]"
+              },     
+              "GPOSASUrl": {
+                "value": "[variables('PWSEXPolGPOSASUrl')]"
+              },                                                                                                                          
+              "GPOGUID": {
+                "value": "[variables('PWSEXPolGPOGUID')]"
+              },                                                                                                                                        
+              "BaseDN": {
+                "value": "[variables('BaseDN')]"
+              },
+              "location": {
+                  "value": "[resourceGroup().location]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                                                                                                                                                                                                                           
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                          
+          }
+      }
+    },            
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "PeeringToSite2",
+      "dependsOn": [
+        "PowerShellExecutionPolicy"
       ],            
       "properties": {
           "mode": "Incremental",
@@ -1139,7 +1182,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "PeeringToSite1",
-      "dependsOn": [
+      "dependsOn": [      
         "PeeringToSite2"
       ],            
       "properties": {
@@ -1204,7 +1247,7 @@
               },              
               "LicenseType": {
                 "value": "[parameters('WindowsServerLicenseType')]"
-              },            
+              },           
               "DataDisk1Name": {
                 "value": "[variables('DCDataDisk1Name')]"
               },            
@@ -1248,13 +1291,13 @@
               },
               "TimeZone": {
                   "value": "[parameters('TimeZone')]"
-              },               
+              },                    
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },
               "domainName": {
                 "value": "[variables('InternaldomainName')]"
-              },            
+              },                 
               "DNSServerIP": {
                   "value": "[variables('dc1IP')]"
               },
@@ -1350,7 +1393,7 @@
               }
           }
       }
-    },
+    },     
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
@@ -1488,7 +1531,7 @@
               },              
               "LicenseType": {
                 "value": "[parameters('WindowsServerLicenseType')]"
-              },            
+              },           
               "VMSize": {
                 "value": "[parameters('icaVMSize')]"
               },
@@ -1879,7 +1922,7 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
           }
       }
-    },                
+    },      
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
@@ -1911,7 +1954,7 @@
               },              
               "LicenseType": {
                 "value": "[parameters('WindowsServerLicenseType')]"
-              },            
+              },           
               "VMSize": {
                 "value": "[parameters('fs1VMSize')]"
               },
@@ -2002,7 +2045,7 @@
               },              
               "LicenseType": {
                 "value": "[parameters('WindowsServerLicenseType')]"
-              },            
+              },           
               "VMSize": {
                 "value": "[parameters('fs2VMSize')]"
               },
@@ -2061,7 +2104,7 @@
               }
           }
       }
-    },
+    },                    
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
@@ -2158,77 +2201,7 @@
               }
           }
       }
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
-      "name": "prepareexchange13s1",
-      "dependsOn": [
-        "DomainJoinEX1"
-      ],      
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/prepareexchange13.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "computerName": {
-                  "value": "[variables('ex1name')]"
-              },
-              "NetBiosDomain": {
-                  "value": "[parameters('NetBiosDomain')]"
-              }, 
-              "ExchangeSASUrl": {
-                  "value": "[parameters('Exchange2013ISOUrl')]"
-              },                                    
-              "adminUsername": {
-                "value": "[parameters('adminUsername')]"
-              },                                                                                                            
-              "adminPassword": {
-                "value": "[parameters('adminPassword')]"
-              },                                                                                                                                                                                                                                                                                                                                 
-              "location": {
-                  "value": "[resourceGroup().location]"
-              },          
-              "_artifactsLocation": {
-                "value": "[parameters('_artifactsLocation')]"
-              },                                                                                                            
-              "_artifactsLocationSasToken": {
-                "value": "[parameters('_artifactsLocationSasToken')]"
-              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
-          }
-      }
-    }, 
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
-      "name": "restartex1-1",
-      "dependsOn": [
-        "prepareexchange13s1"
-      ],            
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/restartvm.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "computerName": {
-                  "value": "[variables('ex1name')]"
-              },
-              "_artifactsLocation": {
-                "value": "[parameters('_artifactsLocation')]"
-              },                                                                                                            
-              "_artifactsLocationSasToken": {
-                "value": "[parameters('_artifactsLocationSasToken')]"
-              },                                                                                                                                                                                                                                                                                                                         
-              "location": {
-                  "value": "[resourceGroup().location]"
-              }
-          }
-      }
-    },                 
+    },                
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
@@ -2260,7 +2233,7 @@
               },              
               "LicenseType": {
                 "value": "[parameters('WindowsServerLicenseType')]"
-              },            
+              },          
               "DataDisk1Name": {
                 "value": "Exchange"
               },            
@@ -2287,7 +2260,7 @@
               }
           }
       }
-    }, 
+    },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
@@ -2325,27 +2298,277 @@
               }
           }
       }
-    },                                                 
+    },    
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "prepareexchange13s2",
+      "name": "configex1disk",
       "dependsOn": [
+        "PowerShellExecutionPolicy",
+        "DomainJoinEX1"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/diskpart.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ex1name')]"
+              },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },              
+              "EXDiskPartUrl": {
+                  "value": "[variables('EXDiskPartUrl')]"
+              },              
+              "location": {
+                  "value": "[resourceGroup().location]"
+              },          
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          }
+      }
+    },                           
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "configex2disk",
+      "dependsOn": [
+        "PowerShellExecutionPolicy",        
         "DomainJoinEX2"
       ],      
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/prepareexchange13.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/diskpart.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
               "computerName": {
                   "value": "[variables('ex2name')]"
               },
-              "ExchangeSASUrl": {
-                  "value": "[parameters('Exchange2013ISOUrl')]"
-              },                                    
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },              
+              "EXDiskPartUrl": {
+                  "value": "[variables('EXDiskPartUrl')]"
+              },                            
+              "location": {
+                  "value": "[parameters('Location2')]"
+              },          
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          }
+      }
+    },                               
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "downloadexchange10s1",
+      "dependsOn": [
+        "ReplicateAD"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/downloadexchange10.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('dc1name')]"
+              },
+              "ExchangeSP3ISOUrl": {
+                  "value": "[parameters('ExchangeSP3ISOUrl')]"
+              },                        
+              "location": {
+                  "value": "[resourceGroup().location]"
+              },          
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          }
+      }
+    },                           
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "downloadexchange10s2",
+      "dependsOn": [
+        "restartdc2"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/downloadexchange10.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('dc2name')]"
+              },
+              "ExchangeSP3ISOUrl": {
+                  "value": "[parameters('ExchangeSP3ISOUrl')]"
+              },                                      
+              "location": {
+                  "value": "[parameters('Location2')]"
+              },          
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          }
+      }
+    },                                   
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "prepareadexchange10",
+      "dependsOn": [
+        "ReplicateAD",
+        "downloadexchange10s1"     
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/prepareadexchange10.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('dc1name')]"
+              },
+              "ExchangeOrgName": {
+                  "value": "[parameters('ExchangeOrgName')]"
+              },                                                                                                                                   
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },              
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                                                                                 
+              "location": {
+                  "value": "[resourceGroup().location]"
+              },          
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          }
+      }
+    }, 
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "prepareexchange10s1",
+      "dependsOn": [
+        "configex1disk",
+        "prepareadexchange10"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/prepareexchange10.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ex1name')]"
+              },
+              "DCIP": {
+                  "value": "[variables('dc1IP')]"
+              },  
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },                                        
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                                                                                 
+              "location": {
+                  "value": "[resourceGroup().location]"
+              },          
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "restartex1-1",
+      "dependsOn": [
+        "prepareexchange10s1"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/restartvm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ex1name')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                                                         
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },                                                                     
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "prepareexchange10s2",
+      "dependsOn": [
+        "configex2disk",
+        "prepareadexchange10"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/prepareexchange10.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ex2name')]"
+              },
+              "DCIP": {
+                  "value": "[variables('dc2IP')]"
+              },  
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },                                        
@@ -2366,13 +2589,13 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
           }
       }
-    },
+    },   
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "restartex2-1",
       "dependsOn": [
-        "prepareexchange13s2"
+        "prepareexchange10s2"
       ],            
       "properties": {
           "mode": "Incremental",
@@ -2395,65 +2618,14 @@
               }
           }
       }
-    },                                                                 
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
-      "name": "prepareadexchange13",
-      "dependsOn": [
-        "ReplicateAD",        
-        "restartex1-1"
-      ],      
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/prepareadexchange13.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "computerName": {
-                  "value": "[variables('ex1name')]"
-              },
-              "ExchangeOrgName": {
-                  "value": "[parameters('ExchangeOrgName')]"
-              },                                      
-              "NetBiosDomain": {
-                  "value": "[parameters('NetBiosDomain')]"
-              },
-              "dc1name": {
-                  "value": "[variables('dc1name')]"
-              },                            
-              "dc2name": {
-                  "value": "[variables('dc2name')]"
-              },                                          
-              "BaseDN": {
-                  "value": "[variables('BaseDN')]"
-              },                                                        
-              "adminUsername": {
-                "value": "[parameters('adminUsername')]"
-              },                                                                                                            
-              "adminPassword": {
-                "value": "[parameters('adminPassword')]"
-              },                                                                                                                                                                                                                                                                                                                                 
-              "location": {
-                  "value": "[resourceGroup().location]"
-              },          
-              "_artifactsLocation": {
-                "value": "[parameters('_artifactsLocation')]"
-              },                                                                                                            
-              "_artifactsLocationSasToken": {
-                "value": "[parameters('_artifactsLocationSasToken')]"
-              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
-          }
-      }
-    },     
+    },                                                                     
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "grantextrustedsub1",
       "dependsOn": [
-        "DomainJoinFS1",       
-        "prepareadexchange13"
+        "DomainJoinFS1",
+        "prepareadexchange10"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -2465,6 +2637,9 @@
               "computerName": {
                   "value": "[variables('fs1name')]"
               },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },               
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },                                        
@@ -2486,7 +2661,7 @@
       "name": "grantextrustedsub2",
       "dependsOn": [
         "DomainJoinFS2",
-        "prepareadexchange13"
+        "prepareadexchange10"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -2498,6 +2673,9 @@
               "computerName": {
                   "value": "[variables('fs2name')]"
               },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },               
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },                                        
@@ -2517,15 +2695,13 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "installexchange1",
-      "dependsOn": [        
-        "DomainJoinEX1",
-        "prepareexchange13s1",
-        "prepareadexchange13"     
+      "dependsOn": [
+        "restartex1-1"
       ],      
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/exchange13.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/exchange10.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -2558,7 +2734,7 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
           }
       }
-    },
+    }, 
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
@@ -2569,7 +2745,7 @@
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/configexchange13.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/configexchange10.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -2599,6 +2775,12 @@
               },       
               "CAServerIP": {
                   "value": "[variables('icaIP')]"
+              },                                        
+              "IssuingCAServer": {
+                  "value": "[variables('icaname')]"
+              },                                 
+              "IssuingCAName": {
+                  "value": "[parameters('IssuingCAName')]"
               },                                                                                                                                                                                                     
               "Site": {
                   "value": "Site1"
@@ -2620,21 +2802,18 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
           }
       }
-    },        
+    },    
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "installexchange2",
       "dependsOn": [
-        "DomainJoinEX2",
-        "prepareexchange13s2",                 
-        "prepareadexchange13",                
         "configexchange1"
       ],      
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/exchange13.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/exchange10.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -2664,10 +2843,10 @@
               },                                                                                                            
               "_artifactsLocationSasToken": {
                 "value": "[parameters('_artifactsLocationSasToken')]"
-              }          
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
           }
       }
-    },
+    },      
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
@@ -2678,7 +2857,7 @@
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/configexchange13.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/configexchange19.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -2708,9 +2887,15 @@
               },       
               "CAServerIP": {
                   "value": "[variables('icaIP')]"
-              },                                                                                                                                                                                                     
+              },
+              "IssuingCAServer": {
+                  "value": "[variables('icaname')]"
+              },                                 
+              "IssuingCAName": {
+                  "value": "[parameters('IssuingCAName')]"
+              },                                                                                                                                                                                                                   
               "Site": {
-                  "value": "Site2"
+                  "value": "Site1"
               },                            
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
@@ -2729,7 +2914,7 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
           }
       }
-    },  
+    },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
@@ -2740,7 +2925,7 @@
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/configdag13.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/configdag.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -2766,11 +2951,11 @@
                   "value": "[variables('fs1name')]"
               },                                                                                                                                                           
               "DAGName": {
-                  "value": "[variables('dag13name')]"
-              },     
+                  "value": "[variables('dag10name')]"
+              },   
               "DAGIP": {
-                  "value": "[variables('dag13ip')]"
-              },                                                                                                                                                   
+                  "value": "[variables('dag10ip')]"
+              },                                                                                                                                                                      
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
               },                                                                                                            
@@ -2799,7 +2984,7 @@
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/configdag13.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/configdag.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -2825,11 +3010,11 @@
                   "value": "[variables('fs1name')]"
               },                                                                                                                                                           
               "DAGName": {
-                  "value": "[variables('dag13name')]"
-              },      
+                  "value": "[variables('dag10name')]"
+              },    
               "DAGIP": {
-                  "value": "[variables('dag13ip')]"
-              },                                                                                                                                                                                                                                                                                                                                                          
+                  "value": "[variables('dag10ip')]"
+              },                                                                                                                                                                                                                                                                                                                                                             
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
               },                                                                                                            
@@ -2847,7 +3032,7 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
           }
       }
-    },            
+    },   
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
@@ -2953,7 +3138,7 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
           }
       }
-    },                              
+    },      
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
@@ -3011,7 +3196,7 @@
               }
           }
       }
-    },                                        
+    },                                                                                       
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
@@ -3043,7 +3228,7 @@
               },              
               "LicenseType": {
                 "value": "[parameters('WindowsClientLicenseType')]"
-              },            
+              },           
               "VMSize": {
                 "value": "[parameters('WK1VMSize')]"
               },
@@ -3064,7 +3249,7 @@
               }
           }
       }
-    },    
+    },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
@@ -3134,7 +3319,7 @@
               },              
               "LicenseType": {
                 "value": "[parameters('WindowsClientLicenseType')]"
-              },            
+              },           
               "VMSize": {
                 "value": "[parameters('WK2VMSize')]"
               },
@@ -3199,7 +3384,7 @@
       "apiVersion": "2019-10-01",
       "name": "addocsppip",
       "dependsOn": [
-        "configureocsp"     
+        "configureocsp"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -3252,8 +3437,7 @@
       "apiVersion": "2019-10-01",
       "name": "addex1pip",
       "dependsOn": [
-        "restartex1-2",
-        "restartex2-2"
+        "configexchange2"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -3278,7 +3462,7 @@
                 "value": "[parameters('EXOSVersion')]"
               },              
               "LicenseType": {
-                "value": "[parameters('WindowsServerLicenseType')]"
+                "value": "None"
               },     
               "DataDisk1Name": {
                 "value": "Exchange"
@@ -3312,8 +3496,7 @@
       "apiVersion": "2019-10-01",
       "name": "addex2pip",
       "dependsOn": [
-        "restartex1-2",
-        "restartex2-2"
+        "configexchange2"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -3373,7 +3556,7 @@
       "name": "deploynsg1",
       "dependsOn": [
         "addocsppip",
-        "addex1pip"      
+        "addex1pip"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -3402,7 +3585,7 @@
       "apiVersion": "2019-10-01",
       "name": "deploynsg2",
       "dependsOn": [
-        "addex2pip"                
+        "addex2pip"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -3554,10 +3737,10 @@
                   "value": "autodiscover"
               },
               "OutlookRecord": {
-                  "value": "outlook2013"
+                  "value": "outlook2016"
               },
               "EASRecord": {
-                  "value": "eas2013"
+                  "value": "eas2016"
               },
               "SMTP1Record": {
                   "value": "smtp1"
@@ -3632,6 +3815,6 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
           }
       }
-    }                                                                                                    
+    }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
   ]
 }
