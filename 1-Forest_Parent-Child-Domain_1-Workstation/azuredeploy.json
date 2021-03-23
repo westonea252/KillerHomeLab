@@ -1031,7 +1031,7 @@
                 "value": "[variables('ChildDomainName')]"
               },                            
               "domainName": {
-                "value": "[variables('ChildDomainName')]"
+                "value": "[variables('ParentDomainName')]"
               },              
               "DNSServerIP": {
                   "value": "[variables('dc1IP')]"
