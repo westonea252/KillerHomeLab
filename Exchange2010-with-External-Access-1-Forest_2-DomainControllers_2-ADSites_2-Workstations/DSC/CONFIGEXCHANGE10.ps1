@@ -3,18 +3,16 @@
    param
    (
         [String]$ComputerName,
-        [String]$RootDomainFQDN,                
+        [String]$InternaldomainName,
+        [String]$ExternaldomainName,                                
         [String]$NetBiosDomain,
         [String]$BaseDN,
-        [String]$IssuingCAServer,
-        [String]$IssuingCAName,
         [String]$Site1DC,
         [String]$Site2DC,
         [String]$ConfigDC,
-        [String]$Site1FSW,
-        [String]$DAGName,
-        [String]$DAGIPAddress,
         [String]$CAServerIP,
+        [String]$IssuingCAServer,
+        [String]$IssuingCAName,
         [String]$Site,
         [System.Management.Automation.PSCredential]$Admincreds
     )
@@ -35,7 +33,7 @@
                 repadmin /replicate "$using:Site1DC" "$using:Site2DC" "$using:BaseDN"
                 repadmin /replicate "$using:Site2DC" "$using:Site1DC" "$using:BaseDN"
 
-                $fqdn = "$using:RootDomainFQDN"
+                $fqdn = "$using:ExternalDomainName"
                 $CN = '"CN'
                 $DNS = '"DNS'
                 $quote = '"'
@@ -73,29 +71,22 @@
                 certreq -accept S:\ExchangeInstall\Response.cer
 
                 # Get Exchange 2010 Certificate
-                $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=owa2010.$using:RootDomainFQDN"}).Thumbprint
+                $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=owa2010.$using:ExternalDomainName"}).Thumbprint
                 (Get-ChildItem -Path Cert:\LocalMachine\My\$thumbprint).FriendlyName = "Exchange 2010 SAN Cert"
 
                 # Set Virtual Directories
-                $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri "http://$using:computername.$using:RootDomainFQDN/PowerShell/"
+                $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri "http://$using:computername.$using:InternalDomainName/PowerShell/"
                 Import-PSSession $Session
-                Set-ClientAccessServer "$using:computername" –AutodiscoverServiceInternalUri "https://autodiscover2010.$using:RootDomainFQDN/Autodiscover/Autodiscover.xml"
-                Set-OWAVirtualDirectory –Identity "$using:computername\owa (Default Web Site)" –InternalURL "https://owa2010.$using:RootDomainFQDN/OWA" -ExternalURL "https://owa2010.$using:RootDomainFQDN/OWA" -ExternalAuthenticationMethods NTLM -FormsAuthentication:$False -BasicAuthentication:$False –WindowsAuthentication:$True
-                Set-ECPVirtualDirectory –Identity "$using:computername\ecp (Default Web Site)" –InternalURL "https://owa2010.$using:RootDomainFQDN/ECP" -ExternalURL "https://owa2010.$using:RootDomainFQDN/ECP" -ExternalAuthenticationMethods NTLM -FormsAuthentication:$False -BasicAuthentication:$False –WindowsAuthentication:$True
-                Set-OABVirtualDirectory –Identity "$using:computername\oab (Default Web Site)" –InternalURL "https://outlook2010.$using:RootDomainFQDN/OAB" -ExternalURL "https://outlook2010.$using:RootDomainFQDN/OAB"
+                Set-ClientAccessServer "$using:computername" –AutodiscoverServiceInternalUri "https://autodiscover2010.$using:ExternalDomainName/Autodiscover/Autodiscover.xml"
+                Set-OWAVirtualDirectory –Identity "$using:computername\owa (Default Web Site)" –InternalURL "https://owa2010.$using:ExternalDomainName/OWA" -ExternalURL "https://owa2010.$using:ExternalDomainName/OWA" -ExternalAuthenticationMethods NTLM -FormsAuthentication:$False -BasicAuthentication:$False –WindowsAuthentication:$True
+                Set-ECPVirtualDirectory –Identity "$using:computername\ecp (Default Web Site)" –InternalURL "https://owa2010.$using:ExternalDomainName/ECP" -ExternalURL "https://owa2010.$using:ExternalDomainName/ECP" -ExternalAuthenticationMethods NTLM -FormsAuthentication:$False -BasicAuthentication:$False –WindowsAuthentication:$True
+                Set-OABVirtualDirectory –Identity "$using:computername\oab (Default Web Site)" –InternalURL "https://outlook2010.$using:ExternalDomainName/OAB" -ExternalURL "https://outlook2010.$using:ExternalDomainName/OAB"
                 Set-WebServicesVirtualDirectory –Identity "$using:computername\EWS (Default Web Site)" –MRSProxyEnabled:$True
-                Set-ActiveSyncVirtualDirectory –Identity "$using:computername\Microsoft-Server-ActiveSync (Default Web Site)" –InternalURL "https://eas2010.$using:RootDomainFQDN/Microsoft-Server-ActiveSync" -ExternalURL "https://eas2010.$using:RootDomainFQDN/Microsoft-Server-ActiveSync"
-                Set-WebServicesVirtualDirectory –Identity "$using:computername\EWS (Default Web Site)" –InternalURL "https://outlook2010.$using:RootDomainFQDN/EWS/Exchange.asmx" -ExternalURL "https://outlook2010.$using:RootDomainFQDN/EWS/Exchange.asmx"
+                Set-ActiveSyncVirtualDirectory –Identity "$using:computername\Microsoft-Server-ActiveSync (Default Web Site)" –InternalURL "https://eas2010.$using:ExternalDomainName/Microsoft-Server-ActiveSync" -ExternalURL "https://eas2010.$using:ExternalDomainName/Microsoft-Server-ActiveSync"
+                Set-WebServicesVirtualDirectory –Identity "$using:computername\EWS (Default Web Site)" –InternalURL "https://outlook2010.$using:ExternalDomainName/EWS/Exchange.asmx" -ExternalURL "https://outlook2010.$using:ExternalDomainName/EWS/Exchange.asmx"
 
                 # Enable Exchange 2010 Certificate
                 Enable-ExchangeCertificate -Thumbprint $thumbprint -Services IIS -Confirm:$False
-
-                # Create DAG
-                Start-Sleep -s 60
-                $DAGCheck = Get-DatabaseAvailabilityGroup -Identity "$using:DAGName" -DomainController "$using:ConfigDC" -ErrorAction 0
-                IF ($DAGCheck -eq $null) {New-DatabaseAvailabilityGroup -Name "$using:DAGName" -WitnessServer "$using:Site1FSW" -WitnessDirectory C:\FSWs -DomainController "$using:ConfigDC"}
-                Set-DatabaseAvailabilityGroup -Identity "$using:DAGName" -DatabaseAvailabilityGroupIpAddresses "$using:DAGIPAddress" -DomainController "$using:ConfigDC"
-                Add-DatabaseAvailabilityGroupServer -Identity "$using:DAGName" -MailboxServer "$using:computername" -DomainController "$using:ConfigDC"
 
                 # Create Connectors
                 $LocalRelayRecieveConnector = Get-ReceiveConnector "LocalRelay $using:computerName" -DomainController "$using:ConfigDC" -ErrorAction 0

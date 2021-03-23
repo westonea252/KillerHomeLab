@@ -8,6 +8,12 @@
                 "description": "Computer Name"
             }
         },
+        "DC2Name": {
+            "type": "string",
+            "metadata": {
+                "description": "Domain Controller 2 Computer Name"
+            }
+        },         
         "NetBiosDomain": {
             "type": "string",
             "metadata": {
@@ -95,6 +101,7 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "computerName": "[parameters('computerName')]",
+                            "DC2Name": "[parameters('DC2Name')]",                                                        
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
                             "InternalDomainName": "[parameters('InternalDomainName')]",                                                        
                             "ReverseLookup1": "[parameters('ReverseLookup1')]",

@@ -3,6 +3,7 @@
    param
    (
         [String]$computerName,
+        [String]$DC2Name,
         [String]$NetBiosDomain,
         [String]$InternaldomainName,
         [String]$dc1lastoctet,
@@ -60,7 +61,7 @@
         {
             Name      = "$dc2lastoctet"
             Zone      = "$ReverseLookup2.in-addr.arpa"
-            Target    = "$computerName.$DomainName"
+            Target    = "$DC2Name.$DomainName"
             Type      = 'Ptr'
             Ensure    = 'Present'
             DependsOn = "[xDnsServerADZone]ReverseADZone2"
