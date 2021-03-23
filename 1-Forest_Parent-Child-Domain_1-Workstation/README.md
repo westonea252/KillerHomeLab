@@ -38,12 +38,16 @@ AD OU Structure:
 
 Parameters that support changes
 - Location2. Enter a Valid Azure Region based on which Cloud (AzureCloud, AzureUSGovernment, etc...) you are using.
+- TimeZone.  Select an appropriate Time Zone.
 - Admin Username.  Enter a valid Admin Username
 - Admin Password.  Enter a valid Admin Password
 - WindowsServerLicenseType.  Choose Windows Server License Type (Example:  Windows_Server or None)
 - WindowsClientLicenseType.  Choose Windows Client License Type (Example:  Windows_Client or None)
 - Naming Convention. Enter a name that will be used as a naming prefix for (Servers, VNets, etc) you are using.
-- Net Bios Domain.  Enter a valid Net Bios Domain Name (Example: killerhomelab).
+- Sub DNS Domain.  OPTIONALLY, enter a valid DNS Sub Domain. (Example:  sub1. or sub1.sub2.    This entry must end with a DOT )
+- Sub DNS BaseDN.  OPTIONALLY, enter a valid DNS Sub Base DN. (Example:  DC=sub1, or DC=sub1,DC=sub2,    This entry must end with a COMMA )
+- Parent Net Bios Domain.  Enter a valid Net Bios Domain Name (Example:  killerhomelab).
+- Parent Domain.  Enter a valid Internal Domain (Exmaple:  killerhomelab)
 - Child Net Bios Domain.  Enter a valid Net Bios Domain Name (Example: it).
 - TLD.  Select a valid Top-Level Domain using the Pull-Down Menu.
 - Vnet1ID.  Enter first 2 octets of your desired Address Space for Virtual Network 1 Parent Domain (Example:  10.1)
