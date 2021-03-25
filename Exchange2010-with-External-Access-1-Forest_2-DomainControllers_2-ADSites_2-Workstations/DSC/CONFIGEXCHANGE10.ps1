@@ -40,6 +40,8 @@
                 $windowsNT = '"$Windows NT"'
 
                 # Create Exchange Request Policy File
+                $file = Get-Item -Path "S:\ExchangeInstall\GetCertificate.inf" -ErrorAction 0
+                IF ($file -eq $Null){
                 Set-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value "[Version]"
                 Add-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value "Signature=$WindowsNT"
                 Add-Content -Path S:\ExchangeInstall\GetCertificate.inf -Value "[NewRequest]"
@@ -69,6 +71,7 @@
                 certreq -new S:\ExchangeInstall\GetCertificate.inf S:\ExchangeInstall\Request.req
                 certreq -submit -config "$using:IssuingCAServer\$using:IssuingCAName" S:\ExchangeInstall\Request.req S:\ExchangeInstall\Response.cer
                 certreq -accept S:\ExchangeInstall\Response.cer
+                }
 
                 # Get Exchange 2010 Certificate
                 $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=owa2010.$using:ExternalDomainName"}).Thumbprint
