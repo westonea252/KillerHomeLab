@@ -8,29 +8,29 @@
                 "description": "Computer Name"
             }
         },
-        "NamingConvention": {
-            "type": "string",
+        "TimeZone": {
+            "type": "string",      
             "metadata": {
-                "description": "Domain Naming Convention"
+                "description": "Time Zone"
             }
-        },        
+        },              
         "NetBiosDomain": {
             "type": "string",
             "metadata": {
                 "description": "NetBios Domain Name"
             }
         },                                        
-        "domainName": {
-            "type": "string",
-          "metadata": {
-            "description": "The FQDN of the AD Domain created "
-          }
-        },
-        "RootDomainFQDN": {
+        "InternaldomainName": {
             "type": "string",
             "metadata": {
-                "description": "Root Domain Name FQDN"
-            }
+                "description": "The FQDN of the AD Domain created "
+          }
+        },
+        "ExternaldomainName": {
+            "type": "string",
+            "metadata": {
+                "description": "The External FQDN of the AD Domain created "
+          }
         },
         "IssuingCAName": {
             "type": "string",
@@ -95,10 +95,10 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "computerName": "[parameters('computerName')]",
-                            "NamingConvention": "[parameters('NamingConvention')]",                            
+                            "TimeZone": "[parameters('TimeZone')]",                                                        
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                                                        
-                            "domainName": "[parameters('domainName')]",                            
-                            "RootDomainFQDN": "[parameters('RootDomainFQDN')]",
+                            "InternaldomainName": "[parameters('InternaldomainName')]",                                                        
+                            "ExternaldomainName": "[parameters('ExternaldomainName')]",  
                             "IssuingCAName": "[parameters('IssuingCAName')]",
                             "RootCAName": "[parameters('RootCAName')]",                            
                             "AdminCreds": {

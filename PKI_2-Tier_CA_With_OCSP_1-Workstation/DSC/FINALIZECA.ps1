@@ -6,13 +6,12 @@
         [String]$NetBiosDomain,
         [String]$IssuingCAName,
         [String]$RootCAName,
-        [String]$RootDomainFQDN,
+        [String]$domainName,
         [String]$CATemplateScriptUrl,
 
         [System.Management.Automation.PSCredential]$Admincreds
     )
 
-    Import-DscResource -Module ActiveDirectoryDsc
     Import-DscResource -Module xPSDesiredStateConfiguration # Used for xRemoteFile
 
     [System.Management.Automation.PSCredential ]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosDomain}\$($Admincreds.UserName)", $Admincreds.Password)
@@ -74,7 +73,7 @@
 
                 # Check for and if not present add HTTP CDP Location
                 $HTTPCDPURI = Get-CACrlDistributionPoint | Where-object {$_.uri -like "http://crl"+"*"}
-                IF ($HTTPCDPURI.uri -eq $null){Add-CACRLDistributionPoint -Uri "http://crl.$using:rootdomainfqdn/CertEnroll/<CAName><CRLNameSuffix><DeltaCRLAllowed>.crl" -AddToCertificateCDP -AddToFreshestCrl -Force}
+                IF ($HTTPCDPURI.uri -eq $null){Add-CACRLDistributionPoint -Uri "http://crl.$using:domainName/CertEnroll/<CAName><CRLNameSuffix><DeltaCRLAllowed>.crl" -AddToCertificateCDP -AddToFreshestCrl -Force}
 
                 # Remove All Default AIA Locations
                 Get-CAAuthorityInformationAccess | Where-Object {$_.Uri -like 'ldap*'} | Remove-CAAuthorityInformationAccess -Force
@@ -87,7 +86,7 @@
 
                 # Check for and if not present add HTTP AIA Location
                 $HTTPAIAURI = Get-CAAuthorityInformationaccess | Where-object {$_.uri -like "http://crl"+"*"}
-                IF ($HTTPAIAURI.uri -eq $null){Add-CAAuthorityInformationaccess -Uri "http://ocsp.$rootdomainfqdn/ocsp" -AddToCertificateOcsp -Force}
+                IF ($HTTPAIAURI.uri -eq $null){Add-CAAuthorityInformationaccess -Uri "http://ocsp.$using:domainName/ocsp" -AddToCertificateOcsp -Force}
 
                 Restart-Service -Name CertSvc
             }
