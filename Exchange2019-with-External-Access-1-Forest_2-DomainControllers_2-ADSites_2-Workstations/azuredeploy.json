@@ -967,7 +967,13 @@
           "parameters": {
               "computerName": {
                   "value": "[variables('dc1name')]"
-              },          
+              },     
+              "DC2Name": {
+                  "value": "[variables('dc2name')]"
+              },              
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },                                         
               "InternalDomainName": {
                 "value": "[variables('InternaldomainName')]"
               },       
@@ -997,7 +1003,13 @@
               },                                                                                                                          
               "ocspIP": {
                 "value": "[variables('ocspIP')]"
-              },   
+              }, 
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                   
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
               },                                                                                                            
