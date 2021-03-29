@@ -100,8 +100,8 @@
     "variables": {
         "subnetId1": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnet1Name'))]",
         "subnetId2": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnet2Name'))]",
-        "NicName1": "[concat(parameters('computerName'),'-mgmt')]",
-        "NicName2": "[concat(parameters('computerName'),'-data')]",   
+        "NicName1": "[concat(parameters('computerName'),'-priv')]",
+        "NicName2": "[concat(parameters('computerName'),'-pub')]",   
         "NicIPAddress1": "[parameters('PrivateIP')]",
         "NicIPAddress2": "[parameters('PublicIP')]"                     
     },
