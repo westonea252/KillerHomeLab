@@ -1006,10 +1006,7 @@
               },
               "TimeZone": {
                   "value": "[parameters('TimeZone')]"
-              },               
-              "NamingConvention": {
-                  "value": "[parameters('NamingConvention')]"
-              },              
+              },                          
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },              

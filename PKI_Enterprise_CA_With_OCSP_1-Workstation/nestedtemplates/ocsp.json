@@ -13,13 +13,7 @@
             "metadata": {
                 "description": "Time Zone"
             }
-        },          
-        "NamingConvention": {
-            "type": "string",
-            "metadata": {
-                "description": "Domain Naming Convention"
-            }
-        },        
+        },             
         "NetBiosDomain": {
             "type": "string",
             "metadata": {
@@ -96,7 +90,6 @@
                         "Properties": {
                             "computerName": "[parameters('computerName')]",
                             "TimeZone": "[parameters('TimeZone')]",                                                                                    
-                            "NamingConvention": "[parameters('NamingConvention')]",                            
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                                                        
                             "InternaldomainName": "[parameters('InternaldomainName')]",                                                        
                             "ExternaldomainName": "[parameters('ExternaldomainName')]",  
