@@ -14,12 +14,12 @@ This Templates deploys a Single Forest/Domain:
 - 1 - Online Certificate Status Protocol Server
 - 1 - Domain Joined Windows 10 Workstation
 
-The deployment leverages Desired State Configuration scripts to further customize the following:
-
 The deployment also makes the following customizations:
 - Adds Public IP Address to OCSP.
 - Creates Azure DNS Zone Records based on the correesponding Servers Public IP
 - -- OCSP (OCSP VM Public IP)
+
+The deployment leverages Desired State Configuration scripts to further customize the following:
 
 AD OU Structure:
 - [domain.com]

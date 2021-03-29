@@ -2,8 +2,9 @@ Configuration ENTERPRISECA
 {
    param
    (
+        [String]$TimeZone,
         [String]$NetBiosDomain,
-        [String]$rootdomainfqdn,
+        [String]$domainName,
         [String]$EnterpriseCAHashAlgorithm,
         [String]$EnterpriseCAKeyLength,
         [String]$EnterpriseCAName,
@@ -101,7 +102,7 @@ Configuration ENTERPRISECA
         TimeZone SetTimeZone
         {
             IsSingleInstance = 'Yes'
-            TimeZone         = 'Eastern Standard Time'
+            TimeZone         = $TimeZone
         }
 
         File CopyEnterpriseCACRl
@@ -138,7 +139,7 @@ Configuration ENTERPRISECA
 
                 # Check for and if not present add HTTP CDP Location
                 $HTTPCDPURI = Get-CACrlDistributionPoint | Where-object {$_.uri -like "http://crl"+"*"}
-                IF ($HTTPCDPURI.uri -eq $null){Add-CACRLDistributionPoint -Uri "http://crl.$using:rootdomainfqdn/CertEnroll/<CAName><CRLNameSuffix><DeltaCRLAllowed>.crl" -AddToCertificateCDP -AddToFreshestCrl -Force}
+                IF ($HTTPCDPURI.uri -eq $null){Add-CACRLDistributionPoint -Uri "http://crl.$using:domainName/CertEnroll/<CAName><CRLNameSuffix><DeltaCRLAllowed>.crl" -AddToCertificateCDP -AddToFreshestCrl -Force}
 
                 # Remove All Default AIA Locations
                 Get-CAAuthorityInformationAccess | Where-Object {$_.Uri -like 'ldap*'} | Remove-CAAuthorityInformationAccess -Force
@@ -151,7 +152,7 @@ Configuration ENTERPRISECA
 
                 # Check for and if not present add HTTP AIA Location
                 $HTTPAIAURI = Get-CAAuthorityInformationaccess | Where-object {$_.uri -like "http://crl"+"*"}
-                IF ($HTTPAIAURI.uri -eq $null){Add-CAAuthorityInformationaccess -Uri "http://ocsp.$rootdomainfqdn/ocsp" -AddToCertificateOcsp -Force}
+                IF ($HTTPAIAURI.uri -eq $null){Add-CAAuthorityInformationaccess -Uri "http://ocsp.$using:DomainName/ocsp" -AddToCertificateOcsp -Force}
                 Restart-Service -Name CertSvc 
             }
             GetScript =  { @{} }

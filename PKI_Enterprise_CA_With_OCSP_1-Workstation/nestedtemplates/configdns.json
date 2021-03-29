@@ -8,42 +8,66 @@
                 "description": "Computer Name"
             }
         },
-        "domainName": {
+        "NetBiosDomain": {
+            "type": "string",
+            "metadata": {
+                "description": "NetBios Domain Name"
+            }
+        },           
+        "InternaldomainName": {
             "type": "string",
           "metadata": {
             "description": "The FQDN of the AD Domain created "
           }
         },
+        "ExternaldomainName": {
+            "type": "string",
+          "metadata": {
+            "description": "The External FQDN of the AD Domain created "
+          }
+        }, 
         "ReverseLookup1": {
             "type": "string",
             "metadata": {
                 "description": "The name of Reverse Lookup Zone 1 Network ID"
             }
-        },
-        "ISSUINGCAIP": {
-            "type": "string",
-            "metadata": {
-                "description": "Issuing CA IP Address"
-            }
-        },        
-        "OCSPIP": {
-            "type": "string",
-            "metadata": {
-                "description": "OCSP IP Address"
-            }
-        },                
+        },              
         "dc1lastoctet": {
             "type": "string",
             "metadata": {
                 "description": "DC! Last IP Octet"
             }
-        },        
+        },
+        "ecaIP": {
+            "type": "string",
+            "metadata": {
+                "description": "Enterprise CA IP"
+            }
+        },                        
+        "ocspIP": {
+            "type": "string",
+            "metadata": {
+                "description": "OCSP IP"
+            }
+        },                 
         "location": {
             "type": "string",
           "metadata": {
             "description": "Region of Resources"
           }
         }, 
+        "adminUsername": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the Administrator of the new VM and Domain"
+            }
+        },
+        "adminPassword": {
+            "type": "securestring",
+          "metadata": {
+            "description": "The password for the Administrator account of the new VM and Domain"
+          }
+        },                 
         "_artifactsLocation": {
             "type": "string",
             "metadata": {
@@ -77,13 +101,24 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "computerName": "[parameters('computerName')]",
-                            "domainName": "[parameters('domainName')]",                                                        
+                            "NetBiosDomain": "[parameters('NetBiosDomain')]",                                                                                    
+                            "InternaldomainName": "[parameters('InternaldomainName')]",                                                        
+                            "ExternaldomainName": "[parameters('ExternaldomainName')]",                                                                                    
                             "ReverseLookup1": "[parameters('ReverseLookup1')]",
                             "dc1lastoctet": "[parameters('dc1lastoctet')]",  
-                            "ISSUINGCAIP": "[parameters('ISSUINGCAIP')]",
-                            "OCSPIP": "[parameters('OCSPIP')]"                                                                              
+                            "ecaIP": "[parameters('ecaIP')]",                                                        
+                            "ocspIP": "[parameters('ocspIP')]",                                                                                                                              
+                            "AdminCreds": {
+                                "UserName": "[parameters('adminUsername')]",
+                                "Password": "PrivateSettingsRef:AdminPassword"
+                            }                                                                                                                                                                                                                                                                          
                         }
-                }
+                },
+                    "protectedSettings": {                        
+                        "Items": {
+                            "AdminPassword": "[parameters('adminPassword')]"                            
+                        }                        
+                    }                
             }
         }
     ]

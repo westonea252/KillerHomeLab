@@ -13,6 +13,11 @@ This Templates deploys a Single Forest/Domain:
 - 1 - Online Certificate Status Protocol Server
 - 1 - Domain Joined Windows 10 Workstation
 
+The deployment also makes the following customizations:
+- Adds Public IP Address to OCSP.
+- Creates Azure DNS Zone Records based on the correesponding Servers Public IP
+- -- OCSP (OCSP VM Public IP)
+
 The deployment leverages Desired State Configuration scripts to further customize the following:
 
 AD OU Structure:
@@ -45,6 +50,7 @@ PKI
 - OCSP Configuaration
 
 Parameters that support changes
+- TimeZone.  Select an appropriate Time Zone.
 - Admin Username.  Enter a valid Admin Username
 - Admin Password.  Enter a valid Admin Password
 - WindowsServerLicenseType.  Choose Windows Server License Type (Example:  Windows_Server or None)
@@ -54,7 +60,9 @@ Parameters that support changes
 - Sub DNS BaseDN.  OPTIONALLY, enter a valid DNS Sub Base DN. (Example:  DC=sub1, or DC=sub1,DC=sub2,    This entry must end with a COMMA )
 - Net Bios Domain.  Enter a valid Net Bios Domain Name (Example:  sub1).
 - Internal Domain.  Enter a valid Internal Domain (Exmaple:  killerhomelab)
-- TLD.  Select a valid Top-Level Domain using the Pull-Down Menu.
+- InternalTLD.  Select a valid Top-Level Domain for your Internal Domain using the Pull-Down Menu.
+- External Domain.  Enter a valid External Domain (Exmaple:  killerhomelab)
+- ExternalTLD.  Select a valid Top-Level Domain for your External Domain using the Pull-Down Menu.
 - Vnet1ID.  Enter first 2 octets of your desired Address Space for Virtual Network 1 (Example:  10.1)
 - Reverse Lookup1.  Enter first 2 octets of your desired Address Space in Reverse (Example:  1.10)
 - Enterprise CA Name.  Enter a Name for your Enterprise Certificate Authority

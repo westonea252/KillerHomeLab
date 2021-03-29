@@ -8,18 +8,24 @@
                 "description": "Computer Name"
             }
         },
+        "TimeZone": {
+            "type": "string",      
+            "metadata": {
+                "description": "Time Zone"
+            }
+        },         
         "NetBiosDomain": {
             "type": "string",
             "metadata": {
                 "description": "NetBios Domain Name"
             }
         },        
-        "RootDomainFQDN": {
+        "domainName": {
             "type": "string",
             "metadata": {
                 "description": "Root Domain Name FQDN"
             }
-        },
+        }, 
         "EnterpriseCAName": {
             "type": "string",
             "metadata": {
@@ -96,8 +102,9 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
+                            "TimeZone": "[parameters('TimeZone')]",                            
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",
-                            "RootDomainFQDN": "[parameters('RootDomainFQDN')]",
+                            "domainName": "[parameters('domainName')]",
                             "EnterpriseCAName": "[parameters('EnterpriseCAName')]",
                             "EnterpriseCAHashAlgorithm": "[parameters('EnterpriseCAHashAlgorithm')]",                            
                             "EnterpriseCAKeyLength": "[parameters('EnterpriseCAKeyLength')]",   
