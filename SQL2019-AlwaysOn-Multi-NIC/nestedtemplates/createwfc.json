@@ -20,7 +20,7 @@
             "description": "SQL Cluster Name"
           }
         }, 
-        "ManagementSubnet": {
+        "PrivateSubnet": {
             "type": "string",
             "metadata": {
                 "description": "Subnet for 1st Nic"
@@ -77,7 +77,7 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "SQLClusterName": "[parameters('SQLClusterName')]",
-                            "ManagementSubnet": "[parameters('ManagementSubnet')]",                            
+                            "PrivateSubnet": "[parameters('PrivateSubnet')]",                            
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
