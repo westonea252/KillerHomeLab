@@ -21,7 +21,7 @@
         "subnetName": {
             "type": "string"
         },
-        "DataIP": {
+        "PublicIP": {
             "type": "string"
         },                        
         "location": {
@@ -30,8 +30,8 @@
     },
     "variables": {
         "subnetId": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]",
-        "NicName": "[concat(parameters('computerName'),'-data')]",   
-        "NicIPAddress": "[parameters('DataIP')]"                     
+        "NicName": "[concat(parameters('computerName'),'-pub')]",   
+        "NicIPAddress": "[parameters('PublicIP')]"                     
     },
     "resources": [
         {

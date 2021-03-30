@@ -8,6 +8,12 @@
                 "description": "Computer Name"
             }
         },
+        "TimeZone": {
+            "type": "string",      
+            "metadata": {
+                "description": "Time Zone"
+            }
+        },         
         "Account": {
             "type": "string",
             "metadata": {
@@ -58,6 +64,7 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
+                            "TimeZone": "[parameters('TimeZone')]",
                             "Account": "[parameters('Account')]",                            
                             "NetBiosDomain": "[parameters('NetBiosDomain')]"
                         }

@@ -3,7 +3,7 @@
    param
    (
         [String]$SQLClusterName,
-        [String]$ManagementSubnet,             
+        [String]$PrivateSubnet,             
         [String]$NetBiosDomain,
         [System.Management.Automation.PSCredential]$Admincreds
     )
@@ -30,7 +30,7 @@
             SetScript =
             {
                 # Variables
-                $Cluster = (Get-ClusterNetworkInterface | Where-Object {$_.Ipv4Addresses -like "$using:ManagementSubnet"+"*"}).Network
+                $Cluster = (Get-ClusterNetworkInterface | Where-Object {$_.Ipv4Addresses -like "$using:PrivateSubnet"+"*"}).Network
                 (Get-ClusterNetwork $Cluster[0].Name).Role = "None"
             }
             GetScript =  { @{} }

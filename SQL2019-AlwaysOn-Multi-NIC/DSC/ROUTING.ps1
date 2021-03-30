@@ -3,8 +3,8 @@
    param
    (
         [String]$NextHop,
-        [String]$ManagementSubnet,
-        [String]$DataSubnet
+        [String]$PrivateSubnet,
+        [String]$PublicSubnet
     )
 
     Node localhost
@@ -19,8 +19,8 @@
             SetScript =
             {
                 # UnRegister NIC 2
-                $ManagementAdapter = Get-NetIPAddress | Where-Object {$_.IPAddress -like "$using:ManagementSubnet"+"*"}
-                Set-DnsClient -InterfaceAlias $ManagementAdapter.InterfaceAlias -RegisterThisConnectionsAddress:$False                
+                $PrivateAdapter = Get-NetIPAddress | Where-Object {$_.IPAddress -like "$using:PrivateSubnet"+"*"}
+                Set-DnsClient -InterfaceAlias $PrivateAdapter.InterfaceAlias -RegisterThisConnectionsAddress:$False                
             }
             GetScript =  { @{} }
             TestScript = { $false}
@@ -32,8 +32,8 @@
             {
                 $RouteCheck = Get-NetRoute | Where-Object {$_.NextHop -like "$using:NextHop"}
                 IF ($RouteCheck -eq $Null) {
-                $DataAdapter = Get-NetIPAddress | Where-Object {$_.IPAddress -like "$using:DataSubnet"+"*"}
-                New-NetRoute -DestinationPrefix "0.0.0.0/0" -InterfaceIndex $DataAdapter.InterfaceIndex -NextHop "$using:NextHop"
+                $PublicAdapter = Get-NetIPAddress | Where-Object {$_.IPAddress -like "$using:PublicSubnet"+"*"}
+                New-NetRoute -DestinationPrefix "0.0.0.0/0" -InterfaceIndex $PublicAdapter.InterfaceIndex -NextHop "$using:NextHop"
                 }
             }
             GetScript =  { @{} }
