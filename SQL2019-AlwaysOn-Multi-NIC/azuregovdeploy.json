@@ -446,7 +446,7 @@
     "vnet1subnet2Prefix": "[concat(parameters('vnet1ID'),'.2.0/24')]",    
     "vnet1BastionsubnetPrefix": "[concat(parameters('vnet1ID'),'.253.0/24')]",                  
     "StorageAccountName": "[concat(parameters('StorageAccountPrefix'), uniqueString(resourceGroup().id))]",
-    "StorageEndpoint": "core.windows.net",                    
+    "StorageEndpoint": "core.usgovcloudapi.net",                    
     "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]", 
     "dc1IP": "[concat(parameters('vnet1ID'),'.1.',variables('dc1lastoctet'))]",        
     "ReverseLookup1": "[concat('1.',parameters('ReverseLookup1'))]",    
