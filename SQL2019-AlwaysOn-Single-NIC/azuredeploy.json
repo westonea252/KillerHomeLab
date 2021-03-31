@@ -1987,7 +1987,7 @@
                   "value": "[parameters('LoadBalancerName')]"
               },                                                                   
               "subnetName": {
-                "value": "[variables('vnet1subnet2Name')]"
+                "value": "[variables('vnet1subnet1Name')]"
               },           
               "vnetName": {
                 "value": "[variables('vnet1Name')]"
@@ -2022,7 +2022,7 @@
                   "value": "[parameters('LoadBalancerName')]"
               },                                                                   
               "subnetName": {
-                "value": "[variables('vnet1subnet2Name')]"
+                "value": "[variables('vnet1subnet1Name')]"
               },           
               "vnetName": {
                 "value": "[variables('vnet1Name')]"
