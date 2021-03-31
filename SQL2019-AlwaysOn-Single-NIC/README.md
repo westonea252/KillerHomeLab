@@ -1,4 +1,4 @@
-# SQL 2019 Always-On Lab Multi-NIC
+# SQL 2019 Always-On Lab Single-NIC
 
 Click the button below to deploy
 
