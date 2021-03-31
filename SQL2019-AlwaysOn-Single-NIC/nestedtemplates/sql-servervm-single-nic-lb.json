@@ -30,7 +30,7 @@
     },
     "variables": {
         "subnetId": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]",
-        "NicName": "[concat(parameters('computerName'),'-pub')]",   
+        "NicName": "[concat(parameters('computerName'),'-nic')]",   
         "NicIPAddress": "[parameters('ComputerIP')]"                     
     },
     "resources": [
