@@ -60,7 +60,7 @@
                         "Properties": {
                             "computerName": "[parameters('computerName')]",
                             "ExternalDomainName": "[parameters('ExternalDomainName')]",                                                        
-                            "ADFSServerIP": "[parameters('ADFSServer1IP')]"
+                            "ADFSServer1IP": "[parameters('ADFSServer1IP')]"
                         }
                     },
                     "protectedSettings": {
