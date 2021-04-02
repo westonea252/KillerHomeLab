@@ -3,9 +3,8 @@
    param
    (
         [String]$computerName,
-        [String]$RootDomainFQDN,
-        [String]$ADFSServer1IP,
-        [String]$ADFSServer2IP
+        [String]$ExternalDomainName,
+        [String]$ADFSServer1IP
     )
 
     Import-DscResource -Module xDnsServer
@@ -14,31 +13,20 @@
     {
         xDnsServerADZone PrimaryADZone1
         {
-            Name             = $RootDomainFQDN
+            Name             = $ExternalDomainName
             DynamicUpdate = 'Secure'
             Ensure           = 'Present'
             ReplicationScope = 'Domain'
         }
 
-        xDnsRecord adfsrecord1
+        xDnsRecord adfsrecord
         {
             Name      = "adfs"
-            Zone      = $RootDomainFQDN
+            Zone      = $ExternalDomainName
             Target    = $ADFSServer1IP
             Type      = 'ARecord'
             Ensure    = 'Present'
             DependsOn = '[xDnsServerADZone]PrimaryADZone1'
         }
-
-        xDnsRecord adfsrecord2
-        {
-            Name      = "adfs"
-            Zone      = $RootDomainFQDN
-            Target    = $ADFSServer2IP
-            Type      = 'ARecord'
-            Ensure    = 'Present'
-            DependsOn = '[xDnsServerADZone]PrimaryADZone1'
-        }
-
     }
 }

@@ -8,7 +8,7 @@
                 "description": "Computer Name"
             }
         },
-        "RootDomainFQDN": {
+        "ExternalDomainName": {
             "type": "string",
           "metadata": {
             "description": "The FQDN of the External Domain"
@@ -17,15 +17,9 @@
         "ADFSServer1IP": {
             "type": "string",
             "metadata": {
-                "description": "ADFS1 IP"
+                "description": "ADFS IP"
             }
         },                                                         
-        "ADFSServer2IP": {
-            "type": "string",
-            "metadata": {
-                "description": "ADFS2 IP"
-            }
-        },                                                                 
         "location": {
             "type": "string",
           "metadata": {
@@ -65,9 +59,8 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "computerName": "[parameters('computerName')]",
-                            "RootDomainFQDN": "[parameters('RootDomainFQDN')]",                                                        
-                            "ADFSServer1IP": "[parameters('ADFSServer1IP')]",
-                            "ADFSServer2IP": "[parameters('ADFSServer2IP')]"
+                            "ExternalDomainName": "[parameters('ExternalDomainName')]",                                                        
+                            "ADFSServerIP": "[parameters('ADFSServer1IP')]"
                         }
                     },
                     "protectedSettings": {
