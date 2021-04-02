@@ -22,7 +22,7 @@
         $Number += 1
         $UserName = "User$Number"
 
-        ADUser CreateUsers
+        ADUser CreateUser$Number
         {
             Ensure     = 'Present'            
             UserName   = "$UserName"
