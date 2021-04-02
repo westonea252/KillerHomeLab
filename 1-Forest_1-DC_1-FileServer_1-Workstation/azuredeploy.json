@@ -888,7 +888,13 @@
               },                                                                                                            
               "adminPassword": {
                 "value": "[parameters('adminPassword')]"
-              },                                                                                                                                                                                                                                                                             
+              },    
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                       
               "location": {
                   "value": "[resourceGroup().location]"
               }
