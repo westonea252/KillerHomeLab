@@ -905,7 +905,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "CreateAccounts",
+      "name": "CreateUserFolders",
       "dependsOn": [
         "CreateAccounts"
       ],      
