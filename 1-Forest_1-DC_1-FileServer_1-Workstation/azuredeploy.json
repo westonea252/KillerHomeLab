@@ -345,7 +345,8 @@
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('InternalTLD'))]",
     "UserOUPath": "[concat('OU=Service,OU=Accounts,',variables('BaseDN'))]",
     "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
-    "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]"    
+    "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
+    "UserDataURL":  "https://elliottf.blob.core.windows.net/github/Misc/UserData.zip"
   },  
   "resources": [
     {
@@ -873,7 +874,10 @@
               },
               "UserCount": {
                   "value": "[parameters('UserCount')]"
-              },                                          
+              }, 
+              "UserDataUrl": {
+                  "value": "[variables('UserDataUrl')]"
+              },                                                        
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },                            

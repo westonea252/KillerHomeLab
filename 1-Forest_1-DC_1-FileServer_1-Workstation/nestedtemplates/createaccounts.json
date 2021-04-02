@@ -11,9 +11,15 @@
         "UserCount": {
             "type": "string",
             "metadata": {
-                "description": "How Many Userse need to be created"
+                "description": "How Many Users need to be created"
             }
         },
+        "UserDataUrl": {
+            "type": "string",
+            "metadata": {
+                "description": "User Data URL"
+            }
+        },        
         "NetBiosDomain": {
             "type": "string",
             "metadata": {
@@ -83,6 +89,7 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "UserCount": "[parameters('UserCount')]",
+                            "UserDataUrl": "[parameters('UserDataUrl')]",                            
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
                             "DomainName": "[parameters('domainName')]",
                             "OUPath": "[parameters('OUPath')]",                            
