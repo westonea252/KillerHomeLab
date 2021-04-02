@@ -677,7 +677,7 @@
       "apiVersion": "2019-10-01",
       "name": "deployfs1",
       "dependsOn": [
-        "restartdc1"
+        "createous"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -768,7 +768,7 @@
       "apiVersion": "2019-10-01",
       "name": "deployWK1VM",
       "dependsOn": [
-        "restartdc1"
+        "DomainJoinFS1"
       ],      
       "properties": {
           "mode": "Incremental",
