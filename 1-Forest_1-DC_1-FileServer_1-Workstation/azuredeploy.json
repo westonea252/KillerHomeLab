@@ -874,10 +874,7 @@
               },
               "UserCount": {
                   "value": "[parameters('UserCount')]"
-              }, 
-              "UserDataUrl": {
-                  "value": "[variables('UserDataUrl')]"
-              },                                                        
+              },                                                         
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },                            
@@ -887,6 +884,50 @@
               "OUPath": {
                   "value": "[variables('UserOUPath')]"
               },
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },    
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                       
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },                                                                                                                                                                                        
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "CreateAccounts",
+      "dependsOn": [
+        "CreateAccounts"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/createuserfolders.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('fs1name')]"
+              },
+              "UserCount": {
+                  "value": "[parameters('UserCount')]"
+              }, 
+              "UserDataUrl": {
+                  "value": "[variables('UserDataUrl')]"
+              },                                                        
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },                            
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
               },                                                                                                            

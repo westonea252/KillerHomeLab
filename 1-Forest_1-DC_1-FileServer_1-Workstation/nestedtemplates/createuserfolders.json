@@ -13,25 +13,19 @@
             "metadata": {
                 "description": "How Many Users need to be created"
             }
-        },       
+        },
+        "UserDataUrl": {
+            "type": "string",
+            "metadata": {
+                "description": "User Data URL"
+            }
+        },        
         "NetBiosDomain": {
             "type": "string",
             "metadata": {
                 "description": "NetBios Domain Name"
             }
         },     
-        "domainName": {
-            "type": "string",
-          "metadata": {
-            "description": "The FQDN of the AD Domain created "
-          }
-        },  
-        "OUPath": {
-            "type": "string",
-          "metadata": {
-            "description": "Organizational Unit Path"
-          }
-        },         
         "adminUsername": {
             "type": "string",
             "metadata": {
@@ -64,8 +58,8 @@
         }                        
     },
     "variables": {
-        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/CREATEACCOUNTS.zip', parameters('_artifactsLocationSasToken')))]",
-        "ConfigurationFunction": "CREATEACCOUNTS.ps1\\CREATEACCOUNTS"
+        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/CREATEUSERFOLDERS.zip', parameters('_artifactsLocationSasToken')))]",
+        "ConfigurationFunction": "CREATEUSERFOLDERS.ps1\\CREATEUSERFOLDERS"
     },
     "resources": [
         {
@@ -83,9 +77,8 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "UserCount": "[parameters('UserCount')]",
+                            "UserDataUrl": "[parameters('UserDataUrl')]",                            
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
-                            "DomainName": "[parameters('domainName')]",
-                            "OUPath": "[parameters('OUPath')]",                            
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"
