@@ -37,6 +37,7 @@ AD OU Structure:
 
 Parameters that support changes
 - TimeZone.  Select an appropriate Time Zone.
+- UserCount.  Enter the number of User Accounts needed for the Lab. Example: 500
 - Admin Username.  Enter a valid Admin Username
 - Admin Password.  Enter a valid Admin Password
 - WindowsServerLicenseType.  Choose Windows Server License Type (Example:  Windows_Server or None)
