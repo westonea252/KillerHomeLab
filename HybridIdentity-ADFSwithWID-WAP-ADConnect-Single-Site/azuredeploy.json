@@ -392,7 +392,7 @@
       "apiVersion": "2019-10-01",
       "name": "createFSGMSA",
       "dependsOn": [
-        "restartdc1"
+        "configdns"
       ],           
       "properties": {
           "mode": "Incremental",
@@ -408,7 +408,7 @@
                   "value": "[parameters('NetBiosDomain')]"
               },              
               "DomainName": {
-                "value": "[variables('InternaldomainName')]"
+                "value": "[variables('ExternaldomainName')]"
               },
               "location": {
                   "value": "[resourceGroup().location]"
