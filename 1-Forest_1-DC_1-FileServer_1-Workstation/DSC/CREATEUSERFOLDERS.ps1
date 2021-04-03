@@ -67,6 +67,7 @@
         foreach($Item in 1..$UserCount)
         {
             $Number += 1
+            $UserName = "$NamingConvention-User$Number"
 
             File "CreateUserFolder$Number"
             {
