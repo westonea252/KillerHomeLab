@@ -156,6 +156,7 @@
     },
     "MaxEnvelopeSizeinKB": {
         "type": "string",
+        "defaultValue": "1024000000",
         "metadata": {
             "description": "MaxEnvelopeSize in Kilobytes"
         }
