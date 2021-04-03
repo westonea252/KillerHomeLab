@@ -3,6 +3,7 @@
    param
    (
         [String]$UserCount,
+        [String]$NamingConvention,        
         [String]$NetBiosDomain,
         [String]$DomainName,        
         [String]$OUPath,      
@@ -20,7 +21,7 @@
         foreach($Item in 1..$UserCount)
         {
             $Number += 1
-            $UserName = "User$Number"
+            $UserName = "$NamingConvention-User$Number"
 
             ADUser "CreateUser$Number"
             {

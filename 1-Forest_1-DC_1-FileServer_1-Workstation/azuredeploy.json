@@ -341,6 +341,7 @@
     "wk1name": "[concat(parameters('NamingConvention'),'-wk-01')]",           
     "wk1IP": "[concat(parameters('vnet1ID'),'.2.',variables('wk1lastoctet'))]",        
     "DCDataDisk1Name": "NTDS",            
+    "FSDataDisk1Name": "USERDATA",                
     "InternaldomainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('InternalTLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('InternalTLD'))]",
     "UserOUPath": "[concat('OU=Service,OU=Accounts,',variables('BaseDN'))]",
@@ -704,7 +705,10 @@
               },              
               "LicenseType": {
                 "value": "[parameters('WindowsServerLicenseType')]"
-              },            
+              },  
+              "DataDisk1Name": {
+                "value": "[variables('FSDataDisk1Name')]"
+              },                          
               "VMSize": {
                 "value": "[parameters('fs1VMSize')]"
               },
@@ -871,10 +875,13 @@
           "parameters": {
               "computerName": {
                   "value": "[variables('dc1name')]"
-              },
+              },                            
               "UserCount": {
                   "value": "[parameters('UserCount')]"
-              },                                                         
+              },
+              "NamingConvention": {
+                  "value": "[parameters('NamingConvention')]"
+              },                                                                        
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },                            
@@ -922,6 +929,9 @@
               "UserCount": {
                   "value": "[parameters('UserCount')]"
               }, 
+              "NamingConvention": {
+                  "value": "[parameters('NamingConvention')]"
+              },               
               "UserDataUrl": {
                   "value": "[variables('UserDataUrl')]"
               },                                                        

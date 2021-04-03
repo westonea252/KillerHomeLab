@@ -1,13 +1,18 @@
-﻿Configuration CREATEUSERFOLDERS
+﻿Configuration CREATESUSERFOLDERS
 {
    param
    (
         [String]$UserCount,
+        [String]$NamingConvention,     
         [String]$UserDataUrl,
         [String]$NetBiosDomain,   
-        [System.Management.Automation.PSCredential]$Admincreds
+        [System.Management.Automation.PSCredential]$Admincreds,
+        [Int]$RetryCount=20,
+        [Int]$RetryIntervalSec=30
     )
 
+    Import-DscResource -Module ActiveDirectoryDsc
+    Import-DscResource -Module xStorage
     Import-DscResource -Module xPSDesiredStateConfiguration # Used for xRemoteFile
 
     [System.Management.Automation.PSCredential ]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosDomain}\$($Admincreds.UserName)", $Admincreds.Password)
@@ -15,11 +20,25 @@
     Node $AllNodes.NodeName
 
 {
+        xWaitforDisk Disk2
+        {
+            DiskID = 2
+            RetryIntervalSec =$RetryIntervalSec
+            RetryCount = $RetryCount
+        }
+
+        xDisk ADDataDisk {
+            DiskID = 2
+            DriveLetter = "H"
+            DependsOn = "[xWaitForDisk]Disk2"
+        }
+
         File CreateDataFolder
         {
             Type = 'Directory'
-            DestinationPath = "C:\Data"
+            DestinationPath = "H:\Data"
             Ensure = "Present"
+            DependsOn = '[xDisk]ADDataDisk'
         }
 
         Registry SchUseStrongCrypto
@@ -42,7 +61,7 @@
 
         xRemoteFile DownloadUserData
         {
-            DestinationPath = "C:\Data\UserData.zip"
+            DestinationPath = "H:\Data\UserData.zip"
             Uri             = $UserDataUrl
             UserAgent       = "[Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer"
             DependsOn = '[File]CreateDataFolder','[Registry]SchUseStrongCrypto','[Registry]SchUseStrongCrypto64'
@@ -52,12 +71,11 @@
         foreach($Item in 1..$UserCount)
         {
             $Number += 1
-            $UserName = "User$Number"
 
             File "CreateUserFolder$Number"
             {
                 Type = 'Directory'
-                DestinationPath = "C:\Users\$UserName"
+                DestinationPath = "H:\Users\$UserName"
                 Ensure = "Present"
                 DependsOn = '[File]CreateDataFolder'
             }
@@ -67,16 +85,16 @@
                 SetScript =
                 {
                     # UnCompress UserFolder
-                    $UserFolderPath = Get-Item -Path "C:\Users\$using:UserName" -ErrorAction 0
+                    $UserFolderPath = Get-Item -Path "H:\Users\$using:UserName" -ErrorAction 0
                     IF ($UserFolderPath -ne $Null) {
-                    Expand-Archive -Path "C:\Data\UserData.zip" -DestinationPath "C:\Users\$using:UserName"
+                    Expand-Archive -Path "H:\Data\UserData.zip" -DestinationPath "H:\Users\$using:UserName"
                     }
                     ELSE {}
                 }
                 GetScript =  { @{} }
                 TestScript = { $false}
                 PsDscRunAsCredential = $DomainCreds
-                DependsOn = "[ADUser]CreateUserFolder$Number"
+                DependsOn = "[File]CreateUserFolder$Number"
             }
         }
     }

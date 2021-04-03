@@ -13,7 +13,13 @@
             "metadata": {
                 "description": "How Many Users need to be created"
             }
-        },       
+        },   
+        "NamingConvention": {
+        "type": "string",
+        "metadata": {
+            "description": "VNet1 Name"
+        }
+        },            
         "NetBiosDomain": {
             "type": "string",
             "metadata": {
@@ -83,6 +89,7 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "UserCount": "[parameters('UserCount')]",
+                            "NamingConvention": "[parameters('NamingConvention')]",                            
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
                             "DomainName": "[parameters('domainName')]",
                             "OUPath": "[parameters('OUPath')]",                            
