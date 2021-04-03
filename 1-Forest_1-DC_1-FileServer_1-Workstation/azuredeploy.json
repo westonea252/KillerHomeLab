@@ -346,7 +346,7 @@
     "FSDataDisk1Size": "200",                                  
     "InternaldomainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('InternalTLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('InternalTLD'))]",
-    "UserOUPath": "[concat('OU=Office 365,OU=Accounts,',variables('BaseDN'))]",
+    "UserOUPath": "[concat('OU=Office 365,OU=End User,OU=Accounts,',variables('BaseDN'))]",
     "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
     "UserDataURL":  "https://elliottf.blob.core.windows.net/github/Misc/UserData.zip"
