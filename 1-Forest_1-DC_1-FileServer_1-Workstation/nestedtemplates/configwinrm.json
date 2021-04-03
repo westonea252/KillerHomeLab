@@ -52,7 +52,6 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
-                            "computerName": "[parameters('computerName')]",
                             "MaxEnvelopeSizeinKB": "[parameters('MaxEnvelopeSizeinKB')]"
                         }
                 },
