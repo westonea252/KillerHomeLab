@@ -80,7 +80,7 @@
                 DependsOn = '[File]CreateDataFolder'
             }
 
-            Script UnzipUserData
+            Script "UnzipUserData$Number"
             {
                 SetScript =
                 {
