@@ -340,8 +340,10 @@
     "wk1lastoctet": "201",            
     "wk1name": "[concat(parameters('NamingConvention'),'-wk-01')]",           
     "wk1IP": "[concat(parameters('vnet1ID'),'.2.',variables('wk1lastoctet'))]",        
-    "DCDataDisk1Name": "NTDS",            
-    "FSDataDisk1Name": "USERDATA",                
+    "DCDataDisk1Name": "NTDS",                
+    "DCDataDisk1Size": "10",                
+    "FSDataDisk1Name": "USERDATA",      
+    "FSDataDisk1Size": "200",                                  
     "InternaldomainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('InternalTLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('InternalTLD'))]",
     "UserOUPath": "[concat('OU=Office 365,OU=Accounts,',variables('BaseDN'))]",
@@ -454,7 +456,10 @@
               },            
               "DataDisk1Name": {
                 "value": "[variables('DCDataDisk1Name')]"
-              },            
+              }, 
+              "DataDisk1Size": {
+                "value": "[variables('DCDataDisk1Size')]"
+              },                          
               "VMSize": {
                 "value": "[parameters('DC1VMSize')]"
               },
@@ -708,7 +713,10 @@
               },  
               "DataDisk1Name": {
                 "value": "[variables('FSDataDisk1Name')]"
-              },                          
+              },  
+              "DataDisk1Size": {
+                "value": "[variables('FSDataDisk1Size')]"
+              },                                                                
               "VMSize": {
                 "value": "[parameters('fs1VMSize')]"
               },

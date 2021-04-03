@@ -43,7 +43,13 @@
         "metadata": {
             "description": "Data Disk Name 1"
         }
-      },             
+      }, 
+      "DataDisk1Size": {
+        "type": "string",
+        "metadata": {
+            "description": "Data Disk Size in GB"
+        }
+      },                   
       "VMSize": {
           "type": "string",
           "metadata": {
@@ -87,7 +93,7 @@
       "imagePublisher": "[parameters('Publisher')]",
       "imageOffer": "[parameters('Offer')]",
       "imageSKU": "[parameters('OSVersion')]",
-      "DataDiskSize": 50,      
+      "DataDiskSize": "[parameters('DataDisk1Size')]",
       "subnetId": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]",
       "NicName": "[concat(parameters('computerName'),'-nic')]",
       "NicIPAddress": "[parameters('computerIP')]"
