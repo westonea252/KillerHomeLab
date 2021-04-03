@@ -32,18 +32,6 @@
                 "description": "NetBios Domain Name"
             }
         },     
-        "adminUsername": {
-            "type": "string",
-            "metadata": {
-                "description": "The name of the Administrator of the new VM and Domain"
-            }
-        },
-        "adminPassword": {
-            "type": "securestring",
-          "metadata": {
-            "description": "The password for the Administrator account of the new VM and Domain"
-          }
-        },                   
         "_artifactsLocation": {
             "type": "string",
             "metadata": {
@@ -85,16 +73,11 @@
                             "UserCount": "[parameters('UserCount')]",
                             "NamingConvention": "[parameters('NamingConvention')]",                                                        
                             "UserDataUrl": "[parameters('UserDataUrl')]",                            
-                            "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
-                            "AdminCreds": {
-                                "UserName": "[parameters('adminUsername')]",
-                                "Password": "PrivateSettingsRef:AdminPassword"
-                            }
+                            "NetBiosDomain": "[parameters('NetBiosDomain')]"
                         }
                 },
                 "protectedSettings": {
                     "Items": {
-                        "AdminPassword": "[parameters('adminPassword')]"
                     }
                 }                
             }

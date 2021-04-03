@@ -6,16 +6,12 @@
         [String]$NamingConvention,     
         [String]$UserDataUrl,
         [String]$NetBiosDomain,   
-        [System.Management.Automation.PSCredential]$Admincreds,
         [Int]$RetryCount=20,
         [Int]$RetryIntervalSec=30
     )
 
-    Import-DscResource -Module ActiveDirectoryDsc
     Import-DscResource -Module xStorage
     Import-DscResource -Module xPSDesiredStateConfiguration # Used for xRemoteFile
-
-    [System.Management.Automation.PSCredential ]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosDomain}\$($Admincreds.UserName)", $Admincreds.Password)
 
     Node $AllNodes.NodeName
 
@@ -93,7 +89,6 @@
                 }
                 GetScript =  { @{} }
                 TestScript = { $false}
-                PsDscRunAsCredential = $DomainCreds
                 DependsOn = "[File]CreateUserFolder$Number"
             }
         }
