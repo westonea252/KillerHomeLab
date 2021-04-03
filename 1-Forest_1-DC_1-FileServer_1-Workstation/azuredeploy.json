@@ -154,6 +154,12 @@
             "description": "Enter the number of User Accounts needed for the Lab. Example: 500"
         }
     },
+    "MaxEnvelopeSizeinKB": {
+        "type": "string",
+        "metadata": {
+            "description": "MaxEnvelopeSize in Kilobytes"
+        }
+    },    
     "adminUsername": {
         "type": "string",
         "metadata": {
@@ -916,13 +922,45 @@
               }
           }
       }
-    },                                                                                                                                                                                        
+    },  
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "ConfigWinRMSettings",
+      "dependsOn": [
+        "CreateAccounts"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/configwinrm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('fs1name')]"
+              },
+              "MaxEnvelopeSizeinKB": {
+                  "value": "[parameters('MaxEnvelopeSizeinKB')]"
+              },    
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                       
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },                                                                                                                                                                                                                                                                                                                                                                                  
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "CreateUserFolders",
       "dependsOn": [
-        "CreateAccounts"
+        "ConfigWinRMSettings"
       ],      
       "properties": {
           "mode": "Incremental",
