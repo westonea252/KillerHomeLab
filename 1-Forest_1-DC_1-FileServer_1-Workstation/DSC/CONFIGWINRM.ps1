@@ -13,7 +13,7 @@
             SetScript =
             {
                 # Set WinRM MaxEnvelopeSize
-                Set-Item -Path WSMan:\localhost\MaxEnvelopeSizekb -Value $MaxEnvelopeSizeinKB
+                Set-Item -Path WSMan:\localhost\MaxEnvelopeSizekb -Value $using:MaxEnvelopeSizeinKB
             }
             GetScript =  { @{} }
             TestScript = { $false}
