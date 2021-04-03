@@ -1,4 +1,4 @@
-﻿Configuration CREATESUSERFOLDERS
+﻿Configuration CREATEUSERFOLDERS
 {
    param
    (
