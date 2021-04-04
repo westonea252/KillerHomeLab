@@ -50,7 +50,7 @@
             SetScript =
             {
                 # Create Parent Share
-                $HomeDriveShare = Get-SmbShare HomeDrives -Name  -ErrorAction 0
+                $HomeDriveShare = Get-SmbShare -Name HomeDrives -ErrorAction 0
                 IF ($HomeDriveShare -eq $Null) {
                 New-SmbShare -Name HomeDrives -Path H:\HomeDrives -FullAccess "Domain Users"
                 
