@@ -37,6 +37,71 @@
             DependsOn = '[xDisk]ADDataDisk'
         }
 
+        File CreateUsersHomeDrivesFolder
+        {
+            Type = 'Directory'
+            DestinationPath = "H:\HomeDrives"
+            Ensure = "Present"
+            DependsOn = '[xDisk]ADDataDisk'
+        }
+
+        Script ConfigureUserFolderPermissions
+        {
+            SetScript =
+            {
+                # Create Parent Share
+                $HomeDriveShare = Get-SmbShare HomeDrives -Name  -ErrorAction 0
+                IF ($HomeDriveShare -eq $Null) {
+                New-SmbShare -Name HomeDrives -Path H:\HomeDrives -FullAccess "Domain Users"
+                
+                # Disable Inheritance & Remove Existing Permissions
+                $acl = Get-ACL -Path H:\HomeDrives
+                $acl.SetAccessRuleProtection($True, $False)
+                $acl.Access | %{$acl.RemoveAccessRule($_)} # I remove all security
+                Set-Acl -Path H:\HomeDrives -AclObject $acl
+
+                # Grant Domain Users
+                $permission="Domain Users","ReadandExecute","Allow"
+                $accessRule=new-object System.Security.AccessControl.FileSystemAccessRule $permission
+                $acl.AddAccessRule($accessRule)
+                Set-Acl -Path H:\HomeDrives -AclObject $acl
+
+                # Grant Domain Admins
+                $user = 'Domain Admins'                # test with this account
+                $FileSystemRights = [System.Security.AccessControl.FileSystemRights]"FullControl"
+                $AccessControlType = [System.Security.AccessControl.AccessControlType]"Allow"
+                $InheritanceFlags = [System.Security.AccessControl.InheritanceFlags]"ContainerInherit,ObjectInherit"
+                $PropagationFlags = [System.Security.AccessControl.PropagationFlags]"None"
+                $AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule ($User, $FileSystemRights, $InheritanceFlags, $PropagationFlags, $AccessControlType)
+                $acl.AddAccessRule($AccessRule)
+                Set-Acl -Path H:\HomeDrives -AclObject $acl
+
+                # Grant CREATOR OWNER
+                $user = 'CREATOR OWNER'                # test with this account
+                $FileSystemRights = [System.Security.AccessControl.FileSystemRights]"FullControl"
+                $AccessControlType = [System.Security.AccessControl.AccessControlType]"Allow"
+                $InheritanceFlags = [System.Security.AccessControl.InheritanceFlags]"ContainerInherit,ObjectInherit"
+                $PropagationFlags = [System.Security.AccessControl.PropagationFlags]"None"
+                $AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule ($User, $FileSystemRights, $InheritanceFlags, $PropagationFlags, $AccessControlType)
+                $acl.AddAccessRule($AccessRule)
+                Set-Acl -Path H:\HomeDrives -AclObject $acl
+
+                # Grant SYSTEM
+                $user = 'SYSTEM'                # test with this account
+                $FileSystemRights = [System.Security.AccessControl.FileSystemRights]"FullControl"
+                $AccessControlType = [System.Security.AccessControl.AccessControlType]"Allow"
+                $InheritanceFlags = [System.Security.AccessControl.InheritanceFlags]"ContainerInherit,ObjectInherit"
+                $PropagationFlags = [System.Security.AccessControl.PropagationFlags]"None"
+                $AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule ($User, $FileSystemRights, $InheritanceFlags, $PropagationFlags, $AccessControlType)
+                $acl.AddAccessRule($AccessRule)
+                Set-Acl -Path H:\HomeDrives -AclObject $acl
+                }
+            }
+            GetScript =  { @{} }
+            TestScript = { $false}
+            DependsOn = '[File]CreateUsersHomeDrivesFolder'
+        }
+
         Registry SchUseStrongCrypto
         {
             Key                         = 'HKLM:\SOFTWARE\Microsoft\.NETFramework\v4.0.30319'
@@ -60,7 +125,7 @@
             DestinationPath = "H:\Data\UserData.zip"
             Uri             = $UserDataUrl
             UserAgent       = "[Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer"
-            DependsOn = '[File]CreateDataFolder','[Registry]SchUseStrongCrypto','[Registry]SchUseStrongCrypto64'
+            DependsOn = '[File]CreateDataFolder','[Registry]SchUseStrongCrypto','[Registry]SchUseStrongCrypto64','[Script]ConfigureUserFolderPermissions'
         }
 
         $Number = 0
@@ -74,7 +139,7 @@
                 Type = 'Directory'
                 DestinationPath = "H:\Users\$UserName"
                 Ensure = "Present"
-                DependsOn = '[File]CreateDataFolder'
+                DependsOn = '[xRemoteFile]DownloadUserData'
             }
 
             Script "UnzipUserData$Number"
