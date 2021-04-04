@@ -1050,14 +1050,14 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "TimeZone",
+      "name": "GrantRemoteDesktopUsers",
       "dependsOn": [
         "CreateUserFolders"
-      ],      
+      ],          
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/timezone.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/grantrdpusers.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -1066,18 +1066,24 @@
               },
               "TimeZone": {
                   "value": "[parameters('TimeZone')]"
-              },                 
+              },              
+              "Account": {
+                  "value": "Domain Users"
+              },            
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },    
+              "location": {
+                  "value": "[resourceGroup().location]"
+              },
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
               },                                                                                                            
               "_artifactsLocationSasToken": {
                 "value": "[parameters('_artifactsLocationSasToken')]"
-              },                                                                                                                                                                                                                                                                                       
-              "location": {
-                  "value": "[resourceGroup().location]"
-              }
+              }              
           }
       }
-    }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+    }
   ]
 }

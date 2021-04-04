@@ -147,7 +147,7 @@
                 SetScript =
                 {
                     # UnCompress UserFolder
-                    $UserFolderPath = Get-Item -Path "H:\Users\$using:UserName" -ErrorAction 0
+                    $UserFolderPath = Get-Item -Path "H:\HomeDrives\$using:UserName" -ErrorAction 0
                     IF ($UserFolderPath -ne $Null) {
                     Expand-Archive -Path "H:\Data\UserData.zip" -DestinationPath "H:\HomeDrives\$using:UserName"
                     }
