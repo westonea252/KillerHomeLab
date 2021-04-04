@@ -50,21 +50,21 @@
             SetScript =
             {
                 # Create Parent Share
-                $HomeDriveShare = Get-SmbShare -Name HomeDrives -ErrorAction 0
+                $HomeDriveShare = Get-SmbShare -Name "HomeDrives" -ErrorAction 0
                 IF ($HomeDriveShare -eq $Null) {
-                New-SmbShare -Name HomeDrives -Path H:\HomeDrives -FullAccess "Domain Users"
+                New-SmbShare -Name "HomeDrives" -Path "H:\HomeDrives" -FullAccess "Domain Users"
                 
                 # Disable Inheritance & Remove Existing Permissions
-                $acl = Get-ACL -Path H:\HomeDrives
+                $acl = Get-ACL -Path "H:\HomeDrives"
                 $acl.SetAccessRuleProtection($True, $False)
                 $acl.Access | %{$acl.RemoveAccessRule($_)} # I remove all security
-                Set-Acl -Path H:\HomeDrives -AclObject $acl
+                Set-Acl -Path "H:\HomeDrives" -AclObject $acl
 
                 # Grant Domain Users
                 $permission="Domain Users","ReadandExecute","Allow"
                 $accessRule=new-object System.Security.AccessControl.FileSystemAccessRule $permission
                 $acl.AddAccessRule($accessRule)
-                Set-Acl -Path H:\HomeDrives -AclObject $acl
+                Set-Acl -Path "H:\HomeDrives" -AclObject $acl
 
                 # Grant Domain Admins
                 $user = 'Domain Admins'                # test with this account
@@ -74,7 +74,7 @@
                 $PropagationFlags = [System.Security.AccessControl.PropagationFlags]"None"
                 $AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule ($User, $FileSystemRights, $InheritanceFlags, $PropagationFlags, $AccessControlType)
                 $acl.AddAccessRule($AccessRule)
-                Set-Acl -Path H:\HomeDrives -AclObject $acl
+                Set-Acl -Path "H:\HomeDrives" -AclObject $acl
 
                 # Grant CREATOR OWNER
                 $user = 'CREATOR OWNER'                # test with this account
@@ -84,7 +84,7 @@
                 $PropagationFlags = [System.Security.AccessControl.PropagationFlags]"None"
                 $AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule ($User, $FileSystemRights, $InheritanceFlags, $PropagationFlags, $AccessControlType)
                 $acl.AddAccessRule($AccessRule)
-                Set-Acl -Path H:\HomeDrives -AclObject $acl
+                Set-Acl -Path "H:\HomeDrives" -AclObject $acl
 
                 # Grant SYSTEM
                 $user = 'SYSTEM'                # test with this account
@@ -94,7 +94,7 @@
                 $PropagationFlags = [System.Security.AccessControl.PropagationFlags]"None"
                 $AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule ($User, $FileSystemRights, $InheritanceFlags, $PropagationFlags, $AccessControlType)
                 $acl.AddAccessRule($AccessRule)
-                Set-Acl -Path H:\HomeDrives -AclObject $acl
+                Set-Acl -Path "H:\HomeDrives" -AclObject $acl
                 }
             }
             GetScript =  { @{} }
