@@ -157,6 +157,27 @@
                 TestScript = { $false}
                 DependsOn = "[File]CreateUserFolder$Number"
             }
+
+            Script "GrantUserFolder$Number"
+            {
+                SetScript =
+                {
+                    # Grant Domain Admins
+                    $acl = Get-ACL -Path "H:\HomeDrives\$using:UserName"
+                    $user = "$using:UserName"                # test with this account
+                    $FileSystemRights = [System.Security.AccessControl.FileSystemRights]"FullControl"
+                    $AccessControlType = [System.Security.AccessControl.AccessControlType]"Allow"
+                    $InheritanceFlags = [System.Security.AccessControl.InheritanceFlags]"ContainerInherit,ObjectInherit"
+                    $PropagationFlags = [System.Security.AccessControl.PropagationFlags]"None"
+                    $AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule ($User, $FileSystemRights, $InheritanceFlags, $PropagationFlags, $AccessControlType)
+                    $acl.AddAccessRule($AccessRule)
+                    Set-Acl -Path "H:\HomeDrives\$using:UserName" -AclObject $acl
+
+                }
+                GetScript =  { @{} }
+                TestScript = { $false}
+                DependsOn = "[Script]UnzipUserData$Number"
+            }
         }
     }
 }
