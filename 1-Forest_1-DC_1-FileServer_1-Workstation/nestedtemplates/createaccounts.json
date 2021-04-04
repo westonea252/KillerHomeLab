@@ -37,7 +37,13 @@
           "metadata": {
             "description": "Organizational Unit Path"
           }
-        },         
+        },
+        "fs1name": {
+            "type": "string",
+            "metadata": {
+                "description": "File Server Name"
+            }
+        },                 
         "adminUsername": {
             "type": "string",
             "metadata": {
@@ -93,6 +99,7 @@
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
                             "DomainName": "[parameters('domainName')]",
                             "OUPath": "[parameters('OUPath')]",                            
+                            "fs1name": "[parameters('fs1name')]",                                                        
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"

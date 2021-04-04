@@ -906,6 +906,9 @@
               "OUPath": {
                   "value": "[variables('UserOUPath')]"
               },
+              "fs1name": {
+                  "value": "[variables('fs1name')]"
+              },                                          
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
               },                                                                                                            

@@ -6,7 +6,8 @@
         [String]$NamingConvention,        
         [String]$NetBiosDomain,
         [String]$DomainName,        
-        [String]$OUPath,      
+        [String]$OUPath,
+        [String]$fs1name,              
         [System.Management.Automation.PSCredential]$Admincreds
     )
 
@@ -31,6 +32,8 @@
                 Path       = "$OUPath"
                 Password = $DomainCreds
                 Enabled = $True
+                HomeDirectory = "\\$fs1name\HomeDrives\$Username"
+                HomeDrive = "H:\"
             }
         }
     }
