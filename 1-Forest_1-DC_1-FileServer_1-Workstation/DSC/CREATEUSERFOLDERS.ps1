@@ -137,7 +137,7 @@
             File "CreateUserFolder$Number"
             {
                 Type = 'Directory'
-                DestinationPath = "H:\Users\$UserName"
+                DestinationPath = "H:\HomeDrives\$UserName"
                 Ensure = "Present"
                 DependsOn = '[xRemoteFile]DownloadUserData'
             }
@@ -149,7 +149,7 @@
                     # UnCompress UserFolder
                     $UserFolderPath = Get-Item -Path "H:\Users\$using:UserName" -ErrorAction 0
                     IF ($UserFolderPath -ne $Null) {
-                    Expand-Archive -Path "H:\Data\UserData.zip" -DestinationPath "H:\Users\$using:UserName"
+                    Expand-Archive -Path "H:\Data\UserData.zip" -DestinationPath "H:\HomeDrives\$using:UserName"
                     }
                     ELSE {}
                 }

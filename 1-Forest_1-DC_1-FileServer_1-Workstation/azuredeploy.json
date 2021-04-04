@@ -356,7 +356,10 @@
     "UserOUPath": "[concat('OU=Office 365,OU=End User,OU=Accounts,',variables('BaseDN'))]",
     "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
-    "UserDataURL":  "https://elliottf.blob.core.windows.net/github/Misc/UserData.zip"
+    "UserDataURL":  "https://elliottf.blob.core.windows.net/github/Misc/UserData.zip",
+    "PWSEXPolGPOName":  "PowerShell-ExecutionPolicy",
+    "PWSEXPolGPOGUID": "EC04DF04-A647-4A3E-9247-51B4CB137F5F",
+    "PWSEXPolGPOSASUrl": "https://elliottf.blob.core.windows.net/github/GPOs/PowerShell-ExecutionPolicy.zip"    
   },  
   "resources": [
     {
@@ -689,9 +692,50 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "deployfs1",
+      "name": "PowerShellExecutionPolicy",
       "dependsOn": [
         "createous"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/gpo.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('dc1name')]"
+              },
+              "GPOName": {
+                "value": "[variables('PWSEXPolGPOName')]"
+              },     
+              "GPOSASUrl": {
+                "value": "[variables('PWSEXPolGPOSASUrl')]"
+              },                                                                                                                          
+              "GPOGUID": {
+                "value": "[variables('PWSEXPolGPOGUID')]"
+              },                                                                                                                                        
+              "BaseDN": {
+                "value": "[variables('BaseDN')]"
+              },
+              "location": {
+                  "value": "[resourceGroup().location]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                                                                                                                                                                                                                           
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                          
+          }
+      }
+    },                
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "deployfs1",
+      "dependsOn": [
+        "PowerShellExecutionPolicy"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -944,6 +988,9 @@
               "computerName": {
                   "value": "[variables('fs1name')]"
               },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },                 
               "MaxEnvelopeSizeinKB": {
                   "value": "[parameters('MaxEnvelopeSizeinKB')]"
               },    
@@ -999,6 +1046,38 @@
               }
           }
       }
-    }                                                                                                                                                                                        
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "TimeZone",
+      "dependsOn": [
+        "CreateUserFolders"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/timezone.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('wk1name')]"
+              },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },                 
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                       
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
   ]
 }

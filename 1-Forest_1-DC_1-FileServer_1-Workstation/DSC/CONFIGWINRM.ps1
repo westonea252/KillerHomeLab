@@ -2,8 +2,11 @@
 {
    param
    (
+        [String]$TimeZone,        
         [String]$MaxEnvelopeSizeinKB
     )
+
+    Import-DscResource -Module ComputerManagementDsc
 
     Node LocalHost
     {
@@ -17,6 +20,12 @@
             }
             GetScript =  { @{} }
             TestScript = { $false}
+        }
+
+        TimeZone SetTimeZone
+        {
+            IsSingleInstance = 'Yes'
+            TimeZone         = $TimeZone
         }
     }
 }

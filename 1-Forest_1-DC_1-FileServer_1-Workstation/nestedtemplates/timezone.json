@@ -13,13 +13,7 @@
             "metadata": {
                 "description": "Time Zone"
             }
-        },          
-        "MaxEnvelopeSizeinKB": {
-            "type": "string",
-            "metadata": {
-                "description": "MaxEnvelopeSize in Kilobytes"
-            }
-        },            
+        },                     
         "location": {
             "type": "string",
           "metadata": {
@@ -40,8 +34,8 @@
         }                
     },
     "variables": {
-        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/CONFIGWINRM.zip', parameters('_artifactsLocationSasToken')))]",
-        "ConfigurationFunction": "CONFIGWINRM.ps1\\CONFIGWINRM"
+        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/TIMEZONE.zip', parameters('_artifactsLocationSasToken')))]",
+        "ConfigurationFunction": "TIMEZONE.ps1\\TIMEZONE"
     },
     "resources": [
         {
@@ -58,8 +52,7 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
-                            "TimeZone": "[parameters('TimeZone')]",                                                        
-                            "MaxEnvelopeSizeinKB": "[parameters('MaxEnvelopeSizeinKB')]"
+                            "TimeZone": "[parameters('TimeZone')]"
                         }
                 },
                 "protectedSettings": {

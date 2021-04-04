@@ -8,24 +8,36 @@
                 "description": "Computer Name"
             }
         },
-        "TimeZone": {
-            "type": "string",      
-            "metadata": {
-                "description": "Time Zone"
-            }
-        },          
-        "MaxEnvelopeSizeinKB": {
+        "GPOName": {
+            "type": "string",
+          "metadata": {
+            "description": "Policy GPO Name"
+          }
+        },
+        "GPOSASUrl": {
+            "type": "string",
+          "metadata": {
+            "description": "GPO Download Url"
+          }
+        },
+        "GPOGUID": {
+            "type": "string",
+          "metadata": {
+            "description": "GPO GUID"
+          }
+        },
+        "BaseDN": {
             "type": "string",
             "metadata": {
-                "description": "MaxEnvelopeSize in Kilobytes"
+                "description": "Base Domain Distiguished Name"
             }
-        },            
+        },
         "location": {
             "type": "string",
           "metadata": {
             "description": "Region of Resources"
           }
-        },  
+        }, 
         "_artifactsLocation": {
             "type": "string",
             "metadata": {
@@ -40,8 +52,9 @@
         }                
     },
     "variables": {
-        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/CONFIGWINRM.zip', parameters('_artifactsLocationSasToken')))]",
-        "ConfigurationFunction": "CONFIGWINRM.ps1\\CONFIGWINRM"
+        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/GPO.zip', parameters('_artifactsLocationSasToken')))]",
+        "ConfigurationFunction": "GPO.ps1\\GPO"
+
     },
     "resources": [
         {
@@ -58,15 +71,13 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
-                            "TimeZone": "[parameters('TimeZone')]",                                                        
-                            "MaxEnvelopeSizeinKB": "[parameters('MaxEnvelopeSizeinKB')]"
+                            "GPOName": "[parameters('GPOName')]",
+                            "GPOSASUrl": "[parameters('GPOSASUrl')]",                            
+                            "GPOGUID": "[parameters('GPOGUID')]", 
+                            "BaseDN": "[parameters('BaseDN')]"
                         }
-                },
-                "protectedSettings": {
-                    "Items": {
                     }
-                }                   
+                }
             }
-        }
     ]
 }
