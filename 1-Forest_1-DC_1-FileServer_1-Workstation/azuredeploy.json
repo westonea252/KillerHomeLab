@@ -194,7 +194,21 @@
       "metadata": {
           "description": "Windows Client OS License Type"
       }
-    },        
+    },   
+    "AzureADConnectDownloadUrl": {
+      "type": "string",
+      "defaultValue": "https://download.microsoft.com/download/B/0/0/B00291D0-5A83-4DE7-86F5-980BC00DE05A/AzureADConnect.msi",      
+      "metadata": {
+        "description": "Download Location of Latest Azure AD Connect"
+      }
+    },         
+    "MigrationAgentDownloadUrl": {
+      "type": "string",
+      "defaultValue": "https://spmtreleasescus.blob.core.windows.net/migrationclient/clientsetup.exe",      
+      "metadata": {
+        "description": "Download Location of Latest OneDrive Migration Agent"
+      }
+    },      
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
@@ -282,7 +296,14 @@
         "metadata": {
             "description": "File Server1 OS Version"
         }
-    },    
+    },  
+    "ADCOSVersion": {
+        "type": "string",
+        "defaultValue": "2019-Datacenter",
+        "metadata": {
+            "description": "AD Connect OS Version"
+        }
+    },      
     "WK1OSVersion": {
       "type": "string",
       "defaultValue": "19h1-pro",
@@ -306,7 +327,14 @@
         "metadata": {
             "description": "File Server1 VMSize"
         }
-    },            
+    },   
+    "ADCVMSize": {
+        "type": "string",
+        "defaultValue": "Standard_D2s_v3",
+        "metadata": {
+            "description": "AD Connect VMSize"
+        }
+    },              
     "WK1VMSize": {
       "type": "string",
       "defaultValue": "Standard_D2s_v3",
@@ -338,15 +366,18 @@
     "vnet1subnet2Prefix": "[concat(parameters('vnet1ID'),'.2.0/24')]",    
     "vnet1BastionsubnetPrefix": "[concat(parameters('vnet1ID'),'.253.0/24')]",        
     "dc1lastoctet": "101",     
+    "dc1IP": "[concat(parameters('vnet1ID'),'.1.',variables('dc1lastoctet'))]",            
     "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",           
-    "dc1IP": "[concat(parameters('vnet1ID'),'.1.',variables('dc1lastoctet'))]",        
     "ReverseLookup1": "[concat('1.',parameters('ReverseLookup1'))]",    
-    "fs1lastoctet": "104",                                                              
+    "fs1lastoctet": "104",                                                    
+    "fs1IP": "[concat(parameters('vnet1ID'),'.1.',variables('fs1lastoctet'))]",              
     "fs1name": "[concat(parameters('NamingConvention'),'-fs-01')]",           
-    "fs1IP": "[concat(parameters('vnet1ID'),'.1.',variables('fs1lastoctet'))]",  
+    "adclastoctet": "120",           
+    "adcIP": "[concat(parameters('vnet1ID'),'.1.',variables('adclastoctet'))]", 
+    "adcname": "[concat(parameters('NamingConvention'),'-adc-01')]",           
     "wk1lastoctet": "201",            
+    "wk1IP": "[concat(parameters('vnet1ID'),'.2.',variables('wk1lastoctet'))]",            
     "wk1name": "[concat(parameters('NamingConvention'),'-wk-01')]",           
-    "wk1IP": "[concat(parameters('vnet1ID'),'.2.',variables('wk1lastoctet'))]",        
     "DCDataDisk1Name": "NTDS",                
     "DCDataDisk1Size": "10",                
     "FSDataDisk1Name": "USERDATA",      
@@ -826,13 +857,183 @@
               }
           }
       }
-    },                    
+    }, 
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DownloadMigrationAgent",
+      "dependsOn": [
+        "DomainJoinFS1"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/downloadmigrationagent.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('fs1name')]"
+              },
+              "MigrationAgentDownloadUrl": {
+                  "value": "[parameters('MigrationAgentDownloadUrl')]"
+              },                            
+              "location": {
+                  "value": "[resourceGroup().location]"
+              },                                          
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+          }
+      }
+    },                                   
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "deployADCVM",  
+      "dependsOn": [
+        "PowerShellExecutionPolicy"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('adcname')]"
+              },
+              "computerIP": {
+                  "value": "[variables('adcIP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsServer"
+              },
+              "Offer": {
+                  "value": "WindowsServer"
+              },
+              "OSVersion": {
+                "value": "[parameters('ADCOSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "[parameters('WindowsServerLicenseType')]"
+              },            
+              "VMSize": {
+                "value": "[parameters('ADCVMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('vnet1Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('vnet1subnet1Name')]"
+              },            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DomainJoinADC",
+      "dependsOn": [
+        "deployADCVM"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/domainjoin.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('adcname')]"
+              },
+              "domainName": {
+                  "value": "[variables('InternaldomainName')]"
+              },
+              "OUPath": {
+                  "value": "[variables('SRVOUPath')]"
+              },
+              "domainJoinOptions": {
+                  "value": 3
+              },
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                             
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "downloadaaddc",
+      "dependsOn": [
+        "DomainJoinADC"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/downloadaaddc.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('adcname')]"
+              },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },                
+              "AzureADConnectDownloadUrl": {
+                  "value": "[parameters('AzureADConnectDownloadUrl')]"
+              },                            
+              "location": {
+                  "value": "[resourceGroup().location]"
+              },                                          
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+          }
+      }
+    },            
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "deployWK1VM",
       "dependsOn": [
-        "DomainJoinFS1"
+        "PowerShellExecutionPolicy"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -918,6 +1119,44 @@
           }
       }
     },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "GrantRemoteDesktopUsers",
+      "dependsOn": [
+        "DomainJoinWK1VM"
+      ],          
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/grantrdpusers.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('wk1name')]"
+              },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },              
+              "Account": {
+                  "value": "Domain Users"
+              },            
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },    
+              "location": {
+                  "value": "[resourceGroup().location]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }              
+          }
+      }
+    },    
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
@@ -1044,44 +1283,6 @@
               "location": {
                   "value": "[resourceGroup().location]"
               }
-          }
-      }
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
-      "name": "GrantRemoteDesktopUsers",
-      "dependsOn": [
-        "CreateUserFolders"
-      ],          
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/grantrdpusers.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "computerName": {
-                  "value": "[variables('wk1name')]"
-              },
-              "TimeZone": {
-                  "value": "[parameters('TimeZone')]"
-              },              
-              "Account": {
-                  "value": "Domain Users"
-              },            
-              "NetBiosDomain": {
-                  "value": "[parameters('NetBiosDomain')]"
-              },    
-              "location": {
-                  "value": "[resourceGroup().location]"
-              },
-              "_artifactsLocation": {
-                "value": "[parameters('_artifactsLocation')]"
-              },                                                                                                            
-              "_artifactsLocationSasToken": {
-                "value": "[parameters('_artifactsLocationSasToken')]"
-              }              
           }
       }
     }
