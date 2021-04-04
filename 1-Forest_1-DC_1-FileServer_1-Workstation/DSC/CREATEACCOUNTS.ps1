@@ -33,7 +33,7 @@
                 Password = $DomainCreds
                 Enabled = $True
                 HomeDirectory = "\\$fs1name\HomeDrives\$Username"
-                HomeDrive = "H:\"
+                HomeDrive = "H:"
             }
         }
     }
