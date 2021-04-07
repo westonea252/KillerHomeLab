@@ -3,6 +3,7 @@
    param
    (
         [String]$computerName,
+        [String]$DC2Name,
         [String]$NetBiosDomain,
         [String]$InternaldomainName,
         [String]$ExternaldomainName,
@@ -14,21 +15,31 @@
         [String]$ocspIP,
         [String]$ex1IP,
         [String]$ex2IP,
+        [Int]$RetryIntervalSec=420,
         [System.Management.Automation.PSCredential]$Admincreds
     )
 
     Import-DscResource -Module xDnsServer
+    Import-DscResource -ModuleName ActiveDirectoryDsc
 
     [System.Management.Automation.PSCredential ]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosDomain}\$($AdminCreds.UserName)", $AdminCreds.Password)
 
     Node localhost
     {
+        WaitForADDomain DscForestWait
+        {
+            DomainName = $InternaldomainName
+            Credential= $DomainCreds
+            WaitTimeout = $RetryIntervalSec
+        }
+
         xDnsServerADZone ExternalDomain
         {
             Name             = "$ExternaldomainName"
             DynamicUpdate = 'Secure'
             Ensure           = 'Present'
             ReplicationScope = 'Domain'
+            DependsOn = '[WaitForADDomain]DscForestWait'
         }
 
         xDnsServerADZone ReverseADZone1
@@ -37,6 +48,7 @@
             DynamicUpdate = 'Secure'
             Ensure           = 'Present'
             ReplicationScope = 'Domain'
+            DependsOn = '[WaitForADDomain]DscForestWait'
         }
 
         xDnsServerADZone ReverseADZone2
@@ -45,6 +57,7 @@
             DynamicUpdate = 'Secure'
             Ensure           = 'Present'
             ReplicationScope = 'Domain'
+            DependsOn = '[WaitForADDomain]DscForestWait'
         }
 
         xDnsRecord DC1PtrRecord
@@ -61,7 +74,7 @@
         {
             Name      = "$dc2lastoctet"
             Zone      = "$ReverseLookup2.in-addr.arpa"
-            Target    = "$computerName.$InternaldomainName"
+            Target    = "$DC2Name.$InternaldomainName"
             Type      = 'Ptr'
             Ensure    = 'Present'
             DependsOn = "[xDnsServerADZone]ReverseADZone2"

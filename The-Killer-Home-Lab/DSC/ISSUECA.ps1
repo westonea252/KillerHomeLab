@@ -3,6 +3,7 @@ Configuration ISSUECA
    param
    (
         [String]$computerName,
+        [String]$TimeZone,
         [String]$NamingConvention,
         [String]$NetBiosDomain,
         [String]$IssuingCAName,
@@ -100,7 +101,7 @@ Configuration ISSUECA
         TimeZone SetTimeZone
         {
             IsSingleInstance = 'Yes'
-            TimeZone         = 'Eastern Standard Time'
+            TimeZone         = $TimeZone
         }
 
         File CopyFilesFromRootCA

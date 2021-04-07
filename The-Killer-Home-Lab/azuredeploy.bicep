@@ -1105,6 +1105,7 @@ module configdns 'nestedtemplates/configdns.bicep' = {
   name: 'configdns'
   params: {
     computerName: dc1name
+    DC2Name: dc2name    
     NetBiosDomain: NetBiosDomain
     InternaldomainName: InternaldomainName
     ExternaldomainName: ExternaldomainName
@@ -1141,7 +1142,7 @@ module createous 'nestedtemplates/createous.bicep' = {
   ]
 }
 
-module createsites '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/createsites.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module createsites 'nestedtemplates/createsites.bicep' = {
   name: 'createsites'
   params: {
     computerName: dc1name
@@ -1149,8 +1150,8 @@ module createsites '?' /*TODO: replace with correct path to [uri(parameters('_ar
     BaseDN: BaseDN
     Site1Prefix: APPVNet1Prefix
     Site2Prefix: APPVNet2Prefix
-    '_artifactsLocation': artifactsLocation
-    '_artifactsLocationSasToken': artifactsLocationSasToken
+    artifactsLocation: artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
     location: resourceGroup().location
   }
   dependsOn: [
@@ -1158,7 +1159,7 @@ module createsites '?' /*TODO: replace with correct path to [uri(parameters('_ar
   ]
 }
 
-module deployDC2VM '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-2disk-vm.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module deployDC2VM 'nestedtemplates/1nic-2disk-vm.bicep' = {
   name: 'deployDC2VM'
   params: {
     computerName: dc2name
@@ -1166,7 +1167,7 @@ module deployDC2VM '?' /*TODO: replace with correct path to [uri(parameters('_ar
     Publisher: 'MicrosoftWindowsServer'
     Offer: 'WindowsServer'
     OSVersion: DC2OSVersion
-    LicenseType: WindowsServerLicenseType
+    licenseType: WindowsServerLicenseType
     DataDisk1Name: DCDataDisk1Name
     VMSize: DC2VMSize
     vnetName: APPVNet2Name
@@ -1180,18 +1181,18 @@ module deployDC2VM '?' /*TODO: replace with correct path to [uri(parameters('_ar
   ]
 }
 
-module promotedc2 '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/otherdc.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module promotedc2 'nestedtemplates/otherdc.bicep' = {
   name: 'promotedc2'
   params: {
     computerName: dc2name
     TimeZone: TimeZone
     NetBiosDomain: NetBiosDomain
     domainName: InternaldomainName
-    DNSServerIP: dc1IP
+    DnsServerIP: dc1IP
     adminUsername: adminUsername
     adminPassword: adminPassword
-    '_artifactsLocation': artifactsLocation
-    '_artifactsLocationSasToken': artifactsLocationSasToken
+    artifactsLocation: artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
     location: Location2
   }
   dependsOn: [
@@ -1199,7 +1200,7 @@ module promotedc2 '?' /*TODO: replace with correct path to [uri(parameters('_art
   ]
 }
 
-module UpdateAPPVNet2DNS_2 '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/updateappvnetdns.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module UpdateAPPVNet2DNS_2 'nestedtemplates/updateappvnetdns.bicep' = {
   name: 'UpdateAPPVNet2DNS-2'
   params: {
     vnetName: APPVNet2Name
@@ -1229,12 +1230,12 @@ module UpdateAPPVNet2DNS_2 '?' /*TODO: replace with correct path to [uri(paramet
   ]
 }
 
-module restartdc2 '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/restartvm.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module restartdc2 'nestedtemplates/restartvm.bicep' = {
   name: 'restartdc2'
   params: {
     computerName: dc2name
-    '_artifactsLocation': artifactsLocation
-    '_artifactsLocationSasToken': artifactsLocationSasToken
+    artifactsLocation: artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
     location: Location2
   }
   dependsOn: [
@@ -1242,7 +1243,7 @@ module restartdc2 '?' /*TODO: replace with correct path to [uri(parameters('_art
   ]
 }
 
-module deploySQLVM '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-3disk-vm.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module deploySQLVM  'nestedtemplates/1nic-3disk-vm.bicep' = {
   name: 'deploySQLVM'
   params: {
     computerName: sqlname
@@ -1250,7 +1251,7 @@ module deploySQLVM '?' /*TODO: replace with correct path to [uri(parameters('_ar
     Publisher: 'MicrosoftWindowsServer'
     Offer: 'WindowsServer'
     OSVersion: SQLOSVersion
-    LicenseType: WindowsServerLicenseType
+    licenseType: WindowsServerLicenseType
     DataDisk1Name: 'SQLDatabases'
     DataDisk2Name: 'SQLLogs'
     VMSize: SQLVMSize
@@ -1265,7 +1266,7 @@ module deploySQLVM '?' /*TODO: replace with correct path to [uri(parameters('_ar
   ]
 }
 
-module DomainJoinSQL '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/domainjoin.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module DomainJoinSQL  'nestedtemplates/domainjoin.bicep' = {
   name: 'DomainJoinSQL'
   params: {
     computerName: sqlname
@@ -1281,7 +1282,7 @@ module DomainJoinSQL '?' /*TODO: replace with correct path to [uri(parameters('_
   ]
 }
 
-module InstallSQL '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/sql.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module InstallSQL  'nestedtemplates/sql.bicep' = {
   name: 'InstallSQL'
   params: {
     computerName: sqlname
@@ -1291,8 +1292,8 @@ module InstallSQL '?' /*TODO: replace with correct path to [uri(parameters('_art
     location: resourceGroup().location
     adminUsername: adminUsername
     adminPassword: adminPassword
-    '_artifactsLocation': artifactsLocation
-    '_artifactsLocationSasToken': artifactsLocationSasToken
+    artifactsLocation: artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
   }
   dependsOn: [
     deploySQLVM
@@ -1300,7 +1301,7 @@ module InstallSQL '?' /*TODO: replace with correct path to [uri(parameters('_art
   ]
 }
 
-module DeployRootCA '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module DeployRootCA 'nestedtemplates/1nic-1disk-vm.bicep' = {
   name: 'DeployRootCA'
   params: {
     computerName: rcaname
@@ -1308,7 +1309,7 @@ module DeployRootCA '?' /*TODO: replace with correct path to [uri(parameters('_a
     Publisher: 'MicrosoftWindowsServer'
     Offer: 'WindowsServer'
     OSVersion: RCAOSVersion
-    LicenseType: WindowsServerLicenseType
+    licenseType: WindowsServerLicenseType
     VMSize: RCAVMSize
     vnetName: APPVNet1Name
     subnetName: APPVNet1subnet6Name
@@ -1321,7 +1322,7 @@ module DeployRootCA '?' /*TODO: replace with correct path to [uri(parameters('_a
   ]
 }
 
-module ConfigureRootCA '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/rootca.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module ConfigureRootCA  'nestedtemplates/rootca.bicep' = {
   name: 'ConfigureRootCA'
   params: {
     computerName: rcaname
@@ -1334,15 +1335,15 @@ module ConfigureRootCA '?' /*TODO: replace with correct path to [uri(parameters(
     location: resourceGroup().location
     adminUsername: adminUsername
     adminPassword: adminPassword
-    '_artifactsLocation': artifactsLocation
-    '_artifactsLocationSasToken': artifactsLocationSasToken
+    artifactsLocation: artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
   }
   dependsOn: [
     DeployRootCA
   ]
 }
 
-module DeployIssuingCA '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module DeployIssuingCA  'nestedtemplates/1nic-1disk-vm.bicep' = {
   name: 'DeployIssuingCA'
   params: {
     computerName: icaname
@@ -1350,7 +1351,7 @@ module DeployIssuingCA '?' /*TODO: replace with correct path to [uri(parameters(
     Publisher: 'MicrosoftWindowsServer'
     Offer: 'WindowsServer'
     OSVersion: ICAOSVersion
-    LicenseType: WindowsServerLicenseType
+    licenseType: WindowsServerLicenseType
     VMSize: ICAVMSize
     vnetName: APPVNet1Name
     subnetName: APPVNet1subnet6Name
@@ -1363,7 +1364,7 @@ module DeployIssuingCA '?' /*TODO: replace with correct path to [uri(parameters(
   ]
 }
 
-module DomainJoinIssuingCA '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/domainjoin.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module DomainJoinIssuingCA  'nestedtemplates/domainjoin.bicep' = {
   name: 'DomainJoinIssuingCA'
   params: {
     computerName: icaname
@@ -1379,10 +1380,11 @@ module DomainJoinIssuingCA '?' /*TODO: replace with correct path to [uri(paramet
   ]
 }
 
-module ConfigureIssueCA '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/issueca.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module ConfigureIssueCA  'nestedtemplates/issueca.bicep' = {
   name: 'ConfigureIssueCA'
   params: {
     computerName: icaname
+    TimeZone: TimeZone
     NamingConvention: NamingConvention
     NetBiosDomain: NetBiosDomain
     IssuingCAName: IssuingCAName
@@ -1393,15 +1395,15 @@ module ConfigureIssueCA '?' /*TODO: replace with correct path to [uri(parameters
     location: resourceGroup().location
     adminUsername: adminUsername
     adminPassword: adminPassword
-    '_artifactsLocation': artifactsLocation
-    '_artifactsLocationSasToken': artifactsLocationSasToken
+    artifactsLocation: artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
   }
   dependsOn: [
     DomainJoinIssuingCA
   ]
 }
 
-module GrantCARequest '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/grantca.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module GrantCARequest  'nestedtemplates/grantca.bicep' = {
   name: 'GrantCARequest'
   params: {
     computerName: rcaname
@@ -1409,15 +1411,15 @@ module GrantCARequest '?' /*TODO: replace with correct path to [uri(parameters('
     IssuingCAName: IssuingCAName
     RootCAName: RootCAName
     location: resourceGroup().location
-    '_artifactsLocation': artifactsLocation
-    '_artifactsLocationSasToken': artifactsLocationSasToken
+    artifactsLocation: artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
   }
   dependsOn: [
     ConfigureIssueCA
   ]
 }
 
-module FinalizeCA '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/finalizeca.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module FinalizeCA  'nestedtemplates/finalizeca.bicep' = {
   name: 'FinalizeCA'
   params: {
     computerName: icaname
@@ -1430,15 +1432,15 @@ module FinalizeCA '?' /*TODO: replace with correct path to [uri(parameters('_art
     location: resourceGroup().location
     adminUsername: adminUsername
     adminPassword: adminPassword
-    '_artifactsLocation': artifactsLocation
-    '_artifactsLocationSasToken': artifactsLocationSasToken
+    artifactsLocation: artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
   }
   dependsOn: [
     GrantCARequest
   ]
 }
 
-module DeployOCSP '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module DeployOCSP  'nestedtemplates/1nic-1disk-vm.bicep' = {
   name: 'DeployOCSP'
   params: {
     computerName: ocspname
@@ -1446,7 +1448,7 @@ module DeployOCSP '?' /*TODO: replace with correct path to [uri(parameters('_art
     Publisher: 'MicrosoftWindowsServer'
     Offer: 'WindowsServer'
     OSVersion: OCSPOSVersion
-    LicenseType: WindowsServerLicenseType
+    licenseType: WindowsServerLicenseType
     VMSize: OCSPVMSize
     vnetName: APPVNet1Name
     subnetName: APPVNet1subnet6Name
@@ -1459,7 +1461,7 @@ module DeployOCSP '?' /*TODO: replace with correct path to [uri(parameters('_art
   ]
 }
 
-module DomainJoinOCSP '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/domainjoin.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module DomainJoinOCSP  'nestedtemplates/domainjoin.bicep' = {
   name: 'DomainJoinOCSP'
   params: {
     computerName: ocspname
@@ -1475,28 +1477,28 @@ module DomainJoinOCSP '?' /*TODO: replace with correct path to [uri(parameters('
   ]
 }
 
-module ConfigureOCSP '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/ocsp.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module ConfigureOCSP  'nestedtemplates/ocsp.bicep' = {
   name: 'ConfigureOCSP'
   params: {
     computerName: ocspname
     TimeZone: TimeZone
     NetBiosDomain: NetBiosDomain
-    Internaldomainname: InternaldomainName
-    Externaldomainname: ExternaldomainName
+    InternaldomainName: InternaldomainName
+    ExternaldomainName: ExternaldomainName
     IssuingCAName: IssuingCAName
     RootCAName: RootCAName
     location: resourceGroup().location
     adminUsername: adminUsername
     adminPassword: adminPassword
-    '_artifactsLocation': artifactsLocation
-    '_artifactsLocationSasToken': artifactsLocationSasToken
+    artifactsLocation: artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
   }
   dependsOn: [
     DomainJoinOCSP
   ]
 }
 
-module ReplicateAD '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/replicatead.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module ReplicateAD  'nestedtemplates/replicatead.bicep' = {
   name: 'ReplicateAD'
   params: {
     computerName: dc1name
@@ -1504,15 +1506,15 @@ module ReplicateAD '?' /*TODO: replace with correct path to [uri(parameters('_ar
     adminUsername: adminUsername
     adminPassword: adminPassword
     location: resourceGroup().location
-    '_artifactsLocation': artifactsLocation
-    '_artifactsLocationSasToken': artifactsLocationSasToken
+    artifactsLocation: artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
   }
   dependsOn: [
     ConfigureOCSP
   ]
 }
 
-module deployfs1 '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module deployfs1  'nestedtemplates/1nic-1disk-vm.bicep' = {
   name: 'deployfs1'
   params: {
     computerName: fs1name
@@ -1520,7 +1522,7 @@ module deployfs1 '?' /*TODO: replace with correct path to [uri(parameters('_arti
     Publisher: 'MicrosoftWindowsServer'
     Offer: 'WindowsServer'
     OSVersion: FSOSVersion
-    LicenseType: WindowsServerLicenseType
+    licenseType: WindowsServerLicenseType
     VMSize: FS1VMSize
     vnetName: APPVNet1Name
     subnetName: APPVNet1subnet2Name
@@ -1533,7 +1535,7 @@ module deployfs1 '?' /*TODO: replace with correct path to [uri(parameters('_arti
   ]
 }
 
-module DomainJoinFS1 '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/domainjoin.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module DomainJoinFS1  'nestedtemplates/domainjoin.bicep' = {
   name: 'DomainJoinFS1'
   params: {
     computerName: fs1name
@@ -1549,7 +1551,7 @@ module DomainJoinFS1 '?' /*TODO: replace with correct path to [uri(parameters('_
   ]
 }
 
-module deployfs2 '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module deployfs2  'nestedtemplates/1nic-1disk-vm.bicep' = {
   name: 'deployfs2'
   params: {
     computerName: fs2name
@@ -1557,7 +1559,7 @@ module deployfs2 '?' /*TODO: replace with correct path to [uri(parameters('_arti
     Publisher: 'MicrosoftWindowsServer'
     Offer: 'WindowsServer'
     OSVersion: FSOSVersion
-    LicenseType: WindowsServerLicenseType
+    licenseType: WindowsServerLicenseType
     VMSize: FS2VMSize
     vnetName: APPVNet2Name
     subnetName: APPVNet2subnet2Name
@@ -1570,7 +1572,7 @@ module deployfs2 '?' /*TODO: replace with correct path to [uri(parameters('_arti
   ]
 }
 
-module DomainJoinFS2 '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/domainjoin.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module DomainJoinFS2  'nestedtemplates/domainjoin.bicep' = {
   name: 'DomainJoinFS2'
   params: {
     computerName: fs2name
@@ -1586,7 +1588,7 @@ module DomainJoinFS2 '?' /*TODO: replace with correct path to [uri(parameters('_
   ]
 }
 
-module deployex1 '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-3disk-vm.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module deployex1  'nestedtemplates/1nic-3disk-vm.bicep' = {
   name: 'deployex1'
   params: {
     computerName: ex1name
@@ -1594,7 +1596,7 @@ module deployex1 '?' /*TODO: replace with correct path to [uri(parameters('_arti
     Publisher: 'MicrosoftWindowsServer'
     Offer: 'WindowsServer'
     OSVersion: EXOSVersion
-    LicenseType: WindowsServerLicenseType
+    licenseType: WindowsServerLicenseType
     DataDisk1Name: 'Exchange'
     DataDisk2Name: 'Software'
     VMSize: EX1VMSize
@@ -1609,7 +1611,7 @@ module deployex1 '?' /*TODO: replace with correct path to [uri(parameters('_arti
   ]
 }
 
-module DomainJoinEX1 '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/domainjoin.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module DomainJoinEX1  'nestedtemplates/domainjoin.bicep' = {
   name: 'DomainJoinEX1'
   params: {
     computerName: ex1name
@@ -1625,7 +1627,7 @@ module DomainJoinEX1 '?' /*TODO: replace with correct path to [uri(parameters('_
   ]
 }
 
-module prepareexchange19s1 '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/prepareexchange19.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module prepareexchange19s1  'nestedtemplates/prepareexchange19.bicep' = {
   name: 'prepareexchange19s1'
   params: {
     computerName: ex1name
@@ -1635,20 +1637,20 @@ module prepareexchange19s1 '?' /*TODO: replace with correct path to [uri(paramet
     adminUsername: adminUsername
     adminPassword: adminPassword
     location: resourceGroup().location
-    '_artifactsLocation': artifactsLocation
-    '_artifactsLocationSasToken': artifactsLocationSasToken
+    artifactsLocation: artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
   }
   dependsOn: [
     DomainJoinEX1
   ]
 }
 
-module restartex1_1 '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/restartvm.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module restartex1_1  'nestedtemplates/restartvm.bicep' = {
   name: 'restartex1-1'
   params: {
     computerName: ex1name
-    '_artifactsLocation': artifactsLocation
-    '_artifactsLocationSasToken': artifactsLocationSasToken
+    artifactsLocation: artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
     location: resourceGroup().location
   }
   dependsOn: [
@@ -1656,7 +1658,7 @@ module restartex1_1 '?' /*TODO: replace with correct path to [uri(parameters('_a
   ]
 }
 
-module deployex2 '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-3disk-vm.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module deployex2  'nestedtemplates/1nic-3disk-vm.bicep' = {
   name: 'deployex2'
   params: {
     computerName: ex2name
@@ -1664,7 +1666,7 @@ module deployex2 '?' /*TODO: replace with correct path to [uri(parameters('_arti
     Publisher: 'MicrosoftWindowsServer'
     Offer: 'WindowsServer'
     OSVersion: EXOSVersion
-    LicenseType: WindowsServerLicenseType
+    licenseType: WindowsServerLicenseType
     DataDisk1Name: 'Exchange'
     DataDisk2Name: 'Software'
     VMSize: EX2VMSize
@@ -1679,7 +1681,7 @@ module deployex2 '?' /*TODO: replace with correct path to [uri(parameters('_arti
   ]
 }
 
-module DomainJoinEX2 '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/domainjoin.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module DomainJoinEX2  'nestedtemplates/domainjoin.bicep' = {
   name: 'DomainJoinEX2'
   params: {
     computerName: ex2name
@@ -1695,7 +1697,7 @@ module DomainJoinEX2 '?' /*TODO: replace with correct path to [uri(parameters('_
   ]
 }
 
-module prepareexchange19s2 '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/prepareexchange19.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module prepareexchange19s2  'nestedtemplates/prepareexchange19.bicep' = {
   name: 'prepareexchange19s2'
   params: {
     computerName: ex2name
@@ -1705,20 +1707,20 @@ module prepareexchange19s2 '?' /*TODO: replace with correct path to [uri(paramet
     adminUsername: adminUsername
     adminPassword: adminPassword
     location: Location2
-    '_artifactsLocation': artifactsLocation
-    '_artifactsLocationSasToken': artifactsLocationSasToken
+    artifactsLocation: artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
   }
   dependsOn: [
     DomainJoinEX2
   ]
 }
 
-module restartex2_1 '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/restartvm.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module restartex2_1  'nestedtemplates/restartvm.bicep' = {
   name: 'restartex2-1'
   params: {
     computerName: ex2name
-    '_artifactsLocation': artifactsLocation
-    '_artifactsLocationSasToken': artifactsLocationSasToken
+    artifactsLocation: artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
     location: Location2
   }
   dependsOn: [
@@ -1726,20 +1728,20 @@ module restartex2_1 '?' /*TODO: replace with correct path to [uri(parameters('_a
   ]
 }
 
-module prepareadexchange19 '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/prepareadexchange19.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module prepareadexchange19 'nestedtemplates/prepareadexchange19.bicep' = {
   name: 'prepareadexchange19'
   params: {
     computerName: ex1name
-    ExchangeOrgName: ExchangeOrgName
+    ExchangeOrgname: ExchangeOrgName
     NetBiosDomain: NetBiosDomain
-    dc1name: dc1name
-    dc2name: dc2name
+    DC1Name: dc1name
+    DC2Name: dc2name
     BaseDN: BaseDN
     adminUsername: adminUsername
     adminPassword: adminPassword
     location: resourceGroup().location
-    '_artifactsLocation': artifactsLocation
-    '_artifactsLocationSasToken': artifactsLocationSasToken
+    artifactsLocation: artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
   }
   dependsOn: [
     ReplicateAD
@@ -1747,15 +1749,15 @@ module prepareadexchange19 '?' /*TODO: replace with correct path to [uri(paramet
   ]
 }
 
-module grantextrustedsub1 '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/grantets.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module grantextrustedsub1 'nestedtemplates/grantets.bicep' = {
   name: 'grantextrustedsub1'
   params: {
     computerName: fs1name
     TimeZone: TimeZone
     NetBiosDomain: NetBiosDomain
     location: resourceGroup().location
-    '_artifactsLocation': artifactsLocation
-    '_artifactsLocationSasToken': artifactsLocationSasToken
+    artifactsLocation: artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
   }
   dependsOn: [
     DomainJoinFS1
@@ -1763,15 +1765,15 @@ module grantextrustedsub1 '?' /*TODO: replace with correct path to [uri(paramete
   ]
 }
 
-module grantextrustedsub2 '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/grantets.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module grantextrustedsub2 'nestedtemplates/grantets.bicep' = {
   name: 'grantextrustedsub2'
   params: {
     computerName: fs2name
     TimeZone: TimeZone
     NetBiosDomain: NetBiosDomain
     location: Location2
-    '_artifactsLocation': artifactsLocation
-    '_artifactsLocationSasToken': artifactsLocationSasToken
+    artifactsLocation: artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
   }
   dependsOn: [
     DomainJoinFS2
@@ -1779,7 +1781,7 @@ module grantextrustedsub2 '?' /*TODO: replace with correct path to [uri(paramete
   ]
 }
 
-module installexchange1 '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/exchange19.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module installexchange1 'nestedtemplates/exchange19.bicep' = {
   name: 'installexchange1'
   params: {
     computerName: ex1name
@@ -1789,8 +1791,8 @@ module installexchange1 '?' /*TODO: replace with correct path to [uri(parameters
     DBName: DB1Name
     adminUsername: adminUsername
     adminPassword: adminPassword
-    '_artifactsLocation': artifactsLocation
-    '_artifactsLocationSasToken': artifactsLocationSasToken
+    artifactsLocation: artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
   }
   dependsOn: [
     DomainJoinEX1
@@ -1799,7 +1801,7 @@ module installexchange1 '?' /*TODO: replace with correct path to [uri(parameters
   ]
 }
 
-module configexchange1 '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/configexchange19.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module configexchange1 'nestedtemplates/configexchange19.bicep' = {
   name: 'configexchange1'
   params: {
     computerName: ex1name
@@ -1817,8 +1819,8 @@ module configexchange1 '?' /*TODO: replace with correct path to [uri(parameters(
     adminUsername: adminUsername
     adminPassword: adminPassword
     location: resourceGroup().location
-    '_artifactsLocation': artifactsLocation
-    '_artifactsLocationSasToken': artifactsLocationSasToken
+    artifactsLocation: artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
   }
   dependsOn: [
     restartdc1
@@ -1826,7 +1828,7 @@ module configexchange1 '?' /*TODO: replace with correct path to [uri(parameters(
   ]
 }
 
-module installexchange2 '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/exchange19.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module installexchange2 'nestedtemplates/exchange19.bicep' = {
   name: 'installexchange2'
   params: {
     computerName: ex2name
@@ -1836,8 +1838,8 @@ module installexchange2 '?' /*TODO: replace with correct path to [uri(parameters
     DBName: DB2Name
     adminUsername: adminUsername
     adminPassword: adminPassword
-    '_artifactsLocation': artifactsLocation
-    '_artifactsLocationSasToken': artifactsLocationSasToken
+    artifactsLocation: artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
   }
   dependsOn: [
     DomainJoinEX2
@@ -1847,7 +1849,7 @@ module installexchange2 '?' /*TODO: replace with correct path to [uri(parameters
   ]
 }
 
-module configexchange2 '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/configexchange19.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module configexchange2 'nestedtemplates/configexchange19.bicep' = {
   name: 'configexchange2'
   params: {
     computerName: ex2name
@@ -1865,8 +1867,8 @@ module configexchange2 '?' /*TODO: replace with correct path to [uri(parameters(
     adminUsername: adminUsername
     adminPassword: adminPassword
     location: Location2
-    '_artifactsLocation': artifactsLocation
-    '_artifactsLocationSasToken': artifactsLocationSasToken
+    artifactsLocation: artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
   }
   dependsOn: [
     restartdc2
@@ -1874,12 +1876,12 @@ module configexchange2 '?' /*TODO: replace with correct path to [uri(parameters(
   ]
 }
 
-module restartex1_2 '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/restartvm.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module restartex1_2 'nestedtemplates/restartvm.bicep' = {
   name: 'restartex1-2'
   params: {
     computerName: ex1name
-    '_artifactsLocation': artifactsLocation
-    '_artifactsLocationSasToken': artifactsLocationSasToken
+    artifactsLocation: artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
     location: resourceGroup().location
   }
   dependsOn: [
@@ -1887,12 +1889,12 @@ module restartex1_2 '?' /*TODO: replace with correct path to [uri(parameters('_a
   ]
 }
 
-module restartex2_2 '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/restartvm.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module restartex2_2 'nestedtemplates/restartvm.bicep' = {
   name: 'restartex2-2'
   params: {
     computerName: ex2name
-    '_artifactsLocation': artifactsLocation
-    '_artifactsLocationSasToken': artifactsLocationSasToken
+    artifactsLocation: artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
     location: Location2
   }
   dependsOn: [
@@ -1900,22 +1902,22 @@ module restartex2_2 '?' /*TODO: replace with correct path to [uri(parameters('_a
   ]
 }
 
-module createFSGMSA '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/createfsgmsa.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module createFSGMSA 'nestedtemplates/createfsgmsa.bicep' = {
   name: 'createFSGMSA'
   params: {
     computerName: dc1name
     NetBiosDomain: NetBiosDomain
     domainName: ExternaldomainName
     location: resourceGroup().location
-    '_artifactsLocation': artifactsLocation
-    '_artifactsLocationSasToken': artifactsLocationSasToken
+    artifactsLocation: artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
   }
   dependsOn: [
     createsites
   ]
 }
 
-module deployADCVM '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module deployADCVM 'nestedtemplates/1nic-1disk-vm.bicep' = {
   name: 'deployADCVM'
   params: {
     computerName: adcname
@@ -1923,7 +1925,7 @@ module deployADCVM '?' /*TODO: replace with correct path to [uri(parameters('_ar
     Publisher: 'MicrosoftWindowsServer'
     Offer: 'WindowsServer'
     OSVersion: ADCOSVersion
-    LicenseType: WindowsServerLicenseType
+    licenseType: WindowsServerLicenseType
     VMSize: ADCVMSize
     vnetName: APPVNet1Name
     subnetName: APPVNet1subnet5Name
@@ -1936,7 +1938,7 @@ module deployADCVM '?' /*TODO: replace with correct path to [uri(parameters('_ar
   ]
 }
 
-module DomainJoinADC '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/domainjoin.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module DomainJoinADC 'nestedtemplates/domainjoin.bicep' = {
   name: 'DomainJoinADC'
   params: {
     computerName: adcname
@@ -1952,7 +1954,7 @@ module DomainJoinADC '?' /*TODO: replace with correct path to [uri(parameters('_
   ]
 }
 
-module downloadaaddc '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/downloadaaddc.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module downloadaaddc 'nestedtemplates/downloadaaddc.bicep' = {
   name: 'downloadaaddc'
   params: {
     computerName: adcname
@@ -1961,15 +1963,15 @@ module downloadaaddc '?' /*TODO: replace with correct path to [uri(parameters('_
     location: resourceGroup().location
     adminUsername: adminUsername
     adminPassword: adminPassword
-    '_artifactsLocation': artifactsLocation
-    '_artifactsLocationSasToken': artifactsLocationSasToken
+    artifactsLocation: artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
   }
   dependsOn: [
     DomainJoinADC
   ]
 }
 
-module deployADFS1VM '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module deployADFS1VM 'nestedtemplates/1nic-1disk-vm.bicep' = {
   name: 'deployADFS1VM'
   params: {
     computerName: adfs1name
@@ -1977,7 +1979,7 @@ module deployADFS1VM '?' /*TODO: replace with correct path to [uri(parameters('_
     Publisher: 'MicrosoftWindowsServer'
     Offer: 'WindowsServer'
     OSVersion: ADFSOSVersion
-    LicenseType: WindowsServerLicenseType
+    licenseType: WindowsServerLicenseType
     VMSize: ADFS1VMSize
     vnetName: APPVNet1Name
     subnetName: APPVNet1subnet5Name
@@ -1991,7 +1993,7 @@ module deployADFS1VM '?' /*TODO: replace with correct path to [uri(parameters('_
   ]
 }
 
-module DomainJoinADFS1 '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/domainjoin.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module DomainJoinADFS1 'nestedtemplates/domainjoin.bicep' = {
   name: 'DomainJoinADFS1'
   params: {
     computerName: adfs1name
@@ -2007,7 +2009,7 @@ module DomainJoinADFS1 '?' /*TODO: replace with correct path to [uri(parameters(
   ]
 }
 
-module configurefirstadfs '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/firstadfswithsql.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module configurefirstadfs 'nestedtemplates/firstadfswithsql.bicep' = {
   name: 'configurefirstadfs'
   params: {
     computerName: adfs1name
@@ -2020,8 +2022,8 @@ module configurefirstadfs '?' /*TODO: replace with correct path to [uri(paramete
     adminUsername: adminUsername
     adminPassword: adminPassword
     location: resourceGroup().location
-    '_artifactsLocation': artifactsLocation
-    '_artifactsLocationSasToken': artifactsLocationSasToken
+    artifactsLocation: artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
   }
   dependsOn: [
     ReplicateAD
@@ -2030,7 +2032,7 @@ module configurefirstadfs '?' /*TODO: replace with correct path to [uri(paramete
   ]
 }
 
-module deployADFS2VM '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module deployADFS2VM 'nestedtemplates/1nic-1disk-vm.bicep' = {
   name: 'deployADFS2VM'
   params: {
     computerName: adfs2name
@@ -2038,7 +2040,7 @@ module deployADFS2VM '?' /*TODO: replace with correct path to [uri(parameters('_
     Publisher: 'MicrosoftWindowsServer'
     Offer: 'WindowsServer'
     OSVersion: ADFSOSVersion
-    LicenseType: WindowsServerLicenseType
+    licenseType: WindowsServerLicenseType
     VMSize: ADFS2VMSize
     vnetName: APPVNet2Name
     subnetName: APPVNet2subnet5Name
@@ -2052,7 +2054,7 @@ module deployADFS2VM '?' /*TODO: replace with correct path to [uri(parameters('_
   ]
 }
 
-module DomainJoinADFS2 '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/domainjoin.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module DomainJoinADFS2 'nestedtemplates/domainjoin.bicep' = {
   name: 'DomainJoinADFS2'
   params: {
     computerName: adfs2name
@@ -2068,7 +2070,7 @@ module DomainJoinADFS2 '?' /*TODO: replace with correct path to [uri(parameters(
   ]
 }
 
-module configureotheradfs '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/otheradfswithsql.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module configureotheradfs 'nestedtemplates/otheradfswithsql.bicep' = {
   name: 'configureotheradfs'
   params: {
     computerName: adfs2name
@@ -2082,8 +2084,8 @@ module configureotheradfs '?' /*TODO: replace with correct path to [uri(paramete
     PrimaryADFSServerIP: adfs1IP
     adminPassword: adminPassword
     location: Location2
-    '_artifactsLocation': artifactsLocation
-    '_artifactsLocationSasToken': artifactsLocationSasToken
+    artifactsLocation: artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
   }
   dependsOn: [
     createFSGMSA
@@ -2092,7 +2094,7 @@ module configureotheradfs '?' /*TODO: replace with correct path to [uri(paramete
   ]
 }
 
-module deployWAP1VM '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module deployWAP1VM 'nestedtemplates/1nic-1disk-vm.bicep' = {
   name: 'deployWAP1VM'
   params: {
     computerName: wap1name
@@ -2100,7 +2102,7 @@ module deployWAP1VM '?' /*TODO: replace with correct path to [uri(parameters('_a
     Publisher: 'MicrosoftWindowsServer'
     Offer: 'WindowsServer'
     OSVersion: WAPOSVersion
-    LicenseType: WindowsServerLicenseType
+    licenseType: WindowsServerLicenseType
     VMSize: WAP1VMSize
     vnetName: DMZVNet1Name
     subnetName: DMZVNet1subnet1Name
@@ -2113,7 +2115,7 @@ module deployWAP1VM '?' /*TODO: replace with correct path to [uri(parameters('_a
   ]
 }
 
-module configurefirstwap '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/wap.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module configurefirstwap 'nestedtemplates/wap.bicep' = {
   name: 'configurefirstwap'
   params: {
     computerName: wap1name
@@ -2127,8 +2129,8 @@ module configurefirstwap '?' /*TODO: replace with correct path to [uri(parameter
     location: resourceGroup().location
     adminUsername: adminUsername
     adminPassword: adminPassword
-    '_artifactsLocation': artifactsLocation
-    '_artifactsLocationSasToken': artifactsLocationSasToken
+    artifactsLocation: artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
   }
   dependsOn: [
     configureotheradfs
@@ -2136,7 +2138,7 @@ module configurefirstwap '?' /*TODO: replace with correct path to [uri(parameter
   ]
 }
 
-module deployWAP2VM '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module deployWAP2VM 'nestedtemplates/1nic-1disk-vm.bicep' = {
   name: 'deployWAP2VM'
   params: {
     computerName: wap2name
@@ -2144,7 +2146,7 @@ module deployWAP2VM '?' /*TODO: replace with correct path to [uri(parameters('_a
     Publisher: 'MicrosoftWindowsServer'
     Offer: 'WindowsServer'
     OSVersion: WAPOSVersion
-    LicenseType: WindowsServerLicenseType
+    licenseType: WindowsServerLicenseType
     VMSize: WAP2VMSize
     vnetName: DMZVNet2Name
     subnetName: DMZVNet2subnet1Name
@@ -2157,7 +2159,7 @@ module deployWAP2VM '?' /*TODO: replace with correct path to [uri(parameters('_a
   ]
 }
 
-module configureotherwap '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/wap.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module configureotherwap 'nestedtemplates/wap.bicep' = {
   name: 'configureotherwap'
   params: {
     computerName: wap2name
@@ -2171,8 +2173,8 @@ module configureotherwap '?' /*TODO: replace with correct path to [uri(parameter
     location: Location2
     adminUsername: adminUsername
     adminPassword: adminPassword
-    '_artifactsLocation': artifactsLocation
-    '_artifactsLocationSasToken': artifactsLocationSasToken
+    artifactsLocation: artifactsLocation
+    artifactsLocationSasToken: artifactsLocationSasToken
   }
   dependsOn: [
     configurefirstwap
@@ -2180,7 +2182,7 @@ module configureotherwap '?' /*TODO: replace with correct path to [uri(parameter
   ]
 }
 
-module createpublicdns '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/PublicDNSZone.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module createpublicdns 'nestedtemplates/PublicDNSZone.bicep' = {
   name: 'createpublicdns'
   params: {
     ZoneName: ExternaldomainName
@@ -2206,7 +2208,7 @@ module createpublicdns '?' /*TODO: replace with correct path to [uri(parameters(
   ]
 }
 
-module createprivatedns '?' /*TODO: replace with correct path to [uri(parameters('_artifactsLocation'), concat('nestedtemplates/PrivateDNSZone.json', parameters('_artifactsLocationSasToken')))]*/ = {
+module createprivatedns 'nestedtemplates/PrivateDNSZone.bicep' = {
   name: 'createprivatedns'
   params: {
     ZoneName: ExternaldomainName

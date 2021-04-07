@@ -1,8 +1,8 @@
 @description('Computer Name')
 param computerName string
 
-@description('Domain Controller2 Name')
-param DC2Name string
+@description('Time Zone')
+param TimeZone string
 
 @description('NetBios Domain Name')
 param NetBiosDomain string
@@ -13,29 +13,11 @@ param InternaldomainName string
 @description('The External FQDN of the AD Domain created ')
 param ExternaldomainName string
 
-@description('The name of Reverse Lookup Zone 1 Network ID')
-param ReverseLookup1 string
+@description('Issuing CA Name')
+param IssuingCAName string
 
-@description('The name of Reverse Lookup Zone 2 Network ID')
-param ReverseLookup2 string
-
-@description('DC1 Last IP Octet')
-param dc1lastoctet string
-
-@description('DC2 Last IP Octet')
-param dc2lastoctet string
-
-@description('Exchange Server1 IP')
-param ex1IP string
-
-@description('Exchange Server2 IP')
-param ex2IP string
-
-@description('Issuing CA IP')
-param icaIP string
-
-@description('OCSP IP')
-param ocspIP string
+@description('Root CA Name')
+param RootCAName string
 
 @description('Region of Resources')
 param location string
@@ -54,8 +36,8 @@ param artifactsLocation string
 @secure()
 param artifactsLocationSasToken string
 
-var ModulesURL = uri(artifactsLocation, 'DSC/CONFIGDNS.zip${artifactsLocationSasToken}')
-var ConfigurationFunction = 'CONFIGDNS.ps1\\CONFIGDNS'
+var ModulesURL = uri(artifactsLocation, 'DSC/OCSP.zip${artifactsLocationSasToken}')
+var ConfigurationFunction = 'OCSP.ps1\\OCSP'
 
 resource computerName_Microsoft_Powershell_DSC 'Microsoft.Compute/virtualMachines/extensions@2019-03-01' = {
   name: '${computerName}/Microsoft.Powershell.DSC'
@@ -70,18 +52,12 @@ resource computerName_Microsoft_Powershell_DSC 'Microsoft.Compute/virtualMachine
       ConfigurationFunction: ConfigurationFunction
       Properties: {
         computerName: computerName
-        DC2Name: DC2Name
+        TimeZone: TimeZone
         NetBiosDomain: NetBiosDomain
         InternaldomainName: InternaldomainName
         ExternaldomainName: ExternaldomainName
-        ReverseLookup1: ReverseLookup1
-        ReverseLookup2: ReverseLookup2
-        dc1lastoctet: dc1lastoctet
-        dc2lastoctet: dc2lastoctet
-        icaIP: icaIP
-        ocspIP: ocspIP
-        ex1IP: ex1IP
-        ex2IP: ex2IP
+        IssuingCAName: IssuingCAName
+        RootCAName: RootCAName
         AdminCreds: {
           UserName: adminUsername
           Password: 'PrivateSettingsRef:AdminPassword'
