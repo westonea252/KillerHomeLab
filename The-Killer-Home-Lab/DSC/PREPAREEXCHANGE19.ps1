@@ -2,8 +2,8 @@
 {
    param
    (
-        [String]$TimeZone,     
-        [String]$ExchangeSASUrl,     
+        [String]$ExchangeSASUrl, 
+        [String]$TimeZone,                       
         [String]$NetBiosDomain,
         [System.Management.Automation.PSCredential]$Admincreds
     )

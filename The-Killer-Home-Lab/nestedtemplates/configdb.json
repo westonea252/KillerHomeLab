@@ -7,31 +7,19 @@
             "metadata": {
                 "description": "Computer Name"
             }
-        },
+        },    
         "InternaldomainName": {
             "type": "string",
           "metadata": {
             "description": "The FQDN of the AD Domain created "
           }
-        },
-        "ExternaldomainName": {
-            "type": "string",
-          "metadata": {
-            "description": "The External FQDN of the AD Domain created "
-          }
-        },       
+        },          
         "NetBiosDomain": {
             "type": "string",
             "metadata": {
                 "description": "NetBios Domain Name"
             }
-        },        
-        "BaseDN": {
-            "type": "string",
-            "metadata": {
-                "description": "Base Domain Distiguished Name"
-            }
-        },                        
+        },                            
         "Site1DC": {
             "type": "string",
             "metadata": {
@@ -50,18 +38,12 @@
                 "description": "Domain Controller used for Exchange Config"
             }
         },                                                         
-        "CAServerIP": {
+        "DBName": {
             "type": "string",
             "metadata": {
-                "description": "CA Server IP"
+                "description": "Database Name"
             }
-        },                                             
-        "Site": {
-            "type": "string",
-            "metadata": {
-                "description": "Site Name"
-            }
-        },                                                                                                        
+        },                                                                                              
         "adminUsername": {
             "type": "string",
             "metadata": {
@@ -94,8 +76,8 @@
         }                
     },
     "variables": {
-        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/CONFIGEXCHANGE19.zip', parameters('_artifactsLocationSasToken')))]",
-        "ConfigurationFunction": "CONFIGEXCHANGE19.ps1\\CONFIGEXCHANGE19"
+        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/CONFIGDB.zip', parameters('_artifactsLocationSasToken')))]",
+        "ConfigurationFunction": "CONFIGDB.ps1\\CONFIGDB"
     },
     "resources": [
         {
@@ -113,15 +95,12 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "ComputerName": "[parameters('ComputerName')]",
-                            "InternaldomainName": "[parameters('InternaldomainName')]",                                                        
-                            "ExternaldomainName": "[parameters('ExternaldomainName')]",   
+                            "InternaldomainName": "[parameters('InternaldomainName')]",                                                                                    
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",        
-                            "BaseDN": "[parameters('BaseDN')]",                                                                                                               
                             "Site1DC": "[parameters('Site1DC')]",
                             "Site2DC": "[parameters('Site2DC')]",                                                        
-                            "ConfigDC": "[parameters('ConfigDC')]",                                                                                     
-                            "CAServerIP": "[parameters('CAServerIP')]",                                                                                                                                                                                
-                            "Site": "[parameters('Site')]",                                                                                                                                                                            
+                            "ConfigDC": "[parameters('ConfigDC')]",        
+                            "DBName": "[parameters('DBName')]",                                                                                                                                                                                
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"

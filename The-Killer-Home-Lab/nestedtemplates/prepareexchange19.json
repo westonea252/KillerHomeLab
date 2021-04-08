@@ -13,7 +13,7 @@
             "metadata": {
                 "description": "Time Zone"
             }
-        },        
+        },           
         "ExchangeSASUrl": {
             "type": "string",
             "metadata": {
@@ -76,8 +76,8 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
-                            "TimeZone": "[parameters('TimeZone')]",
                             "ExchangeSASUrl": "[parameters('ExchangeSASUrl')]",
+                            "TimeZone": "[parameters('TimeZone')]",                                                        
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",

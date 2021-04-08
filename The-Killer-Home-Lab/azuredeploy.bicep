@@ -1786,9 +1786,9 @@ module installexchange1 'nestedtemplates/exchange19.bicep' = {
   params: {
     computerName: ex1name
     NetBiosDomain: NetBiosDomain
+    DBName: DB1Name
     SetupDC: dc1name
     location: resourceGroup().location
-    DBName: DB1Name
     adminUsername: adminUsername
     adminPassword: adminPassword
     artifactsLocation: artifactsLocation
@@ -1805,15 +1805,13 @@ module configexchange1 'nestedtemplates/configexchange19.bicep' = {
   name: 'configexchange1'
   params: {
     computerName: ex1name
-    Site1DC: dc1name
-    Site2DC: dc2name
-    ConfigDC: dc1name
-    Site1FSW: fs1name
     InternaldomainName: InternaldomainName
     ExternaldomainName: ExternaldomainName
     NetBiosDomain: NetBiosDomain
     BaseDN: BaseDN
-    DAGName: DAG19Name
+    Site1DC: dc1name
+    Site2DC: dc2name
+    ConfigDC: dc1name
     CAServerIP: icaIP
     Site: 'Site1'
     adminUsername: adminUsername
@@ -1853,15 +1851,13 @@ module configexchange2 'nestedtemplates/configexchange19.bicep' = {
   name: 'configexchange2'
   params: {
     computerName: ex2name
-    Site1DC: dc1name
-    Site2DC: dc2name
-    ConfigDC: dc2name
-    Site1FSW: fs1name
     InternaldomainName: InternaldomainName
     ExternaldomainName: ExternaldomainName
     NetBiosDomain: NetBiosDomain
-    BaseDN: BaseDN
-    DAGName: DAG19Name
+    BaseDN: BaseDN    
+    Site1DC: dc1name
+    Site2DC: dc2name
+    ConfigDC: dc2name
     CAServerIP: icaIP
     Site: 'Site2'
     adminUsername: adminUsername

@@ -1,18 +1,6 @@
 @description('Computer Name')
 param computerName string
 
-@description('Site 2 Domain Controller Name')
-param Site1DC string
-
-@description('Site 2 Domain Controller Name')
-param Site2DC string
-
-@description('Domain Controller used for Exchange Config')
-param ConfigDC string
-
-@description('Site 1 File Share Witness Name')
-param Site1FSW string
-
 @description('The FQDN of the AD Domain created ')
 param InternaldomainName string
 
@@ -25,8 +13,14 @@ param NetBiosDomain string
 @description('Base Domain Distiguished Name')
 param BaseDN string
 
-@description('Database Availability Group Name')
-param DAGName string
+@description('Site 2 Domain Controller Name')
+param Site1DC string
+
+@description('Site 2 Domain Controller Name')
+param Site2DC string
+
+@description('Domain Controller used for Exchange Config')
+param ConfigDC string
 
 @description('CA Server IP')
 param CAServerIP string
@@ -67,15 +61,13 @@ resource computerName_Microsoft_Powershell_DSC 'Microsoft.Compute/virtualMachine
       ConfigurationFunction: ConfigurationFunction
       Properties: {
         ComputerName: computerName
-        Site1DC: Site1DC
-        Site2DC: Site2DC
-        ConfigDC: ConfigDC
-        Site1FSW: Site1FSW
         InternaldomainName: InternaldomainName
         ExternaldomainName: ExternaldomainName
         NetBiosDomain: NetBiosDomain
         BaseDN: BaseDN
-        DAGName: DAGName
+        Site1DC: Site1DC
+        Site2DC: Site2DC
+        ConfigDC: ConfigDC
         CAServerIP: CAServerIP
         Site: Site
         AdminCreds: {

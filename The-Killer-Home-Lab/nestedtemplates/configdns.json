@@ -8,12 +8,18 @@
                 "description": "Computer Name"
             }
         },
+        "DC2Name": {
+            "type": "string",
+            "metadata": {
+                "description": "Domain Controller 2 Computer Name"
+            }
+        },        
         "NetBiosDomain": {
             "type": "string",
             "metadata": {
                 "description": "NetBios Domain Name"
             }
-        },         
+        },              
         "InternaldomainName": {
             "type": "string",
           "metadata": {
@@ -79,7 +85,7 @@
           "metadata": {
             "description": "Region of Resources"
           }
-        }, 
+        },   
         "adminUsername": {
             "type": "string",
             "metadata": {
@@ -91,7 +97,7 @@
           "metadata": {
             "description": "The password for the Administrator account of the new VM and Domain"
           }
-        },          
+        },           
         "_artifactsLocation": {
             "type": "string",
             "metadata": {
@@ -125,7 +131,8 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "computerName": "[parameters('computerName')]",
-                            "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
+                            "DC2Name": "[parameters('DC2Name')]",                            
+                            "NetBiosDomain": "[parameters('NetBiosDomain')]",                                                        
                             "InternaldomainName": "[parameters('InternaldomainName')]",                                                        
                             "ExternaldomainName": "[parameters('ExternaldomainName')]",                                                                                    
                             "ReverseLookup1": "[parameters('ReverseLookup1')]",
@@ -138,13 +145,13 @@
                             "ex2IP": "[parameters('ex2IP')]",
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
-                                "Password": "PrivateSettingsRef:AdminPassword"                                                                                   
-                            }                                                                                                                                      
+                                "Password": "PrivateSettingsRef:AdminPassword"
+                            }                                                                                                                                                                  
                         }
                     },
-                    "protectedSettings": {
+                    "protectedSettings": {                        
                         "Items": {
-                            "AdminPassword": "[parameters('adminPassword')]"
+                            "AdminPassword": "[parameters('adminPassword')]"                            
                         }                        
                     }
                 }
