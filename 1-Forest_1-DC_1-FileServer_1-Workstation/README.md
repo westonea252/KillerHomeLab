@@ -1,4 +1,4 @@
-# Single AD Site Lab with File Server use
+# Single AD Site Lab with AD Connect & File Server
 
 Click the button below to deploy
 
@@ -10,6 +10,7 @@ This Templates deploys a Single Forest/Domain:
 - 1 - Active Directory Forest/Domain
 - 1 - Domain Controller
 - 1 - File Server
+- 1 - AD Connect Server
 - 1 - Domain Joined Windows 10 Workstation
 
 The deployment leverages Desired State Configuration scripts to further customize the following:

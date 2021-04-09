@@ -136,7 +136,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "deployDOVM",
+      "name": "DeployDevOpsVM",
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -186,9 +186,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "DomainJoinEX22",
+      "name": "DomainJoinDevOpsVM",
       "dependsOn": [
-        "deployDOVM"
+        "DeployDevOpsVM"
       ],      
       "properties": {
           "mode": "Incremental",
