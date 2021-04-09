@@ -91,7 +91,19 @@
             "metadata": {
                 "description": "Preferred Availability Set Fault Domain Count"
             }
-        },                                                                                                                       
+        },     
+        "Ring": {
+            "type": "Int",
+            "metadata": {
+                "description": ""
+            }
+        }, 
+        "Token": {
+            "type": "String",
+            "metadata": {
+                "description": ""
+            }
+        },                                                                                                                                  
         "location": {
             "type": "string",
           "metadata": {
@@ -117,10 +129,10 @@
                 "loadBalancerType": "[parameters('loadBalancerType')]",
                 "validationEnvironment": "[parameters('validationEnvironment')]",
                 "preferredAppGroupType": "[parameters('preferredAppGroupType')]",
-                "ring": null,
+                "ring": "[parameters('Ring')]",
                 "registrationInfo": {
                     "expirationTime": "[parameters('tokenExpirationTime')]",
-                    "token": null,
+                    "token": "[parameters('Token')]",
                     "registrationTokenOperation": "Update"
                 },
                 "vmTemplate": "[parameters('vmTemplate')]"

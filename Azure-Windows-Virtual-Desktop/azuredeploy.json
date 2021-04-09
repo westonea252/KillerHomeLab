@@ -1541,7 +1541,13 @@
             },     
             "availabilitySetFaultDomainCount": {
                 "value": "[variables('availabilitySetFaultDomainCount')]"
-            },                                                            
+            },
+            "Ring": {
+                "value": ""
+            },
+            "Token": {
+                "value": ""
+            },                                                                                    
             "location": {
                 "value": "[resourceGroup().location]"
             }                                                                                                                   
