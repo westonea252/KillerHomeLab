@@ -313,7 +313,21 @@
         "metadata": {
             "description": "The number of availability zone to be used when create the VMs."
         }
-    },                        
+    },       
+    "Ring": {
+        "defaultValue": null,
+        "type": "Int",
+        "metadata": {
+            "description": ""
+        }
+    }, 
+    "Token": {
+        "defaultValue": "",
+        "type": "String",
+        "metadata": {
+            "description": ""
+        }
+    },                      
     "UserCount": {
         "type": "string",
         "defaultValue": "100",
@@ -1593,10 +1607,10 @@
                 "value": "[parameters('availabilitySetFaultDomainCount')]"
             },
             "Ring": {
-                "value": ""
+                "value": "[parameters('Ring')]"
             },
             "Token": {
-                "value": ""
+                "value": "[parameters('Token')]"
             },                                                                                    
             "location": {
                 "value": "[resourceGroup().location]"
