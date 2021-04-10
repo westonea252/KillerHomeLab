@@ -191,7 +191,7 @@
         }
     },   
     "tokenExpirationTime": {
-        "defaultValue": "2021-04-10T08:59:45.813Z",
+        "defaultValue": "2021-04-20T08:59:45.813Z",
         "type": "String",
         "metadata": {
             "description": "Hostpool token expiration time"
