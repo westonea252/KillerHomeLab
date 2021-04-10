@@ -248,7 +248,7 @@
         "metadata": {
             "description": "Enter the number of WVD Vms"
         }
-    },    
+    },  
     "availabilityOption": {
         "defaultValue": "None",
         "allowedValues": [
@@ -260,7 +260,60 @@
         "metadata": {
             "description": "Select the availability options for the VMs."
         }
-    },                         
+    },     
+    "availabilitySetUpdateDomainCount": {
+        "defaultValue": 5,
+        "allowedValues": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20
+        ],
+        "type": "Int",
+        "metadata": {
+            "description": "The platform update domain count of avaiability set to be created."
+        }
+    },
+    "availabilitySetFaultDomainCount": {
+        "defaultValue": 2,
+        "allowedValues": [
+            1,
+            2,
+            3
+        ],
+        "type": "Int",
+        "metadata": {
+            "description": "The platform fault domain count of avaiability set to be created."
+        }
+    },
+    "availabilityZone": {
+        "defaultValue": 1,
+        "allowedValues": [
+            1,
+            2,
+            3
+        ],
+        "type": "Int",
+        "metadata": {
+            "description": "The number of availability zone to be used when create the VMs."
+        }
+    },                        
     "UserCount": {
         "type": "string",
         "defaultValue": "100",
@@ -519,9 +572,6 @@
     "WorkSpaceName": "[concat(variables('HostPoolName'),'-WorkSpace')]",   
     "allApplicationGroupReferences": "",         
     "AvailabilitySetName": "[concat(variables('HostPoolName'),'-AVSet')]",
-    "availabilitySetUpdateDomainCount": 5,
-    "availabilitySetFaultDomainCount": 2,    
-    "AvailabilityZone": 1,
     "vmImageVhdUri": "",    
     "vmCustomImageSourceId": "",  
     "deploymentID": "",        
@@ -1537,10 +1587,10 @@
                 "value": "[variables('AvailabilitySetName')]"
             },     
             "availabilitySetUpdateDomainCount": {
-                "value": "[variables('availabilitySetUpdateDomainCount')]"
+                "value": "[parameters('availabilitySetUpdateDomainCount')]"
             },     
             "availabilitySetFaultDomainCount": {
-                "value": "[variables('availabilitySetFaultDomainCount')]"
+                "value": "[parameters('availabilitySetFaultDomainCount')]"
             },
             "Ring": {
                 "value": ""
@@ -1553,6 +1603,6 @@
             }                                                                                                                   
         }
       }
-    }
+    }                                
   ]
 }
