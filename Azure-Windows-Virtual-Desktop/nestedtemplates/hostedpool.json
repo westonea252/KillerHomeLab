@@ -81,19 +81,19 @@
             }
         },    
         "availabilitySetUpdateDomainCount": {
-            "type": "String",
+            "type": "Int",
             "metadata": {
                 "description": "Preferred Availability Set Update Domain Count"
             }
         },    
         "availabilitySetFaultDomainCount": {
-            "type": "String",
+            "type": "Int",
             "metadata": {
                 "description": "Preferred Availability Set Fault Domain Count"
             }
         },     
         "Ring": {
-            "type": "String",
+            "type": "Int",
             "metadata": {
                 "description": ""
             }
