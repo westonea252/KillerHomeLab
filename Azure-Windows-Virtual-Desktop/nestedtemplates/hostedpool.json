@@ -93,7 +93,7 @@
             }
         },     
         "Ring": {
-            "type": "Int",
+            "type": "String",
             "metadata": {
                 "description": ""
             }
