@@ -1684,7 +1684,7 @@
                 "value": "[parameters('deploymentID')]"
             },            
             "hostpoolToken": {
-                "value": "[reference('DeployHostedPool').outputs.Token.value]"             
+                "value": "[parameters('WVDToken')]"            
                 
             },
             "hostpoolName": {
