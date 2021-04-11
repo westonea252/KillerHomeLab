@@ -249,6 +249,13 @@
             "description": "Enter the number of WVD Vms"
         }
     },  
+    "vmInitialNumber": {
+        "type": "int",
+        "defaultValue": "1",
+        "metadata": {
+            "description": "VM name prefix initial number."
+        }
+    },      
     "availabilityOption": {
         "defaultValue": "AvailabilitySet",
         "allowedValues": [
@@ -553,7 +560,6 @@
     "vnet1subnet2Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet2')]",    
     "vnet1subnet2Prefix": "[concat(parameters('vnet1ID'),'.2.0/24')]",    
     "vnet1BastionsubnetPrefix": "[concat(parameters('vnet1ID'),'.253.0/24')]", 
-    "vhds": "[concat('vhds','/', variables('rdshPrefix'))]",
     "subnet-Id": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('vnet1Name'), variables('Vnet1Subnet1Name'))]",    
     "dc1lastoctet": "101",     
     "dc1IP": "[concat(parameters('vnet1ID'),'.1.',variables('dc1lastoctet'))]",            
@@ -585,10 +591,8 @@
     "AppGroupName": "[concat(variables('HostPoolName'),'-DAG')]",    
     "WorkSpaceName": "[concat(variables('HostPoolName'),'-WorkSpace')]",   
     "allApplicationGroupReferences": "",         
-    "AvailabilitySetName": "[concat(variables('HostPoolName'),'-AVSet')]",
-    "vmImageVhdUri": "",    
-    "vmCustomImageSourceId": "",  
-    "deploymentID": "",        
+    "AvailabilitySetName": "[concat(variables('HostPoolName'),'-AVSet')]",  
+    "deploymentID": "[newGuid()]",        
     "vmTemplate": "[concat('\"domain\":\"',variables('InternaldomainName'),'\",\"galleryImageOffer\":\"office-365\",\"galleryImagePublisher\":\"MicrosoftWindowsDesktop\",\"galleryImageSKU\":\"20h1-evd-o365pp\",\"imageType\":\"Gallery\",\"imageUri\":null,\"customImageId\":null,\"namePrefix\":\"',parameters('NamingConvention'),'\",\"osDiskType\":\"StandardSSD_LRS\",\"useManagedDisks\":true,\"vmSize\":{\"id\":\"Standard_D2s_v3\",\"cores\":2,\"ram\":8},\"galleryItemId\":\"MicrosoftWindowsDesktop.office-36520h1-evd-o365pp\"}')]",
     "vmTemplateName": "[concat( if(variables('rdshManagedDisks'), 'managedDisks', 'unmanagedDisks'), '-', toLower(replace(parameters('vmImageType'),' ', '')), 'vm')]",
     "vmTemplateUri": "[concat(variables('nestedTemplatesLocation'), variables('vmTemplateName'),'.json')]",
@@ -600,10 +604,6 @@
     "rdshManagedDisks": "[if(equals(parameters('vmImageType'), 'CustomVHD'), parameters('vmUseManagedDisks'), bool('true'))]",          
     "artifactsLocation":    "https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration.zip",
     "createNetworkSecurityGroup": true,
-    "networkInterfaceTags": "",
-    "networkSecurityGroupTags": "",
-    "virtualMachineTags": "",
-    "imageTags": "",
     "networkSecurityGroupId": "",
     "networkSecurityGroupRules": {
             "value": [
@@ -1617,6 +1617,110 @@
             }                                                                                                                   
         }
       }
-    }                                  
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "CreateWVDVMs",
+      "dependsOn": [
+        "DeployHostedPool"
+      ],       
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+            "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/managedDisks-galleryvm.json', parameters('_artifactsLocationSasToken')))]",
+            "contentVersion": "1.0.0.0"
+        },        
+        "parameters": {
+            "artifactsLocation": {
+                "value": "[variables('artifactsLocation')]"
+            },
+            "availabilityOption": {
+                "value": "[parameters('availabilityOption')]"
+            },
+            "availabilitySetName": {
+                "value": "[variables('availabilitySetName')]"
+            },
+            "availabilityZone": {
+                "value": "[parameters('availabilityZone')]"
+            },
+            "vmGalleryImageOffer": {
+                "value": "[variables('vmGalleryImageOffer')]"
+            },
+            "vmGalleryImagePublisher": {
+                "value": "[variables('vmGalleryImagePublisher')]"
+            },
+            "vmGalleryImageSKU": {
+                "value": "[variables('vmGalleryImageSKU')]"
+            },
+            "rdshPrefix": {
+                "value": "[variables('rdshPrefix')]"
+            },
+            "rdshNumberOfInstances": {
+                "value": "[parameters('vmNumberOfInstances')]"
+            },
+            "rdshVMDiskType": {
+                "value": "[parameters('vmDiskType')]"
+            },
+            "rdshVmSize": {
+                "value": "[parameters('WVDVMSize')]"
+            },
+            "enableAcceleratedNetworking": {
+                "value": false
+            },
+            "vmAdministratorAccountUsername": {
+                "value": "[parameters('adminUsername')]"
+            },
+            "vmAdministratorAccountPassword": {
+                "value": "[parameters('adminPassword')]"
+            },
+            "administratorAccountUsername": {
+                "value": "[parameters('adminUsername')]"
+            },
+            "administratorAccountPassword": {
+                "value": "[parameters('adminPassword')]"
+            },
+            "subnet-id": {
+                "value": "[variables('subnet-id')]"
+            },
+            "location": {
+                "value": "[resourceGroup().location]"
+            },
+            "createNetworkSecurityGroup": {
+                "value": "[variables('createNetworkSecurityGroup')]"
+            },
+            "networkSecurityGroupId": {
+                "value": "[variables('networkSecurityGroupId')]"
+            },
+            "networkSecurityGroupRules": {
+                "value": "[variables('networkSecurityGroupRules')]"
+            },
+            "vmInitialNumber": {
+                "value": "[parameters('vmInitialNumber')]"
+            },
+            "_guidValue": {
+                "value": "[variables('deploymentID')]"
+            },            
+            "hostpoolToken": {
+                "value": "[reference(variables('hostpoolName')).registrationInfo.token]"
+            },
+            "hostpoolName": {
+                "value": "[variables('hostpoolName')]"
+            },
+            "ouPath": {
+                "value": "[variables('WKOUPath')]"
+            },            
+            "domain": {
+                "value": "[variables('InternalDomainName')]"
+            },
+            "aadJoin": {
+                "value": true
+            },
+            "intune": {
+                "value": false
+            }
+        }
+      }
+    }                                      
   ]
 }
