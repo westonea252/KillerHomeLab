@@ -211,18 +211,6 @@
             "description": "Preferred App Group type to display"
         }
     },
-    "vmImageType": {
-        "defaultValue": "Gallery",
-        "allowedValues": [
-            "CustomVHD",
-            "CustomImage",
-            "Gallery"
-        ],
-        "type": "String",
-        "metadata": {
-            "description": "Select the image source for the session host vms. VMs from a Gallery image will be created with Managed Disks."
-        }
-    },    
     "vmDiskType": {
         "defaultValue": "StandardSSD_LRS",
         "allowedValues": [
@@ -235,20 +223,20 @@
             "description": "The VM disk type for the VM: HDD or SSD."
         }
     },
-    "vmUseManagedDisks": {
-        "defaultValue": true,
-        "type": "Bool",
-        "metadata": {
-            "description": "True indicating you would like to use managed disks or false indicating you would like to use unmanaged disks."
-        }
-    },
     "vmnumberofInstances": {
         "type": "string",
         "defaultValue": "1",
         "metadata": {
             "description": "Enter the number of WVD Vms"
         }
-    },  
+    },
+    "deploymentID": {
+        "type": "string",
+        "defaultValue": "[newGuid()]",
+        "metadata": {
+            "description": "Deployment ID"
+        }
+    },    
     "vmInitialNumber": {
         "type": "int",
         "defaultValue": "1",
@@ -592,16 +580,11 @@
     "WorkSpaceName": "[concat(variables('HostPoolName'),'-WorkSpace')]",   
     "allApplicationGroupReferences": "",         
     "AvailabilitySetName": "[concat(variables('HostPoolName'),'-AVSet')]",  
-    "deploymentID": "[newGuid()]",        
     "vmTemplate": "[concat('\"domain\":\"',variables('InternaldomainName'),'\",\"galleryImageOffer\":\"office-365\",\"galleryImagePublisher\":\"MicrosoftWindowsDesktop\",\"galleryImageSKU\":\"20h1-evd-o365pp\",\"imageType\":\"Gallery\",\"imageUri\":null,\"customImageId\":null,\"namePrefix\":\"',parameters('NamingConvention'),'\",\"osDiskType\":\"StandardSSD_LRS\",\"useManagedDisks\":true,\"vmSize\":{\"id\":\"Standard_D2s_v3\",\"cores\":2,\"ram\":8},\"galleryItemId\":\"MicrosoftWindowsDesktop.office-36520h1-evd-o365pp\"}')]",
-    "vmTemplateName": "[concat( if(variables('rdshManagedDisks'), 'managedDisks', 'unmanagedDisks'), '-', toLower(replace(parameters('vmImageType'),' ', '')), 'vm')]",
-    "vmTemplateUri": "[concat(variables('nestedTemplatesLocation'), variables('vmTemplateName'),'.json')]",
     "vmGalleryImageOffer": "office-365",
     "vmGalleryImagePublisher": "MicrosoftWindowsDesktop",
     "vmGalleryImageSKU": "20h1-evd-o365pp",
     "rdshPrefix": "[concat(parameters('NamingConvention'),'-')]",    
-    "nestedTemplatesLocation": "https://catalogartifact.azureedge.net/publicartifacts/Microsoft.Hostpool-ARM-1.1.0/",  
-    "rdshManagedDisks": "[if(equals(parameters('vmImageType'), 'CustomVHD'), parameters('vmUseManagedDisks'), bool('true'))]",          
     "artifactsLocation":    "https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration.zip",
     "createNetworkSecurityGroup": true,
     "networkSecurityGroupId": "",
@@ -1699,7 +1682,7 @@
                 "value": "[parameters('vmInitialNumber')]"
             },
             "_guidValue": {
-                "value": "[variables('deploymentID')]"
+                "value": "[parameters('deploymentID')]"
             },            
             "hostpoolToken": {
                 "value": "[reference(variables('hostpoolName')).registrationInfo.token]"
