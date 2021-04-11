@@ -22,7 +22,7 @@
             SetScript =
             {
                 $AccountCheck = Get-LocalGroupMember -Group "Remote Desktop Users" -Member "$using:NetBiosDomain\$Using:Account" -ErrorAction 0
-                IF ($AccountCheck -eq $null){Add-LocalGroupMember -Member "$using:NetBiosDomain\$Using:Account" -Group Administrators}
+                IF ($AccountCheck -eq $null){Add-LocalGroupMember -Member "$using:NetBiosDomain\$Using:Account" -Group "Remote Desktop Users"}
             }
             GetScript =  { @{} }
             TestScript = { $false}
