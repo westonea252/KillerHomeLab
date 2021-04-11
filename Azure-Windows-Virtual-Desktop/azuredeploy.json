@@ -316,13 +316,6 @@
             "description": ""
         }
     }, 
-    "Token": {
-        "defaultValue": "",
-        "type": "String",
-        "metadata": {
-            "description": ""
-        }
-    },                      
     "UserCount": {
         "type": "string",
         "defaultValue": "100",
@@ -1593,7 +1586,7 @@
                 "value": "[parameters('Ring')]"
             },
             "Token": {
-                "value": "[parameters('Token')]"
+                "value": null
             },                                                                                    
             "location": {
                 "value": "[resourceGroup().location]"
@@ -1685,7 +1678,8 @@
                 "value": "[parameters('deploymentID')]"
             },            
             "hostpoolToken": {
-                "value": "[reference(variables('hostpoolName')).registrationInfo.token]"
+                "value": "[reference('DeployHostedPool').outputs.Token.value]"             
+                
             },
             "hostpoolName": {
                 "value": "[variables('hostpoolName')]"

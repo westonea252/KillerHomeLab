@@ -178,5 +178,11 @@
                 "name": "[variables('avSetSKU')]"
             }
         }                      
-    ]
+    ],
+"outputs": {
+    "Token": {
+        "type": "string",
+        "value": "[parameters('HostPoolName').properites.registrationInfo.token]"
+    }
+  }      
 }
