@@ -203,21 +203,7 @@
         "metadata": {
             "description": "Whether to use validation enviroment."
         }
-    },   
-      "aadJoin": {
-        "defaultValue": false,
-        "type": "bool",
-        "metadata": {
-          "description": "True if AAD Join, false if AD join"
-        }
-      },
-      "intune": {
-        "defaultValue": false,
-        "type": "bool",
-        "metadata": {
-          "description": "True if intune enrollment is selected.  False otherwise"
-        }
-      },    
+    },      
     "preferredAppGroupType": {
         "defaultValue": "Desktop",
         "type": "String",
@@ -1713,12 +1699,6 @@
             },            
             "domain": {
                 "value": "[variables('InternalDomainName')]"
-            },
-            "aadJoin": {
-                "value": "[parameters('aadJoin')]"
-            },
-            "intune": {
-                "value": "[parameters('intune')]"
             }
         }
       }
