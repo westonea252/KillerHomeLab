@@ -224,7 +224,7 @@
         }
     },
     "vmnumberofInstances": {
-        "type": "string",
+        "type": "int",
         "defaultValue": "1",
         "metadata": {
             "description": "Enter the number of WVD Vms"
@@ -1684,8 +1684,7 @@
                 "value": "[parameters('deploymentID')]"
             },            
             "hostpoolToken": {
-                "value": "[parameters('WVDToken')]"            
-                
+                "value": "[parameters('WVDToken')]"              
             },
             "hostpoolName": {
                 "value": "[variables('hostpoolName')]"
