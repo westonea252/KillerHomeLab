@@ -341,7 +341,13 @@
       "metadata": {
         "description": "The password for the Administrator account of the new VM and Domain"
       }
-    },        
+    },      
+    "WVDToken": {
+        "type": "string",
+      "metadata": {
+        "description": "The password for the Administrator account of the new VM and Domain"
+      }
+    },       
     "WindowsServerLicenseType": {
       "type": "string",
       "defaultValue": "None",
@@ -1586,7 +1592,7 @@
                 "value": "[parameters('Ring')]"
             },
             "Token": {
-                "value": null
+                "value": "[parameters('WVDToken')]"
             },                                                                                    
             "location": {
                 "value": "[resourceGroup().location]"
