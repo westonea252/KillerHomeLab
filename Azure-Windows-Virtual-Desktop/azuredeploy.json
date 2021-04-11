@@ -238,7 +238,7 @@
         }
     },    
     "vmInitialNumber": {
-        "defaultValue": 1,
+        "defaultValue": 0,
         "type": "int",
         "metadata": {
             "description": "VM name prefix initial number."
@@ -1700,7 +1700,7 @@
                 "value": "[variables('InternalDomainName')]"
             },
             "aadJoin": {
-                "value": true
+                "value": false
             },
             "intune": {
                 "value": false
