@@ -232,7 +232,7 @@
     },
     "deploymentID": {
         "type": "string",
-        "defaultValue": "[newGuid()]",
+        "defaultValue": "1",
         "metadata": {
             "description": "Deployment ID"
         }
