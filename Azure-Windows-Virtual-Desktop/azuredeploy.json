@@ -224,8 +224,8 @@
         }
     },
     "vmnumberofInstances": {
-        "type": "int",
         "defaultValue": 1,
+        "type": "int",
         "metadata": {
             "description": "Enter the number of WVD Vms"
         }
@@ -238,8 +238,8 @@
         }
     },    
     "vmInitialNumber": {
-        "type": "int",
         "defaultValue": 1,
+        "type": "int",
         "metadata": {
             "description": "VM name prefix initial number."
         }
