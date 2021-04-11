@@ -243,7 +243,41 @@
         "metadata": {
             "description": "VM name prefix initial number."
         }
-    },      
+    },  
+    "networkSecurityGroupRules": {
+        "defaultValue": [
+                {
+                    "name": "HTTPS",
+                    "properties": {
+                        "access": "Allow",
+                        "destinationAddressPrefix": "*",
+                        "destinationPortRange": "443",
+                        "sourceAddressPrefix": "*",
+                        "sourcePortRange": "*",
+                        "protocol": "Tcp",
+                        "priority": 300,
+                        "direction": "Inbound"
+                    }
+                },
+                {
+                    "name": "RDP",
+                    "properties": {
+                        "access": "Allow",
+                        "destinationAddressPrefix": "*",
+                        "destinationPortRange": "3389",
+                        "sourceAddressPrefix": "*",
+                        "sourcePortRange": "*",
+                        "protocol": "Tcp",
+                        "priority": 320,
+                        "direction": "Inbound"
+                    }
+                }
+        ],
+        "type": "Array",
+        "metadata": {
+            "description": "The rules to be given to the new network security group"
+        }
+    },        
     "availabilityOption": {
         "defaultValue": "AvailabilitySet",
         "allowedValues": [
@@ -586,37 +620,7 @@
     "rdshPrefix": "[concat(parameters('NamingConvention'),'-')]",    
     "artifactsLocation":    "https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration.zip",
     "createNetworkSecurityGroup": true,
-    "networkSecurityGroupId": "",
-    "networkSecurityGroupRules": {
-            "value": [
-                {
-                    "name": "HTTPS",
-                    "properties": {
-                        "access": "Allow",
-                        "destinationAddressPrefix": "*",
-                        "destinationPortRange": "443",
-                        "sourceAddressPrefix": "*",
-                        "sourcePortRange": "*",
-                        "protocol": "Tcp",
-                        "priority": 300,
-                        "direction": "Inbound"
-                    }
-                },
-                {
-                    "name": "RDP",
-                    "properties": {
-                        "access": "Allow",
-                        "destinationAddressPrefix": "*",
-                        "destinationPortRange": "3389",
-                        "sourceAddressPrefix": "*",
-                        "sourcePortRange": "*",
-                        "protocol": "Tcp",
-                        "priority": 320,
-                        "direction": "Inbound"
-                    }
-                }
-            ]
-        }
+    "networkSecurityGroupId": ""
   },  
   "resources": [
     {
@@ -1675,7 +1679,7 @@
                 "value": "[variables('networkSecurityGroupId')]"
             },
             "networkSecurityGroupRules": {
-                "value": "[variables('networkSecurityGroupRules')]"
+                "value": "[parameters('networkSecurityGroupRules')]"
             },
             "vmInitialNumber": {
                 "value": "[parameters('vmInitialNumber')]"
