@@ -330,14 +330,11 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "DeployHostedPool",
-      "dependsOn": [
-        "CreateUserFolders"
-      ],       
+      "name": "DeployHostedPool",     
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-            "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/hostedpool.json', parameters('_artifactsLocationSasToken')))]",
+            "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/hostedpool.json', parameters('_artifactsLocationSasToken')))]",
             "contentVersion": "1.0.0.0"
         },
         "parameters": {
@@ -408,7 +405,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-            "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/managedDisks-galleryvm.json', parameters('_artifactsLocationSasToken')))]",
+            "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/managedDisks-galleryvm.json', parameters('_artifactsLocationSasToken')))]",
             "contentVersion": "1.0.0.0"
         },        
         "parameters": {
