@@ -1,41 +1,16 @@
-# Single AD Site Lab with AD Connect & File Server and Windows Virtual Desktop
+# Windows Virtual Desktop
 
 Click the button below to deploy
 
-[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2FDevelopment%2FAzure-Windows-Virtual-Desktop%2Fazuredeploy.json)
-[![Deploy To Azure US Gov](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.svg?sanitize=true)](https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2FDevelopment%2FAzure-Windows-Virtual-Desktop%2Fazuredeploy.json)
+[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2FDevelopment%2FAzure-Windows-Virtual-Desktop-WVD-Only%2Fazuredeploy.json)
+[![Deploy To Azure US Gov](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.svg?sanitize=true)](https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2FDevelopment%2FAzure-Windows-Virtual-Desktop-WVD-Only%2Fazuredeploy.json)
 
 This Templates deploys a Single Forest/Domain:
 
-- 1 - Active Directory Forest/Domain
-- 1 - Domain Controller
-- 1 - File Server
-- 1 - AD Connect Server
-- 1 - Domain Joined Windows 10 Workstation
-- 1 - Windows Virtual Desktop Deployment
-
-The deployment leverages Desired State Configuration scripts to further customize the following:
-
-AD OU Structure:
-- [domain.com]
-- -- Accounts
-- --- End User
-- ---- Office 365
-- ---- Non-Office 365
-- --- Admin
-- --- Service
-- -- Groups
-- --- End User
-- --- Admin
-- -- Servers
-- --- Servers2012R2
-- --- Serverrs2016
-- --- Servers2019
-- -- MaintenanceServers
-- -- MaintenanceWorkstations
-- -- Workstations
-- --- Windows10
-- --- Windows7
+- 1 - Windows Virtual Desktop Pool
+- 1 - Windows Virtual Desktop Application Group
+- 1 - Windows Virtual Desktop Workspace
+- X - Session Hosts Based on desired count
 
 Parameters that support changes
 - TimeZone.  Select an appropriate Time Zone.

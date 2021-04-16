@@ -1,0 +1,182 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "HostPoolName": {
+            "type": "string",
+            "metadata": {
+                "description": "Public IP Address Name"
+            }
+        },
+        "hostpoolType": {
+            "type": "String",
+            "metadata": {
+                "description": "Set this parameter to Personal if you would like to enable Persistent Desktop experience. Defaults to false."
+            }
+        },        
+        "personalDesktopAssignmentType": {
+            "type": "String",
+            "metadata": {
+                "description": "Set the type of assignment for a Personal hostpool type"
+            }
+        },  
+        "maxSessionLimit": {
+            "type": "Int",
+            "metadata": {
+                "description": "Maximum number of sessions."
+            }
+        },
+        "loadBalancerType": {
+            "type": "String",
+            "metadata": {
+                "description": "Type of load balancer algorithm."
+            }
+        },
+        "vmTemplate": {
+            "type": "String",
+            "metadata": {
+                "description": "The necessary information for adding more VMs to this Hostpool"
+            }
+        },
+        "tokenExpirationTime": {
+            "type": "String",
+            "metadata": {
+                "description": "Hostpool token expiration time"
+            }
+        },
+        "validationEnvironment": {
+            "type": "Bool",
+            "metadata": {
+                "description": "Whether to use validation enviroment."
+            }
+        },
+        "preferredAppGroupType": {
+            "type": "String",
+            "metadata": {
+                "description": "Preferred App Group type to display"
+            }
+        },  
+        "AppGroupName": {
+            "type": "String",
+            "metadata": {
+                "description": "Preferred App Group Name to display"
+            }
+        },    
+        "WorkSpaceName": {
+            "type": "String",
+            "metadata": {
+                "description": "Preferred Workspace Name to display"
+            }
+        },
+        "allApplicationGroupReferences": {
+            "type": "String",
+            "metadata": {
+                "description": "The existing app groups references of the workspace selected."
+            }
+        },        
+        "AvailabilitySetName": {
+            "type": "String",
+            "metadata": {
+                "description": "Preferred Availability Set Name to display"
+            }
+        },    
+        "availabilitySetUpdateDomainCount": {
+            "type": "Int",
+            "metadata": {
+                "description": "Preferred Availability Set Update Domain Count"
+            }
+        },    
+        "availabilitySetFaultDomainCount": {
+            "type": "Int",
+            "metadata": {
+                "description": "Preferred Availability Set Fault Domain Count"
+            }
+        },     
+        "Ring": {
+            "type": "Int",
+            "metadata": {
+                "description": ""
+            }
+        }, 
+        "Token": {
+            "type": "String",
+            "metadata": {
+                "description": ""
+            }
+        },                                                                                                                                  
+        "location": {
+            "type": "string",
+          "metadata": {
+            "description": "Region of Resources"
+          }
+        }
+    },
+    "variables": {
+        "applicationGroupReferencesArr": "[if(equals('',parameters('allApplicationGroupReferences')), variables('appGroupResourceId'), concat(split(parameters('allApplicationGroupReferences'),','), variables('appGroupResourceId')))]",
+        "appGroupResourceId": "[createArray(resourceId('Microsoft.DesktopVirtualization/applicationgroups/', parameters('appGroupName')))]",        
+        "avSetSku": "Aligned"                
+    },    
+    "resources": [
+        {
+            "name": "[parameters('HostPoolName')]",
+            "type": "Microsoft.DesktopVirtualization/hostpools",            
+            "apiVersion": "2019-12-10-preview",
+            "location": "[parameters('location')]",
+            "properties": {
+                "hostpoolType": "[parameters('hostpoolType')]",
+                "personalDesktopAssignmentType": "[parameters('personalDesktopAssignmentType')]",
+                "maxSessionLimit": "[parameters('maxSessionLimit')]",
+                "loadBalancerType": "[parameters('loadBalancerType')]",
+                "validationEnvironment": "[parameters('validationEnvironment')]",
+                "preferredAppGroupType": "[parameters('preferredAppGroupType')]",
+                "ring": "[parameters('Ring')]",
+                "registrationInfo": {
+                    "expirationTime": "[parameters('tokenExpirationTime')]",
+                    "token": "[parameters('Token')]",
+                    "registrationTokenOperation": "Update"
+                },
+                "vmTemplate": "[parameters('vmTemplate')]"
+            }
+        },
+        {
+            "name": "[parameters('appGroupName')]",
+            "type": "Microsoft.DesktopVirtualization/applicationgroups",
+            "apiVersion": "2019-12-10-preview",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DesktopVirtualization/hostpools/', parameters('hostpoolName'))]"
+            ],
+            "properties": {
+                "hostpoolarmpath": "[resourceId('Microsoft.DesktopVirtualization/hostpools/', parameters('hostpoolName'))]",
+                "friendlyName": "Default Desktop",
+                "description": "Desktop Application Group created through the Hostpool Wizard",
+                "applicationGroupType": "Desktop"
+            }
+        },
+        {
+            "name": "[parameters('workSpaceName')]",
+            "type": "Microsoft.DesktopVirtualization/workspaces",
+            "apiVersion": "2019-12-10-preview",            
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DesktopVirtualization/applicationgroups/', parameters('AppGroupName'))]"
+            ],            
+            "properties": {
+                "applicationGroupReferences": "[variables('applicationGroupReferencesArr')]"
+            }
+        },
+        {
+            "name": "[parameters('availabilitySetName')]",
+            "type": "Microsoft.Compute/availabilitySets",            
+            "apiVersion": "2018-10-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "platformUpdateDomainCount": "[parameters('availabilitySetUpdateDomainCount')]",
+                "platformFaultDomainCount": "[parameters('availabilitySetFaultDomainCount')]"
+            },
+            "sku": {
+                "name": "[variables('avSetSKU')]"
+            }
+        }                      
+    ] 
+}
