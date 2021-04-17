@@ -292,6 +292,7 @@
     "vnet1Name": "[concat(parameters('NamingConvention'),'-VNet1')]",
     "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet1')]",    
     "subnet-Id": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('vnet1Name'), variables('Vnet1Subnet1Name'))]",    
+    "HostPoolARMPath": "[resourceId(resourceGroup().name, 'Microsoft.DesktopVirtualization/hostpools', variables('AppGroupName'))]",        
     "InternaldomainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('InternalTLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('InternalTLD'))]",
     "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
@@ -394,8 +395,8 @@
             "NamingConvention": {
                 "value": "[parameters('NamingConvention')]"
             },
-            "HostPoolName": {
-                "value": "[variables('HostPoolName')]"
+            "HostPoolARMPath": {
+                "value": "[variables('HostPoolARMPath')]"
             },
             "AppGroupName": {
                 "value": "[variables('AppGroupName')]"
