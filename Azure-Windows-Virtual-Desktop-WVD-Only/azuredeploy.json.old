@@ -300,7 +300,7 @@
     "WorkSpaceName": "[concat(variables('HostPoolName'),'-WorkSpace')]",   
     "allApplicationGroupReferences": "",         
     "AvailabilitySetName": "[concat(variables('HostPoolName'),'-AVSet')]",  
-    "vmTemplate": "{\"domain\":\"wvd.killerhomelab.com\",\"galleryImageOffer\":\"office-365\",\"galleryImagePublisher\":\"MicrosoftWindowsDesktop\",\"galleryImageSKU\":\"20h1-evd-o365pp\",\"imageType\":\"Gallery\",\"imageUri\":null,\"customImageId\":null,\"namePrefix\":\"khla\",\"osDiskType\":\"StandardSSD_LRS\",\"useManagedDisks\":true,\"vmSize\":{\"id\":\"Standard_D2s_v3\",\"cores\":2,\"ram\":8},\"galleryItemId\":\"MicrosoftWindowsDesktop.office-36520h1-evd-o365pp\"}",
+    "vmTemplate": "[concat('\"domain\":\"',variables('InternaldomainName'),'\",\"galleryImageOffer\":\"office-365\",\"galleryImagePublisher\":\"MicrosoftWindowsDesktop\",\"galleryImageSKU\":\"20h1-evd-o365pp\",\"imageType\":\"Gallery\",\"imageUri\":null,\"customImageId\":null,\"namePrefix\":\"',parameters('NamingConvention'),'\",\"osDiskType\":\"StandardSSD_LRS\",\"useManagedDisks\":true,\"vmSize\":{\"id\":\"Standard_D2s_v3\",\"cores\":2,\"ram\":8},\"galleryItemId\":\"MicrosoftWindowsDesktop.office-36520h1-evd-o365pp\"}')]",
     "vmGalleryImageOffer": "office-365",
     "vmGalleryImagePublisher": "MicrosoftWindowsDesktop",
     "vmGalleryImageSKU": "20h1-evd-o365pp",
@@ -334,7 +334,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-            "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/wvdpool.json', parameters('_artifactsLocationSasToken')))]",
+            "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/hostedpool.json', parameters('_artifactsLocationSasToken')))]",
             "contentVersion": "1.0.0.0"
         },
         "parameters": {
@@ -365,6 +365,24 @@
             "preferredAppGroupType": {
                 "value": "[parameters('preferredAppGroupType')]"
             },
+            "AppGroupName": {
+                "value": "[variables('AppGroupName')]"
+            },
+            "WorkSpaceName": {
+                "value": "[variables('WorkSpaceName')]"
+            },
+            "allApplicationGroupReferences": {
+                "value": "[variables('allApplicationGroupReferences')]"
+            },              
+            "AvailabilitySetName": {
+                "value": "[variables('AvailabilitySetName')]"
+            },     
+            "availabilitySetUpdateDomainCount": {
+                "value": "[parameters('availabilitySetUpdateDomainCount')]"
+            },     
+            "availabilitySetFaultDomainCount": {
+                "value": "[parameters('availabilitySetFaultDomainCount')]"
+            },
             "Ring": {
                 "value": "[parameters('Ring')]"
             },
@@ -376,6 +394,104 @@
             }                                                                                                                   
         }
       }
-    }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "CreateWVDVMs",
+      "dependsOn": [
+        "DeployHostedPool"
+      ],       
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+            "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/managedDisks-galleryvm.json', parameters('_artifactsLocationSasToken')))]",
+            "contentVersion": "1.0.0.0"
+        },        
+        "parameters": {
+            "artifactsLocation": {
+                "value": "[variables('artifactsLocation')]"
+            },
+            "availabilityOption": {
+                "value": "[parameters('availabilityOption')]"
+            },
+            "availabilitySetName": {
+                "value": "[variables('availabilitySetName')]"
+            },
+            "availabilityZone": {
+                "value": "[parameters('availabilityZone')]"
+            },
+            "vmGalleryImageOffer": {
+                "value": "[variables('vmGalleryImageOffer')]"
+            },
+            "vmGalleryImagePublisher": {
+                "value": "[variables('vmGalleryImagePublisher')]"
+            },
+            "vmGalleryImageSKU": {
+                "value": "[variables('vmGalleryImageSKU')]"
+            },
+            "rdshPrefix": {
+                "value": "[variables('rdshPrefix')]"
+            },
+            "rdshNumberOfInstances": {
+                "value": "[parameters('vmNumberOfInstances')]"
+            },
+            "rdshVMDiskType": {
+                "value": "[parameters('vmDiskType')]"
+            },
+            "rdshVmSize": {
+                "value": "[parameters('WVDVMSize')]"
+            },
+            "enableAcceleratedNetworking": {
+                "value": false
+            },
+            "vmAdministratorAccountUsername": {
+                "value": "[parameters('adminUsername')]"
+            },
+            "vmAdministratorAccountPassword": {
+                "value": "[parameters('adminPassword')]"
+            },
+            "administratorAccountUsername": {
+                "value": "[variables('wvdadmin')]"
+            },
+            "administratorAccountPassword": {
+                "value": "[parameters('adminPassword')]"
+            },
+            "subnet-id": {
+                "value": "[variables('subnet-id')]"
+            },
+            "location": {
+                "value": "[resourceGroup().location]"
+            },
+            "createNetworkSecurityGroup": {
+                "value": "[variables('createNetworkSecurityGroup')]"
+            },
+            "networkSecurityGroupId": {
+                "value": "[variables('networkSecurityGroupId')]"
+            },
+            "networkSecurityGroupRules": {
+                "value": "[parameters('networkSecurityGroupRules')]"
+            },
+            "vmInitialNumber": {
+                "value": "[parameters('vmInitialNumber')]"
+            },
+            "_guidValue": {
+                "value": "[parameters('deploymentID')]"
+            },            
+            "hostpoolToken": {
+                "value": "[parameters('WVDToken')]"              
+            },
+            "hostpoolName": {
+                "value": "[variables('hostpoolName')]"
+            },
+            "ouPath": {
+                "value": "[variables('WKOUPath')]"
+            },            
+            "domain": {
+                "value": "[variables('InternalDomainName')]"
+            }
+        }
+      }
+    }                                      
   ]
 }
