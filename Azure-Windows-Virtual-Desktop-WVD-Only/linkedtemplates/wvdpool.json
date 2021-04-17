@@ -97,5 +97,11 @@
                 "vmTemplate": "[parameters('vmTemplate')]"
             }
         }
-    ] 
+    ],
+"outputs": {
+    "RegistrationInfoToken": {
+        "type": "string",
+        "value": "[reference(resourceId(resourceGroup().name, 'Microsoft.DesktopVirtualization/hostpools', parameters('HostPoolName'))).RegistrationInfoToken]"
+    }
+  }
 }
