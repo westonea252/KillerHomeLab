@@ -9,6 +9,12 @@
               }
         }         
     },
+    "variables": {
+      "HostName": "_msradc",
+      "Url": {
+        "id": "https://rdweb.wvd.microsoft.com/api/arm/feeddiscovery"
+      }
+    },    
     "resources": [
         {
             "name": "[parameters('ZoneName')]",
@@ -19,6 +25,25 @@
             "properties": {
             },
             "resources": []
-        }
+        },
+        {
+        "type": "Microsoft.Network/dnszones/TXT",
+        "name": "[concat(parameters('ZoneName'), '/', variables('HostName'))]",
+        "apiVersion": "2018-05-01",
+        "location": "global",
+        "dependsOn": [
+            "[parameters('ZoneName')]"
+        ],
+        "properties": {
+            "TTL": 900,
+            "TXTRecords": [
+            {
+                "value": [
+                "[variables('Url')]"
+                ]
+            }
+            ]           
+        }    
+        }    
     ]
 }
