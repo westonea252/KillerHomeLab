@@ -28,7 +28,7 @@
             "apiVersion": "2019-12-10-preview",
             "location": "[parameters('location')]",
             "properties": {
-                "hostpoolarmpath": "[resourceId('Microsoft.DesktopVirtualization/hostpools/', parameters('hostpoolName'))]",
+                "hostpoolarmpath": "[parameters('HostPoolName')]",
                 "friendlyName": "Default Desktop",
                 "description": "Desktop Application Group created through the Hostpool Wizard",
                 "applicationGroupType": "Desktop"
