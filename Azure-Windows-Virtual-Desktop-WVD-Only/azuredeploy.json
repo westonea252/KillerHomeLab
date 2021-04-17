@@ -435,6 +435,35 @@
             } 
         }
       }
-    }       
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DeployAVSet",   
+      "dependsOn": [
+        "DeployWorkspace"
+      ],   
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+            "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/avset.json', parameters('_artifactsLocationSasToken')))]",
+            "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+            "AvailabilitySetName": {
+                "value": "[variables('AvailabilitySetName')]"
+            },
+            "availabilitySetUpdateDomainCount": {
+                "value": "[parameters('availabilitySetUpdateDomainCount')]"
+            },
+            "availabilitySetFaultDomainCount": {
+                "value": "[parameters('availabilitySetFaultDomainCount')]"
+            },            
+            "location": {
+                "value": "[resourceGroup().location]"
+            } 
+        }
+      }
+    }           
   ]
 }
