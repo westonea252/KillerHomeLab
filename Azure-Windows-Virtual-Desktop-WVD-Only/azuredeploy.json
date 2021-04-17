@@ -406,6 +406,35 @@
             }                                                                                                                   
         }
       }
-    }    
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DeployWorkspace",   
+      "dependsOn": [
+        "DeployApplicationGroup"
+      ],   
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+            "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/workspace.json', parameters('_artifactsLocationSasToken')))]",
+            "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+            "AppGroupName": {
+                "value": "[variables('AppGroupName')]"
+            },
+            "WorkSpaceName": {
+                "value": "[variables('WorkSpaceName')]"
+            },
+            "allApplicationGroupReferences": {
+                "value": "[variables('allApplicationGroupReferences')]"
+            },                                                                                                  
+            "location": {
+                "value": "[resourceGroup().location]"
+            } 
+        }
+      }
+    }       
   ]
 }

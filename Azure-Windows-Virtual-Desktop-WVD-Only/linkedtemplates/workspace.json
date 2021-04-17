@@ -1,0 +1,48 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "AppGroupName": {
+            "type": "String",
+            "metadata": {
+                "description": "Preferred App Group Name to display"
+            }
+        },    
+        "WorkSpaceName": {
+            "type": "String",
+            "metadata": {
+                "description": "Preferred Workspace Name to display"
+            }
+        },
+        "allApplicationGroupReferences": {
+            "type": "String",
+            "metadata": {
+                "description": "The existing app groups references of the workspace selected."
+            }
+        },         
+        "location": {
+            "type": "string",
+          "metadata": {
+            "description": "Region of Resources"
+          }
+        }
+    },
+    "variables": {
+        "appGroupResourceId": "[createArray(resourceId('Microsoft.DesktopVirtualization/applicationgroups/', parameters('appGroupName')))]",         
+        "applicationGroupReferencesArr": "[if(equals('',parameters('allApplicationGroupReferences')), variables('appGroupResourceId'), concat(split(parameters('allApplicationGroupReferences'),','), variables('appGroupResourceId')))]"
+    },    
+    "resources": [
+        {
+            "name": "[parameters('workSpaceName')]",
+            "type": "Microsoft.DesktopVirtualization/workspaces",
+            "apiVersion": "2019-12-10-preview",            
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DesktopVirtualization/applicationgroups/', parameters('AppGroupName'))]"
+            ],            
+            "properties": {
+                "applicationGroupReferences": "[variables('applicationGroupReferencesArr')]"
+            }
+        }
+    ] 
+}
