@@ -83,13 +83,6 @@
         "metadata": {
             "description": "Enter the number of WVD Vms"
         }
-    },
-    "deploymentID": {
-        "type": "string",
-        "defaultValue": "1",
-        "metadata": {
-            "description": "Deployment ID"
-        }
     },    
     "vmInitialNumber": {
         "defaultValue": 0,
@@ -97,53 +90,7 @@
         "metadata": {
             "description": "VM name prefix initial number."
         }
-    },  
-    "networkSecurityGroupRules": {
-        "defaultValue": [
-                {
-                    "name": "HTTPS",
-                    "properties": {
-                        "access": "Allow",
-                        "destinationAddressPrefix": "*",
-                        "destinationPortRange": "443",
-                        "sourceAddressPrefix": "*",
-                        "sourcePortRange": "*",
-                        "protocol": "Tcp",
-                        "priority": 300,
-                        "direction": "Inbound"
-                    }
-                },
-                {
-                    "name": "RDP",
-                    "properties": {
-                        "access": "Allow",
-                        "destinationAddressPrefix": "*",
-                        "destinationPortRange": "3389",
-                        "sourceAddressPrefix": "*",
-                        "sourcePortRange": "*",
-                        "protocol": "Tcp",
-                        "priority": 320,
-                        "direction": "Inbound"
-                    }
-                }
-        ],
-        "type": "Array",
-        "metadata": {
-            "description": "The rules to be given to the new network security group"
-        }
-    },        
-    "availabilityOption": {
-        "defaultValue": "AvailabilitySet",
-        "allowedValues": [
-            "None",
-            "AvailabilitySet",
-            "AvailabilityZone"
-        ],
-        "type": "String",
-        "metadata": {
-            "description": "Select the availability options for the VMs."
-        }
-    },     
+    },   
     "availabilitySetUpdateDomainCount": {
         "defaultValue": 5,
         "allowedValues": [
@@ -184,19 +131,7 @@
         "metadata": {
             "description": "The platform fault domain count of avaiability set to be created."
         }
-    },
-    "availabilityZone": {
-        "defaultValue": 1,
-        "allowedValues": [
-            1,
-            2,
-            3
-        ],
-        "type": "Int",
-        "metadata": {
-            "description": "The number of availability zone to be used when create the VMs."
-        }
-    },       
+    },    
     "Ring": {
         "defaultValue": 1,
         "type": "Int",
@@ -306,9 +241,7 @@
     "vmGalleryImagePublisher": "MicrosoftWindowsDesktop",
     "vmGalleryImageSKU": "20h1-evd-o365pp",
     "rdshPrefix": "[concat(parameters('NamingConvention'),'-')]",    
-    "artifactsLocation":    "https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration.zip",
-    "createNetworkSecurityGroup": true,
-    "networkSecurityGroupId": ""
+    "artifactsLocation":    "https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration.zip"
   },  
   "resources": [
     {
@@ -464,6 +397,80 @@
             } 
         }
       }
-    }           
+    },          
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DeploySessionHosts",   
+      "dependsOn": [
+        "DeployAVSet"
+      ],   
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+            "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/sessionhosts.json', parameters('_artifactsLocationSasToken')))]",
+            "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+            "availabilitySetName": {
+                "value": "[variables('availabilitySetName')]"
+            },
+            "vmGalleryImageOffer": {
+                "value": "[variables('vmGalleryImageOffer')]"
+            },
+            "vmGalleryImagePublisher": {
+                "value": "[variables('vmGalleryImagePublisher')]"
+            },
+            "vmGalleryImageSKU": {
+                "value": "[variables('vmGalleryImageSKU')]"
+            },
+            "rdshPrefix": {
+                "value": "[variables('rdshPrefix')]"
+            },
+            "rdshNumberOfInstances": {
+                "value": "[parameters('vmNumberOfInstances')]"
+            },
+            "rdshVMDiskType": {
+                "value": "[parameters('vmDiskType')]"
+            },
+            "rdshVmSize": {
+                "value": "[parameters('WVDVMSize')]"
+            },
+            "enableAcceleratedNetworking": {
+                "value": false
+            },            
+            "subnet-id": {
+                "value": "[variables('subnet-id')]"
+            },
+            "location": {
+                "value": "[resourceGroup().location]"
+            },
+            "vmInitialNumber": {
+                "value": "[parameters('vmInitialNumber')]"
+            },       
+            "hostpoolToken": {
+                "value": "[parameters('WVDToken')]"              
+            },
+            "hostpoolName": {
+                "value": "[variables('hostpoolName')]"
+            },
+            "ouPath": {
+                "value": "[variables('WKOUPath')]"
+            },            
+            "domain": {
+                "value": "[variables('InternalDomainName')]"
+            },
+            "administratorAccountUsername": {
+                "value": "[variables('wvdadmin')]"
+            },
+            "administratorAccountPassword": {
+                "value": "[parameters('adminPassword')]"
+            },
+            "artifactsLocation": {
+                "value": "[variables('artifactsLocation')]"
+            }            
+        }
+      }
+    }               
   ]
 }
