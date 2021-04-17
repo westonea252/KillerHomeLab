@@ -381,9 +381,9 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DeployApplicationGroup",   
-        "dependsOn": [
-            "[resourceId('Microsoft.DesktopVirtualization/hostpools/', variables('hostpoolName'))]"
-            ],
+      "dependsOn": [
+        "DeployHostedPool"
+      ],   
       "properties": {
         "mode": "Incremental",
         "templateLink": {
