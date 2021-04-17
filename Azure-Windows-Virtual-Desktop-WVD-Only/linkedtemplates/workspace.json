@@ -36,10 +36,7 @@
             "name": "[parameters('workSpaceName')]",
             "type": "Microsoft.DesktopVirtualization/workspaces",
             "apiVersion": "2019-12-10-preview",            
-            "location": "[parameters('location')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.DesktopVirtualization/applicationgroups/', parameters('AppGroupName'))]"
-            ],            
+            "location": "[parameters('location')]",            
             "properties": {
                 "applicationGroupReferences": "[variables('applicationGroupReferencesArr')]"
             }
