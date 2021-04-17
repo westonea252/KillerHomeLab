@@ -30,7 +30,6 @@
         "type": "Microsoft.Network/dnszones/TXT",
         "name": "[concat(parameters('ZoneName'), '/', variables('HostName'))]",
         "apiVersion": "2018-05-01",
-        "location": "global",
         "dependsOn": [
             "[parameters('ZoneName')]"
         ],
@@ -44,6 +43,6 @@
             }
             ]           
         }    
-        }    
-    ]
+    }    
+]
 }
