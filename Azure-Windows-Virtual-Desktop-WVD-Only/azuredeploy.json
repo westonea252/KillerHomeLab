@@ -461,7 +461,7 @@
                 "value": "[variables('InternalDomainName')]"
             },
             "administratorAccountUsername": {
-                "value": "[variables('wvdadmin')]"
+                "value": "[parameters('adminUsername')]"
             },
             "administratorAccountPassword": {
                 "value": "[parameters('adminPassword')]"
