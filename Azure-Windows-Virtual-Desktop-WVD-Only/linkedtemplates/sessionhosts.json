@@ -246,7 +246,7 @@
           "settings": {
             "name": "[parameters('domain')]",
             "ouPath": "[parameters('ouPath')]",
-            "user": "[parameters('administratorAccountUsername')]",
+            "user": "[concat(parameters('domain'), '\\', parameters('administratorAccountUsername'))]",
             "restart": "true",
             "options": "3"
           },

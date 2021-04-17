@@ -151,10 +151,10 @@
         "description": "The password for the Administrator account of the new VM and Domain"
       }
     },      
-    "WVDToken": {
+    "WVDTokenPhrase": {
         "type": "string",
       "metadata": {
-        "description": "The password for the Administrator account of the new VM and Domain"
+        "description": "PassPhrase to generate Registration Key"
       }
     },       
     "NamingConvention": {
@@ -223,7 +223,6 @@
     }
   },
   "variables": {
-    "wvdadmin": "[concat(parameters('adminUsername'),'@',variables('InternaldomainName'))]",
     "vnet1Name": "[concat(parameters('NamingConvention'),'-VNet1')]",
     "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet1')]",    
     "subnet-Id": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('vnet1Name'), variables('Vnet1Subnet1Name'))]",    
@@ -303,7 +302,7 @@
                 "value": "[parameters('Ring')]"
             },
             "Token": {
-                "value": "[parameters('WVDToken')]"
+                "value": "[parameters('WVDTokenPhrase')]"
             },                                                                                    
             "location": {
                 "value": "[resourceGroup().location]"
@@ -449,8 +448,8 @@
                 "value": "[parameters('vmInitialNumber')]"
             },       
             "hostpoolToken": {
-                "value": "[parameters('WVDToken')]"              
-            },
+                "value": "[reference('DeployHostedPool').outputs.RegistrationInfoToken.value]"             
+            },             
             "hostpoolName": {
                 "value": "[variables('hostpoolName')]"
             },
