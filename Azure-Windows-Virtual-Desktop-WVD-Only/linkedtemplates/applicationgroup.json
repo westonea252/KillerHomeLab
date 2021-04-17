@@ -2,6 +2,12 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "NamingConvention": {
+            "type": "string",
+            "metadata": {
+                "description": "Naming Convention"
+            }
+        },        
         "HostPoolName": {
             "type": "string",
             "metadata": {
@@ -28,8 +34,8 @@
             "apiVersion": "2019-12-10-preview",
             "location": "[parameters('location')]",
             "properties": {
-                "hostpoolarmpath": "[parameters('HostPoolName')]",
-                "friendlyName": "Default Desktop",
+                "hostpoolarmpath": "[concat('Microsoft.DesktopVirtualization/hostpools/', parameters('hostpoolName'))]",
+                "friendlyName": "[concat(parameters('NamingConvention'), 'Desktop')]",
                 "description": "Desktop Application Group created through the Hostpool Wizard",
                 "applicationGroupType": "Desktop"
             }
