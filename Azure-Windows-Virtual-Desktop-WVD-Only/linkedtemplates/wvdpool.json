@@ -101,7 +101,7 @@
 "outputs": {
     "RegistrationInfoToken": {
         "type": "string",
-        "value": "[reference(resourceId(resourceGroup().name, 'Microsoft.DesktopVirtualization/hostpools', parameters('HostPoolName'))).RegistrationInfoToken]"
+        "value": "[reference(resourceId(resourceGroup().name, 'Microsoft.DesktopVirtualization/hostpools', parameters('HostPoolName'))).RegistrationInfo.Token]"
     }
   }
 }
