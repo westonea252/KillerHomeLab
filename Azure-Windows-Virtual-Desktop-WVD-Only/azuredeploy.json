@@ -376,6 +376,32 @@
             }                                                                                                                   
         }
       }
-    }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DeployApplicationGroup",   
+        "dependsOn": [
+            "[resourceId('Microsoft.DesktopVirtualization/hostpools/', variables('hostpoolName'))]"
+            ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+            "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/applicationgroup.json', parameters('_artifactsLocationSasToken')))]",
+            "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+            "HostPoolName": {
+                "value": "[variables('HostPoolName')]"
+            },
+            "AppGroupName": {
+                "value": "[variables('AppGroupName')]"
+            },            
+            "location": {
+                "value": "[resourceGroup().location]"
+            }                                                                                                                   
+        }
+      }
+    }    
   ]
 }

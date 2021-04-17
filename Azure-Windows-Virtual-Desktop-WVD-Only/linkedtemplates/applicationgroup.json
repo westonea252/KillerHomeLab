@@ -1,0 +1,38 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "HostPoolName": {
+            "type": "string",
+            "metadata": {
+                "description": "Public IP Address Name"
+            }
+        },
+        "AppGroupName": {
+            "type": "String",
+            "metadata": {
+                "description": "Preferred App Group Name to display"
+            }
+        },                                                                                                                                    
+        "location": {
+            "type": "string",
+          "metadata": {
+            "description": "Region of Resources"
+          }
+        }
+    },
+    "resources": [
+        {
+            "name": "[parameters('appGroupName')]",
+            "type": "Microsoft.DesktopVirtualization/applicationgroups",
+            "apiVersion": "2019-12-10-preview",
+            "location": "[parameters('location')]",
+            "properties": {
+                "hostpoolarmpath": "[resourceId('Microsoft.DesktopVirtualization/hostpools/', parameters('hostpoolName'))]",
+                "friendlyName": "Default Desktop",
+                "description": "Desktop Application Group created through the Hostpool Wizard",
+                "applicationGroupType": "Desktop"
+            }
+        }
+    ] 
+}
