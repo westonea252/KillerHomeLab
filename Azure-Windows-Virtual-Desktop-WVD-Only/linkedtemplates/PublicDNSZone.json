@@ -23,6 +23,7 @@
             "location": "global",
             "tags": {},
             "properties": {
+                "zoneType": "Public"                
             },
             "resources": []
         },
