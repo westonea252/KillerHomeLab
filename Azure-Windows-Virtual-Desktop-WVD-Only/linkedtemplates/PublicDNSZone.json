@@ -27,22 +27,22 @@
             "resources": []
         },
         {
-        "type": "Microsoft.Network/dnszones/TXT",
-        "name": "[concat(parameters('ZoneName'), '/', variables('HostName'))]",
-        "apiVersion": "2018-05-01",
-        "location": "global",
-        "dependsOn": [
-            "[parameters('ZoneName')]"
-        ],
-        "properties": {
-            "TTL": 900,
-            "TXTRecords": [
-                {
-                    "value": "[variables('Url')]"
-                }
+            "name": "[concat(parameters('ZoneName'), '/', variables('HostName'))]",
+            "type": "Microsoft.Network/dnszones/TXT",
+            "apiVersion": "2018-05-01",
+            "dependsOn": [
+                "[parameters('ZoneName')]"
+            ],
+            "properties": {
+                "TTL": 900,
+                "TXTRecords": [
+                    {
+                        "value": [
+                            "[variables('Url')]"
+                            ]
+                    }
                 ]
-        }
-        
-    }    
-]
+            }
+        }    
+    ]
 }
