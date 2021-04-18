@@ -30,6 +30,7 @@
             "name": "[concat(parameters('ZoneName'), '/', variables('HostName'))]",
             "type": "Microsoft.Network/dnszones/TXT",
             "apiVersion": "2018-05-01",
+            "location": "global",            
             "dependsOn": [
                 "[parameters('ZoneName')]"
             ],
@@ -41,9 +42,7 @@
                             "[variables('Url')]"
                             ]
                     }
-                ],
-                "targetResource": {
-                } 
+                ]
             }
         }    
     ]
