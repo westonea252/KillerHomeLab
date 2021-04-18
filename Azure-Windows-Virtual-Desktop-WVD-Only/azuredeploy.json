@@ -255,30 +255,12 @@
     "allApplicationGroupReferences": "",         
     "AvailabilitySetName": "[concat(variables('HostPoolName'),'-AVSet')]",  
     "SessionHostTemplate": "[concat('{\"domain\":\"',variables('InternaldomainName'), '\",\"galleryImageOffer\":\"office-365\",\"galleryImagePublisher\":\"MicrosoftWindowsDesktop\",\"galleryImageSKU\":\"',parameters('vmGalleryImageSKU'),'\",\"imageType\":\"Gallery\",\"imageUri\":null,\"customImageId\":null,\"namePrefix\":\"', parameters('NamingConvention'),'\",\"osDiskType\":\"',parameters('vmDiskType'),'\",\"useManagedDisks\":true,\"vmSize\":{\"id\":\"',parameters('vmSize'),'\",\"cores\":2,\"ram\":8},\"galleryItemId\":\"MicrosoftWindowsDesktop.office-365',parameters('vmGalleryImageSKU'),'\"}')]",      
-    "vmTemplate": "{\"domain\":\"wvd.killerhomelab.com\",\"galleryImageOffer\":\"office-365\",\"galleryImagePublisher\":\"MicrosoftWindowsDesktop\",\"galleryImageSKU\":\"20h1-evd-o365pp\",\"imageType\":\"Gallery\",\"imageUri\":null,\"customImageId\":null,\"namePrefix\":\"khla\",\"osDiskType\":\"StandardSSD_LRS\",\"useManagedDisks\":true,\"vmSize\":{\"id\":\"Standard_D2s_v3\",\"cores\":2,\"ram\":8},\"galleryItemId\":\"MicrosoftWindowsDesktop.office-36520h1-evd-o365pp\"}",
     "vmGalleryImageOffer": "office-365",
     "vmGalleryImagePublisher": "MicrosoftWindowsDesktop",
     "rdshPrefix": "[concat(parameters('NamingConvention'),'-')]",    
     "artifactsLocation":    "https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration.zip"
   },  
   "resources": [
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
-      "name": "createpublicdns",
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-            "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/PublicDNSZone.json', parameters('_artifactsLocationSasToken')))]",
-            "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-            "ZoneName": {
-                "value": "[variables('InternaldomainName')]"
-            }
-        }
-      }
-    },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
