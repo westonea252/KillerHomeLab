@@ -15,18 +15,7 @@
       "metadata": {
         "description": "Flow Log Name"
       }
-    },    
-    "WorkspaceLocation": {
-      "type": "string",
-      "defaultValue": "USGovVirginia",
-      "allowedValues": [
-        "USGovVirginia",
-        "USGovArizona"
-      ],            
-      "metadata": {
-        "description": "Choose a Log Analytics Workspace Location"
-      }
-    },        
+    },          
     "adminUsername": {
       "type": "string",
       "metadata": {
@@ -136,7 +125,6 @@
     "toolslastoctet": "150",                  
     "Toolsname": "[concat(parameters('NamingConvention'),'-tool-01')]",                      
     "ToolsIP": "[concat(parameters('vnet1ID'),'.2.',variables('toolslastoctet'))]",            
-    "WorkSpaceName": "[concat(parameters('NamingConvention'),'-law-', parameters('UniqueID'))]",            
     "NSGName": "[concat(parameters('NamingConvention'),'-nsg')]",   
     "StorageAccountName": "[concat(parameters('NamingConvention'), parameters('UniqueID'))]"
   },  
@@ -235,21 +223,15 @@
               "FlowLogName": {
                   "value": "[parameters('FlowLogName')]"
               },
-              "workspaceName": {
-                  "value": "[variables('WorkSpaceName')]"
-              },
               "NSGName": {
                   "value": "[variables('NSGName')]"
               },              
               "StorageAccountName": {
                   "value": "[variables('StorageAccountName')]"
               },  
-              "lawlocation": {
-                  "value": "[parameters('WorkspaceLocation')]"
-              },
-              "nwlocation": {
-                  "value": "[parameters('WorkspaceLocation')]"
-              },              
+              "location": {
+                  "value": "[deployment().location]"
+              },        
               "sku": {
                   "value": "Free"
               }            
