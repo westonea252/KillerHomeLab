@@ -1,0 +1,198 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "hostpoolId": {
+            "value": "/subscriptions/7d42fc1c-e7b8-49ec-85c4-403308e76d0b/resourcegroups/WVD-Lab-01/providers/Microsoft.DesktopVirtualization/hostpools/khl-Hosted-Pool"
+        },
+        "appGroupName": {
+            "value": "khl-Hosted-Pool-RAG"
+        },
+        "appGroupType": {
+            "value": "RemoteApp"
+        },
+        "location": {
+            "value": "eastus"
+        },
+        "selectedApps": {
+            "value": [
+                {
+                    "id": "/subscriptions/7d42fc1c-e7b8-49ec-85c4-403308e76d0b/resourcegroups/WVD-Lab-01/providers/Microsoft.DesktopVirtualization/applicationgroups/khl-Hosted-Pool-DAG/applications/Excel",
+                    "name": "Excel",
+                    "type": "Microsoft.WindowsVirualDesktop/applicationGroups/applications",
+                    "properties": {
+                        "applicationType": "Inbuilt",
+                        "friendlyName": "",
+                        "description": "",
+                        "filePath": "C:\\Program Files\\Microsoft Office\\root\\Office16\\EXCEL.EXE",
+                        "iconPath": "C:\\Program Files\\Microsoft Office\\Root\\VFS\\Windows\\Installer\\{90160000-000F-0000-1000-0000000FF1CE}\\xlicons.exe",
+                        "iconIndex": 0,
+                        "commandLineSetting": "DoNotAllow",
+                        "commandLineArguments": "",
+                        "showInPortal": true
+                    }
+                },
+                {
+                    "id": "/subscriptions/7d42fc1c-e7b8-49ec-85c4-403308e76d0b/resourcegroups/WVD-Lab-01/providers/Microsoft.DesktopVirtualization/applicationgroups/khl-Hosted-Pool-DAG/applications/Microsoft Edge",
+                    "name": "Microsoft Edge",
+                    "type": "Microsoft.WindowsVirualDesktop/applicationGroups/applications",
+                    "properties": {
+                        "applicationType": "Inbuilt",
+                        "friendlyName": "",
+                        "description": "",
+                        "filePath": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+                        "iconPath": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+                        "iconIndex": 0,
+                        "commandLineSetting": "DoNotAllow",
+                        "commandLineArguments": "",
+                        "showInPortal": true
+                    }
+                },
+                {
+                    "id": "/subscriptions/7d42fc1c-e7b8-49ec-85c4-403308e76d0b/resourcegroups/WVD-Lab-01/providers/Microsoft.DesktopVirtualization/applicationgroups/khl-Hosted-Pool-DAG/applications/OneDrive",
+                    "name": "OneDrive",
+                    "type": "Microsoft.WindowsVirualDesktop/applicationGroups/applications",
+                    "properties": {
+                        "applicationType": "Inbuilt",
+                        "friendlyName": "",
+                        "description": "",
+                        "filePath": "C:\\Program Files (x86)\\Microsoft OneDrive\\OneDrive.exe",
+                        "iconPath": "C:\\Program Files (x86)\\Microsoft OneDrive\\OneDrive.exe",
+                        "iconIndex": 1,
+                        "commandLineSetting": "DoNotAllow",
+                        "commandLineArguments": "",
+                        "showInPortal": true
+                    }
+                },
+                {
+                    "id": "/subscriptions/7d42fc1c-e7b8-49ec-85c4-403308e76d0b/resourcegroups/WVD-Lab-01/providers/Microsoft.DesktopVirtualization/applicationgroups/khl-Hosted-Pool-DAG/applications/OneNote",
+                    "name": "OneNote",
+                    "type": "Microsoft.WindowsVirualDesktop/applicationGroups/applications",
+                    "properties": {
+                        "applicationType": "Inbuilt",
+                        "friendlyName": "",
+                        "description": "",
+                        "filePath": "C:\\Program Files\\Microsoft Office\\root\\Office16\\ONENOTE.EXE",
+                        "iconPath": "C:\\Program Files\\Microsoft Office\\Root\\VFS\\Windows\\Installer\\{90160000-000F-0000-1000-0000000FF1CE}\\joticon.exe",
+                        "iconIndex": 0,
+                        "commandLineSetting": "DoNotAllow",
+                        "commandLineArguments": "",
+                        "showInPortal": true
+                    }
+                },
+                {
+                    "id": "/subscriptions/7d42fc1c-e7b8-49ec-85c4-403308e76d0b/resourcegroups/WVD-Lab-01/providers/Microsoft.DesktopVirtualization/applicationgroups/khl-Hosted-Pool-DAG/applications/Outlook",
+                    "name": "Outlook",
+                    "type": "Microsoft.WindowsVirualDesktop/applicationGroups/applications",
+                    "properties": {
+                        "applicationType": "Inbuilt",
+                        "friendlyName": "",
+                        "description": "",
+                        "filePath": "C:\\Program Files\\Microsoft Office\\root\\Office16\\OUTLOOK.EXE",
+                        "iconPath": "C:\\Program Files\\Microsoft Office\\Root\\VFS\\Windows\\Installer\\{90160000-000F-0000-1000-0000000FF1CE}\\outicon.exe",
+                        "iconIndex": 0,
+                        "commandLineSetting": "DoNotAllow",
+                        "commandLineArguments": "",
+                        "showInPortal": true
+                    }
+                },
+                {
+                    "id": "/subscriptions/7d42fc1c-e7b8-49ec-85c4-403308e76d0b/resourcegroups/WVD-Lab-01/providers/Microsoft.DesktopVirtualization/applicationgroups/khl-Hosted-Pool-DAG/applications/PowerPoint",
+                    "name": "PowerPoint",
+                    "type": "Microsoft.WindowsVirualDesktop/applicationGroups/applications",
+                    "properties": {
+                        "applicationType": "Inbuilt",
+                        "friendlyName": "",
+                        "description": "",
+                        "filePath": "C:\\Program Files\\Microsoft Office\\root\\Office16\\POWERPNT.EXE",
+                        "iconPath": "C:\\Program Files\\Microsoft Office\\Root\\VFS\\Windows\\Installer\\{90160000-000F-0000-1000-0000000FF1CE}\\pptico.exe",
+                        "iconIndex": 0,
+                        "commandLineSetting": "DoNotAllow",
+                        "commandLineArguments": "",
+                        "showInPortal": true
+                    }
+                },
+                {
+                    "id": "/subscriptions/7d42fc1c-e7b8-49ec-85c4-403308e76d0b/resourcegroups/WVD-Lab-01/providers/Microsoft.DesktopVirtualization/applicationgroups/khl-Hosted-Pool-DAG/applications/Remote Desktop Connection",
+                    "name": "Remote Desktop Connection",
+                    "type": "Microsoft.WindowsVirualDesktop/applicationGroups/applications",
+                    "properties": {
+                        "applicationType": "Inbuilt",
+                        "friendlyName": "",
+                        "description": "",
+                        "filePath": "C:\\Windows\\system32\\mstsc.exe",
+                        "iconPath": "C:\\Windows\\system32\\mstsc.exe",
+                        "iconIndex": 0,
+                        "commandLineSetting": "DoNotAllow",
+                        "commandLineArguments": "",
+                        "showInPortal": true
+                    }
+                },
+                {
+                    "id": "/subscriptions/7d42fc1c-e7b8-49ec-85c4-403308e76d0b/resourcegroups/WVD-Lab-01/providers/Microsoft.DesktopVirtualization/applicationgroups/khl-Hosted-Pool-DAG/applications/Windows PowerShell ISE",
+                    "name": "Windows PowerShell ISE",
+                    "type": "Microsoft.WindowsVirualDesktop/applicationGroups/applications",
+                    "properties": {
+                        "applicationType": "Inbuilt",
+                        "friendlyName": "",
+                        "description": "",
+                        "filePath": "C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\PowerShell_ISE.exe",
+                        "iconPath": "C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\powershell_ise.exe",
+                        "iconIndex": 0,
+                        "commandLineSetting": "DoNotAllow",
+                        "commandLineArguments": "",
+                        "showInPortal": true
+                    }
+                },
+                {
+                    "id": "/subscriptions/7d42fc1c-e7b8-49ec-85c4-403308e76d0b/resourcegroups/WVD-Lab-01/providers/Microsoft.DesktopVirtualization/applicationgroups/khl-Hosted-Pool-DAG/applications/Word",
+                    "name": "Word",
+                    "type": "Microsoft.WindowsVirualDesktop/applicationGroups/applications",
+                    "properties": {
+                        "applicationType": "Inbuilt",
+                        "friendlyName": "",
+                        "description": "",
+                        "filePath": "C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE",
+                        "iconPath": "C:\\Program Files\\Microsoft Office\\Root\\VFS\\Windows\\Installer\\{90160000-000F-0000-1000-0000000FF1CE}\\wordicon.exe",
+                        "iconIndex": 0,
+                        "commandLineSetting": "DoNotAllow",
+                        "commandLineArguments": "",
+                        "showInPortal": true
+                    }
+                }
+            ]
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "name": "5f4ce4a8-7ea8-4afa-9531-ab581c60908c",
+                    "id": "",
+                    "type": "Microsoft.Authorization/roleAssignments",
+                    "properties": {
+                        "principalId": "6a00ee7d-97e8-4fda-b672-63b6d9e7fc76",
+                        "roleDefinitionId": "1d18fff3-a72a-46b5-b4a9-0b38a3cd7e63",
+                        "scope": ""
+                    }
+                }
+            ]
+        },
+        "applicationGroupTags": {
+            "value": {}
+        },
+        "apiVersion": {
+            "value": "2019-12-10-preview"
+        },
+        "deploymentId": {
+            "value": "5f4ce4a8-7ea8-4afa-9531-ab581c60908d"
+        },
+        "workspaceName": {
+            "value": "khl-Hosted-Pool-WorkSpace"
+        },
+        "workspaceResourceGroup": {
+            "value": "WVD-Lab-01"
+        },
+        "allApplicationGroupReferences": {
+            "value": "/subscriptions/7d42fc1c-e7b8-49ec-85c4-403308e76d0b/resourcegroups/WVD-Lab-01/providers/Microsoft.DesktopVirtualization/applicationgroups/khl-Hosted-Pool-DAG"
+        }
+    }
+}
