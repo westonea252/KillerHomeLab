@@ -261,7 +261,7 @@
     "vmGalleryImagePublisher": "MicrosoftWindowsDesktop",
     "rdshPrefix": "[concat(parameters('NamingConvention'),'-')]",    
     "artifactsLocation":    "https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration.zip",
-    "ExcelApp": "[resourceId(resourceGroup().name, 'Microsoft.DesktopVirtualization/applicationgroups', variables('RemoteAppGroupName'), 'applications/Excel')]",
+    "ExcelApp": "[resourceId(resourceGroup().name, 'Microsoft.DesktopVirtualization/applicationgroups', variables('RemoteAppGroupName'), 'applications/Excel')]"
   },  
   "resources": [
     {
