@@ -244,9 +244,12 @@
               "StorageAccountName": {
                   "value": "[variables('StorageAccountName')]"
               },  
-              "location": {
+              "lawlocation": {
                   "value": "[parameters('WorkspaceLocation')]"
               },
+              "nwlocation": {
+                  "value": "[deployment().location]"
+              },              
               "sku": {
                   "value": "Free"
               }            

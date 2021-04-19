@@ -32,12 +32,18 @@
             "description": "Specifies Subscription ID."
           }
     },    
-    "location": {
+    "lawlocation": {
         "type": "string",
         "metadata": {
           "description": "Specifies the location in which to create the workspace."
         }
     },
+    "nwlocation": {
+        "type": "string",
+        "metadata": {
+          "description": "Specifies the location in which to create the workspace."
+        }
+    },    
     "sku": {
         "type": "string",
         "metadata": {
@@ -49,7 +55,7 @@
       "NSGResourceID": "[resourceId(parameters('ResourceGroup'), 'Microsoft.Network/networkSecurityGroups', parameters('NSGName'))]",
       "StorageAccountResourceID": "[resourceId(parameters('ResourceGroup'), 'Microsoft.Storage/storageAccounts', parameters('StorageAccountName'))]",
       "WorkspaceResourceID": "[resourceId(resourceGroup().name, 'Microsoft.OperationalInsights/workspaces', parameters('workspaceName'))]",
-      "NetworkWatcherName": "[concat('NetworkWatcher_', parameters('location'))]",
+      "NetworkWatcherName": "[concat('NetworkWatcher_', parameters('nwlocation'))]",
       "NSGFlowName": "[concat(variables('NetworkWatcherName'), '/', parameters('FlowLogName'))]"               
     },
 "resources": [
@@ -57,7 +63,7 @@
         "type": "Microsoft.OperationalInsights/workspaces",
         "name": "[parameters('workspaceName')]",
         "apiVersion": "2020-08-01",
-        "location": "[parameters('location')]",
+        "location": "[parameters('lawlocation')]",
         "properties": {
             "sku": {
                 "name": "[parameters('sku')]"
@@ -71,7 +77,7 @@
         "name": "[variables('NSGFlowName')]",
         "type": "Microsoft.Network/networkWatchers/flowLogs",
         "apiVersion": "2019-11-01",
-        "location": "[parameters('location')]",
+        "location": "[parameters('nwlocation')]",
         "dependsOn": [
             "[resourceId('Microsoft.OperationalInsights/workspaces',parameters('workspaceName'))]"
         ],            
