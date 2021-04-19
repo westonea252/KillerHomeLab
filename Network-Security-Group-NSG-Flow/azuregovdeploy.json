@@ -248,7 +248,7 @@
                   "value": "[parameters('WorkspaceLocation')]"
               },
               "nwlocation": {
-                  "value": "[deployment().location]"
+                  "value": "[parameters('WorkspaceLocation')]"
               },              
               "sku": {
                   "value": "Free"
