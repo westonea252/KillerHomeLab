@@ -1,19 +1,19 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {
-        "NamingConvention": {
-            "type": "string",
-            "metadata": {
-                "description": "Naming Convention"
-            }
-        },        
+    "parameters": {       
         "AppGroupName": {
             "type": "String",
             "metadata": {
                 "description": "Preferred App Group Name to display"
             }
         },
+        "NamingConvention": {
+            "type": "string",
+            "metadata": {
+                "description": "Naming Convention"
+            }
+        },         
         "HostPoolARMPath": {
             "type": "string",
             "metadata": {
@@ -36,7 +36,7 @@
             "properties": {
                 "hostpoolarmpath": "[parameters('HostPoolARMPath')]",
                 "friendlyName": "[concat(parameters('NamingConvention'), 'Desktop')]",
-                "description": "Desktop Application Group created through the Hostpool Wizard",
+                "description": "Desktop Application Group",
                 "applicationGroupType": "Desktop"
             }
         }

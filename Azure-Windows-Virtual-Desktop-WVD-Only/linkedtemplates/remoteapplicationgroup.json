@@ -2,66 +2,37 @@
     "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "workspaceName": {
-            "type": "string",
-            "metadata": {
-                "description": "The name of the Workspace."
-            },
-            "defaultValue": ""
-        },
-        "workspaceResourceGroup": {
-            "type": "string",
-            "metadata": {
-                "description": "The workspace resource group Name."
-            },
-            "defaultValue": ""
-        },
-        "hostpoolId": {
-            "type": "string",
-            "metadata": {
-                "description": "The name of the Hostpool."
-            }
-        },
         "appGroupName": {
             "type": "string",
             "metadata": {
                 "description": "The name of the Application Group to be created."
             }
         },
-        "allApplicationGroupReferences": {
+        "NamingConvention": {
             "type": "string",
             "metadata": {
-                "description": "The existing app groups references of the workspace"
-            },
-            "defaultValue": ""
-        },
-        "appGroupFriendlyName": {
+                "description": "Naming Convention"
+            }
+        }, 
+        "HostPoolARMPath": {
             "type": "string",
             "metadata": {
-                "description": "The friendly name of the Application Group to be created."
-            },
-            "defaultValue": ""
-        },
-        "appGroupDescription": {
-            "type": "string",
-            "metadata": {
-                "description": "The description of the Application Group to be created."
-            },
-            "defaultValue": ""
-        },
-        "appGroupType": {
-            "type": "string",
-            "metadata": {
-                "description": "The type of the Application Group to be created."
-            },
-            "defaultValue": "RemoteApp"
-        },
+                "description": "Host Pool ARM Path"
+            }
+        }, 
         "location": {
             "type": "string",
             "metadata": {
                 "description": "The location where the resources will be deployed."
             }
         },
+        "deploymentId": {
+            "type": "string",
+            "metadata": {
+                "description": "GUID for the deployment"
+            },
+            "defaultValue": ""
+        },        
         "selectedApps": {
             "type": "array",
             "metadata": {
@@ -75,80 +46,25 @@
                 "description": "Selected Role Assignments to add in Application Group"
             },
             "defaultValue": []
-        },
-        "applicationGroupTags": {
-            "type": "object",
-            "metadata": {
-                "description": "Selected Application Group tags"
-            },
-            "defaultValue": {}
-        },
-        "apiVersion": {
-            "type": "string",
-            "metadata": {
-                "description": "WVD api version"
-            },
-            "defaultValue": "2019-12-10-preview"
-        },
-        "deploymentId": {
-            "type": "string",
-            "metadata": {
-                "description": "GUID for the deployment"
-            },
-            "defaultValue": ""
         }
     },
     "variables": {
-        "appGroupResourceId": "[resourceId('Microsoft.DesktopVirtualization/applicationgroups/', parameters('appGroupName'))]",
         "noRoleAssignments": "[empty(parameters('roleAssignments'))]",
         "noSelectedApps": "[empty(parameters('selectedApps'))]",
-        "desktopVirtualizationUserRoleDefinition": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '1d18fff3-a72a-46b5-b4a9-0b38a3cd7e63')]",
-        "addToWorkspace": "[not(empty(parameters('workspaceName')))]",
-        "workspaceResourceGroup": "[if(empty(parameters('workspaceResourceGroup')), resourceGroup().name, parameters('workspaceResourceGroup'))]",
-        "appGroupResourceReferenceArr": "[createArray(variables('appGroupResourceId'))]",
-        "applicationGroupReferencesArr": "[if(empty(parameters('allApplicationGroupReferences')), variables('appGroupResourceReferenceArr'), concat(split(parameters('allApplicationGroupReferences'),','), variables('appGroupResourceReferenceArr')))]"
+        "desktopVirtualizationUserRoleDefinition": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '1d18fff3-a72a-46b5-b4a9-0b38a3cd7e63')]"
     },
     "resources": [
         {
             "name": "[parameters('appGroupName')]",
-            "apiVersion": "[parameters('apiVersion')]",
+            "apiVersion": "2019-12-10-preview",
             "type": "Microsoft.DesktopVirtualization/applicationgroups",
             "location": "[parameters('location')]",
-            "tags": "[parameters('applicationGroupTags')]",
             "properties": {
-                "hostpoolarmpath": "[parameters('hostpoolId')]",
-                "friendlyName": "[parameters('appGroupFriendlyName')]",
-                "description": "[parameters('appGroupDescription')]",
-                "applicationGroupType": "[parameters('appGroupType')]"
+                "hostpoolarmpath": "[parameters('HostPoolARMPath')]",
+                "friendlyName": "[concat(parameters('NamingConvention'), 'Desktop')]",
+                "description": "Remote Application Group",                
+                "applicationGroupType": "Remote App"
             }
-        },
-        {
-            "apiVersion": "2018-05-01",
-            "name": "[concat('Workspace-linkedTemplate-', parameters('deploymentId'))]",
-            "type": "Microsoft.Resources/deployments",
-            "resourceGroup": "[variables('workspaceResourceGroup')]",
-            "condition": "[variables('addToWorkspace')]",
-            "properties": {
-                "mode": "Incremental",
-                "template": {
-                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-                    "contentVersion": "1.0.0.0",
-                    "resources": [
-                        {
-                            "name": "[parameters('workspaceName')]",
-                            "apiVersion": "[parameters('apiVersion')]",
-                            "type": "Microsoft.DesktopVirtualization/workspaces",
-                            "location": "[parameters('location')]",
-                            "properties": {
-                                "applicationGroupReferences": "[variables('applicationGroupReferencesArr')]"
-                            }
-                        }
-                    ]
-                }
-            },
-            "dependsOn": [
-                "[variables('appGroupResourceId')]"
-            ]
         },
         {
             "apiVersion": "2018-05-01",
@@ -194,7 +110,7 @@
                     "resources": [
                         {
                             "name": "[concat(parameters('appGroupName'), '/', parameters('selectedApps')[CopyIndex()].name)]",
-                            "apiVersion": "[parameters('apiVersion')]",
+                            "apiVersion": "2019-12-10-preview",
                             "type": "Microsoft.DesktopVirtualization/applicationgroups/applications",
                             "properties": "[parameters('selectedApps')[CopyIndex()].properties]"
                         }
