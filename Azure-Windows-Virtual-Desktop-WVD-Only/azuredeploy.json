@@ -245,14 +245,15 @@
     "vnet1Name": "[concat(parameters('NamingConvention'),'-VNet1')]",
     "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet1')]",    
     "subnet-Id": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('vnet1Name'), variables('Vnet1Subnet1Name'))]",    
-    "HostPoolARMPath": "[resourceId(resourceGroup().name, 'Microsoft.DesktopVirtualization/hostpools', variables('HostPoolName'))]",        
+    "HostPoolARMPath": "[resourceId(resourceGroup().name, 'Microsoft.DesktopVirtualization/hostpools', variables('HostPoolName'))]", 
+    "allApplicationGroupReferences": "[resourceId(resourceGroup().name, 'Microsoft.DesktopVirtualization/applicationgroups', variables('RemoteAppGroupName'))]",       
     "InternaldomainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('InternalTLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('InternalTLD'))]",
     "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
     "HostPoolName": "[concat(parameters('NamingConvention'),'-Hosted-Pool')]",
-    "AppGroupName": "[concat(variables('HostPoolName'),'-DAG')]",    
+    "DesktopAppGroupName": "[concat(variables('HostPoolName'),'-DAG')]",    
+    "RemoteAppGroupName": "[concat(variables('HostPoolName'),'-RAG')]",        
     "WorkSpaceName": "[concat(variables('HostPoolName'),'-WorkSpace')]",   
-    "allApplicationGroupReferences": "",         
     "AvailabilitySetName": "[concat(variables('HostPoolName'),'-AVSet')]",  
     "SessionHostTemplate": "[concat('{\"domain\":\"',variables('InternaldomainName'), '\",\"galleryImageOffer\":\"office-365\",\"galleryImagePublisher\":\"MicrosoftWindowsDesktop\",\"galleryImageSKU\":\"',parameters('vmGalleryImageSKU'),'\",\"imageType\":\"Gallery\",\"imageUri\":null,\"customImageId\":null,\"namePrefix\":\"', parameters('NamingConvention'),'\",\"osDiskType\":\"',parameters('vmDiskType'),'\",\"useManagedDisks\":true,\"vmSize\":{\"id\":\"',parameters('vmSize'),'\",\"cores\":2,\"ram\":8},\"galleryItemId\":\"MicrosoftWindowsDesktop.office-365',parameters('vmGalleryImageSKU'),'\"}')]",      
     "vmGalleryImageOffer": "office-365",
@@ -332,7 +333,7 @@
                 "value": "[variables('HostPoolARMPath')]"
             },
             "AppGroupName": {
-                "value": "[variables('AppGroupName')]"
+                "value": "[variables('DesktopAppGroupName')]"
             },            
             "location": {
                 "value": "[resourceGroup().location]"
@@ -355,7 +356,7 @@
         },
         "parameters": {
             "AppGroupName": {
-                "value": "[variables('AppGroupName')]"
+                "value": "[variables('DesktopAppGroupName')]"
             },
             "WorkSpaceName": {
                 "value": "[variables('WorkSpaceName')]"
@@ -369,6 +370,45 @@
         }
       }
     },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DeployRemoteApplicationGroup",   
+      "dependsOn": [
+        "DeployWorkspace"
+      ],   
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+            "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/remoteapplicationgroup.json', parameters('_artifactsLocationSasToken')))]",
+            "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+            "workspaceName": {
+                "value": "[variables('WorkSpaceName')]"
+            },
+            "workspaceResourceGroup": {
+                "value": "[resourceGroup().name]"
+            },
+            "HostPoolID": {
+                "value": "[variables('HostPoolName')]"
+            },  
+            "AppGroupName": {
+                "value": "[variables('RemoteAppGroupName')]"
+            },    
+            "HostPoolARMPath": {
+                "value": "[variables('HostPoolARMPath')]"
+            },                              
+            "allApplicationGroupReferences": {
+                "value": "[variables('HostPoolARMPath')]"
+            },
+            
+            "location": {
+                "value": "[resourceGroup().location]"
+            }                                                                                                                   
+        }
+      }
+    },        
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
