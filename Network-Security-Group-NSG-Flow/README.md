@@ -9,7 +9,7 @@ This Templates deploys an NSG Flow Log enabled Environemnt with the following re
 
 - 1 - Storage Account
 - 1 - Network Security Group
-- 1 - Log Analytic Workspace
+- 1 - Log Analytic Workspace (Only for Gov Deployments)
 - 1 - Virtual Network
 - 1 - Web Server
 - 1 - Tools Server (PowerBi Desktop)
