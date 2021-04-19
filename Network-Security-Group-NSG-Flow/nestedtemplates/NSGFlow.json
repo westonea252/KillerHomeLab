@@ -54,7 +54,6 @@
     "variables": {
       "NSGResourceID": "[resourceId(parameters('ResourceGroup'), 'Microsoft.Network/networkSecurityGroups', parameters('NSGName'))]",
       "StorageAccountResourceID": "[resourceId(parameters('ResourceGroup'), 'Microsoft.Storage/storageAccounts', parameters('StorageAccountName'))]",
-      "WorkspaceResourceID": "[resourceId(resourceGroup().name, 'Microsoft.OperationalInsights/workspaces', parameters('workspaceName'))]",
       "NetworkWatcherName": "[concat('NetworkWatcher_', parameters('nwlocation'))]",
       "NSGFlowName": "[concat(variables('NetworkWatcherName'), '/', parameters('FlowLogName'))]"               
     },
@@ -93,13 +92,6 @@
             "format": {
                 "type": "JSON",
                 "version": 2
-            },
-            "flowAnalyticsConfiguration": {
-                "networkWatcherFlowAnalyticsConfiguration": {
-                    "enabled": true,
-                    "workspaceResourceId": "[variables('WorkspaceResourceID')]",
-                    "trafficAnalyticsInterval": 10
-                    }
             }
         }
     }
