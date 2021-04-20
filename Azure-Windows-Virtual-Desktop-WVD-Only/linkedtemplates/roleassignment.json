@@ -1,0 +1,55 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "roleAssignments": {
+            "type": "Array",
+            "metadata": {
+                "description": "Preferred Workspace Name to display"
+            }
+        },  
+        "AppGroup1Name": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the Application Group to be created."
+            }
+        },
+        "AppGroup2Name": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the Application Group to be created."
+            }
+        },                        
+        "location": {
+            "type": "string",
+          "metadata": {
+            "description": "Region of Resources"
+          }
+        }
+    },
+    "variables": {
+        "desktopVirtualizationUserRoleDefinition": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '1d18fff3-a72a-46b5-b4a9-0b38a3cd7e63')]",        
+    },    
+    "resources": [
+        {
+            "name": "[concat(parameters('AppGroup1Name'), '/Microsoft.Authorization/', parameters('roleAssignments')[CopyIndex()].name)]",
+            "type": "Microsoft.DesktopVirtualization/applicationgroups/providers/roleAssignments",
+            "apiVersion": "2019-04-01-preview",
+            "location": "[parameters('location')]",                        
+            "properties": {
+                "principalId": "[parameters('roleAssignments')[CopyIndex()].properties.principalId]",
+                "roleDefinitionId": "[variables('desktopVirtualizationUserRoleDefinition')]"
+            }
+        },
+        {
+            "name": "[concat(parameters('AppGroup2Name'), '/Microsoft.Authorization/', parameters('roleAssignments')[CopyIndex()].name)]",
+            "type": "Microsoft.DesktopVirtualization/applicationgroups/providers/roleAssignments",
+            "apiVersion": "2019-04-01-preview",
+            "location": "[parameters('location')]",                        
+            "properties": {
+                "principalId": "[parameters('roleAssignments')[CopyIndex()].properties.principalId]",
+                "roleDefinitionId": "[variables('desktopVirtualizationUserRoleDefinition')]"
+            }
+        }                
+    ] 
+}

@@ -218,7 +218,25 @@
       "metadata": {
           "description": "Top-Level Domain Name"
       }
-    },                                          
+    },
+    "roleAssignments": {
+        "type": "array",
+        "metadata": {
+            "description": "Selected Role Assignments to add in Application Group"
+        },
+        "defaultValue": [
+                {
+                    "name": "d25ec028-8506-42f4-8fe4-bc791ea0b048",
+                    "id": "",
+                    "type": "Microsoft.Authorization/roleAssignments",
+                    "properties": {
+                        "principalId": "6a00ee7d-97e8-4fda-b672-63b6d9e7fc76",
+                        "roleDefinitionId": "1d18fff3-a72a-46b5-b4a9-0b38a3cd7e63",
+                        "scope": ""
+                    }
+                }
+            ]
+    },                                             
     "_artifactsLocation": {
       "type": "string",
       "metadata": {
@@ -538,13 +556,42 @@
             } 
         }
       }
-    },            
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "RoleAssignments",   
+      "dependsOn": [
+        "DeployToWorkspace"
+      ],   
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+            "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/roleassignment.json', parameters('_artifactsLocationSasToken')))]",
+            "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+            "roleAssignments": {
+                "value": "[parameters('roleAssignments')]"
+            },  
+            "AppGroup1Name": {
+                "value": "[variables('DesktopAppGroupName')]"
+            },        
+            "AppGroup2Name": {
+                "value": "[variables('RemoteAppGroupName')]"
+            },                              
+            "location": {
+                "value": "[resourceGroup().location]"
+            } 
+        }
+      }
+    },                
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DeployAVSet",   
       "dependsOn": [
-        "DeployToWorkspace"
+        "RoleAssignments"
       ],   
       "properties": {
         "mode": "Incremental",
