@@ -61,9 +61,9 @@
             "location": "[parameters('location')]",
             "properties": {
                 "hostpoolarmpath": "[parameters('HostPoolARMPath')]",
-                "friendlyName": "[concat(parameters('NamingConvention'), 'Desktop')]",
+                "friendlyName": "[concat(parameters('NamingConvention'), 'Remote App')]",
                 "description": "Remote Application Group",                
-                "applicationGroupType": "Remote App"
+                "applicationGroupType": "RemoteApp"
             }
         },
         {
