@@ -7,13 +7,19 @@
             "metadata": {
                 "description": "Preferred Workspace Name to display"
             }
-        },          
-        "allApplicationGroupReferences": {
-            "type": "Array",
+        },  
+        "AppGroup1Name": {
+            "type": "string",
             "metadata": {
-                "description": "The existing app groups references of the workspace selected."
+                "description": "The name of the Application Group to be created."
             }
-        },                 
+        },
+        "AppGroup2Name": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the Application Group to be created."
+            }
+        },                        
         "location": {
             "type": "string",
           "metadata": {
@@ -21,6 +27,12 @@
           }
         }
     },
+    "variables": {
+        "allApplicationGroupReferences": [
+            "[resourceId(resourceGroup().name, 'Microsoft.DesktopVirtualization/applicationgroups', parameters('AppGroup1Name'))]",
+            "[resourceId(resourceGroup().name, 'Microsoft.DesktopVirtualization/applicationgroups', parameters('AppGroup2Name'))]"
+        ]
+    },    
     "resources": [
         {
             "name": "[parameters('workSpaceName')]",
@@ -28,7 +40,7 @@
             "apiVersion": "2019-12-10-preview",            
             "location": "[parameters('location')]",            
             "properties": {
-                "applicationGroupReferences": "[parameters('allapplicationGroupReferences')]"
+                "applicationGroupReferences": "[variables('allapplicationGroupReferences')]"
             }
         }
     ] 
