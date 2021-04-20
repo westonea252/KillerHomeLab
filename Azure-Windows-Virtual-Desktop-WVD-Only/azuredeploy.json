@@ -260,8 +260,8 @@
     "vmGalleryImageOffer": "office-365",
     "vmGalleryImagePublisher": "MicrosoftWindowsDesktop",
     "rdshPrefix": "[concat(parameters('NamingConvention'),'-')]",    
-    "artifactsLocation":    "https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration.zip",
-    "ExcelApp": "[resourceId(resourceGroup().name, 'Microsoft.DesktopVirtualization/applicationgroups', variables('RemoteAppGroupName'), 'applications/Excel')]"
+    "artifactsLocation":    "https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration.zip"
+    
   },  
   "resources": [
     {
@@ -370,7 +370,7 @@
             "selectedApps": {
                 "value": [
                     {
-                        "id": "[variables('ExcelApp')]",
+                        "id": "[concat('/subscriptions/',subscription().id,'/resourcegroups/',resourceGroup().name, '/providers/Microsoft.DesktopVirtualization/applicationgroups/',variables('RemoteAppGroupName'),'/applications/Excel')]",
                         "name": "Excel",
                         "type": "Microsoft.WindowsVirualDesktop/applicationGroups/applications",
                         "properties": {
