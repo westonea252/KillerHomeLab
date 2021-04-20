@@ -247,7 +247,7 @@
     "subnet-Id": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('vnet1Name'), variables('Vnet1Subnet1Name'))]",    
     "HostPoolARMPath": "[resourceId(resourceGroup().name, 'Microsoft.DesktopVirtualization/hostpools', variables('HostPoolName'))]", 
     "allApplicationGroupReferences1": "",       
-    "allApplicationGroupReferences2": "[resourceId(resourceGroup().name, 'Microsoft.DesktopVirtualization/applicationgroups', variables('RemoteAppGroupName'))]",       
+    "allApplicationGroupReferences2": "[concat('/subscriptions/',subscription().id,'/resourcegroups/',resourceGroup().name, '/providers/Microsoft.DesktopVirtualization/applicationgroups/',variables('RemoteAppGroupName'))]",
     "InternaldomainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('InternalTLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('InternalTLD'))]",
     "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
