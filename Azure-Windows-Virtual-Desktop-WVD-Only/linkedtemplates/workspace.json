@@ -8,25 +8,13 @@
                 "description": "Preferred Workspace Name to display"
             }
         },
-        "AppGroupName1": {
-            "type": "String",
-            "metadata": {
-                "description": "Preferred App Group Name to display"
-            }
-        },    
-        "AppGroupName2": {
+        "AppGroupName": {
             "type": "String",
             "metadata": {
                 "description": "Preferred App Group Name to display"
             }
         },            
-        "allApplicationGroupReferences1": {
-            "type": "String",
-            "metadata": {
-                "description": "The existing app groups references of the workspace selected."
-            }
-        },         
-        "allApplicationGroupReferences2": {
+        "allApplicationGroupReferences": {
             "type": "String",
             "metadata": {
                 "description": "The existing app groups references of the workspace selected."
@@ -40,10 +28,8 @@
         }
     },
     "variables": {
-        "appGroupResourceId1": "[createArray(resourceId('Microsoft.DesktopVirtualization/applicationgroups/', parameters('appGroupName1')))]",         
-        "applicationGroupReferencesArr1": "[if(equals('',parameters('allApplicationGroupReferences1')), variables('appGroupResourceId1'), concat(split(parameters('allApplicationGroupReferences1'),','), variables('appGroupResourceId1')))]",
-        "appGroupResourceId2": "[createArray(resourceId('Microsoft.DesktopVirtualization/applicationgroups/', parameters('appGroupName2')))]",                 
-        "applicationGroupReferencesArr2": "[if(equals('',parameters('allApplicationGroupReferences2')), variables('appGroupResourceId2'), concat(split(parameters('allApplicationGroupReferences2'),','), variables('appGroupResourceId2')))]"
+        "appGroupResourceId": "[createArray(resourceId('Microsoft.DesktopVirtualization/applicationgroups/', parameters('appGroupName')))]",                 
+        "applicationGroupReferencesArr": "[if(equals('',parameters('allApplicationGroupReferences')), variables('appGroupResourceId'), concat(split(parameters('allApplicationGroupReferences'),','), variables('appGroupResourceId')))]"
 
     },    
     "resources": [
@@ -53,10 +39,7 @@
             "apiVersion": "2019-12-10-preview",            
             "location": "[parameters('location')]",            
             "properties": {
-                "applicationGroupReferences": [
-                    "[variables('applicationGroupReferencesArr1')]",
-                    "[variables('applicationGroupReferencesArr2')]"
-                ]
+                "applicationGroupReferences": "[variables('applicationGroupReferencesArr')]"
             }
         }
     ] 

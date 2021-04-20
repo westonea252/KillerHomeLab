@@ -396,7 +396,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "DeployWorkspace",   
+      "name": "DeployDesktopToWorkspace",   
       "dependsOn": [
         "DeployDesktopGroup",
         "DeployRemoteApplicationGroup"
@@ -417,12 +417,9 @@
             "AppGroupName2": {
                 "value": "[variables('RemoteAppGroupName')]"
             },            
-            "allApplicationGroupReferences1": {
+            "allApplicationGroupReferences": {
                 "value": "[variables('allApplicationGroupReferences1')]"
-            },                                                      
-            "allApplicationGroupReferences2": {
-                "value": "[variables('allApplicationGroupReferences2')]"
-            },                                                                                                              
+            },                                                                                                                                        
             "location": {
                 "value": "[resourceGroup().location]"
             } 
@@ -432,9 +429,38 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
+      "name": "DeployRemoteAppsToWorkspace",   
+      "dependsOn": [
+        "DeployDesktopToWorkspace"
+      ],   
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+            "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/workspace.json', parameters('_artifactsLocationSasToken')))]",
+            "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+            "WorkSpaceName": {
+                "value": "[variables('WorkSpaceName')]"
+            },
+            "AppGroupName": {
+                "value": "[variables('RemoteAppGroupName')]"
+            },            
+            "allApplicationGroupReferences": {
+                "value": "[variables('allApplicationGroupReferences2')]"
+            },                                                                                                                                        
+            "location": {
+                "value": "[resourceGroup().location]"
+            } 
+        }
+      }
+    },                
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
       "name": "DeployAVSet",   
       "dependsOn": [
-        "DeployWorkspace"
+        "DeployRemoteAppsToWorkspace"
       ],   
       "properties": {
         "mode": "Incremental",
