@@ -15,7 +15,7 @@
             }
         },            
         "allApplicationGroupReferences": {
-            "type": "String",
+            "type": "Array",
             "metadata": {
                 "description": "The existing app groups references of the workspace selected."
             }
