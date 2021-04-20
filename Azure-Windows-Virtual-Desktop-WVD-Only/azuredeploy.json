@@ -411,12 +411,9 @@
             "WorkSpaceName": {
                 "value": "[variables('WorkSpaceName')]"
             },
-            "AppGroupName1": {
+            "AppGroupName": {
                 "value": "[variables('DesktopAppGroupName')]"
-            },
-            "AppGroupName2": {
-                "value": "[variables('RemoteAppGroupName')]"
-            },            
+            },      
             "allApplicationGroupReferences": {
                 "value": "[variables('allApplicationGroupReferences1')]"
             },                                                                                                                                        
