@@ -246,10 +246,8 @@
     "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet1')]",    
     "subnet-Id": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('vnet1Name'), variables('Vnet1Subnet1Name'))]",    
     "HostPoolARMPath": "[resourceId(resourceGroup().name, 'Microsoft.DesktopVirtualization/hostpools', variables('HostPoolName'))]", 
-    "allApplicationGroupReferences1": [
-        ""
-    ],       
-    "allApplicationGroupReferences2": [
+    "allApplicationGroupReferences": [
+        "[concat('/subscriptions/',subscription().id,'/resourcegroups/',resourceGroup().name, '/providers/Microsoft.DesktopVirtualization/applicationgroups/',variables('DesktopAppGroupName'))]",
         "[concat('/subscriptions/',subscription().id,'/resourcegroups/',resourceGroup().name, '/providers/Microsoft.DesktopVirtualization/applicationgroups/',variables('RemoteAppGroupName'))]"
     ],
     "InternaldomainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('InternalTLD'))]",
@@ -400,7 +398,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "DeployDesktopToWorkspace",   
+      "name": "DeployToWorkspace",   
       "dependsOn": [
         "DeployDesktopGroup",
         "DeployRemoteApplicationGroup"
@@ -414,12 +412,9 @@
         "parameters": {
             "WorkSpaceName": {
                 "value": "[variables('WorkSpaceName')]"
-            },
-            "AppGroupName": {
-                "value": "[variables('DesktopAppGroupName')]"
-            },      
+            },                
             "allApplicationGroupReferences": {
-                "value": "[variables('allApplicationGroupReferences1')]"
+                "value": "[variables('allApplicationGroupReferences')]"
             },                                                                                                                                        
             "location": {
                 "value": "[resourceGroup().location]"
@@ -430,38 +425,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "DeployRemoteAppsToWorkspace",   
-      "dependsOn": [
-        "DeployDesktopToWorkspace"
-      ],   
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-            "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/workspace.json', parameters('_artifactsLocationSasToken')))]",
-            "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-            "WorkSpaceName": {
-                "value": "[variables('WorkSpaceName')]"
-            },
-            "AppGroupName": {
-                "value": "[variables('RemoteAppGroupName')]"
-            },            
-            "allApplicationGroupReferences": {
-                "value": "[variables('allApplicationGroupReferences2')]"
-            },                                                                                                                                        
-            "location": {
-                "value": "[resourceGroup().location]"
-            } 
-        }
-      }
-    },                
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
       "name": "DeployAVSet",   
       "dependsOn": [
-        "DeployRemoteAppsToWorkspace"
+        "DeployToWorkspace"
       ],   
       "properties": {
         "mode": "Incremental",

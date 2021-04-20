@@ -7,13 +7,7 @@
             "metadata": {
                 "description": "Preferred Workspace Name to display"
             }
-        },
-        "AppGroupName": {
-            "type": "String",
-            "metadata": {
-                "description": "Preferred App Group Name to display"
-            }
-        },            
+        },          
         "allApplicationGroupReferences": {
             "type": "Array",
             "metadata": {
@@ -27,11 +21,6 @@
           }
         }
     },
-    "variables": {
-        "appGroupResourceId": "[createArray(resourceId('Microsoft.DesktopVirtualization/applicationgroups/', parameters('appGroupName')))]",                 
-        "applicationGroupReferencesArr": "[if(equals('',parameters('allApplicationGroupReferences')), variables('appGroupResourceId'), concat(split(parameters('allApplicationGroupReferences'),','), variables('appGroupResourceId')))]"
-
-    },    
     "resources": [
         {
             "name": "[parameters('workSpaceName')]",
