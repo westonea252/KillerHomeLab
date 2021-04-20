@@ -50,12 +50,6 @@
                 "description": "Whether to use validation enviroment."
             }
         },
-        "preferredAppGroupType": {
-            "type": "String",
-            "metadata": {
-                "description": "Preferred App Group type to display"
-            }
-        },     
         "Ring": {
             "type": "Int",
             "metadata": {
@@ -87,7 +81,6 @@
                 "maxSessionLimit": "[parameters('maxSessionLimit')]",
                 "loadBalancerType": "[parameters('loadBalancerType')]",
                 "validationEnvironment": "[parameters('validationEnvironment')]",
-                "preferredAppGroupType": "[parameters('preferredAppGroupType')]",
                 "ring": "[parameters('Ring')]",
                 "registrationInfo": {
                     "expirationTime": "[parameters('tokenExpirationTime')]",

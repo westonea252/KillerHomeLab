@@ -57,14 +57,7 @@
         "metadata": {
             "description": "Whether to use validation enviroment."
         }
-    },    
-    "preferredAppGroupType": {
-        "defaultValue": "Desktop",
-        "type": "String",
-        "metadata": {
-            "description": "Preferred App Group type to display"
-        }
-    },      
+    },         
     "vmGalleryImageSKU": {
         "defaultValue": "20h2-evd-o365pp",
         "allowedValues": [
@@ -300,9 +293,6 @@
             },
             "validationEnvironment": {
                 "value": "[parameters('validationEnvironment')]"
-            },
-            "preferredAppGroupType": {
-                "value": "[parameters('preferredAppGroupType')]"
             },
             "Ring": {
                 "value": "[parameters('Ring')]"
