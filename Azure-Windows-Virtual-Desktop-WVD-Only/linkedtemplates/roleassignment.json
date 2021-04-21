@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "roleAssignments": {
-            "type": "Array",
+            "type": "String",
             "metadata": {
                 "description": "Preferred Workspace Name to display"
             }
