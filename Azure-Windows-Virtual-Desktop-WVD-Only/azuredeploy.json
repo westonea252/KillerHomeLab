@@ -537,13 +537,39 @@
             } 
         }
       }
-    },                
+    },
+    {
+        "type": "Microsoft.Resources/deployments",
+        "apiVersion": "2019-10-01",
+        "name": "RoleAssignments",   
+        "dependsOn": [
+        "DeployToWorkspace"
+        ],   
+        "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+            "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/roleassignment.json', parameters('_artifactsLocationSasToken')))]",
+            "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+            "AppGroup1Name": {
+                "value": "[variables('DesktopAppGroupName')]"
+            },        
+            "AppGroup2Name": {
+                "value": "[variables('RemoteAppGroupName')]"
+            },                              
+            "location": {
+                "value": "[resourceGroup().location]"
+            } 
+        }
+        }
+    },                         
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DeployAVSet",   
       "dependsOn": [
-        "DeployToWorkspace"
+        "RoleAssignments"
       ],   
       "properties": {
         "mode": "Incremental",
