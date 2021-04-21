@@ -2,23 +2,12 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": { 
-        "roleAssignments": {
-            "type": "object",
+        "PrincipalID": {
+            "type": "string",
             "metadata": {
-                "description": "Selected Role Assignments to add in Application Group"
-            },
-            "defaultValue":
-            {
-                "name": "d25ec028-8506-42f4-8fe4-bc791ea0b048",
-                "id": "",
-                "type": "Microsoft.Authorization/roleAssignments",
-                "properties": {
-                    "principalId": "6a00ee7d-97e8-4fda-b672-63b6d9e7fc76",
-                    "roleDefinitionId": "1d18fff3-a72a-46b5-b4a9-0b38a3cd7e63",
-                    "scope": ""
-                }
+                "description": "The name of the Application Group to be created."
             }
-        },
+        },        
         "AppGroup1Name": {
             "type": "string",
             "metadata": {
@@ -43,22 +32,22 @@
     },    
     "resources": [
         {
-            "name": "[concat(parameters('AppGroup1Name'), '/Microsoft.Authorization/', parameters('roleAssignments'))]",
+            "name": "[parameters('AppGroup1Name')]",
             "type": "Microsoft.DesktopVirtualization/applicationgroups/providers/roleAssignments",
             "apiVersion": "2019-04-01-preview",
             "location": "[parameters('location')]",                        
             "properties": {
-                "principalId": "[parameters('roleAssignments')[CopyIndex()].properties.principalId]",
+                "principalId": "[parameters('PrincipalID')]",
                 "roleDefinitionId": "[variables('desktopVirtualizationUserRoleDefinition')]"
             }
         },
         {
-            "name": "[concat(parameters('AppGroup2Name'), '/Microsoft.Authorization/', parameters('roleAssignments'))]",
+            "name": "[parameters('AppGroup2Name')]",
             "type": "Microsoft.DesktopVirtualization/applicationgroups/providers/roleAssignments",
             "apiVersion": "2019-04-01-preview",
             "location": "[parameters('location')]",                        
             "properties": {
-                "principalId": "[parameters('roleAssignments')[CopyIndex()].properties.principalId]",
+                "principalId": "[parameters('PrincipalID')]",
                 "roleDefinitionId": "[variables('desktopVirtualizationUserRoleDefinition')]"
             }
         }                

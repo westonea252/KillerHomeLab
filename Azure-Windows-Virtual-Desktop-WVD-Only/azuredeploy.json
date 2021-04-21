@@ -170,6 +170,13 @@
         "description": "The password for the Administrator account of the new VM and Domain"
       }
     },      
+    "PrincipalID": {
+        "defaultValue": "6a00ee7d-97e8-4fda-b672-63b6d9e7fc76",        
+        "type": "string",
+        "metadata": {
+            "description": "The name of the Administrator of the new VM and Domain"
+        }
+    },    
     "WVDTokenPhrase": {
         "type": "string",
       "metadata": {
@@ -552,9 +559,12 @@
             "contentVersion": "1.0.0.0"
         },
         "parameters": {
+            "PrincipalID": {
+                "value": "[parameters('PrincipalID')]"
+            },
             "AppGroup1Name": {
                 "value": "[variables('DesktopAppGroupName')]"
-            },        
+            },                   
             "AppGroup2Name": {
                 "value": "[variables('RemoteAppGroupName')]"
             },                              
