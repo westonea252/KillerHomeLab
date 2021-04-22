@@ -66,7 +66,7 @@
     },
     "variables": {
         "noRoleAssignments": "[empty(parameters('roleAssignments'))]",
-        "desktopVirtualizationUserRoleDefinition": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', parameters('roleAssignments').Properties.roleDefinitionId)]"
+        "desktopVirtualizationUserRoleDefinition": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', parameters('roleAssignments').properties.roleDefinitionId)]"
     },    
     "resources": [
         {
