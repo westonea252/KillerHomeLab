@@ -44,7 +44,13 @@
           "metadata": {
             "description": "PrincipalID"
           }
-        },                        
+        },     
+        "RoleDefinitionID": {
+            "type": "string",
+          "metadata": {
+            "description": "Role Definition ID"
+          }
+        },                             
         "roleAssignments": {
             "type": "array",
             "metadata": {
@@ -66,7 +72,7 @@
     },
     "variables": {
         "noRoleAssignments": "[empty(parameters('roleAssignments'))]",
-        "desktopVirtualizationUserRoleDefinition": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', parameters('roleAssignments').properties.roleDefinitionId)]"
+        "desktopVirtualizationUserRoleDefinition": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', parameters('RoleDefinitionID'))]"
     },    
     "resources": [
         {
