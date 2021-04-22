@@ -397,7 +397,7 @@
               "ManagedIDName": {
                   "value": "[variables('ManagedIDName')]"
               },
-              "NamingCovention": {
+              "NamingConvention": {
                   "value": "[parameters('NamingConvention')]"
               },              
               "TenantName": {
