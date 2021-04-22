@@ -30,7 +30,8 @@
             "type": "string",
             "metadata": {
                 "description": "GUID for the deployment"
-            }
+            },
+            "defaultValue": []            
         },        
         "selectedApps": {
             "type": "array",

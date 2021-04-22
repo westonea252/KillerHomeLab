@@ -345,13 +345,9 @@
             "HostPoolARMPath": {
                 "value": "[variables('HostPoolARMPath')]"
             },
-           
             "location": {
                 "value": "[resourceGroup().location]"
-            },
-            "deploymentId": {
-                "value": "[parameters('roleAssignmentGuid1')]"
-            }                                                                                                                                                                              
+            }                                                                                                                                                                             
         }
       }
     },
@@ -528,9 +524,6 @@
             },            
             "location": {
                 "value": "[resourceGroup().location]"
-            },
-            "deploymentId": {
-                "value": "[parameters('roleAssignmentGuid2')]"
             }                                                                                                                                       
         }
       }
