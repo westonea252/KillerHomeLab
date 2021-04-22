@@ -79,7 +79,7 @@
         },
         {
             "apiVersion": "2018-05-01",
-            "name": "[concat('Asgmt', copyIndex(), '-linkedTemplate-', parameters('deploymentId'))]",
+            "name": "[concat('Asgmt', copyIndex(), '-linkedTemplate2-', parameters('deploymentId'))]",
             "type": "Microsoft.Resources/deployments",
             "condition": "[not(variables('noRoleAssignments'))]",
             "properties": {
@@ -110,7 +110,7 @@
         },
         {
             "apiVersion": "2018-05-01",
-            "name": "[concat('App', copyIndex(), '-linkedTemplate-', parameters('deploymentId'))]",
+            "name": "[concat('App', copyIndex(), '-linkedTemplate2-', parameters('deploymentId'))]",
             "type": "Microsoft.Resources/deployments",
             "condition": "[not(variables('noSelectedApps'))]",
             "properties": {
