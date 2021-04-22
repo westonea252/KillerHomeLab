@@ -59,7 +59,6 @@
             "defaultValue": [
                 {
                     "name": "[parameters('RoleAssignmentGuid')]",
-                    "id": "",
                     "type": "Microsoft.Authorization/roleAssignments",
                     "properties": {
                         "principalId": "[parameters('PrincipalID')]"
