@@ -333,7 +333,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-            "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/applicationgroup.json', parameters('_artifactsLocationSasToken')))]",
+            "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/desktopapplicationgroup.json', parameters('_artifactsLocationSasToken')))]",
             "contentVersion": "1.0.0.0"
         },
         "parameters": {
@@ -534,7 +534,16 @@
             },            
             "location": {
                 "value": "[resourceGroup().location]"
-            }                                                                                                                                       
+            },
+            "RoleAssignmentGUID": {
+                "value": "[parameters('roleAssignmentGuid1')]"
+            },
+            "PrincipalID": {
+                "value": "[parameters('PrincipalID')]"
+            },
+            "RoleDefinitionID": {
+                "value": "[variables('RoleDefinitionID')]"
+            }                                                                                                                                                                                                                                                                                                                                                                            
         }
       }
     },

@@ -40,6 +40,24 @@
             },
             "defaultValue": []
         },
+        "RoleAssignmentGuid": {
+            "type": "string",
+          "metadata": {
+            "description": "Role Assignment GUID"
+          }
+        },
+        "PrincipalID": {
+            "type": "string",
+          "metadata": {
+            "description": "PrincipalID"
+          }
+        },     
+        "RoleDefinitionID": {
+            "type": "string",
+          "metadata": {
+            "description": "Role Definition ID"
+          }
+        },                             
         "roleAssignments": {
             "type": "array",
             "metadata": {
@@ -47,22 +65,19 @@
             },
             "defaultValue": [
                 {
-                    "name": "d25ec028-8506-42f4-8fe4-bc791ea0b049",
-                    "id": "",
+                    "name": "[parameters('RoleAssignmentGuid')]",
                     "type": "Microsoft.Authorization/roleAssignments",
                     "properties": {
-                        "principalId": "6a00ee7d-97e8-4fda-b672-63b6d9e7fc76",
-                        "roleDefinitionId": "1d18fff3-a72a-46b5-b4a9-0b38a3cd7e63",
-                        "scope": ""
+                        "principalId": "[parameters('PrincipalID')]"
                     }
                 }                
             ]
-        }
+        }        
     },
     "variables": {
         "noRoleAssignments": "[empty(parameters('roleAssignments'))]",
         "noSelectedApps": "[empty(parameters('selectedApps'))]",
-        "desktopVirtualizationUserRoleDefinition": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '1d18fff3-a72a-46b5-b4a9-0b38a3cd7e63')]"
+        "desktopVirtualizationUserRoleDefinition": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', parameters('RoleDefinitionID'))]"
     },
     "resources": [
         {
