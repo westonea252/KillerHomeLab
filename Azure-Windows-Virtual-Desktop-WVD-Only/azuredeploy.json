@@ -536,7 +536,7 @@
                 "value": "[resourceGroup().location]"
             },
             "RoleAssignmentGUID": {
-                "value": "[parameters('roleAssignmentGuid1')]"
+                "value": "[parameters('roleAssignmentGuid2')]"
             },
             "PrincipalID": {
                 "value": "[parameters('PrincipalID')]"
