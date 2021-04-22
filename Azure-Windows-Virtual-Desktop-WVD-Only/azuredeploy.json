@@ -350,7 +350,10 @@
             },
             "RoleAssignmentGUID": {
                 "value": "[parameters('roleAssignmentGuid1')]"
-            }                                                                                                                                                                                         
+            },
+            "PrincipalID": {
+                "value": "[parameters('PrincipalID')]"
+            }                                                                                                                                                                                                     
         }
       }
     },

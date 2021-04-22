@@ -38,7 +38,13 @@
           "metadata": {
             "description": "Role Assignment GUID"
           }
-        },                
+        },
+        "PrincipalID": {
+            "type": "string",
+          "metadata": {
+            "description": "PrincipalID"
+          }
+        },                        
         "roleAssignments": {
             "type": "array",
             "metadata": {
@@ -50,7 +56,7 @@
                     "id": "",
                     "type": "Microsoft.Authorization/roleAssignments",
                     "properties": {
-                        "principalId": "6a00ee7d-97e8-4fda-b672-63b6d9e7fc76",
+                        "principalId": "[parameters('PrincipalID')]",
                         "roleDefinitionId": "1d18fff3-a72a-46b5-b4a9-0b38a3cd7e63",
                         "scope": ""
                     }
@@ -60,7 +66,7 @@
     },
     "variables": {
         "noRoleAssignments": "[empty(parameters('roleAssignments'))]",
-        "desktopVirtualizationUserRoleDefinition": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '1d18fff3-a72a-46b5-b4a9-0b38a3cd7e63')]"
+        "desktopVirtualizationUserRoleDefinition": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', parameters('roleAssignments').roleDefinitionId)]"
     },    
     "resources": [
         {
