@@ -347,7 +347,10 @@
             },
             "location": {
                 "value": "[resourceGroup().location]"
-            }                                                                                                                                                                             
+            },
+            "RoleAssignmentGUID": {
+                "value": "[parameters('roleAssignmentGuid1')]"
+            }                                                                                                                                                                                         
         }
       }
     },

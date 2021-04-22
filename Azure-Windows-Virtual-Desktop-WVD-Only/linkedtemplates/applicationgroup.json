@@ -25,14 +25,20 @@
           "metadata": {
             "description": "Region of Resources"
           }
-        },
+        },        
         "deploymentId": {
             "type": "string",
             "metadata": {
                 "description": "GUID for the deployment"
             },
             "defaultValue": ""
-        },        
+        },
+        "RoleAssignmentGuid": {
+            "type": "string",
+          "metadata": {
+            "description": "Role Assignment GUID"
+          }
+        },                
         "roleAssignments": {
             "type": "array",
             "metadata": {
@@ -40,7 +46,7 @@
             },
             "defaultValue": [
                 {
-                    "name": "d25ec028-8506-42f4-8fe4-bc791ea0b048",
+                    "name": "[parameters('RoleAssignmentGuid')]",
                     "id": "",
                     "type": "Microsoft.Authorization/roleAssignments",
                     "properties": {
@@ -83,7 +89,7 @@
                         {
                             "type": "Microsoft.DesktopVirtualization/applicationgroups/providers/roleAssignments",
                             "apiVersion": "[if(contains(parameters('location'), 'euap'), '2019-04-01-preview','2018-07-01')]",
-                            "name": "[concat(parameters('appGroupName'), '/Microsoft.Authorization/', parameters('roleAssignments')[CopyIndex()].name)]",
+                            "name": "[concat(parameters('appGroupName'), '/Microsoft.Authorization/', parameters('RoleAssignmentGuid')[CopyIndex()])]",
                             "properties": {
                                 "principalId": "[parameters('roleAssignments')[CopyIndex()].properties.principalId]",
                                 "roleDefinitionId": "[variables('desktopVirtualizationUserRoleDefinition')]"
