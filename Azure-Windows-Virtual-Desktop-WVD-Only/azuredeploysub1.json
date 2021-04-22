@@ -400,7 +400,11 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "DeployHostedPool",     
+      "resourceGroup": "[parameters('WVDRG')]",          
+      "name": "DeployHostedPool", 
+      "dependsOn": [
+        "EnableWVDforTenant"        
+      ],           
       "properties": {
         "mode": "Incremental",
         "templateLink": {
@@ -439,7 +443,7 @@
                 "value": "[parameters('WVDTokenPhrase')]"
             },                                                                                    
             "location": {
-                "value": "[resourceGroup().location]"
+                "value": "[deployment().location]"
             }                                                                                                                   
         }
       }
@@ -447,7 +451,8 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "DeployDesktopGroup",   
+      "name": "DeployDesktopGroup",  
+      "resourceGroup": "[parameters('WVDRG')]",           
       "dependsOn": [
         "DeployHostedPool"
       ],   
@@ -468,7 +473,7 @@
                 "value": "[variables('HostPoolARMPath')]"
             },
             "location": {
-                "value": "[resourceGroup().location]"
+                "value": "[deployment().location]"
             },
             "RoleAssignmentGUID": {
                 "value": "[parameters('roleAssignmentGuid1')]"
@@ -485,7 +490,8 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "DeployRemoteApplicationGroup",   
+      "name": "DeployRemoteApplicationGroup", 
+      "resourceGroup": "[parameters('WVDRG')]",            
       "dependsOn": [
         "DeployDesktopGroup"
       ],   
@@ -654,7 +660,7 @@
                 ]
             },            
             "location": {
-                "value": "[resourceGroup().location]"
+                "value": "[deployment().location]"
             },
             "RoleAssignmentGUID": {
                 "value": "[parameters('roleAssignmentGuid2')]"
@@ -671,7 +677,8 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "DeployToWorkspace",   
+      "name": "DeployToWorkspace",
+      "resourceGroup": "[parameters('WVDRG')]",             
       "dependsOn": [
         "DeployDesktopGroup",
         "DeployRemoteApplicationGroup"
@@ -693,7 +700,7 @@
                 "value": "[variables('RemoteAppGroupName')]"
             },                              
             "location": {
-                "value": "[resourceGroup().location]"
+                "value": "[deployment().location]"
             } 
         }
       }
@@ -701,7 +708,8 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "DeployAVSet",   
+      "name": "DeployAVSet", 
+      "resourceGroup": "[parameters('WVDRG')]",            
       "dependsOn": [
         "DeployToWorkspace"
       ],   
@@ -722,7 +730,7 @@
                 "value": "[parameters('availabilitySetFaultDomainCount')]"
             },            
             "location": {
-                "value": "[resourceGroup().location]"
+                "value": "[deployment().location]"
             } 
         }
       }
@@ -731,6 +739,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DeploySessionHosts",   
+      "resourceGroup": "[parameters('WVDRG')]",          
       "dependsOn": [
         "DeployAVSet"
       ],   
@@ -772,7 +781,7 @@
                 "value": "[variables('subnet-id')]"
             },
             "location": {
-                "value": "[resourceGroup().location]"
+                "value": "[deployment().location]"
             },
             "vmInitialNumber": {
                 "value": "[parameters('vmInitialNumber')]"
