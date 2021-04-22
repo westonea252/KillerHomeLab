@@ -30,8 +30,7 @@
             "type": "string",
             "metadata": {
                 "description": "GUID for the deployment"
-            },
-            "defaultValue": ""
+            }
         },        
         "roleAssignments": {
             "type": "array",
