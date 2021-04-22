@@ -50,7 +50,7 @@
         "metadata": {
             "description": "Hostpool token expiration time"
         }
-    },    
+    },        
     "validationEnvironment": {
         "defaultValue": false,
         "type": "Bool",
@@ -151,13 +151,6 @@
             "description": "The platform fault domain count of avaiability set to be created."
         }
     },    
-    "Ring": {
-        "defaultValue": 1,
-        "type": "Int",
-        "metadata": {
-            "description": ""
-        }
-    }, 
     "adminUsername": {
         "type": "string",
         "metadata": {
@@ -274,7 +267,9 @@
     "rdshPrefix": "[concat(parameters('NamingConvention'),'-')]",    
     "artifactsLocation": "https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration.zip",
     "RoleDefinitionID": "1d18fff3-a72a-46b5-b4a9-0b38a3cd7e63",
-    "Ring": 1
+    "Ring": 1,
+    "BaseTime": "[utcNow('u')]",
+    "add1Hour": "[dateTimeAdd(variables('baseTime'), 'PT1H')]"
   },  
   "resources": [
     {
@@ -307,7 +302,7 @@
                 "value": "[variables('SessionHostTemplate')]"
             },
             "tokenExpirationTime": {
-                "value": "[parameters('tokenExpirationTime')]"
+                "value": "[variables('add1Hour')]"
             },
             "validationEnvironment": {
                 "value": "[parameters('validationEnvironment')]"
