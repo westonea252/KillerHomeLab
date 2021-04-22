@@ -2,7 +2,7 @@
 
 Click the button below to deploy
 
-[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2FDevelopment%2FAzure-Windows-Virtual-Desktop-WVD-Only%2Fazuredeploy.json)
+[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2FDevelopment%2FAzure-Windows-Virtual-Desktop-WVD-Only%2Fazuredeploysub1.json)
 [![Deploy To Azure US Gov](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.svg?sanitize=true)](https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2FDevelopment%2FAzure-Windows-Virtual-Desktop-WVD-Only%2Fazuredeploy.json)
 
 !!!!!NOTE:  THIS LAB REQUIRES THAT AN AZURE AD GROUP BE CREATED PRIOR TO DEPLOYMENT.  THE OBJECT ID MUST BE PROVIDED WITHIN THE PARAMETERS FOR THE DEPLOYMENT TO SUCCEED. ONCE DEPLOYMENT IS COMPLETE AZURE AD CONNECT CAN BE USED TO SYNC ONPREM ACCOUNT(S)/GROUP(S) THAT CAN BE NESTED WITHIN THE PRE-CREATED AZURE AD GROUP.
