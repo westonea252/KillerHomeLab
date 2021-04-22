@@ -1,0 +1,82 @@
+{
+"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+"contentVersion": "1.0.0.0",
+"parameters": {
+    "ManagedIDName": {
+      "type": "string",
+      "metadata": {
+        "description": "Managed ID Name"
+      }
+    },
+    "NamingConvention": {
+      "type": "string",
+      "metadata": {
+        "description": "Naming Convention for Deployment"
+      }
+    },
+    "TenantName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of Azure AD Tenant"
+      }
+    },    
+    "SubscriptionID": {
+      "type": "string",
+      "metadata": {
+        "description": "ID of Azure Subscription"
+      }
+    },  
+    "AzureAdmin": {
+      "type": "string",
+      "metadata": {
+        "description": "Azure Admin Account"
+      }
+    },
+    "AzurePassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Azure Admin Password"
+      }
+    },           
+    "ScriptName": {
+        "type": "string",
+      "metadata": {
+        "description": "Script Name"
+      }
+    },    
+    "ScriptLocation": {
+        "type": "string",
+      "metadata": {
+        "description": "Script Locatino"
+      }
+    } 
+},
+"variables": {
+    "ScriptURL": "https://raw.githubusercontent.com/elliottfieldsjr/KillerHomeLab/Development/Azure-Windows-Virtual-Desktop-WVD-Only/Scripts/enablewvd.ps1"
+},
+"resources": [
+    {
+      "type": "Microsoft.Resources/deploymentScripts",
+      "apiVersion": "2020-10-01",
+      "name": "[parameters('ScriptName')]",
+      "location": "[parameters('ScriptLocation')]",
+      "kind": "AzurePowerShell",      
+      "identity": {
+        "type": "UserAssigned",
+        "userAssignedIdentities": {
+          "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('ManagedIDName'))]": {
+          }
+        }
+      },
+      "properties": {
+        "azPowerShellVersion": "5.0",
+        "timeout": "PT1H",
+        "arguments": "[format(' -NamingConvention {0} -TenantName {1} -SubscriptionID {2} -AzureAdmin {3} -AzurePassword {4}', parameters('NamingConvention'), parameters('TenantName'), parameters('SubscriptionID'), parameters('AzureAdmin'), parameters('AzurePassword'))]", // can pass an argument string, double quotes must be escaped
+        "primaryScriptUri": "[variables('ScriptURL')]",
+        "cleanupPreference": "OnSuccess",
+        "retentionInterval": "P1D"
+      }
+    }
+  ]    
+}
+
