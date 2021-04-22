@@ -171,10 +171,10 @@
       }
     },      
     "PrincipalID": {
-        "defaultValue": "6a00ee7d-97e8-4fda-b672-63b6d9e7fc76",        
+        "defaultValue": "3a9e64dd-8e91-4ffa-99ee-d90766bb0515",        
         "type": "string",
         "metadata": {
-            "description": "The name of the Administrator of the new VM and Domain"
+            "description": "Object ID of Group that requires WVD Access"
         }
     },    
     "WVDTokenPhrase": {
