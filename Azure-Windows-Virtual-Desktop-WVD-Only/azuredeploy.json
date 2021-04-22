@@ -232,7 +232,14 @@
         "metadata": {
             "description": "A new GUID used to identify the role assignment"
         }
-    },                                                 
+    },   
+    "BaseTime": {
+        "defaultValue": "[utcNow('u')]",
+        "type": "String",
+        "metadata": {
+            "description": "Hostpool token expiration time"
+        }
+    },                                                   
     "_artifactsLocation": {
       "type": "string",
       "metadata": {
@@ -268,8 +275,7 @@
     "artifactsLocation": "https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration.zip",
     "RoleDefinitionID": "1d18fff3-a72a-46b5-b4a9-0b38a3cd7e63",
     "Ring": 1,
-    "BaseTime": "[utcNow('u')]",
-    "add1Hour": "[dateTimeAdd(variables('baseTime'), 'PT1H')]"
+    "add1Hour": "[dateTimeAdd(parameters('baseTime'), 'PT1H')]"
   },  
   "resources": [
     {
