@@ -67,7 +67,7 @@
         ],
         "type": "String",
         "metadata": {
-            "description": "The VM disk type for the VM: HDD or SSD."
+            "description": "The VM Image Type"
         }
     },
     "vmSize": {
@@ -100,7 +100,7 @@
         "defaultValue": 2,
         "type": "int",
         "metadata": {
-            "description": "Enter the number of WVD Vms"
+            "description": "Enter the number of WVD Session Hosts."
         }
     },    
     "vmInitialNumber": {
@@ -273,7 +273,8 @@
     "vmGalleryImagePublisher": "MicrosoftWindowsDesktop",
     "rdshPrefix": "[concat(parameters('NamingConvention'),'-')]",    
     "artifactsLocation": "https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration.zip",
-    "RoleDefinitionID": "1d18fff3-a72a-46b5-b4a9-0b38a3cd7e63"
+    "RoleDefinitionID": "1d18fff3-a72a-46b5-b4a9-0b38a3cd7e63",
+    "Ring": 1
   },  
   "resources": [
     {
@@ -312,7 +313,7 @@
                 "value": "[parameters('validationEnvironment')]"
             },
             "Ring": {
-                "value": "[parameters('Ring')]"
+                "value": "[variables('Ring')]"
             },
             "Token": {
                 "value": "[parameters('WVDTokenPhrase')]"

@@ -5,6 +5,8 @@ Click the button below to deploy
 [![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2FDevelopment%2FAzure-Windows-Virtual-Desktop-WVD-Only%2Fazuredeploy.json)
 [![Deploy To Azure US Gov](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.svg?sanitize=true)](https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2FDevelopment%2FAzure-Windows-Virtual-Desktop-WVD-Only%2Fazuredeploy.json)
 
+!!!!!NOTE:  THIS LAB REQUIRES THAT AN AZURE AD GROUP BE CREATED PRIOR TO DEPLOYMENT.  THE OBJECT ID MUST BE PROVIDED WITHIN THE PARAMETERS FOR THE DEPLOYMENT TO SUCCEED. ONCE DEPLOYMENT IS COMPLETE AZURE AD CONNECT CAN BE USED TO SYNC ONPREM ACCOUNT(S)/GROUP(S) THAT CAN BE NESTED WITHIN THE PRE-CREATED AZURE AD GROUP.
+
 This Templates deploys a Single Forest/Domain:
 
 - 1 - Windows Virtual Desktop Pool
@@ -13,7 +15,19 @@ This Templates deploys a Single Forest/Domain:
 - X - Session Hosts Based on desired count
 
 Parameters that support changes
-- TimeZone.  Select an appropriate Time Zone.
+- HostPoolType.  Set this parameter to Personal if you would like to enable Persistent Desktop experience. Defaults to false.
+- personalDesktopAssignmentType.  
+- maxSessionLimit.  Maximum number of sessions.
+- loadBalancerType.  Type of load balancer algorithm.
+- tokenExpirationTime.  Hostpool token expiration time
+- validationEnvironment.  Whether to use validation enviroment.
+- vmGalleryImageSKU.  The VM Image Type.
+- vmSize.  WVD VMSize.
+- vmDiskType.  The VM disk type for the VM: HDD or SSD.
+- vmnumberofInstances.  Enter the number of WVD Session Hosts.
+- vmInitialNumber.  VM name prefix initial number.
+- availabilitySetUpdateDomainCount.  The platform update domain count of avaiability set to be created.
+- availabilitySetFaultDomainCount.  
 - UserCount.  Enter the number of User Accounts needed for the Lab. Example: 500
 - Admin Username.  Enter a valid Admin Username
 - Admin Password.  Enter a valid Admin Password
