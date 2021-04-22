@@ -275,7 +275,7 @@
     "artifactsLocation": "https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration.zip",
     "RoleDefinitionID": "1d18fff3-a72a-46b5-b4a9-0b38a3cd7e63",
     "Ring": 1,
-    "add1Hour": "[dateTimeAdd(parameters('baseTime'), 'PT1H')]"
+    "add4Hours": "[dateTimeAdd(parameters('baseTime'), 'PT4H')]"
   },  
   "resources": [
     {
@@ -308,7 +308,7 @@
                 "value": "[variables('SessionHostTemplate')]"
             },
             "tokenExpirationTime": {
-                "value": "[variables('add1Hour')]"
+                "value": "[variables('add4Hours')]"
             },
             "validationEnvironment": {
                 "value": "[parameters('validationEnvironment')]"
