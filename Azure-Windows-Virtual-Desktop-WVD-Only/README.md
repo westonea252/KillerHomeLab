@@ -19,7 +19,6 @@ Parameters that support changes
 - personalDesktopAssignmentType.  
 - maxSessionLimit.  Maximum number of sessions.
 - loadBalancerType.  Type of load balancer algorithm.
-- tokenExpirationTime.  Hostpool token expiration time
 - validationEnvironment.  Whether to use validation enviroment.
 - vmGalleryImageSKU.  The VM Image Type.
 - vmSize.  WVD VMSize.

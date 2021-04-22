@@ -162,13 +162,7 @@
         "metadata": {
             "description": "Object ID of Group that requires WVD Access"
         }
-    },    
-    "WVDTokenPhrase": {
-        "type": "string",
-      "metadata": {
-        "description": "PassPhrase to generate Registration Key"
-      }
-    },       
+    },         
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
@@ -225,7 +219,14 @@
         "metadata": {
             "description": "A new GUID used to identify the role assignment"
         }
-    },   
+    },
+    "WVDTokenPhrase": {
+        "defaultValue": "[newGuid()]",
+        "type": "string",
+        "metadata": {
+        "description": "PassPhrase to generate Registration Key"
+      }
+    },        
     "BaseTime": {
         "defaultValue": "[utcNow('u')]",
         "type": "String",
