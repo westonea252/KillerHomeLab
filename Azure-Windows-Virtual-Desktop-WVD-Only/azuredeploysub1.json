@@ -150,7 +150,13 @@
         "metadata": {
             "description": "The platform fault domain count of avaiability set to be created."
         }
-    },    
+    },
+    "TenantName": {
+        "type": "string",
+        "metadata": {
+            "description": "Name of Azure AD Tenant"
+        }
+    },        
     "adminUsername": {
         "type": "string",
         "metadata": {
@@ -162,7 +168,19 @@
       "metadata": {
         "description": "The password for the Administrator account of the new VM and Domain"
       }
-    },      
+    },   
+    "AzureAdmin": {
+        "type": "string",
+        "metadata": {
+            "description": "The name of the Azure AD Admin in UPN Format"
+        }
+    },
+    "AzurePassword": {
+        "type": "securestring",
+      "metadata": {
+        "description": "The password for Azure AD Admin"
+      }
+    },        
     "PrincipalID": {
         "defaultValue": "3a9e64dd-8e91-4ffa-99ee-d90766bb0515",        
         "type": "string",
@@ -383,11 +401,17 @@
                   "value": "[parameters('NamingConvention')]"
               },              
               "TenantName": {
-                  "value": "[variables('ManagedIDName')]"
-              },              
-              "KeyVaultname": {
-                  "value": "[reference('DeployKeyVault1').outputs.keyvaultname.value]"             
-              },                                       
+                  "value": "[parameters('TenantName')]"
+              }, 
+              "SubscriptionID": {
+                  "value": "[subscription().id]"
+              },
+              "AzureAdmin": {
+                "value": "[parameters('AzureAdmin')]"
+              },                                                                                                            
+              "AzurePassword": {
+                "value": "[parameters('AzurePassword')]"
+              },                                                                                 
               "ScriptName": {
                   "value": "[concat(variables('WVDScriptName'),'-01')]"           
               },                   
