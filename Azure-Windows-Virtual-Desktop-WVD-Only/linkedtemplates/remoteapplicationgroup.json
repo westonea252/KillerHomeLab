@@ -31,7 +31,7 @@
             "metadata": {
                 "description": "GUID for the deployment"
             },
-            "defaultValue": []            
+            "defaultValue": ""            
         },        
         "selectedApps": {
             "type": "array",
