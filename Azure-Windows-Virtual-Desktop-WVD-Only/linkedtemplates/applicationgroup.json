@@ -25,8 +25,37 @@
           "metadata": {
             "description": "Region of Resources"
           }
-        }
+        },
+        "deploymentId": {
+            "type": "string",
+            "metadata": {
+                "description": "GUID for the deployment"
+            },
+            "defaultValue": ""
+        },        
+        "roleAssignments": {
+            "type": "array",
+            "metadata": {
+                "description": "Selected Role Assignments to add in Application Group"
+            },
+            "defaultValue": [
+                {
+                    "name": "d25ec028-8506-42f4-8fe4-bc791ea0b048",
+                    "id": "",
+                    "type": "Microsoft.Authorization/roleAssignments",
+                    "properties": {
+                        "principalId": "6a00ee7d-97e8-4fda-b672-63b6d9e7fc76",
+                        "roleDefinitionId": "1d18fff3-a72a-46b5-b4a9-0b38a3cd7e63",
+                        "scope": ""
+                    }
+                }                
+            ]
+        }        
     },
+    "variables": {
+        "noRoleAssignments": "[empty(parameters('roleAssignments'))]",
+        "desktopVirtualizationUserRoleDefinition": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '1d18fff3-a72a-46b5-b4a9-0b38a3cd7e63')]"
+    },    
     "resources": [
         {
             "name": "[parameters('appGroupName')]",
@@ -39,6 +68,37 @@
                 "description": "Desktop Application Group",
                 "applicationGroupType": "Desktop"
             }
-        }
+        },
+        {
+            "apiVersion": "2018-05-01",
+            "name": "[concat('Asgmt', copyIndex(), '-linkedTemplate-', parameters('deploymentId'))]",
+            "type": "Microsoft.Resources/deployments",
+            "condition": "[not(variables('noRoleAssignments'))]",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": [
+                        {
+                            "type": "Microsoft.DesktopVirtualization/applicationgroups/providers/roleAssignments",
+                            "apiVersion": "[if(contains(parameters('location'), 'euap'), '2019-04-01-preview','2018-07-01')]",
+                            "name": "[concat(parameters('appGroupName'), '/Microsoft.Authorization/', parameters('roleAssignments')[CopyIndex()].name)]",
+                            "properties": {
+                                "principalId": "[parameters('roleAssignments')[CopyIndex()].properties.principalId]",
+                                "roleDefinitionId": "[variables('desktopVirtualizationUserRoleDefinition')]"
+                            }
+                        }
+                    ]
+                }
+            },
+            "copy": {
+                "name": "role-assignments-loop",
+                "count": "[if(variables('noRoleAssignments'), 1, length(parameters('roleAssignments')))]"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.DesktopVirtualization/applicationgroups', parameters('appGroupName'))]"
+            ]
+        }        
     ] 
 }
