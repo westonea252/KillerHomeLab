@@ -168,19 +168,7 @@
       "metadata": {
         "description": "The password for the Administrator account of the new VM and Domain"
       }
-    },   
-    "AzureAdmin": {
-        "type": "string",
-        "metadata": {
-            "description": "The name of the Azure AD Admin in UPN Format"
-        }
-    },
-    "AzurePassword": {
-        "type": "securestring",
-      "metadata": {
-        "description": "The password for Azure AD Admin"
-      }
-    },        
+    },           
     "PrincipalID": {
         "defaultValue": "3a9e64dd-8e91-4ffa-99ee-d90766bb0515",        
         "type": "string",
@@ -405,13 +393,7 @@
               }, 
               "SubscriptionID": {
                   "value": "[subscription().id]"
-              },
-              "AzureAdmin": {
-                "value": "[parameters('AzureAdmin')]"
-              },                                                                                                            
-              "AzurePassword": {
-                "value": "[parameters('AzurePassword')]"
-              },                                                                                 
+              },                                                                         
               "ScriptName": {
                   "value": "[concat(variables('WVDScriptName'),'-01')]"           
               },                   

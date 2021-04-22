@@ -25,19 +25,7 @@
       "metadata": {
         "description": "ID of Azure Subscription"
       }
-    },  
-    "AzureAdmin": {
-      "type": "string",
-      "metadata": {
-        "description": "Azure Admin Account"
-      }
-    },
-    "AzurePassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Azure Admin Password"
-      }
-    },           
+    },        
     "ScriptName": {
         "type": "string",
       "metadata": {
@@ -71,7 +59,7 @@
       "properties": {
         "azPowerShellVersion": "5.0",
         "timeout": "PT1H",
-        "arguments": "[format(' -NamingConvention {0} -TenantName {1} -SubscriptionID {2} -AzureAdmin {3} -AzurePassword {4}', parameters('NamingConvention'), parameters('TenantName'), parameters('SubscriptionID'), parameters('AzureAdmin'), parameters('AzurePassword'))]", // can pass an argument string, double quotes must be escaped
+        "arguments": "[format(' -NamingConvention {0} -TenantName {1} -SubscriptionID {2}', parameters('NamingConvention'), parameters('TenantName'), parameters('SubscriptionID'))]", // can pass an argument string, double quotes must be escaped        
         "primaryScriptUri": "[variables('ScriptURL')]",
         "cleanupPreference": "OnSuccess",
         "retentionInterval": "P1D"
