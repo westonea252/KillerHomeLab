@@ -62,9 +62,7 @@
                     "id": "",
                     "type": "Microsoft.Authorization/roleAssignments",
                     "properties": {
-                        "principalId": "[parameters('PrincipalID')]",
-                        "roleDefinitionId": "1d18fff3-a72a-46b5-b4a9-0b38a3cd7e63",
-                        "scope": ""
+                        "principalId": "[parameters('PrincipalID')]"
                     }
                 }                
             ]
