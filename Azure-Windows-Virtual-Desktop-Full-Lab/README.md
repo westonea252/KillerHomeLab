@@ -1,9 +1,16 @@
-# Single AD Site Lab with AD Connect & File Server and Windows Virtual Desktop
+# Single AD Site Lab with AD Connect & File Server
 
 Click the button below to deploy
 
 [![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2FDevelopment%2FAzure-Windows-Virtual-Desktop-Full-Lab%2Fazuredeploy.json)
 [![Deploy To Azure US Gov](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.svg?sanitize=true)](https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2FDevelopment%2FAzure-Windows-Virtual-Desktop-Full-Lab%2Fazuredeploy.json)
+
+!!!NOTE1:  THIS LAB REQUIRES THAT AN AZURE AD GROUP BE CREATED PRIOR TO DEPLOYMENT.  THE OBJECT ID MUST BE PROVIDED WITHIN THE PARAMETERS FOR THE DEPLOYMENT TO SUCCEED. ONCE DEPLOYMENT IS COMPLETE AZURE AD CONNECT CAN BE USED TO SYNC ONPREM ACCOUNT(S)/GROUP(S) THAT CAN BE NESTED WITHIN THE PRE-CREATED AZURE AD GROUP. 
+
+!!!NOTE2:  Please confirm the following procedures outlined in the article below have been performed in order to access the WVD Environment
+
+https://docs.microsoft.com/en-us/azure/virtual-desktop/virtual-desktop-fall-2019/tenant-setup-azure-active-directory#:~:text=To%20grant%20the%20service%20permissions%3A%201%20Open%20a,Virtual%20Desktop%20client%20app.%20...%20More%20items...%20
+
 
 This Templates deploys a Single Forest/Domain:
 
@@ -12,7 +19,10 @@ This Templates deploys a Single Forest/Domain:
 - 1 - File Server
 - 1 - AD Connect Server
 - 1 - Domain Joined Windows 10 Workstation
-- 1 - Windows Virtual Desktop Deployment
+- 1 - Windows Virtual Desktop Pool
+- 1 - Windows Virtual Desktop Application Group
+- 1 - Windows Virtual Desktop Workspace
+- X - Session Hosts Based on desired count
 
 The deployment leverages Desired State Configuration scripts to further customize the following:
 
