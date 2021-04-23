@@ -5,6 +5,21 @@ Click the button below to deploy
 [![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2FDevelopment%2FAzure-Windows-Virtual-Desktop-WVD-Only%2Fazuredeploy.json)
 [![Deploy To Azure US Gov](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.svg?sanitize=true)](https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2FDevelopment%2FAzure-Windows-Virtual-Desktop-WVD-Only%2Fazuredeploy.json)
 
+This Template IS MEANT TO BE USED AS AN ADD-ON to the following labs which must already be deployed:
+**** THE PARAMETERS SPECIFIED FOR THIS ADD-ON LAB MUST MATCH THE PARAMETERS OF THE BASE LAB THAT IT WILL BE ADDED TO ****
+
+- 1-Forest_1-DomainController_1-Workstation
+- 1-Forest_2-DomainControllers_2-ADSites_2-Workstations
+- 1-Forest_Parent-Child-Domain_1-Workstation
+- Exchange2010-with-External-Access-1-Forest_2-DomainControllers_2-ADSites_2-Workstations
+- Exchange2013-with-External-Access-1-Forest_2-DomainControllers_2-ADSites_2-Workstations
+- Exchange2016-with-External-Access-1-Forest_2-DomainControllers_2-ADSites_2-Workstations
+- Exchange2019-with-External-Access-1-Forest_2-DomainControllers_2-ADSites_2-Workstations
+- PKI_2-Tier_CA_With_OCSP_1-Workstation
+- PKI_Enterprise_CA_With_OCSP_1-Workstation
+- SQL2019-AlwaysOn-Multi-NIC
+- SQL2019-AlwaysOn-Single-NIC
+
 !!!NOTE1:  THIS LAB REQUIRES THAT AN AZURE AD GROUP BE CREATED PRIOR TO DEPLOYMENT.  THE OBJECT ID MUST BE PROVIDED WITHIN THE PARAMETERS FOR THE DEPLOYMENT TO SUCCEED. ONCE DEPLOYMENT IS COMPLETE AZURE AD CONNECT CAN BE USED TO SYNC ONPREM ACCOUNT(S)/GROUP(S) THAT CAN BE NESTED WITHIN THE PRE-CREATED AZURE AD GROUP. 
 
 !!!NOTE2:  Please confirm the following procedures outlined in the article below have been performed in order to access the WVD Environment
