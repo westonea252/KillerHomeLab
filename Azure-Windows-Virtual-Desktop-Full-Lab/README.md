@@ -1,4 +1,4 @@
-# Windows Virtual Desktop Lab with Single AD Site, Server with AD Connect Download & File Server
+# Windows Virtual Desktop Lab with Single AD Site, Server with AD Connect Download, and File Server with OneDrive Migration Tool
 
 Click the button below to deploy
 
