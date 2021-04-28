@@ -1,4 +1,4 @@
-# Single AD Site Lab with AD Connect & File Server
+# Windows Virtual Desktop Lab with Single AD Site, Server with AD Connect Download & File Server
 
 Click the button below to deploy
 
