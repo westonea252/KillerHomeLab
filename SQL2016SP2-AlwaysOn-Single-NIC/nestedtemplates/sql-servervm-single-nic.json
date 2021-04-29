@@ -157,7 +157,7 @@
                     },
                     "imageReference": {
                         "publisher": "microsoftsqlserver",
-                        "offer": "sql2016sp2-ws2019-byol",
+                        "offer": "sql2016sp2-ws2019",
                         "sku": "enterprise",
                         "version": "latest"
                     },
