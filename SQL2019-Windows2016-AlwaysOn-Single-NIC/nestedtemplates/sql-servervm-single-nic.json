@@ -157,7 +157,7 @@
                     },
                     "imageReference": {
                         "publisher": "microsoftsqlserver",
-                        "offer": "sql2019-ws2016",
+                        "offer": "SQL2019-WS2016",
                         "sku": "enterprise",
                         "version": "latest"
                     },
