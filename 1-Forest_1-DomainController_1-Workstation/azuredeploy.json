@@ -148,7 +148,6 @@
           "description": "Time Zone"
       }
     },                
-
     "adminUsername": {
         "type": "string",
         "metadata": {
@@ -186,6 +185,7 @@
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
+      "maxLength": 4,      
       "metadata": {
         "description": "VNet1 Name"
       }
@@ -207,6 +207,7 @@
     "NetBiosDomain": {
       "type": "string",
       "defaultValue": "killerhomelab",
+      "maxLength": 15,      
       "metadata": {
           "description": "NetBios Parent Domain Name"
       }
