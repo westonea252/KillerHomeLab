@@ -46,6 +46,7 @@
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
+      "maxLength": 4,      
       "metadata": {
         "description": "Environment Naming Convention"
       }

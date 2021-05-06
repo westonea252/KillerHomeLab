@@ -42,6 +42,7 @@
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
+      "maxLength": 4,      
       "metadata": {
         "description": "Environment Naming Convention"
       }
@@ -63,6 +64,7 @@
     "NetBiosDomain": {
       "type": "string",
       "defaultValue": "dir",
+      "maxLength": 15,      
       "metadata": {
           "description": "NetBios Parent Domain Name"
       }

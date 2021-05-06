@@ -193,6 +193,7 @@
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
+      "maxLength": 4,      
       "metadata": {
         "description": "Environment Naming Convention"
       }
@@ -214,13 +215,14 @@
     "ParentNetBiosDomain": {
       "type": "string",
       "defaultValue": "killerhomelab",
+      "maxLength": 15,      
       "metadata": {
           "description": "NetBios Domain Name"
       }
     },  
     "ParentDomain": {
       "type": "string",
-      "defaultValue": "killerhomelab",
+      "defaultValue": "killerhomelab",      
       "metadata": {
           "description": "NetBios Parent Domain Name"
       }
@@ -228,6 +230,7 @@
     "ChildNetBiosDomain": {
       "type": "string",
       "defaultValue": "it",
+      "maxLength": 15,      
       "metadata": {
           "description": "ChildNetBios Domain Name"
       }

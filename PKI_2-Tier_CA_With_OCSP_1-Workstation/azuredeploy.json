@@ -185,6 +185,7 @@
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
+      "maxLength": 4,            
       "metadata": {
         "description": "VNet1 Name"
       }
@@ -206,6 +207,7 @@
     "NetBiosDomain": {
       "type": "string",
       "defaultValue": "dir",
+      "maxLength": 15,            
       "metadata": {
           "description": "NetBios Parent Domain Name"
       }

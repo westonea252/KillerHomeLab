@@ -213,8 +213,9 @@
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
+      "maxLength": 4,      
       "metadata": {
-        "description": "c"
+        "description": "Naming Convention for Lab"
       }
     },
     "SubDNSDomain": {
@@ -234,6 +235,7 @@
     "NetBiosDomain": {
       "type": "string",
       "defaultValue": "killerhomelab",
+      "maxLength": 15,      
       "metadata": {
           "description": "NetBios Domain Name"
       }

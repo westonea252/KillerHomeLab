@@ -213,6 +213,7 @@
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
+      "maxLength": 4,      
       "metadata": {
         "description": "Environment Naming Convention"
       }
@@ -234,6 +235,7 @@
     "NetBiosDomain": {
       "type": "string",
       "defaultValue": "killerhomelab",
+      "maxLength": 15,      
       "metadata": {
           "description": "NetBios Domain Name"
       }
