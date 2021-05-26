@@ -150,9 +150,9 @@
     },   
     "Location2": {
       "type": "string",
-      "defaultValue": "WestUS",
+      "defaultValue": "USGovTexas",
       "metadata": {
-        "description": "Choose Region (Example: WestUS)"
+        "description": "Choose Region (Example: USGovTexas)"
       }
     },   
     "Site1RG": {
