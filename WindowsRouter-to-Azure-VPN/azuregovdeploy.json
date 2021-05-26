@@ -210,7 +210,7 @@
     },   
     "VNet2ID": {
       "type": "string",
-      "defaultValue": "10.2",
+      "defaultValue": "10.1",
       "metadata": {
         "description": "VNet1 Prefix"
       }
@@ -266,10 +266,11 @@
     "vnet2subnet2Prefix": "[concat(parameters('vnet2ID'),'.2.0/24')]",    
     "vnet2BastionsubnetPrefix": "[concat(parameters('vnet2ID'),'.253.0/24')]",                      
     "routername": "[concat(parameters('NamingConvention'),'-gw-01')]", 
-    "router-Public-IP": "[concat(parameters('vnet1ID'),'.1.',variables('routerpublastoctet'))]",        
-    "router-Private-IP": "[concat(parameters('vnet1ID'),'.2.',variables('routerprivlastoctet'))]",            
-    "routerpublastoctet": "101",        
-    "routerprivlastoctet": "101"               
+    "router-Outside-IP": "[concat(parameters('vnet1ID'),'.1.',variables('routeroutlastoctet'))]",        
+    "router-Inside-IP": "[concat(parameters('vnet1ID'),'.2.',variables('routerinlastoctet'))]",            
+    "routeroutlastoctet": "101",        
+    "routerinlastoctet": "101",
+    "NSG1Name": "[concat(parameters('NamingConvention'),'-nsg01')]"                    
   },  
   "resources": [
     {
@@ -452,11 +453,11 @@
               "computerName": {
                   "value": "[variables('routername')]"
               },
-              "PublicIP": {
-                  "value": "[variables('router-Public-IP')]"
+              "OutsideIP": {
+                  "value": "[variables('router-Outside-IP')]"
               },
-              "PrivateIP": {
-                  "value": "[variables('router-Private-IP')]"
+              "InsideIP": {
+                  "value": "[variables('router-Inside-IP')]"
               },              
               "Publisher": {
                   "value": "MicrosoftWindowsServer"
@@ -493,6 +494,136 @@
               }
           }
       }
-    }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "deploynsg1",
+      "dependsOn": [
+        "DeployWindowsRouter"    
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/NetworkSecurityGroup.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "NetworkSecurityGroupname": {
+                  "value": "[variables('NSG1Name')]"
+              },                                                                                                      
+              "RouterPublicIP": {
+                  "value": "[variables('router-Outside-IP')]"
+              },                                                                                                      
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "updatevnet1nsg",
+      "dependsOn": [
+        "deploynsg1"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/updateonpremvnetnsg.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "vnetName": {
+                  "value": "[variables('vnet1Name')]"
+              },
+              "vnetprefix": {
+                  "value": "[variables('vnet1Prefix')]"
+              },
+              "subnet1Name": {
+                "value": "[variables('vnet1subnet1Name')]"
+              },                                                                                                            
+              "subnet1Prefix": {
+                "value": "[variables('vnet1subnet1Prefix')]"
+              }, 
+              "subnet2Name": {
+                "value": "[variables('vnet1subnet2Name')]"
+              },                                                                                                            
+              "subnet2Prefix": {
+                "value": "[variables('vnet1subnet2Prefix')]"
+              },               
+              "BastionsubnetPrefix": {
+                "value": "[variables('vnet1BastionsubnetPrefix')]"
+              },                           
+              "NetworkSecurityGroupname": {
+                  "value": "[variables('NSG1Name')]"
+              },                                                                                                                                                                                                                              
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "AddWindowsRouterPIP",
+      "resourceGroup":  "[parameters('Site1RG')]",         
+      "dependsOn": [
+        "updatevnet1nsg"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/2nics-1disk-vm-pip.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('routername')]"
+              },
+              "OutsideIP": {
+                  "value": "[variables('router-Outside-IP')]"
+              },
+              "InsideIP": {
+                  "value": "[variables('router-Inside-IP')]"
+              },              
+              "Publisher": {
+                  "value": "MicrosoftWindowsServer"
+              },
+              "Offer": {
+                  "value": "WindowsServer"
+              },
+              "OSVersion": {
+                "value": "[parameters('ROUTEROSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "[parameters('WindowsLicenseType')]"
+              },            
+              "VMSize": {
+                "value": "[parameters('ROUTERVMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('vnet1Name')]"
+              },            
+              "subnet1Name": {
+                "value": "[variables('vnet1subnet1Name')]"
+              },      
+              "subnet2Name": {
+                "value": "[variables('vnet1subnet2Name')]"
+              },                                                                                                                                 
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[deployment().Location]"
+              }
+          }
+      }
+    }                                                                                                                                                                                                                                          
   ]
 }
