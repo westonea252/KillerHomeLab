@@ -499,6 +499,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "deploynsg1",
+      "resourceGroup":  "[parameters('Site1RG')]",               
       "dependsOn": [
         "DeployWindowsRouter"    
       ],      
@@ -516,7 +517,7 @@
                   "value": "[variables('router-Outside-IP')]"
               },                                                                                                      
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().Location]"
               }
           }
       }
@@ -525,6 +526,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "updatevnet1nsg",
+      "resourceGroup":  "[parameters('Site1RG')]",               
       "dependsOn": [
         "deploynsg1"
       ],            
@@ -560,7 +562,7 @@
                   "value": "[variables('NSG1Name')]"
               },                                                                                                                                                                                                                              
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().Location]"
               }
           }
       }
