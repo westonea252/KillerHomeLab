@@ -351,7 +351,7 @@
                 "value": "[variables('vnet1BastionsubnetPrefix')]"
               },              
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().Location]"
               }
           }
       }
@@ -429,7 +429,7 @@
                   "value": "AzureBastionSubnet"
               },
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().Location]"
               }
           }
       }
@@ -488,7 +488,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().Location]"
               }
           }
       }
