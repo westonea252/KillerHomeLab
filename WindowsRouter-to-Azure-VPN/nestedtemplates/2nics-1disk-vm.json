@@ -139,7 +139,8 @@
                           }
                       }
                   }
-              ]
+              ],
+              "enableIPForwarding": true              
           }
       },      
       {
