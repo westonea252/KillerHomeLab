@@ -467,7 +467,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "AzureBastionHost",
-      "resourceGroup":  "[parameters('Site1RG')]",      
+      "resourceGroup":  "[parameters('Site2RG')]",      
       "dependsOn": [
         "AzureVNet"
       ],
