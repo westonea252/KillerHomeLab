@@ -264,7 +264,8 @@
     "vnet2subnet1Prefix": "[concat(parameters('vnet2ID'),'.1.0/24')]",           
     "vnet2subnet2Name": "[concat(parameters('NamingConvention'),'-Azure-VNet1-PrivateSubnet')]",  
     "vnet2subnet2Prefix": "[concat(parameters('vnet2ID'),'.2.0/24')]",    
-    "vnet2BastionsubnetPrefix": "[concat(parameters('vnet2ID'),'.253.0/24')]",                      
+    "vnet2BastionsubnetPrefix": "[concat(parameters('vnet2ID'),'.253.0/24')]",
+    "vnet2VNGName": "[concat(parameters('NamingConvention'),'-Azure-VNet1-VNG')]",                          
     "routername": "[concat(parameters('NamingConvention'),'-gw-01')]", 
     "router-Outside-IP": "[concat(parameters('vnet1ID'),'.1.',variables('routeroutlastoctet'))]",        
     "router-Inside-IP": "[concat(parameters('vnet1ID'),'.2.',variables('routerinlastoctet'))]",            
@@ -401,11 +402,38 @@
               }
           }
       }
-    },    
+    },
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "BastionHost1",
+      "name": "AzureVNetVNG",
+      "resourceGroup":  "[parameters('Site2RG')]",
+      "dependsOn": [
+        "AzureVNet"        
+      ],              
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/vpngateway.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "Name": {
+                  "value": "[variables('vnet2VNGName')]"
+              },
+              "vnetName": {
+                  "value": "[variables('vnet2Name')]"
+              },            
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },        
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "OnPremBastionHost",
       "resourceGroup":  "[parameters('Site1RG')]",      
       "dependsOn": [
         "OnPremVNet"
@@ -434,7 +462,40 @@
               }
           }
       }
-    },    
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "AzureBastionHost",
+      "resourceGroup":  "[parameters('Site1RG')]",      
+      "dependsOn": [
+        "AzureVNet"
+      ],
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/bastionhost.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "publicIPAddressName": {
+                "value": "[concat(variables('vnet2Name'),'-Bastion-pip')]"
+              },
+              "AllocationMethod": {
+                "value": "Static"
+              },              
+              "vnetName": {
+                  "value": "[variables('vnet2Name')]"
+              },
+              "subnetName": {
+                  "value": "AzureBastionSubnet"
+              },
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },        
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
