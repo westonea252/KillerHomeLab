@@ -266,6 +266,7 @@
     "vnet2subnet2Prefix": "[concat(parameters('vnet2ID'),'.2.0/24')]",    
     "vnet2BastionsubnetPrefix": "[concat(parameters('vnet2ID'),'.253.0/24')]",
     "vnet2VNGName": "[concat(parameters('NamingConvention'),'-Azure-VNet1-VNG')]",                          
+    "vnet1LNGName": "[concat(parameters('NamingConvention'),'-OnPrem-VNet1-LNG')]",                              
     "routername": "[concat(parameters('NamingConvention'),'-gw-01')]", 
     "router-Outside-IP": "[concat(parameters('vnet1ID'),'.1.',variables('routeroutlastoctet'))]",        
     "router-Inside-IP": "[concat(parameters('vnet1ID'),'.2.',variables('routerinlastoctet'))]",            
@@ -687,6 +688,36 @@
               }
           }
       }
-    }                                                                                                                                                                                                                                          
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "OnPremVNetLNG",
+      "resourceGroup":  "[parameters('Site2RG')]",
+      "dependsOn": [
+        "AddWindowsRouterPIP"        
+      ],              
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/lgateway.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "Name": {
+                  "value": "[variables('vnet1LNGName')]"
+              },
+              "SubnetPrefix": {
+                  "value": "[variables('vnet1Prefix')]"
+              },           
+              "RemoteGatewayIP": {
+                  "value": "[reference('AddWindowsRouterPIP').outputs.PublicIP.value]"
+              },                           
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    }                                                                                                                                                                                                                                              
   ]
 }
