@@ -692,6 +692,33 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
+      "name": "AzureVNetVNG-pip",
+      "resourceGroup":  "[parameters('Site2RG')]",
+      "dependsOn": [
+        "AddWindowsRouterPIP"        
+      ],              
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/vpngateway-pip.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "Name": {
+                  "value": "[variables('vnet2VNGName')]"
+              },
+              "vnetName": {
+                  "value": "[variables('vnet2Name')]"
+              },            
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },            
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
       "name": "OnPremVNetLNG",
       "resourceGroup":  "[parameters('Site2RG')]",
       "dependsOn": [

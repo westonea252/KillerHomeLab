@@ -67,5 +67,11 @@
                 "publicIPAllocationMethod": "Dynamic"
             }
         }
-    ]
+    ],
+"outputs": {
+    "PublicIP": {
+        "type": "string",
+        "value": "[reference(resourceId(resourceGroup().name, 'Microsoft.Network/publicIPAddresses', variables('PublicIPName'))).ipAddress]"
+    }
+  }
 }
