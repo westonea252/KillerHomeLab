@@ -35,7 +35,9 @@
             "location": "[parameters('location')]",
             "properties": {
                 "localNetworkAddressSpace": {
-                    "addressPrefixes": "[parameters('SubnetPrefix')]"
+                    "addressPrefixes": [
+                        "[parameters('SubnetPrefix')]"
+                    ]
                 },
                 "gatewayIpAddress": "[parameters('RemoteGatewayIP')]"
             }

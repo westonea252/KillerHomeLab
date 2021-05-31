@@ -695,6 +695,7 @@
       "name": "AzureVNetVNG-pip",
       "resourceGroup":  "[parameters('Site2RG')]",
       "dependsOn": [
+        "AzureVNetVNG",
         "AddWindowsRouterPIP"        
       ],              
       "properties": {
