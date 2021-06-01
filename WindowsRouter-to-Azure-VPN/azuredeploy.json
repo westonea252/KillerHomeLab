@@ -760,7 +760,8 @@
       "name": "CreateConnectionFromAzuretoOnPrem",
       "resourceGroup":  "[parameters('Site2RG')]",
       "dependsOn": [
-        "OnPremVNetLNG"        
+        "OnPremVNetLNG",
+        "AzureVNetVNG-pip"                
       ],              
       "properties": {
           "mode": "Incremental",
