@@ -177,10 +177,16 @@
     },
     "adminPassword": {
         "type": "securestring",
-      "metadata": {
-        "description": "The password for the Administrator account of the new VM and Domain"
+        "metadata": {
+          "description": "The password for the Administrator account of the new VM and Domain"
       }
     },
+    "SharedKey": {
+        "type": "securestring",
+        "metadata": {
+          "description": "Shared Key for VPN Connection"
+      }
+    },    
     "WindowsLicenseType": {
       "type": "string",
       "defaultValue": "None",
@@ -267,6 +273,7 @@
     "vnet2BastionsubnetPrefix": "[concat(parameters('vnet2ID'),'.253.0/24')]",
     "vnet2VNGName": "[concat(parameters('NamingConvention'),'-Azure-VNet1-VNG')]",                          
     "vnet1LNGName": "[concat(parameters('NamingConvention'),'-OnPrem-VNet1-LNG')]",                              
+    "ConnectionName": "[concat(parameters('NamingConvention'),'-Azure-to-OnPrem')]",                                  
     "routername": "[concat(parameters('NamingConvention'),'-gw-01')]", 
     "router-Outside-IP": "[concat(parameters('vnet1ID'),'.1.',variables('routeroutlastoctet'))]",        
     "router-Inside-IP": "[concat(parameters('vnet1ID'),'.2.',variables('routerinlastoctet'))]",            
@@ -746,6 +753,39 @@
               }
           }
       }
-    }                                                                                                                                                                                                                                              
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "CreateConnectionFromAzuretoOnPrem",
+      "resourceGroup":  "[parameters('Site2RG')]",
+      "dependsOn": [
+        "OnPremVNetLNG"        
+      ],              
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/connection.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "ConnectionName": {
+                  "value": "[variables('ConnectionName')]"
+              },
+              "VNGName": {
+                  "value": "[variables('vnet2VNGName')]"
+              },           
+              "LNGName": {
+                  "value": "[variables('vnet1LNGName')]"
+              },             
+              "SharedKey": {
+                  "value": "[parameters('SharedKey')]"
+              },             
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    }                                                                                                                                                                                                                                                  
   ]
 }
