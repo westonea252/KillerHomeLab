@@ -5,7 +5,7 @@
         [String]$TimeZone,
         [String]$RemoteGatewayIP,
         [String]$LocalAddressPrefix,
-        [SecureString]$SharedKey                                 
+        [String]$SharedKey                                 
     )
 
     Import-DscResource -Module ComputerManagementDsc # Used for TimeZone

@@ -27,9 +27,9 @@
             }
         },              
         "SharedKey": {
-            "type": "securestring",
-          "metadata": {
-            "description": "Shared Key for VPN"
+            "type": "string",
+            "metadata": {
+                "description": "Shared Key for VPN"
           }
         },     
         "location": {
@@ -74,13 +74,8 @@
                             "TimeZone": "[parameters('TimeZone')]",                            
                             "RemoteGatewayIP": "[parameters('RemoteGatewayIP')]",                            
                             "LocalAddressPrefix": "[parameters('LocalAddressPrefix')]",
-                            "SharedKey": "PrivateSettingsRef:SharedKey"
+                            "SharedKey": "[parameters('SharedKey')]"
                         }
-                    },
-                    "protectedSettings": {                        
-                        "Items": {
-                            "SharedKey": "[parameters('SharedKey')]"                            
-                        }                        
                     }
                 }
         }

@@ -182,7 +182,7 @@
       }
     },
     "SharedKey": {
-        "type": "securestring",
+        "type": "string",
         "metadata": {
           "description": "Shared Key for VPN Connection"
       }
