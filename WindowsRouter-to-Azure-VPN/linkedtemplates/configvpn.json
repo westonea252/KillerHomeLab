@@ -70,7 +70,6 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
-                            "computerName": "[parameters('computerName')]",
                             "TimeZone": "[parameters('TimeZone')]",                            
                             "RemoteGatewayIP": "[parameters('RemoteGatewayIP')]",                            
                             "LocalAddressPrefix": "[parameters('LocalAddressPrefix')]",
