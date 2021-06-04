@@ -1,1 +1,1 @@
-IntuneWinAppUtil -c C:\_IntuneDeployments\ -s C:\_IntuneDeployments\Git-2.30.0.2-64-bit.exe -o C:\_IntuneDeployments\Git-2.30.0.2-64-bit
+IntuneWinAppUtil -c C:\_IntuneDeployments\ -s C:\_IntuneDeployments\Git-2.30.0.2-64-bit.exe -o C:\_IntuneDeployments\Git-2.30.0.2-64-bit -q
