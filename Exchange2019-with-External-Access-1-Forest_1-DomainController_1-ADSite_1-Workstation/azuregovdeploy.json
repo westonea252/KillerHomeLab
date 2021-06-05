@@ -2394,16 +2394,10 @@
               },
               "SMTP1Record": {
                   "value": "smtp1"
-              },    
-              "SMTP2Record": {
-                  "value": "smtp2"
               },                        
               "EX1PublicIP": {
                   "value": "[reference('addex1pip').outputs.PublicIP.value]"             
-              },                                                                                                                                      
-              "EX2PublicIP": {
-                  "value": "[reference('addex2pip').outputs.PublicIP.value]"             
-              }                                                                                                                                                                  
+              }                                                                                                                                                             
           }
       }
     },

@@ -49,25 +49,13 @@
             "metadata": {
                 "description": "SMTP1 EXternal DNS Record"
               }
-        },
-        "SMTP2Record": {
-            "type": "string",
-            "metadata": {
-                "description": "SMTP2 EXternal DNS Record"
-              }
-        },        
+        },    
         "EX1PublicIP": {
             "type": "string",
             "metadata": {
                 "description": "Exchange 1 EXternal Public IP"
               }
-        },
-        "EX2PublicIP": {
-            "type": "string",
-            "metadata": {
-                "description": "Exchange 2 EXternal Public IP"
-              }
-        }                               
+        }                              
     },
     "resources": [
         {
@@ -110,9 +98,6 @@
             "ARecords": [
                 {
                     "ipv4Address": "[parameters('EX1PublicIP')]"
-                },
-                {
-                    "ipv4Address": "[parameters('EX2PublicIP')]"
                 }
                 ]
             }
@@ -130,9 +115,6 @@
             "ARecords": [
                 {
                     "ipv4Address": "[parameters('EX1PublicIP')]"
-                },
-                {
-                    "ipv4Address": "[parameters('EX2PublicIP')]"
                 }
                 ]
             }
@@ -150,9 +132,6 @@
             "ARecords": [
                 {
                     "ipv4Address": "[parameters('EX1PublicIP')]"
-                },
-                {
-                    "ipv4Address": "[parameters('EX2PublicIP')]"
                 }
                 ]
             }
@@ -170,9 +149,6 @@
             "ARecords": [
                 {
                     "ipv4Address": "[parameters('EX1PublicIP')]"
-                },
-                {
-                    "ipv4Address": "[parameters('EX2PublicIP')]"
                 }
                 ]
             }
@@ -193,24 +169,7 @@
                 }
                 ]
             }
-        },  
-        {
-        "type": "Microsoft.Network/dnszones/a",
-        "name": "[concat(parameters('ZoneName'), '/', parameters('SMTP2Record'))]",
-        "apiVersion": "2018-05-01",
-        "location": "global",
-        "dependsOn": [
-            "[parameters('ZoneName')]"
-        ],
-        "properties": {
-            "TTL": 900,
-            "ARecords": [
-                {
-                    "ipv4Address": "[parameters('EX2PublicIP')]"
-                }
-                ]
-            }
-        },          
+        },     
         {
         "type": "Microsoft.Network/dnszones/MX",
         "name": "[concat(parameters('ZoneName'), '/', '@')]",
