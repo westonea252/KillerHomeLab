@@ -5,9 +5,6 @@
         [String]$ComputerName,  
         [String]$InternaldomainName,                    
         [String]$NetBiosDomain,
-        [String]$Site1DC,
-        [String]$Site2DC,
-        [String]$ConfigDC,
         [String]$DBName,
         [System.Management.Automation.PSCredential]$Admincreds
     )
@@ -20,18 +17,14 @@
         {
             SetScript =
             {
-                (Get-ADDomainController -Filter *).Name | Foreach-Object { repadmin /syncall $_ (Get-ADDomain).DistinguishedName /AdeP }
-
                 # Connect to Exchange
                 $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri "http://$using:computerName.$using:InternalDomainName/PowerShell/"
                 Import-PSSession $Session
 
                 # Create Database Copies
-                $DBCopyCheck = Get-MailboxDatabase -Server "$using:ComputerName" -DomainController "$using:ConfigDC" | Where-Object {$_.Name -like "$using:DBName"}
+                $DBCopyCheck = Get-MailboxDatabase -Server "$using:ComputerName" | Where-Object {$_.Name -like "$using:DBName"}
                 IF ($DBCopyCheck -eq $null) {
-                Add-MailboxDatabaseCopy -Identity "$using:DBName" -MailboxServer "$using:ComputerName" -DomainController "$using:ConfigDC"
-
-            (Get-ADDomainController -Filter *).Name | Foreach-Object { repadmin /syncall $_ (Get-ADDomain).DistinguishedName /AdeP }
+                Add-MailboxDatabaseCopy -Identity "$using:DBName" -MailboxServer "$using:ComputerName"
                 }
             }
             GetScript =  { @{} }

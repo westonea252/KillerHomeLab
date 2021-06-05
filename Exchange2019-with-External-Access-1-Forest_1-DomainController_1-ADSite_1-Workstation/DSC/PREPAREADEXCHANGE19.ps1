@@ -4,7 +4,6 @@
    (
         [String]$ExchangeOrgName,
         [String]$NetBiosDomain,
-        [String]$DC1Name,
         [String]$BaseDN,
         [System.Management.Automation.PSCredential]$Admincreds
     )
@@ -39,9 +38,7 @@
             {
                 # Create Exchange AD Deployment
                 L:\Setup.exe /PrepareSchema /DomainController:"$using:dc1Name" /IAcceptExchangeServerLicenseTerms
-                L:\Setup.exe /PrepareAD /on:"$using:ExchangeOrgName" /DomainController:"$using:dc1Name" /IAcceptExchangeServerLicenseTerms
-
-                (Get-ADDomainController -Filter *).Name | Foreach-Object { repadmin /syncall $_ (Get-ADDomain).DistinguishedName /AdeP }
+                L:\Setup.exe /PrepareAD /on:"$using:ExchangeOrgName" /IAcceptExchangeServerLicenseTerms
             }
             GetScript =  { @{} }
             TestScript = { $false}

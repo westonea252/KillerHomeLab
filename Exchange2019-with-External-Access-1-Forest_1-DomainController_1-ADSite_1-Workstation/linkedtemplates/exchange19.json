@@ -13,13 +13,7 @@
             "metadata": {
                 "description": "NetBios Domain Name"
             }
-        },
-        "SetupDC": {
-            "type": "string",
-            "metadata": {
-                "description": "Domain Controller used for Exchange Setup"
-            }
-        },                            
+        },                           
         "DBName": {
             "type": "string",
             "metadata": {
@@ -78,7 +72,6 @@
                         "Properties": {
                             "NetBiosDomain": "[parameters('NetBiosdomain')]",          
                             "DBName": "[parameters('DBName')]",       
-                            "SetupDC": "[parameters('SetupDC')]",                                                                                                        
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"

@@ -5,8 +5,6 @@
         [String]$ComputerName,  
         [String]$InternaldomainName,                    
         [String]$NetBiosDomain,
-        [String]$Site1DC,
-        [String]$ConfigDC,
         [String]$Site1FSW,
         [String]$DAGName,
         [System.Management.Automation.PSCredential]$Admincreds
@@ -25,11 +23,11 @@
                 Import-PSSession $Session
 
                 # Create DAG
-                $DAGCheck = Get-DatabaseAvailabilityGroup -Identity "$using:DAGName" -DomainController "$using:ConfigDC" -ErrorAction 0
+                $DAGCheck = Get-DatabaseAvailabilityGroup -Identity "$using:DAGName" -ErrorAction 0
                 IF ($DAGCheck -eq $null) {
-                New-DatabaseAvailabilityGroup -Name "$using:DAGName" -WitnessServer "$using:Site1FSW" -WitnessDirectory C:\FSWs -DomainController "$using:ConfigDC"
+                New-DatabaseAvailabilityGroup -Name "$using:DAGName" -WitnessServer "$using:Site1FSW" -WitnessDirectory C:\FSWs
                 }
-                Add-DatabaseAvailabilityGroupServer -Identity "$using:DAGName" -MailboxServer "$using:computerName" -DomainController "$using:ConfigDC"
+                Add-DatabaseAvailabilityGroupServer -Identity "$using:DAGName" -MailboxServer "$using:computerName"
             }
             GetScript =  { @{} }
             TestScript = { $false}

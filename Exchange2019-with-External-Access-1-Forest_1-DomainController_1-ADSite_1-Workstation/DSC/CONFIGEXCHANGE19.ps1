@@ -7,10 +7,7 @@
         [String]$ExternaldomainName,                                
         [String]$NetBiosDomain,
         [String]$BaseDN,
-        [String]$Site1DC,
-        [String]$ConfigDC,
         [String]$CAServerIP,
-        [String]$Site,
         [System.Management.Automation.PSCredential]$Admincreds
     )
 
@@ -96,16 +93,16 @@
                 Enable-ExchangeCertificate -Thumbprint $thumbprint -Services IIS -Confirm:$False
 
                 # Create Connectors
-                $LocalRelayRecieveConnector = Get-ReceiveConnector "LocalRelay $using:computerName" -DomainController "$using:ConfigDC" -ErrorAction 0
+                $LocalRelayRecieveConnector = Get-ReceiveConnector "LocalRelay $using:computerName" -ErrorAction 0
                 IF ($LocalRelayRecieveConnector -eq $Null) {
-                New-ReceiveConnector "LocalRelay $using:computerName" -Custom -Bindings 0.0.0.0:25 -RemoteIpRanges "$using:CAServerIP" -DomainController "$using:ConfigDC" -TransportRole FrontendTransport
-                Get-ReceiveConnector "LocalRelay $using:computerName" -DomainController "$using:ConfigDC" | Add-ADPermission -User "NT AUTHORITY\ANONYMOUS LOGON" -ExtendedRights "Ms-Exch-SMTP-Accept-Any-Recipient" -ErrorAction 0
+                New-ReceiveConnector "LocalRelay $using:computerName" -Custom -Bindings 0.0.0.0:25 -RemoteIpRanges "$using:CAServerIP" -TransportRole FrontendTransport
+                Get-ReceiveConnector "LocalRelay $using:computerName" | Add-ADPermission -User "NT AUTHORITY\ANONYMOUS LOGON" -ExtendedRights "Ms-Exch-SMTP-Accept-Any-Recipient" -ErrorAction 0
                 Set-ReceiveConnector "LocalRelay $using:computerName" -AuthMechanism ExternalAuthoritative -PermissionGroups ExchangeServer
                 }
 
                 $InternetSendConnector = Get-SendConnector "$using:Site Internet" -ErrorAction 0
                 IF ($InternetSendConnector -eq $Null) {
-                New-SendConnector "$using:Site Internet" -AddressSpaces * -SourceTransportServers "$using:computerName"
+                New-SendConnector "Internet" -AddressSpaces * -SourceTransportServers "$using:computerName"
                 }
             }
             GetScript =  { @{} }

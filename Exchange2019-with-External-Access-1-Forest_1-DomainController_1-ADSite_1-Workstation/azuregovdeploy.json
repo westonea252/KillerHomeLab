@@ -1777,9 +1777,6 @@
               },                                      
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
-              },
-              "dc1name": {
-                  "value": "[variables('dc1name')]"
               },                                                                      
               "BaseDN": {
                   "value": "[variables('BaseDN')]"
@@ -1859,9 +1856,6 @@
               },
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
-              },
-              "SetupDC": {
-                  "value": "[variables('dc1name')]"
               },                                                      
               "location": {
                   "value": "[resourceGroup().location]"
@@ -1912,19 +1906,10 @@
               },
               "BaseDN": {
                   "value": "[variables('BaseDN')]"
-              },                            
-              "Site1DC": {
-                  "value": "[variables('dc1name')]"
-              },                                                                                                          
-              "ConfigDC": {
-                  "value": "[variables('dc1name')]"
-              },       
+              },                                   
               "CAServerIP": {
                   "value": "[variables('icaIP')]"
-              },                                                                                                                                                                                       
-              "Site": {
-                  "value": "Site1"
-              },                            
+              },                                                                                                                                                                                                                   
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
               },                                                                                                            
@@ -1965,13 +1950,7 @@
               },               
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
-              },              
-              "Site1DC": {
-                  "value": "[variables('dc1name')]"
-              },                                                                                                       
-              "ConfigDC": {
-                  "value": "[variables('dc1name')]"
-              },       
+              },                                                                                                                   
               "Site1FSW": {
                   "value": "[variables('fs1name')]"
               },                                                                                                                                                           
@@ -2018,13 +1997,7 @@
               },               
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
-              },              
-              "Site1DC": {
-                  "value": "[variables('dc1name')]"
-              },                                                                                                   
-              "ConfigDC": {
-                  "value": "[variables('dc1name')]"
-              },       
+              },                     
               "DBName": {
                   "value": "[variables('DB1Name')]"
               },                                                                                                                                                                                       

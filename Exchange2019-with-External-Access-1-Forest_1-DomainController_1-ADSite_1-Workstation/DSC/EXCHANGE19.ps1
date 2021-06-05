@@ -4,7 +4,6 @@
    (
         [String]$NetBiosDomain,
         [String]$DBName,
-        [String]$SetupDC,
         [System.Management.Automation.PSCredential]$Admincreds
     )
 
@@ -55,7 +54,7 @@
             {
                 $Install = Get-ChildItem -Path S:\ExchangeInstall\DeployExchange.cmd -ErrorAction 0
                 IF ($Install -eq $null) {                 
-                Set-Content -Path S:\ExchangeInstall\DeployExchange.cmd -Value "L:\Setup.exe /Iacceptexchangeserverlicenseterms /Mode:Install /Role:Mailbox /DbFilePath:M:\$using:DBName\$using:DBName.edb /LogFolderPath:M:\$using:DBName /MdbName:$using:DBName /dc:$using:SetupDC"
+                Set-Content -Path S:\ExchangeInstall\DeployExchange.cmd -Value "L:\Setup.exe /Iacceptexchangeserverlicenseterms /Mode:Install /Role:Mailbox /DbFilePath:M:\$using:DBName\$using:DBName.edb /LogFolderPath:M:\$using:DBName /MdbName:$using:DBName"
                 S:\ExchangeInstall\DeployExchange.cmd
                 }
             }

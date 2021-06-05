@@ -32,30 +32,12 @@
                 "description": "Base Domain Distiguished Name"
             }
         },                        
-        "Site1DC": {
-            "type": "string",
-            "metadata": {
-                "description": "Site 2 Domain Controller Name"
-            }
-        },
-        "ConfigDC": {
-            "type": "string",
-            "metadata": {
-                "description": "Domain Controller used for Exchange Config"
-            }
-        },                                                         
         "CAServerIP": {
             "type": "string",
             "metadata": {
                 "description": "CA Server IP"
             }
         },                                             
-        "Site": {
-            "type": "string",
-            "metadata": {
-                "description": "Site Name"
-            }
-        },                                                                                                        
         "adminUsername": {
             "type": "string",
             "metadata": {
@@ -111,10 +93,7 @@
                             "ExternaldomainName": "[parameters('ExternaldomainName')]",   
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",        
                             "BaseDN": "[parameters('BaseDN')]",                                                                                                               
-                            "Site1DC": "[parameters('Site1DC')]",
-                            "ConfigDC": "[parameters('ConfigDC')]",                                                                                     
                             "CAServerIP": "[parameters('CAServerIP')]",                                                                                                                                                                                
-                            "Site": "[parameters('Site')]",                                                                                                                                                                            
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"
