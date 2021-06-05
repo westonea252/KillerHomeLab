@@ -1497,7 +1497,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "DeployTools1",
+      "name": "DeployTools",
       "dependsOn": [
         "finalizeca"
       ],      
@@ -1550,7 +1550,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "DomainJoinTools1",
+      "name": "DomainJoinTools",
       "dependsOn": [
         "DeployTools"
       ],      
