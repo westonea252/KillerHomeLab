@@ -2224,8 +2224,7 @@
       "apiVersion": "2019-10-01",
       "name": "addex1pip",
       "dependsOn": [
-        "restartex1-2",
-        "restartex2-2"
+        "restartex1-2"
       ],      
       "properties": {
           "mode": "Incremental",
