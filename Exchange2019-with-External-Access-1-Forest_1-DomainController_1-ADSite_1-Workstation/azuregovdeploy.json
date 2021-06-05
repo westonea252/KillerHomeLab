@@ -759,8 +759,7 @@
       "apiVersion": "2019-10-01",
       "name": "restartdc1",
       "dependsOn": [
-        "updatevnet1dns",
-        "updatevnet2dns"
+        "updatevnet1dns"
       ],            
       "properties": {
           "mode": "Incremental",
@@ -1409,7 +1408,7 @@
       "apiVersion": "2019-10-01",
       "name": "deployfs1",
       "dependsOn": [
-        "ReplicateAD"
+        "configdns"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1760,8 +1759,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "prepareadexchange19",
-      "dependsOn": [
-        "ReplicateAD",        
+      "dependsOn": [        
         "restartex1-1"    
       ],      
       "properties": {
@@ -1950,7 +1948,7 @@
       "apiVersion": "2019-10-01",
       "name": "ConfigDAGEX1",
       "dependsOn": [
-        "configexchange2"
+        "configexchange1"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -2003,7 +2001,7 @@
       "apiVersion": "2019-10-01",
       "name": "ConfigDB1",
       "dependsOn": [
-        "ConfigDAGEX2"
+        "ConfigDAGEX1"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -2053,7 +2051,7 @@
       "apiVersion": "2019-10-01",
       "name": "restartex1-2",
       "dependsOn": [
-        "configdb2"
+        "configdb1"
       ],            
       "properties": {
           "mode": "Incremental",
@@ -2082,7 +2080,7 @@
       "apiVersion": "2019-10-01",
       "name": "deployWK1VM",
       "dependsOn": [
-        "ReplicateAD"
+        "configdns"
       ],      
       "properties": {
           "mode": "Incremental",
