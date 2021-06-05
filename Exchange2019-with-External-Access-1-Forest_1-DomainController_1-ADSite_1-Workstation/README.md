@@ -1,4 +1,4 @@
-# Exchange 2019 Lab with External Access
+# Exchange 2019 Single Site Lab with External Access
 
 Click a button below to deploy to the cloud of your choice
 
