@@ -1,4 +1,4 @@
-# Exchange 2019 Single Site Lab with External Access
+# Scheduled Task using System Managed Identity for Service Account Password Retreival
 
 Click a button below to deploy to the cloud of your choice
 
@@ -17,13 +17,14 @@ This Templates deploys a Single Forest/Domain:
 - 1 - Online Certificate Status Protocol Server
 - 1 - Exchange 2019 Organization
 - 1 - Exchange 2019 Server
-- 1 - Tool Server
-- 1 - File Share Witness Server
+- 1 - Tool Server (Scheduled Task)(System Managed Identity)
+- 1 - File Share Witness Server (Exchange Witness Server & Share for Scheduled Task)
 - 1 - Database Availability Group
 - 1 - Domain Joined Windows 10 Workstation
 - 1 - Azure DNS Zone (Created based on NetBiosDomain and TLD Parameters)
 - 1 - Network Security Group
 - 1 - Bastion Host (VNet1)(Can be used to connect to VNet2 VM's since Peered)
+- 1 - Azure Key Vault
 
 The deployment also makes the following customizations:
 - Adds Public IP Address to OCSP and Exchange Servers.
