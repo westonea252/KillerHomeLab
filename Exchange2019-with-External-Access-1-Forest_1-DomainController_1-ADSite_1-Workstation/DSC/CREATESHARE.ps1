@@ -3,7 +3,6 @@
    param
    (
         [String]$NamingConvention,     
-        [String]$UserDataUrl,
         [String]$NetBiosDomain,
         [String]$InternalDomainName
     )
