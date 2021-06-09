@@ -405,9 +405,20 @@
         "2016-Datacenter"
       ],      
       "metadata": {
-          "description": "File Serever OS Version"
+          "description": "File Server OS Version"
       }
-    },                        
+    },             
+    "TL1OSVersion": {
+      "type": "string",
+      "defaultValue": "2019-Datacenter",
+      "allowedValues": [
+        "2019-Datacenter",
+        "2016-Datacenter"
+      ],      
+      "metadata": {
+          "description": "Tools Server OS Version"
+      }
+    },                 
     "EXOSVersion": {
       "type": "string",
       "defaultValue": "2019-Datacenter",
@@ -1614,7 +1625,7 @@
                   "value": "WindowsServer"
               },
               "OSVersion": {
-                "value": "[parameters('OCSPOSVersion')]"
+                "value": "[parameters('TL1OSVersion')]"
               },              
               "LicenseType": {
                 "value": "[parameters('WindowsServerLicenseType')]"
@@ -1643,9 +1654,62 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
+      "name": "GetToolsManagedID",
+      "dependsOn": [
+        "finalizeca"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/1nic-1disk-vm-mi-out.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('tl1name')]"
+              },
+              "computerIP": {
+                  "value": "[variables('tl1IP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsServer"
+              },
+              "Offer": {
+                  "value": "WindowsServer"
+              },
+              "OSVersion": {
+                "value": "[parameters('TL1OSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "[parameters('WindowsServerLicenseType')]"
+              },            
+              "VMSize": {
+                "value": "[parameters('tl1VMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('vnet1Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('vnet1subnet1Name')]"
+              },            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
       "name": "DomainJoinTools",
       "dependsOn": [
-        "DeployTools"
+        "GetToolsManagedID"
       ],      
       "properties": {
           "mode": "Incremental",
