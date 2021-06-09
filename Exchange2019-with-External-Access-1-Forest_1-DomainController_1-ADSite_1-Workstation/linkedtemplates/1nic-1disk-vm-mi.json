@@ -152,15 +152,5 @@
               }
           }
       }
-  ],
-"outputs": {
-    "principalId": {
-        "type": "string",
-        "value": "[reference(resourceId(resourceGroup().name, 'Microsoft.Compute/virtualMachines', variables('VMName'))).identity.principalId]"
-    },
-    "tenantId": {
-        "type": "string",
-        "value": "[reference(resourceId(resourceGroup().name, 'Microsoft.Compute/virtualMachines', variables('VMName'))).identity.tenantId]"
-    }    
-  }
+  ]
 }
