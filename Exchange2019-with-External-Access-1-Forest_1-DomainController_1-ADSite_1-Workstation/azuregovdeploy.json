@@ -1702,8 +1702,7 @@
       "apiVersion": "2019-10-01",
       "name": "DeployKeyVault1",
       "dependsOn": [
-        "AssignManagedIDRG1",
-        "AssignManagedIDRG2"                
+        "DeployTools"
       ],      
       "properties": {
           "mode": "Incremental",
