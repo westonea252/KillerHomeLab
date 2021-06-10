@@ -64,11 +64,9 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
-                            "computerName": "[parameters('computerName')]",
                             "NamingConvention": "[parameters('NamingConvention')]",                            
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                                                        
-                            "InternaldomainName": "[parameters('InternaldomainName')]"
-                                                                                                                                                                
+                            "InternaldomainName": "[parameters('InternaldomainName')]"                                                                                                                         
                         }
                     },
                     "protectedSettings": {                                              

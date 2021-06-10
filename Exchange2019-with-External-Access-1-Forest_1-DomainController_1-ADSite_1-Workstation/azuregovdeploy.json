@@ -294,7 +294,14 @@
       "metadata": {
           "description": "DNS Reverse Lookup Zone1 Prefix"
       }
-    },                    
+    },                 
+    "KeyVaultUniqueID": {
+        "type": "string",
+        "defaultValue": "1234567890x1",
+        "metadata": {
+            "description": "KeyVault 1 Unique Identifier"
+        }
+    },                                   
     "RootCAName": {
       "type": "string",
       "defaultValue": "Offline Root CA",
@@ -550,6 +557,7 @@
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('InternalTLD'))]",
     "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
+    "KeyVault1Name": "[concat(parameters('NamingConvention'),'-kv1-', parameters('KeyVaultUniqueID'))]",                
     "DB1Name": "[concat(parameters('NamingConvention'),'-19-db01')]",
     "DAG19Name": "[concat(parameters('NamingConvention'),'-19-dag01')]",
     "NSG1Name": "[concat(parameters('NamingConvention'),'-nsg01')]",
@@ -1654,62 +1662,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "GetToolsManagedID",
-      "dependsOn": [
-        "finalizeca"
-      ],      
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/1nic-1disk-vm-mi-out.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "computerName": {
-                  "value": "[variables('tl1name')]"
-              },
-              "computerIP": {
-                  "value": "[variables('tl1IP')]"
-              },
-              "Publisher": {
-                  "value": "MicrosoftWindowsServer"
-              },
-              "Offer": {
-                  "value": "WindowsServer"
-              },
-              "OSVersion": {
-                "value": "[parameters('TL1OSVersion')]"
-              },              
-              "LicenseType": {
-                "value": "[parameters('WindowsServerLicenseType')]"
-              },            
-              "VMSize": {
-                "value": "[parameters('tl1VMSize')]"
-              },
-              "vnetName": {
-                "value": "[variables('vnet1Name')]"
-              },            
-              "subnetName": {
-                "value": "[variables('vnet1subnet1Name')]"
-              },            
-              "adminUsername": {
-                "value": "[parameters('adminUsername')]"
-              },                                                                                                            
-              "adminPassword": {
-                "value": "[parameters('adminPassword')]"
-              },                                                                                                                                        
-              "location": {
-                  "value": "[resourceGroup().location]"
-              }
-          }
-      }
-    },    
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
       "name": "DomainJoinTools",
       "dependsOn": [
-        "GetToolsManagedID"
+        "DeployTools"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1741,7 +1696,37 @@
               }
           }
       }
-    },                                          
+    },              
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DeployKeyVault1",
+      "dependsOn": [
+        "AssignManagedIDRG1",
+        "AssignManagedIDRG2"                
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/keyvault.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "KeyVaultName": {
+                  "value": "[variables('KeyVault1Name')]"
+              },
+              "SystemManagedID": {
+                  "value": "[reference('DeployTools').outputs.principalId.value]"
+              },              
+              "TenantID": {
+                  "value": "[reference('DeployTools').outputs.tenantId.value]"
+              },     
+              "location": {
+                  "value": "[deployment().Location]"
+              }
+          }
+      }
+    },                                
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",

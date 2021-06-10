@@ -1,0 +1,82 @@
+{
+"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+"contentVersion": "1.0.0.0",
+"parameters": {
+    "keyVaultName": {
+      "type": "string",
+      "metadata": {
+        "description": "Specifies the name of the key vault."
+      }
+    },
+    "SystemManagedID": {
+      "type": "string",
+      "metadata": {
+        "description": "System Managed ID"
+      }
+    },
+    "TenantID": {
+      "type": "string",
+      "metadata": {
+        "description": "Tenant ID"
+      }
+    },              
+    "location": {
+        "type": "string",
+        "metadata": {
+          "description": "Region of Resources"
+        }
+    }
+},
+  "variables": {
+    "keysPermissions": [
+      "get",
+      "list"
+      ],
+    "secretsPermissions": [
+      "get",
+      "list"
+      ],
+    "skuName":  "Premium"
+  },
+"resources": [
+    {
+      "type": "Microsoft.KeyVault/vaults",
+      "name": "[parameters('keyVaultName')]",
+      "apiVersion": "2019-09-01",
+      "location": "[parameters('location')]",
+      "properties": {
+        "enabledForDeployment": true,
+        "enabledForDiskEncryption": true,
+        "enabledForTemplateDeployment": true,
+        "enableSoftDelete": true,        
+        "enablePurgeProtection": true,
+        "softDeleteRetentionInDays":  7,                
+        "tenantId": "[parameters('tenantId')]",
+        "accessPolicies": [
+          {
+            "objectId": "[parameters('SystemManagedID')]",
+            "tenantId": "[parameters('tenantId')]",
+            "permissions": {
+              "keys": "[variables('keysPermissions')]",
+              "secrets": "[variables('secretsPermissions')]"      
+            }
+          }                    
+        ],
+        "sku": {
+          "name": "[variables('skuName')]",
+          "family": "A"
+        },
+        "networkAcls": {
+            "defaultAction": "Allow",
+            "bypass": "AzureServices"
+        }
+      }
+    }
+   ],
+"outputs": {
+    "KeyVaultName": {
+        "type": "string",
+        "value": "[parameters('keyVaultName')]"
+    }
+  }      
+}
