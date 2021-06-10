@@ -156,12 +156,12 @@
 "outputs": {
     "principalId": {
         "type": "string",
-        "value": "[reference(resourceId('Microsoft.Compute/virtualMachines', variables('VMName')), '2019-08-01', 'full').identity.principalId]"
+        "value": "[reference(resourceId('Microsoft.Compute/virtualMachines', variables('VMName')), '2021-04-01', 'full').identity.principalId]"
         
     },
     "tenantId": {
         "type": "string",
-        "value": "[reference(resourceId('Microsoft.Compute/virtualMachines', variables('VMName')), '2019-08-01', 'full').identity.tenantId]"
+        "value": "[reference(resourceId('Microsoft.Compute/virtualMachines', variables('VMName')), '2021-04-01', 'full').identity.tenantId]"
     }    
   }
 }
