@@ -33,7 +33,7 @@
                 Import-Module ActiveDirectory
 
                 # Load Default ACL for AD Domain
-                $acl = Get-Acl -Path 'ad:$using:BaseDN'
+                $acl = Get-Acl -Path "ad:$using:BaseDN"
 
                 # Load AD Configuration
                 $rootdse = Get-ADRootDSE
@@ -71,7 +71,7 @@
                 $Acl.AddAccessRule($ZipCodeACE)
 
                 # Save AD ACL
-                Set-Acl -AclObject $Acl -Path 'ad:$using:BaseDN'
+                Set-Acl -AclObject $Acl -Path "ad:$using:BaseDN"
                 
             }
             GetScript =  { @{} }
