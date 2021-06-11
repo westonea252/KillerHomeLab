@@ -27,7 +27,7 @@
                 # Create Parent Share
                 $ChildShare = Get-SmbShare -Name "Child" -ErrorAction 0
                 IF ($ChildShare -eq $Null) {
-                New-SmbShare -Name "Child" -Path "C:\Parent\Child" -ReadOnly "Everyone"
+                New-SmbShare -Name "Child" -Path "C:\Parent\Child" -ReadAccess "Everyone"
                 
                 # Disable Inheritance & Remove Existing Permissions
                 $acl = Get-ACL -Path "C:\Parent\Child"
