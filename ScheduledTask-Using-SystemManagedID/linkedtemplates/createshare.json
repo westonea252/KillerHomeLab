@@ -25,7 +25,13 @@
           "metadata": {
             "description": "The FQDN of the AD Domain created "
           }
-        },         
+        },   
+        "ServiceAccount": {
+            "type": "string",
+            "metadata": {
+                "description": "Service Account"
+            }
+        },                
         "location": {
             "type": "string",
           "metadata": {
@@ -66,7 +72,8 @@
                         "Properties": {
                             "NamingConvention": "[parameters('NamingConvention')]",                            
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                                                        
-                            "InternaldomainName": "[parameters('InternaldomainName')]"                                                                                                                         
+                            "InternaldomainName": "[parameters('InternaldomainName')]",
+                            "ServiceAccount": "[parameters('ServiceAccount')]"                                                                                                                                                   
                         }
                     },
                     "protectedSettings": {                                              

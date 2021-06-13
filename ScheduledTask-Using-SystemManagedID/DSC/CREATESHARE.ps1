@@ -4,7 +4,8 @@
    (
         [String]$NamingConvention,     
         [String]$NetBiosDomain,
-        [String]$InternalDomainName
+        [String]$InternalDomainName,
+        [String]$ServiceAccount
     )
 
     Import-DscResource -Module xStorage

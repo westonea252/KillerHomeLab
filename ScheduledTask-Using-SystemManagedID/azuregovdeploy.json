@@ -1593,7 +1593,10 @@
               },              
               "Internaldomainname": {
                   "value": "[variables('InternaldomainName')]"
-              },          
+              }, 
+              "ServiceAccount": {
+                "value": "[parameters('ScheduledTaskServiceAccount')]"
+              },                       
               "location": {
                   "value": "[resourceGroup().location]"
               },
