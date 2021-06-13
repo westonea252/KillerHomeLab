@@ -1,9 +1,9 @@
-# Exchange 2019 Lab with External Access
+# Scheduled Task using System Managed Identity for Service Account Password Retreival
 
 Click a button below to deploy to the cloud of your choice
 
-[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2FDevelopment%2FExchange2019-with-External-Access-1-Forest_1-DomainController_1-ADSite_1-Workstation%2Fazuredeploy.json)
-[![Deploy To Azure US Gov](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.svg?sanitize=true)](https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2FDevelopment%2FExchange2019-with-External-Access-1-Forest_1-DomainController_1-ADSite_1-Workstation%2Fazuregovdeploy.json)
+[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2FDevelopment%2FScheduledTask-Using-SystemManagedID%2Fazuredeploy.json)
+[![Deploy To Azure US Gov](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.svg?sanitize=true)](https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2FDevelopment%2FScheduledTask-Using-SystemManagedID%2Fazuregovdeploy.json)
 
 !!!!NOTE:  PLEASE MAKE SURE TO APPLY CRITICAL SECURITY UPDATE KB5000871 TO BOTH EXCHANGE SERVERS AFTER THE DEPLOYMENT IS COMPLETE.
 
@@ -17,12 +17,14 @@ This Templates deploys a Single Forest/Domain:
 - 1 - Online Certificate Status Protocol Server
 - 1 - Exchange 2019 Organization
 - 1 - Exchange 2019 Server
-- 1 - File Share Witness Server (Exchange Witness Server)
+- 1 - Tool Server (Scheduled Task)(System Managed Identity)
+- 1 - File Share Witness Server (Exchange Witness Server & Share for Scheduled Task)
 - 1 - Database Availability Group
 - 1 - Domain Joined Windows 10 Workstation
 - 1 - Azure DNS Zone (Created based on NetBiosDomain and TLD Parameters)
 - 1 - Network Security Group
-- 1 - Bastion Host (VNet1)
+- 1 - Bastion Host (VNet1)(Can be used to connect to VNet2 VM's since Peered)
+- 1 - Azure Key Vault
 
 The deployment also makes the following customizations:
 - Adds Public IP Address to OCSP and Exchange Servers.
@@ -128,5 +130,6 @@ Parameters that support changes
 - ICAVMSize.  Enter a Valid VM Size based on which Region the VM is deployed.
 - OCSPVMSize.  Enter a Valid VM Size based on which Region the VM is deployed.
 - FS1VMSize.  Enter a Valid VM Size based on which Region the VM is deployed.
+- TL1VMSize.  Enter a Valid VM Size based on which Region the VM is deployed.
 - EX1VMSize.  Enter a Valid VM Size based on which Region the VM is deployed.
 - WK1VMSize.  Enter a Valid VM Size based on which Region the VM is deployed.

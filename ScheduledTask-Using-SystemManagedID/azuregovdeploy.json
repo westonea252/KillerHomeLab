@@ -159,6 +159,13 @@
         "description": "Enter a valid URL that points to the Exchange 2019 CU .ISO"
       }
     },
+    "ScheduledTaskServiceAccount": {
+        "type": "string",
+        "defaultValue": "svc-attribute-admin",        
+        "metadata": {
+            "description": "Attribute Service Account used for Scheduled Task"
+        }
+    },       
     "adminUsername": {
         "type": "string",
         "metadata": {
@@ -288,6 +295,13 @@
           "description": "DNS Reverse Lookup Zone1 Prefix"
       }
     },                 
+    "KeyVaultUniqueID": {
+        "type": "string",
+        "defaultValue": "1234567890x1",
+        "metadata": {
+            "description": "KeyVault 1 Unique Identifier"
+        }
+    },                                   
     "RootCAName": {
       "type": "string",
       "defaultValue": "Offline Root CA",
@@ -401,6 +415,17 @@
           "description": "File Server OS Version"
       }
     },             
+    "TL1OSVersion": {
+      "type": "string",
+      "defaultValue": "2019-Datacenter",
+      "allowedValues": [
+        "2019-Datacenter",
+        "2016-Datacenter"
+      ],      
+      "metadata": {
+          "description": "Tools Server OS Version"
+      }
+    },                 
     "EXOSVersion": {
       "type": "string",
       "defaultValue": "2019-Datacenter",
@@ -455,7 +480,14 @@
         "metadata": {
             "description": "File Share Witeness Server1 VMSize"
         }
-    },                                       
+    },                        
+    "TL1VMSize": {
+        "type": "string",
+        "defaultValue": "Standard_D2s_v3",
+        "metadata": {
+            "description": "Tool Server1 VMSize"
+        }
+    },                            
     "EX1VMSize": {
         "type": "string",
         "defaultValue": "Standard_D8s_v3",
@@ -508,6 +540,9 @@
     "fs1name": "[concat(parameters('NamingConvention'),'-fs-01')]",           
     "fs1IP": "[concat(parameters('vnet1ID'),'.1.',variables('fs1lastoctet'))]",  
     "fs1lastoctet": "104",                                                              
+    "tl1name": "[concat(parameters('NamingConvention'),'-tl-01')]",           
+    "tl1IP": "[concat(parameters('vnet1ID'),'.1.',variables('tl1lastoctet'))]",  
+    "tl1lastoctet": "105",                                                                  
     "ex1name": "[concat(parameters('NamingConvention'),'-ex19-01')]",           
     "ex1IP": "[concat(parameters('vnet1ID'),'.1.',variables('ex1lastoctet'))]",         
     "ex1lastoctet": "110",    
@@ -522,6 +557,7 @@
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('InternalTLD'))]",
     "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
+    "KeyVault1Name": "[concat(parameters('NamingConvention'),'-kv1-', parameters('KeyVaultUniqueID'))]",                
     "DB1Name": "[concat(parameters('NamingConvention'),'-19-db01')]",
     "DAG19Name": "[concat(parameters('NamingConvention'),'-19-dag01')]",
     "NSG1Name": "[concat(parameters('NamingConvention'),'-nsg01')]",
@@ -902,6 +938,53 @@
           }
       }
     },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "ConfigureDelegatedControl",
+      "dependsOn": [
+        "createsites"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/delegatecontrol.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('dc1name')]"
+              },
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },                                         
+              "DomainName": {
+                "value": "[variables('InternaldomainName')]"
+              },               
+              "BaseDN": {
+                "value": "[variables('BaseDN')]"
+              },
+              "ServiceAccount": {
+                "value": "[parameters('ScheduledTaskServiceAccount')]"
+              },
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                                                                                                                                                                                                                           
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                                           
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },    
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
@@ -1484,6 +1567,165 @@
           }
       }
     },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "CreateShare",
+      "dependsOn": [
+        "ConfigureDelegatedControl",
+        "DomainJoinFS1"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/createshare.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('fs1name')]"
+              },     
+              "NamingConvention": {
+                  "value": "[parameters('NamingConvention')]"
+              },                        
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },              
+              "Internaldomainname": {
+                  "value": "[variables('InternaldomainName')]"
+              },          
+              "location": {
+                  "value": "[resourceGroup().location]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          }
+      }
+    },                                
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DeployTools",
+      "dependsOn": [
+        "finalizeca"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/1nic-1disk-vm-mi.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('tl1name')]"
+              },
+              "computerIP": {
+                  "value": "[variables('tl1IP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsServer"
+              },
+              "Offer": {
+                  "value": "WindowsServer"
+              },
+              "OSVersion": {
+                "value": "[parameters('TL1OSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "[parameters('WindowsServerLicenseType')]"
+              },            
+              "VMSize": {
+                "value": "[parameters('tl1VMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('vnet1Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('vnet1subnet1Name')]"
+              },            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DomainJoinTools",
+      "dependsOn": [
+        "DeployTools"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/domainjoin.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('tl1name')]"
+              },
+              "domainName": {
+                  "value": "[variables('InternaldomainName')]"
+              },
+              "OUPath": {
+                  "value": "[variables('SRVOUPath')]"
+              },
+              "domainJoinOptions": {
+                  "value": 3
+              },
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                             
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },              
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DeployKeyVault1",
+      "dependsOn": [
+        "DeployTools"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/keyvault.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "KeyVaultName": {
+                  "value": "[variables('KeyVault1Name')]"
+              },
+              "SystemManagedID": {
+                  "value": "[reference('DeployTools').outputs.principalId.value]"
+              },              
+              "TenantID": {
+                  "value": "[reference('DeployTools').outputs.tenantId.value]"
+              },     
+              "location": {
+                  "value": "[deployment().Location]"
+              }
+          }
+      }
+    },                                
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
