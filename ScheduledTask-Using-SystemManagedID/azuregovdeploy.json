@@ -1724,7 +1724,7 @@
                   "value": "[reference('DeployTools').outputs.tenantId.value]"
               },     
               "location": {
-                  "value": "[deployment().Location]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
