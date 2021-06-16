@@ -2,11 +2,22 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "managedClusters_pclust_pdns_01_name": {
-            "defaultValue": "pclust-pdns-01",
+        "AKSClusterName": {
             "type": "String"
         },
-        "virtualNetworks_AKS_VNet1_externalid": {
+        "vnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Existing VNET Name that contains the domain controller"
+            }
+        },
+        "subnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Existing subnet name that contains the domain controller"
+            }
+        },        
+        "SpokeVNet": {
             "defaultValue": "/subscriptions/0775e1d2-0381-485c-bc18-0f1bddc3f73b/resourceGroups/Private-AKS-Lab01/providers/Microsoft.Network/virtualNetworks/AKS-VNet1",
             "type": "String"
         },
@@ -23,12 +34,14 @@
             "type": "String"
         }
     },
-    "variables": {},
+    "variables": {
+              "subnetId": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]"
+    },
     "resources": [
         {
             "type": "Microsoft.ContainerService/managedClusters",
             "apiVersion": "2021-03-01",
-            "name": "[parameters('managedClusters_pclust_pdns_01_name')]",
+            "name": "[parameters('AKSClusterName')]",
             "location": "usgovvirginia",
             "sku": {
                 "name": "Basic",
@@ -38,8 +51,8 @@
                 "type": "UserAssigned",
                 "userAssignedIdentities": {
                     "/subscriptions/0775e1d2-0381-485c-bc18-0f1bddc3f73b/resourcegroups/Private-AKS-Lab01/providers/Microsoft.ManagedIdentity/userAssignedIdentities/pclust-pdns-01": {
-                        "clientId": "fcb17733-8c71-4258-9fdf-d2e2dd3f9b2a",
-                        "principalId": "ba2ecd28-1326-41ef-bec1-7e40f6bec025"
+                        "clientId": "",
+                        "principalId": ""
                     }
                 }
             },
@@ -54,7 +67,7 @@
                         "osDiskSizeGB": 128,
                         "osDiskType": "Managed",
                         "kubeletDiskType": "OS",
-                        "vnetSubnetID": "[concat(parameters('virtualNetworks_AKS_VNet1_externalid'), '/subnets/AKS-VNet1-Subnet1')]",
+                        "vnetSubnetID": "[variables('subnetId')]",
                         "maxPods": 30,
                         "type": "VirtualMachineScaleSets",
                         "orchestratorVersion": "1.19.11",
@@ -84,7 +97,7 @@
                 "servicePrincipalProfile": {
                     "clientId": "msi"
                 },
-                "nodeResourceGroup": "[concat('MC_Private-AKS-Lab01_', parameters('managedClusters_pclust_pdns_01_name'), '_usgovvirginia')]",
+                "nodeResourceGroup": "[concat('MC_Private-AKS-Lab01_', parameters('AKSClusterName'), '_usgovvirginia')]",
                 "enableRBAC": true,
                 "networkProfile": {
                     "networkPlugin": "azure",
@@ -106,7 +119,7 @@
                 },
                 "privateLinkResources": [
                     {
-                        "id": "[concat(resourceId('Microsoft.ContainerService/managedClusters', parameters('managedClusters_pclust_pdns_01_name')), '/privateLinkResources/management')]",
+                        "id": "[concat(resourceId('Microsoft.ContainerService/managedClusters', parameters('AKSClusterName')), '/privateLinkResources/management')]",
                         "name": "management",
                         "type": "Microsoft.ContainerService/managedClusters/privateLinkResources",
                         "groupId": "management",
@@ -131,9 +144,9 @@
         {
             "type": "Microsoft.ContainerService/managedClusters/agentPools",
             "apiVersion": "2021-03-01",
-            "name": "[concat(parameters('managedClusters_pclust_pdns_01_name'), '/nodepool1')]",
+            "name": "[concat(parameters('AKSClusterName'), '/nodepool1')]",
             "dependsOn": [
-                "[resourceId('Microsoft.ContainerService/managedClusters', parameters('managedClusters_pclust_pdns_01_name'))]"
+                "[resourceId('Microsoft.ContainerService/managedClusters', parameters('AKSClusterName'))]"
             ],
             "properties": {
                 "count": 3,
