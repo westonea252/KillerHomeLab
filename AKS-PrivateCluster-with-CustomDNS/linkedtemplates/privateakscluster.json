@@ -1,0 +1,158 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "managedClusters_pclust_pdns_01_name": {
+            "defaultValue": "pclust-pdns-01",
+            "type": "String"
+        },
+        "virtualNetworks_AKS_VNet1_externalid": {
+            "defaultValue": "/subscriptions/0775e1d2-0381-485c-bc18-0f1bddc3f73b/resourceGroups/Private-AKS-Lab01/providers/Microsoft.Network/virtualNetworks/AKS-VNet1",
+            "type": "String"
+        },
+        "publicIPAddresses_3c9fc726_c09e_44e1_b448_e5dc099cafc4_externalid": {
+            "defaultValue": "/subscriptions/0775e1d2-0381-485c-bc18-0f1bddc3f73b/resourceGroups/MC_Private-AKS-Lab01_pclust-pdns-01_usgovvirginia/providers/Microsoft.Network/publicIPAddresses/3c9fc726-c09e-44e1-b448-e5dc099cafc4",
+            "type": "String"
+        },
+        "privateDnsZones_privatelink_usgovvirginia_cx_aks_containerservice_azure_us_externalid": {
+            "defaultValue": "/subscriptions/0775e1d2-0381-485c-bc18-0f1bddc3f73b/resourceGroups/Private-AKS-Lab01/providers/Microsoft.Network/privateDnsZones/privatelink.usgovvirginia.cx.aks.containerservice.azure.us",
+            "type": "String"
+        },
+        "userAssignedIdentities_pclust_pdns_01_agentpool_externalid": {
+            "defaultValue": "/subscriptions/0775e1d2-0381-485c-bc18-0f1bddc3f73b/resourceGroups/MC_Private-AKS-Lab01_pclust-pdns-01_usgovvirginia/providers/Microsoft.ManagedIdentity/userAssignedIdentities/pclust-pdns-01-agentpool",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.ContainerService/managedClusters",
+            "apiVersion": "2021-03-01",
+            "name": "[parameters('managedClusters_pclust_pdns_01_name')]",
+            "location": "usgovvirginia",
+            "sku": {
+                "name": "Basic",
+                "tier": "Free"
+            },
+            "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "/subscriptions/0775e1d2-0381-485c-bc18-0f1bddc3f73b/resourcegroups/Private-AKS-Lab01/providers/Microsoft.ManagedIdentity/userAssignedIdentities/pclust-pdns-01": {
+                        "clientId": "fcb17733-8c71-4258-9fdf-d2e2dd3f9b2a",
+                        "principalId": "ba2ecd28-1326-41ef-bec1-7e40f6bec025"
+                    }
+                }
+            },
+            "properties": {
+                "kubernetesVersion": "1.19.11",
+                "fqdnSubdomain": "aks",
+                "agentPoolProfiles": [
+                    {
+                        "name": "nodepool1",
+                        "count": 3,
+                        "vmSize": "Standard_DS2_v2",
+                        "osDiskSizeGB": 128,
+                        "osDiskType": "Managed",
+                        "kubeletDiskType": "OS",
+                        "vnetSubnetID": "[concat(parameters('virtualNetworks_AKS_VNet1_externalid'), '/subnets/AKS-VNet1-Subnet1')]",
+                        "maxPods": 30,
+                        "type": "VirtualMachineScaleSets",
+                        "orchestratorVersion": "1.19.11",
+                        "enableNodePublicIP": false,
+                        "nodeLabels": {},
+                        "mode": "System",
+                        "enableEncryptionAtHost": false,
+                        "osType": "Linux",
+                        "osSKU": "Ubuntu",
+                        "enableFIPS": false
+                    }
+                ],
+                "linuxProfile": {
+                    "adminUsername": "azureuser",
+                    "ssh": {
+                        "publicKeys": [
+                            {
+                                "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCr7miRdf1igPA46Tz5AGGtqDpWB/jQW6KmMwuRZlvMOMxT4GrEdvFlaZCIlbqaC7bSoN0jV3kOyfnYMMz7d9RrVEi8BZTRKwAMyfLoxT/cwc3LtWgUt8W1ySZDY1G2Bfx24Bh1AcwUaQjzOgXvBPIzZc9KWao1M8GsHxt7V0Jw2gmWhBvptktSeMWlF/+YWgSoC1lkYIvYd2t/qmqDoZPdbVV811cUYIZOrx2IY3YMApbet/GqKJ7OsTcc0CmRx1FkS7sceOXooszQo5i92+ECMBdJDsloP4347xz0aFD2Wgt0wojqEuh4vjxNt31S3oJuPLmIvXqoQOd5m9B8BiIT"
+                            }
+                        ]
+                    }
+                },
+                "windowsProfile": {
+                    "adminUsername": "azureuser",
+                    "enableCSIProxy": false
+                },
+                "servicePrincipalProfile": {
+                    "clientId": "msi"
+                },
+                "nodeResourceGroup": "[concat('MC_Private-AKS-Lab01_', parameters('managedClusters_pclust_pdns_01_name'), '_usgovvirginia')]",
+                "enableRBAC": true,
+                "networkProfile": {
+                    "networkPlugin": "azure",
+                    "loadBalancerSku": "Standard",
+                    "loadBalancerProfile": {
+                        "managedOutboundIPs": {
+                            "count": 1
+                        },
+                        "effectiveOutboundIPs": [
+                            {
+                                "id": "[parameters('publicIPAddresses_3c9fc726_c09e_44e1_b448_e5dc099cafc4_externalid')]"
+                            }
+                        ]
+                    },
+                    "serviceCidr": "10.21.1.0/24",
+                    "dnsServiceIP": "10.21.1.101",
+                    "dockerBridgeCidr": "172.17.0.1/16",
+                    "outboundType": "loadBalancer"
+                },
+                "privateLinkResources": [
+                    {
+                        "id": "[concat(resourceId('Microsoft.ContainerService/managedClusters', parameters('managedClusters_pclust_pdns_01_name')), '/privateLinkResources/management')]",
+                        "name": "management",
+                        "type": "Microsoft.ContainerService/managedClusters/privateLinkResources",
+                        "groupId": "management",
+                        "requiredMembers": [
+                            "management"
+                        ]
+                    }
+                ],
+                "apiServerAccessProfile": {
+                    "enablePrivateCluster": true,
+                    "privateDNSZone": "[parameters('privateDnsZones_privatelink_usgovvirginia_cx_aks_containerservice_azure_us_externalid')]"
+                },
+                "identityProfile": {
+                    "kubeletidentity": {
+                        "resourceId": "[parameters('userAssignedIdentities_pclust_pdns_01_agentpool_externalid')]",
+                        "clientId": "be40cdad-eeec-4ff6-ae83-89b5f86fae94",
+                        "objectId": "9b1369a3-3c3e-4609-8dc0-d41f65e80d9e"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.ContainerService/managedClusters/agentPools",
+            "apiVersion": "2021-03-01",
+            "name": "[concat(parameters('managedClusters_pclust_pdns_01_name'), '/nodepool1')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ContainerService/managedClusters', parameters('managedClusters_pclust_pdns_01_name'))]"
+            ],
+            "properties": {
+                "count": 3,
+                "vmSize": "Standard_DS2_v2",
+                "osDiskSizeGB": 128,
+                "osDiskType": "Managed",
+                "kubeletDiskType": "OS",
+                "vnetSubnetID": "[concat(parameters('virtualNetworks_AKS_VNet1_externalid'), '/subnets/AKS-VNet1-Subnet1')]",
+                "maxPods": 30,
+                "type": "VirtualMachineScaleSets",
+                "orchestratorVersion": "1.19.11",
+                "enableNodePublicIP": false,
+                "nodeLabels": {},
+                "mode": "System",
+                "enableEncryptionAtHost": false,
+                "osType": "Linux",
+                "osSKU": "Ubuntu",
+                "enableFIPS": false
+            }
+        }
+    ]
+}
