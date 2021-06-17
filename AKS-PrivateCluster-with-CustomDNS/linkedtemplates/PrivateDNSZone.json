@@ -1,0 +1,52 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "ZoneName": {
+            "type": "string",
+            "metadata": {
+                "description": "DNS Zone Name"
+              }
+        },        
+        "vnet1Name": {
+            "type": "string",
+            "metadata": {
+                "description": "Existing DMZ VNET1 Name"
+            }            
+        },     
+        "vnet2Name": {
+            "type": "string",
+            "metadata": {
+                "description": "Existing DMZ VNET2 Name"
+            }            
+        }             
+    },
+    "resources": [
+        {
+            "name": "[parameters('ZoneName')]",
+            "type": "Microsoft.Network/privateDnsZones",
+            "apiVersion": "2018-09-01",
+            "location": "global",
+            "tags": {},
+            "properties": {
+              "registrationVirtualNetworks": [
+                {
+                  "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vNet1Name'))]"
+                },
+                {
+                  "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vNet2Name'))]"
+                }                
+              ],
+              "resolutionVirtualNetworks": [
+                {
+                    "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vNet1Name'))]"
+                },
+                {
+                    "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vNet2Name'))]"
+                }                
+              ]
+            },
+            "resources": []
+          }                 
+       ]
+    }
