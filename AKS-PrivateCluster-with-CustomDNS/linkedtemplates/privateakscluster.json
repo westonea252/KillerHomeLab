@@ -17,14 +17,6 @@
                 "description": "Existing subnet name that contains the domain controller"
             }
         },        
-        "SpokeVNet": {
-            "defaultValue": "/subscriptions/0775e1d2-0381-485c-bc18-0f1bddc3f73b/resourceGroups/Private-AKS-Lab01/providers/Microsoft.Network/virtualNetworks/AKS-VNet1",
-            "type": "String"
-        },
-        "publicIPAddresses_3c9fc726_c09e_44e1_b448_e5dc099cafc4_externalid": {
-            "defaultValue": "/subscriptions/0775e1d2-0381-485c-bc18-0f1bddc3f73b/resourceGroups/MC_Private-AKS-Lab01_pclust-pdns-01_usgovvirginia/providers/Microsoft.Network/publicIPAddresses/3c9fc726-c09e-44e1-b448-e5dc099cafc4",
-            "type": "String"
-        },
         "privateDnsZones_privatelink_usgovvirginia_cx_aks_containerservice_azure_us_externalid": {
             "defaultValue": "/subscriptions/0775e1d2-0381-485c-bc18-0f1bddc3f73b/resourceGroups/Private-AKS-Lab01/providers/Microsoft.Network/privateDnsZones/privatelink.usgovvirginia.cx.aks.containerservice.azure.us",
             "type": "String"
@@ -32,17 +24,36 @@
         "userAssignedIdentities_pclust_pdns_01_agentpool_externalid": {
             "defaultValue": "/subscriptions/0775e1d2-0381-485c-bc18-0f1bddc3f73b/resourceGroups/MC_Private-AKS-Lab01_pclust-pdns-01_usgovvirginia/providers/Microsoft.ManagedIdentity/userAssignedIdentities/pclust-pdns-01-agentpool",
             "type": "String"
-        }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+            "description": "Region of Resources"
+            }
+        }        
     },
     "variables": {
-              "subnetId": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]"
+        "subnetId": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]",
+        "publicIPAddressName": "[concat(parameters('AKSClusterName'),'-pip')]"              
     },
     "resources": [
+        {
+            "name": "[variables('publicIPAddressName')]",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2018-11-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "publicIPAllocationMethod": "Static"
+            }
+        }, 
         {
             "type": "Microsoft.ContainerService/managedClusters",
             "apiVersion": "2021-03-01",
             "name": "[parameters('AKSClusterName')]",
-            "location": "usgovvirginia",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]"
+            ],              
             "sku": {
                 "name": "Basic",
                 "tier": "Free"
@@ -97,7 +108,7 @@
                 "servicePrincipalProfile": {
                     "clientId": "msi"
                 },
-                "nodeResourceGroup": "[concat('MC_Private-AKS-Lab01_', parameters('AKSClusterName'), '_usgovvirginia')]",
+                "nodeResourceGroup": "[concat('MC_Private-AKS-Lab01_', parameters('AKSClusterName'), parameters('location'))]",
                 "enableRBAC": true,
                 "networkProfile": {
                     "networkPlugin": "azure",
@@ -108,7 +119,7 @@
                         },
                         "effectiveOutboundIPs": [
                             {
-                                "id": "[parameters('publicIPAddresses_3c9fc726_c09e_44e1_b448_e5dc099cafc4_externalid')]"
+                                "id": "[variables('publicIPAddressName')]"
                             }
                         ]
                     },
@@ -154,7 +165,7 @@
                 "osDiskSizeGB": 128,
                 "osDiskType": "Managed",
                 "kubeletDiskType": "OS",
-                "vnetSubnetID": "[concat(parameters('virtualNetworks_AKS_VNet1_externalid'), '/subnets/AKS-VNet1-Subnet1')]",
+                "vnetSubnetID": "[variables('subnetId')]",
                 "maxPods": 30,
                 "type": "VirtualMachineScaleSets",
                 "orchestratorVersion": "1.19.11",

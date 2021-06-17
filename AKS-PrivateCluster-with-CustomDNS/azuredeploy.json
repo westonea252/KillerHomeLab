@@ -8,7 +8,21 @@
       "metadata": {
         "description": "Naming Convention for Lab Objects"
       }
-    },   
+    }, 
+    "vnet1ID": {
+      "type": "string",
+      "defaultValue": "10.20",
+      "metadata": {
+        "description": "VNet1 Prefix"
+      }
+    },  
+    "vnet2ID": {
+      "type": "string",
+      "defaultValue": "10.21",
+      "metadata": {
+        "description": "VNet2 Prefix"
+      }
+    },            
     "personalDesktopAssignmentType": {
         "defaultValue": "Automatic",
         "allowedValues": [
@@ -246,14 +260,27 @@
     }
   },
   "variables": {
-    "vnet1Name": "[concat(parameters('NamingConvention'),'-VNet1')]",
-    "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet1')]",    
+    "vnet1Name": "[concat(parameters('NamingConvention'),'-Hub-VN,ket1')]",
+    "vnet1Prefix": "[concat(parameters('vnet1ID'),'.0.0/16')]",
+    "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-Hub-VNet1-Subnet1')]",    
+    "vnet1subnet1Prefix": "[concat(parameters('vnet1ID'),'.1.0/24')]",    
+    "vnet1subnet2Name": "[concat(parameters('NamingConvention'),'-Hub-VNet1-Subnet2')]",    
+    "vnet1subnet2Prefix": "[concat(parameters('vnet1ID'),'.2.0/24')]",    
+    "vnet1BastionsubnetPrefix": "[concat(parameters('vnet1ID'),'.253.0/24')]",        
+    "vnet2Name": "[concat(parameters('NamingConvention'),'-VNet2')]",
+    "vnet2Prefix": "[concat(parameters('vnet2ID'),'.0.0/16')]",
+    "vnet2subnet1Name": "[concat(parameters('NamingConvention'),'-VNet2-Subnet1')]",    
+    "vnet2subnet1Prefix": "[concat(parameters('vnet2ID'),'.1.0/24')]",    
+    "vnet2subnet2Name": "[concat(parameters('NamingConvention'),'-VNet2-Subnet2')]",    
+    "vnet2subnet2Prefix": "[concat(parameters('vnet2ID'),'.2.0/24')]",    
+    "vnet2BastionsubnetPrefix": "[concat(parameters('vnet2ID'),'.253.0/24')]",            
     "subnet-Id": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', variables('vnet1Name'), variables('Vnet1Subnet1Name'))]",    
     "HostPoolARMPath": "[resourceId(resourceGroup().name, 'Microsoft.DesktopVirtualization/hostpools', variables('HostPoolName'))]", 
     "InternaldomainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('InternalTLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('InternalTLD'))]",
     "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
     "AKSClusterName": "[concat(parameters('NamingConvention'),'-AKS-Private-Cluster')]",
+    "ManagedIDName": "[concat(parameters('NamingConvention'),'-mi-', uniqueString(deployment().id))]",                
     "DesktopAppGroupName": "[concat(variables('HostPoolName'),'-DAG')]",    
     "RemoteAppGroupName": "[concat(variables('HostPoolName'),'-RAG')]",        
     "WorkSpaceName": "[concat(variables('HostPoolName'),'-WorkSpace')]",   
@@ -271,6 +298,64 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
+      "name": "VNet1",
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/vnet.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "vnetName": {
+                  "value": "[variables('vnet1Name')]"
+              },
+              "vnetprefix": {
+                  "value": "[variables('vnet1Prefix')]"
+              },
+              "subnet1Name": {
+                  "value": "[variables('vnet1subnet1Name')]"
+              },
+              "subnet1Prefix": {
+                  "value": "[variables('vnet1subnet1Prefix')]"
+              },
+              "subnet2Name": {
+                "value": "[variables('vnet1subnet2Name')]"
+              },
+              "subnet2Prefix": {
+                "value": "[variables('vnet1subnet2Prefix')]"
+              },              
+              "BastionsubnetPrefix": {
+                "value": "[variables('vnet1BastionsubnetPrefix')]"
+              },              
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "CreateManagedID",        
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/managedidentity.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "ManagedIDName": {
+                  "value": "[variables('ManagedIDName')]"
+              },
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },  
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
       "name": "DeployAKSCluster",     
       "properties": {
         "mode": "Incremental",
@@ -282,33 +367,12 @@
             "AKSClusterName": {
                 "value": "[variables('AKSClusterName')]"
             },
-            "HostPoolType": {
-                "value": "[parameters('HostPoolType')]"
-            },
-            "personalDesktopAssignmentType": {
-                "value": "[parameters('personalDesktopAssignmentType')]"
-            },
-            "maxSessionLimit": {
-                "value": "[parameters('maxSessionLimit')]"
-            },
-            "loadBalancerType": {
-                "value": "[parameters('loadBalancerType')]"
-            },
-            "vmTemplate": {
-                "value": "[variables('SessionHostTemplate')]"
-            },
-            "tokenExpirationTime": {
-                "value": "[variables('add4Hours')]"
-            },
-            "validationEnvironment": {
-                "value": "[parameters('validationEnvironment')]"
-            },
-            "Ring": {
-                "value": "[variables('Ring')]"
-            },
-            "Token": {
-                "value": "[parameters('WVDTokenPhrase')]"
-            },                                                                                    
+              "vnetName": {
+                "value": "[variables('vnet1Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('vnet1subnet1Name')]"
+              },            
             "location": {
                 "value": "[resourceGroup().location]"
             }                                                                                                                   
