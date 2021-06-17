@@ -6,25 +6,32 @@
             "type": "String"
         },
         "vnetName": {
-            "type": "string",
-            "metadata": {
-                "description": "Existing VNET Name that contains the domain controller"
-            }
+            "type": "string"
         },
         "subnetName": {
-            "type": "string",
-            "metadata": {
-                "description": "Existing subnet name that contains the domain controller"
-            }
+            "type": "string"
+        },
+        "serviceCidr": {
+            "type": "string"
+        },
+        "dnsServiceIP": {
+            "type": "string"
+        },
+        "dockerBridgeCidr": {
+            "type": "string"
+        },                           
+        "DNSZone": {
+            "type": "String"
+        },
+        "ManagedIDName": {
+            "type": "string"
         },        
-        "privateDnsZones_privatelink_usgovvirginia_cx_aks_containerservice_azure_us_externalid": {
-            "defaultValue": "/subscriptions/0775e1d2-0381-485c-bc18-0f1bddc3f73b/resourceGroups/Private-AKS-Lab01/providers/Microsoft.Network/privateDnsZones/privatelink.usgovvirginia.cx.aks.containerservice.azure.us",
+        "principalID": {
             "type": "String"
-        },
-        "userAssignedIdentities_pclust_pdns_01_agentpool_externalid": {
-            "defaultValue": "/subscriptions/0775e1d2-0381-485c-bc18-0f1bddc3f73b/resourceGroups/MC_Private-AKS-Lab01_pclust-pdns-01_usgovvirginia/providers/Microsoft.ManagedIdentity/userAssignedIdentities/pclust-pdns-01-agentpool",
+        },          
+        "clientID": {
             "type": "String"
-        },
+        },                   
         "location": {
             "type": "string",
             "metadata": {
@@ -34,7 +41,8 @@
     },
     "variables": {
         "subnetId": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]",
-        "publicIPAddressName": "[concat(parameters('AKSClusterName'),'-pip')]"              
+        "publicIPAddressName": "[concat(parameters('AKSClusterName'),'-pip')]",
+        "kubeMI": "[concat(parameters('ManagedIDName'),'-agentpool')]"                      
     },
     "resources": [
         {
@@ -61,9 +69,10 @@
             "identity": {
                 "type": "UserAssigned",
                 "userAssignedIdentities": {
-                    "/subscriptions/0775e1d2-0381-485c-bc18-0f1bddc3f73b/resourcegroups/Private-AKS-Lab01/providers/Microsoft.ManagedIdentity/userAssignedIdentities/pclust-pdns-01": {
-                        "clientId": "",
-                        "principalId": ""
+                    "[parameters('ManagedIDName')]":
+                    {
+                        "clientId": "[parameters('clientID')]",
+                        "principalId": "[parameters('principalID')]"
                     }
                 }
             },
@@ -123,9 +132,9 @@
                             }
                         ]
                     },
-                    "serviceCidr": "10.21.1.0/24",
-                    "dnsServiceIP": "10.21.1.101",
-                    "dockerBridgeCidr": "172.17.0.1/16",
+                    "serviceCidr": "[parameters('serviceCidr')]",
+                    "dnsServiceIP": "[parameters('dnsServiceIP')]",
+                    "dockerBridgeCidr": "[parameters('dockerBridgeCidr')]",
                     "outboundType": "loadBalancer"
                 },
                 "privateLinkResources": [
@@ -138,14 +147,14 @@
                             "management"
                         ]
                     }
-                ],
+                ],                
                 "apiServerAccessProfile": {
                     "enablePrivateCluster": true,
-                    "privateDNSZone": "[parameters('privateDnsZones_privatelink_usgovvirginia_cx_aks_containerservice_azure_us_externalid')]"
+                    "privateDNSZone": "[parameters('DNSZone')]"
                 },
                 "identityProfile": {
                     "kubeletidentity": {
-                        "resourceId": "[parameters('userAssignedIdentities_pclust_pdns_01_agentpool_externalid')]",
+                        "resourceId": "[variables('kubeMI')]",
                         "clientId": "be40cdad-eeec-4ff6-ae83-89b5f86fae94",
                         "objectId": "9b1369a3-3c3e-4609-8dc0-d41f65e80d9e"
                     }

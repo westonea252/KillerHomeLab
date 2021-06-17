@@ -8,12 +8,12 @@
         "description": "Managed ID Name"
       }
     },
-      "location": {
-          "type": "string",
-        "metadata": {
-          "description": "Region of Resources"
-        }
-    }
+    "location": {
+        "type": "string",
+      "metadata": {
+        "description": "Region of Resources"
+      }
+  }
 },
 "resources": [
     {
@@ -24,9 +24,13 @@
     }
   ],
 "outputs": {
-    "manageduseridentity": {
+    "principalId": {
         "type": "string",
         "value": "[reference(resourceId(resourceGroup().name, 'Microsoft.ManagedIdentity/userAssignedIdentities', parameters('ManagedIDName'))).principalId]"
-    }
+    },
+    "clientId": {
+        "type": "string",
+        "value": "[reference(resourceId(resourceGroup().name, 'Microsoft.ManagedIdentity/userAssignedIdentities', parameters('ManagedIDName'))).clientId]"
+    }    
   }      
 }

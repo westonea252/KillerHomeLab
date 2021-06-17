@@ -29,7 +29,21 @@
       "metadata": {
         "description": "Hub VNet Prefix"
       }
-    },                                                              
+    },
+    "roleAssignmentGuid1": {
+        "type": "string",
+        "defaultValue": "[newGuid()]",
+        "metadata": {
+            "description": "A new GUID used to identify the role assignment"
+        }
+    },   
+    "roleAssignmentGuid2": {
+        "type": "string",
+        "defaultValue": "[newGuid()]",
+        "metadata": {
+            "description": "A new GUID used to identify the role assignment"
+        }
+    },                                                                  
     "_artifactsLocation": {
       "type": "string",
       "metadata": {
@@ -66,10 +80,15 @@
     "vnet2subnet1Prefix": "[concat(parameters('vnet2ID'),'.1.0/24')]",    
     "vnet2subnet2Name": "[concat(parameters('NamingConvention'),'-Spoke-VNet-Subnet2')]",    
     "vnet2subnet2Prefix": "[concat(parameters('vnet2ID'),'.2.0/24')]",    
-    "vnet2BastionsubnetPrefix": "[concat(parameters('vnet2ID'),'.253.0/24')]",            
+    "vnet2BastionsubnetPrefix": "[concat(parameters('vnet2ID'),'.253.0/24')]",  
+    "DockerBridgeCIDR": "17.17.0.0/16",              
+    "dnsserviceIP": "[concat(parameters('vnet1ID'),'.1.101')]",                    
     "DNSZone": "[concat('privatelink.',resourceGroup().location,'.cx.aks.containerservice.azure.us')]",
     "AKSClusterName": "[concat(parameters('NamingConvention'),'-AKS-Private-Cluster')]",
-    "ManagedIDName": "[concat(parameters('NamingConvention'),'-mi-', uniqueString(resourceGroup().id))]"
+    "ManagedIDName": "[concat(parameters('NamingConvention'),'-mi-', uniqueString(resourceGroup().id))]",
+    "DNSZoneContributor": "[concat('Microsoft.Network/privateDNSZones/', variables('DNSZone'), '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+    "SpokeVNetContributor": "[concat('/Microsoft.Network/virtualNetworks/', variables('vnet2Name'), '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"    
+
   },  
   "resources": [
     {
@@ -391,7 +410,8 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "CreateManagedID",        
+      "name": "CreateManagedID", 
+             
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -407,7 +427,60 @@
               }
           }
       }
-    },  
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "AssignManagedIDDNSZone",
+      "dependsOn": [
+        "CreateManagedID"
+      ],        
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/roleassignment.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "PrincipalID": {
+                  "value": "[reference('CreateManagedID').outputs.principalId.value]"
+              },
+              "RoleDefinitionID": {
+                  "value": "[variables('DNSZoneContributor')]"
+              },
+              "roleAssignmentGuid": {
+                  "value": "[parameters('roleAssignmentGuid1')]"
+              }              
+          }
+      }
+    }, 
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "AssignManagedIDSpokeVNet",
+      "dependsOn": [
+        "CreateManagedID",
+        "AssignManagedIDDNSZone"        
+      ],        
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/roleassignment.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "PrincipalID": {
+                  "value": "[reference('CreateManagedID').outputs.principalId.value]"
+              },
+              "RoleDefinitionID": {
+                  "value": "[variables('SpokeVNetContributor')]"
+              },
+              "roleAssignmentGuid": {
+                  "value": "[parameters('roleAssignmentGuid2')]"
+              }              
+          }
+      }
+    },         
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
@@ -423,11 +496,32 @@
                 "value": "[variables('AKSClusterName')]"
             },
             "vnetName": {
-            "value": "[variables('vnet1Name')]"
+                "value": "[variables('vnet2Name')]"
             },            
             "subnetName": {
-            "value": "[variables('vnet1subnet1Name')]"
-            },            
+                "value": "[variables('vnet2subnet1Name')]"
+            },  
+            "serviceCidr": {
+                "value": "[variables('vnet2subnet1Prefix')]"
+            },
+            "dnsServiceIP": {
+                "value": "[variables('dnsserviceIP')]"
+            },
+            "dockerBridgeCidr": {
+                "value": "[variables('DockerBridgeCIDR')]"
+            },                                    
+            "DNSZone": {
+                "value": "[variables('DNSZone')]"
+            },     
+            "ManagedIDName": {
+                "value": "[variables('ManagedIDName')]"
+            },                     
+            "principalID": {
+                "value": "[reference('CreateManagedID').outputs.principalId.value]"
+            },              
+            "clientID": {
+                "value": "[reference('CreateManagedID').outputs.clientId.value]"
+            },                      
             "location": {
                 "value": "[resourceGroup().location]"
             }                                                                                                                   
