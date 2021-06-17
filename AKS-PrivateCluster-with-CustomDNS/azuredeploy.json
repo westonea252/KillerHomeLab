@@ -339,7 +339,7 @@
               }
           }
       }
-    },    
+    },  
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
@@ -377,7 +377,7 @@
               }
           }
       }
-    },    
+    }, 
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
@@ -416,7 +416,7 @@
               }
           }
       }
-    },        
+    }, 
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
@@ -460,10 +460,13 @@
       "apiVersion": "2019-10-01",
       "name": "DeployPrivateDNSZone",
       "dependsOn": [
+        "DeployOnPremVNet",
         "DeployHubVNet",
         "DeploySpokeVNet",
-        "PeeringToSite2",
-        "PeeringToSite1"
+        "PeeringFromHubToSpoke",
+        "PeeringFromSpokeToHub",   
+        "PeeringFromHubToOnPrem",      
+        "PeeringFromOnPremToHub"
       ],            
       "properties": {
           "mode": "Incremental",
