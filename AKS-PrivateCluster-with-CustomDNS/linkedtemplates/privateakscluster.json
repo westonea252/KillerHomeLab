@@ -42,7 +42,7 @@
     "variables": {
         "subnetId": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]",
         "publicIPAddressName": "[concat(parameters('AKSClusterName'),'-pip')]",
-        "kubeMI": "[concat(parameters('ManagedIDName'),'-agentpool')]"                      
+        "kubeMI": "[resourceId(resourceGroup().name, 'Microsoft.ManagedIdentity/userAssignedIdentities', parameters('ManagedIDName'),'-agentpool')]"                     
     },
     "resources": [
         {
