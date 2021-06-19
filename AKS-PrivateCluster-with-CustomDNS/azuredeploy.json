@@ -86,8 +86,9 @@
     "DNSZone": "[concat('privatelink.',resourceGroup().location,'.cx.aks.containerservice.azure.us')]",
     "AKSClusterName": "[concat(parameters('NamingConvention'),'-AKS-Private-Cluster')]",
     "ManagedIDName": "[concat(parameters('NamingConvention'),'-mi-', uniqueString(resourceGroup().id))]",
-    "DNSZoneContributor": "[concat('Microsoft.Network/privateDNSZones/', variables('DNSZone'), '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
-    "SpokeVNetContributor": "[concat('/Microsoft.Network/virtualNetworks/', variables('vnet2Name'), '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"    
+    "DNSZoneID": "[concat('Microsoft.Network/privateDNSZones/', variables('DNSZone'))]",
+    "SpokeSubnetID": "[concat('/Microsoft.Network/virtualNetworks/', variables('vnet2Name'))]",
+    "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"                
 
   },  
   "resources": [
@@ -526,8 +527,11 @@
                   "value": "[reference('CreateManagedID').outputs.principalId.value]"
               },
               "RoleDefinitionID": {
-                  "value": "[variables('DNSZoneContributor')]"
+                  "value": "[variables('Contributor')]"
               },
+              "Scope": {
+                  "value": "[variables('DNSZoneID')]"
+              },              
               "roleAssignmentGuid": {
                   "value": "[parameters('roleAssignmentGuid1')]"
               }              
@@ -554,8 +558,11 @@
                   "value": "[reference('CreateManagedID').outputs.principalId.value]"
               },
               "RoleDefinitionID": {
-                  "value": "[variables('SpokeVNetContributor')]"
+                  "value": "[variables('Contributor')]"
               },
+              "Scope": {
+                  "value": "[variables('SpokeSubnetID')]"
+              },                            
               "roleAssignmentGuid": {
                   "value": "[parameters('roleAssignmentGuid2')]"
               }              

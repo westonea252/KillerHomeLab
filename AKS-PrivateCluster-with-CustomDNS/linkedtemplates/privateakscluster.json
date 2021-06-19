@@ -41,8 +41,7 @@
     },
     "variables": {
         "subnetId": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]",
-        "publicIPAddressName": "[concat(parameters('AKSClusterName'),'-pip')]",
-        "kubeMI": "[resourceId(resourceGroup().name, 'Microsoft.ManagedIdentity/userAssignedIdentities', parameters('ManagedIDName'),'-agentpool')]"                     
+        "publicIPAddressName": "[concat(parameters('AKSClusterName'),'-pip')]"
     },
     "resources": [
         {
@@ -56,7 +55,7 @@
         }, 
         {
             "type": "Microsoft.ContainerService/managedClusters",
-            "apiVersion": "2021-03-01",
+            "apiVersion": "2021-02-01",
             "name": "[parameters('AKSClusterName')]",
             "location": "[parameters('location')]",
             "dependsOn": [
@@ -151,19 +150,12 @@
                 "apiServerAccessProfile": {
                     "enablePrivateCluster": true,
                     "privateDNSZone": "[parameters('DNSZone')]"
-                },
-                "identityProfile": {
-                    "kubeletidentity": {
-                        "resourceId": "[variables('kubeMI')]",
-                        "clientId": "be40cdad-eeec-4ff6-ae83-89b5f86fae94",
-                        "objectId": "9b1369a3-3c3e-4609-8dc0-d41f65e80d9e"
-                    }
                 }
             }
         },
         {
             "type": "Microsoft.ContainerService/managedClusters/agentPools",
-            "apiVersion": "2021-03-01",
+            "apiVersion": "2021-02-01",
             "name": "[concat(parameters('AKSClusterName'), '/nodepool1')]",
             "dependsOn": [
                 "[resourceId('Microsoft.ContainerService/managedClusters', parameters('AKSClusterName'))]"
