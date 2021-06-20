@@ -14,12 +14,6 @@
         "description": "Role Definition ID"
       }
     },
-    "Scope": {
-      "type": "string",
-      "metadata": {
-        "description": "Object RBAC is applied to"
-      }
-    },    
     "roleAssignmentGuid": {
       "type": "string",
       "metadata": {
@@ -36,7 +30,7 @@
         "roleDefinitionId": "[parameters('RoleDefinitionId')]",
         "principalId": "[parameters('PrincipalID')]",
         "principalType": "ServicePrincipal",
-        "scope": "[parameters('Scope')]"        
+        "scope": "[resourceGroup().id]"
       }
     }
   ]

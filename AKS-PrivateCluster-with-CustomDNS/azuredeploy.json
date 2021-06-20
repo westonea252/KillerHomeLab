@@ -511,7 +511,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "AssignManagedIDDNSZone",
+      "name": "AssignManagedIDRG",
       "dependsOn": [
         "DeployPrivateDNSZone",
         "CreateManagedID"
@@ -529,9 +529,6 @@
               "RoleDefinitionID": {
                   "value": "[variables('Contributor')]"
               },
-              "Scope": {
-                  "value": "[variables('DNSZoneID')]"
-              },              
               "roleAssignmentGuid": {
                   "value": "[parameters('roleAssignmentGuid1')]"
               }              
@@ -541,38 +538,10 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "AssignManagedIDSpokeVNet",
-      "dependsOn": [
-        "DeploySpokeVNet",
-        "CreateManagedID",
-        "AssignManagedIDDNSZone"        
-      ],        
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/roleassignment.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "PrincipalID": {
-                  "value": "[reference('CreateManagedID').outputs.principalId.value]"
-              },
-              "RoleDefinitionID": {
-                  "value": "[variables('Contributor')]"
-              },
-              "Scope": {
-                  "value": "[variables('SpokeSubnetID')]"
-              },                            
-              "roleAssignmentGuid": {
-                  "value": "[parameters('roleAssignmentGuid2')]"
-              }              
-          }
-      }
-    },         
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
       "name": "DeployAKSCluster",     
+      "dependsOn": [
+        "AssignManagedIDRG"
+      ],  
       "properties": {
         "mode": "Incremental",
         "templateLink": {
