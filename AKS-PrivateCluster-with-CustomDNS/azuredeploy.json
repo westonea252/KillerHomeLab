@@ -566,12 +566,6 @@
             "ManagedID": {
                 "value": "[variables('ManagedID')]"
             },               
-            "principalID": {
-                "value": "[reference('CreateManagedID').outputs.principalId.value]"
-            },              
-            "clientID": {
-                "value": "[reference('CreateManagedID').outputs.clientId.value]"
-            },                      
             "location": {
                 "value": "[resourceGroup().location]"
             }                                                                                                                   
