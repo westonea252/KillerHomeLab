@@ -23,9 +23,9 @@
         "DNSZone": {
             "type": "String"
         },
-        "ManagedIDName": {
+        "ManagedID": {
             "type": "string"
-        },        
+        },         
         "principalID": {
             "type": "String"
         },          
@@ -68,7 +68,7 @@
             "identity": {
                 "type": "UserAssigned",
                 "userAssignedIdentities": {
-                    "[parameters('ManagedIDName')]":
+                    "[parameters('ManagedID')]":
                     {
                         "clientId": "[parameters('clientID')]",
                         "principalId": "[parameters('principalID')]"

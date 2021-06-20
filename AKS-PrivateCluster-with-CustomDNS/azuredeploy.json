@@ -30,20 +30,13 @@
         "description": "Hub VNet Prefix"
       }
     },
-    "roleAssignmentGuid1": {
+    "roleAssignmentGuid": {
         "type": "string",
         "defaultValue": "[newGuid()]",
         "metadata": {
             "description": "A new GUID used to identify the role assignment"
         }
-    },   
-    "roleAssignmentGuid2": {
-        "type": "string",
-        "defaultValue": "[newGuid()]",
-        "metadata": {
-            "description": "A new GUID used to identify the role assignment"
-        }
-    },                                                                  
+    },                                                                
     "_artifactsLocation": {
       "type": "string",
       "metadata": {
@@ -86,9 +79,9 @@
     "DNSZone": "[concat('privatelink.',resourceGroup().location,'.cx.aks.containerservice.azure.us')]",
     "AKSClusterName": "[concat(parameters('NamingConvention'),'-AKS-Private-Cluster')]",
     "ManagedIDName": "[concat(parameters('NamingConvention'),'-mi-', uniqueString(resourceGroup().id))]",
-    "DNSZoneID": "[concat('Microsoft.Network/privateDNSZones/', variables('DNSZone'))]",
-    "SpokeSubnetID": "[concat('/Microsoft.Network/virtualNetworks/', variables('vnet2Name'))]",
+    "ManagedID": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.ManagedIdentity/userAssignedIdentities/', variables('ManagedIDName'))]",                    
     "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"                
+    
 
   },  
   "resources": [
@@ -530,7 +523,7 @@
                   "value": "[variables('Contributor')]"
               },
               "roleAssignmentGuid": {
-                  "value": "[parameters('roleAssignmentGuid1')]"
+                  "value": "[parameters('roleAssignmentGuid')]"
               }              
           }
       }
@@ -570,9 +563,9 @@
             "DNSZone": {
                 "value": "[variables('DNSZone')]"
             },     
-            "ManagedIDName": {
-                "value": "[variables('ManagedIDName')]"
-            },                     
+            "ManagedID": {
+                "value": "[variables('ManagedID')]"
+            },               
             "principalID": {
                 "value": "[reference('CreateManagedID').outputs.principalId.value]"
             },              
