@@ -878,7 +878,53 @@
               }
           }
       }
-    },                         
+    }, 
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "updatevnet1dns",
+      "dependsOn": [
+        "ConfigureDNSProxy"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/updatevnetdns.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "vnetName": {
+                  "value": "[variables('vnet0Name')]"
+              },
+              "vnetprefix": {
+                  "value": "[variables('vnet0Prefix')]"
+              },
+              "subnet1Name": {
+                "value": "[variables('vnet0subnet1Name')]"
+              },                                                                                                            
+              "subnet1Prefix": {
+                "value": "[variables('vnet0subnet1Prefix')]"
+              }, 
+              "subnet2Name": {
+                "value": "[variables('vnet0subnet2Name')]"
+              },                                                                                                            
+              "subnet2Prefix": {
+                "value": "[variables('vnet0subnet2Prefix')]"
+              },               
+              "BastionsubnetPrefix": {
+                "value": "[variables('vnet0BastionsubnetPrefix')]"
+              },                         
+              "DNSServerIP": {
+                "value": [
+                  "[variables('AKSDnsserviceIP')]"
+                ]
+              },                                                                                                            
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },                            
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",

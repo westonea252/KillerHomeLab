@@ -36,6 +36,9 @@
             "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
             "apiVersion": "2018-09-01",
             "location": "global",
+            "dependsOn": [
+                "[concat('Microsoft.Network/privateDnsZones/', parameters('ZoneName'))]"
+            ],            
             "properties": {
               "virtualNetwork": {
                 "id":  "[resourceId('Microsoft.Network/virtualNetworks', parameters('vNet1Name'))]"
@@ -48,6 +51,9 @@
             "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
             "apiVersion": "2018-09-01",
             "location": "global",
+            "dependsOn": [
+                "[concat('Microsoft.Network/privateDnsZones/', parameters('ZoneName'))]"
+            ],                       
             "properties": {
               "virtualNetwork": {
                 "id":  "[resourceId('Microsoft.Network/virtualNetworks', parameters('vNet2Name'))]"
