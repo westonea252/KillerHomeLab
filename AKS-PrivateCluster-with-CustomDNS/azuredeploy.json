@@ -178,6 +178,50 @@
         "description": "Naming Convention for Lab Objects"
       }
     }, 
+    "SubDNSDomain": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+          "description": "Sub DNS Domain Name Example:  sub1. must include a DOT AT END"
+      }
+    },     
+    "SubDNSBaseDN": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+          "description": "Sub DNS Domain Name Example:  DC=sub2,DC=sub1, must include COMMA AT END"
+      }
+    },            
+    "NetBiosDomain": {
+      "type": "string",
+      "defaultValue": "killerhomelab",
+      "maxLength": 15,      
+      "metadata": {
+          "description": "NetBios Parent Domain Name"
+      }
+    },  
+    "InternalDomain": {
+      "type": "string",
+      "defaultValue": "killerhomelab",
+      "metadata": {
+          "description": "NetBios Domain Name"
+      }
+    },       
+    "InternalTLD": {
+      "type": "string",
+      "defaultValue": "com",
+      "allowedValues": [
+        "com",
+        "net",
+        "org",
+        "edu",
+        "gov",
+        "mil"
+      ],      
+      "metadata": {
+          "description": "Top-Level Domain Name"
+      }
+    },      
     "LocalDNSDomain": {
       "type": "string",
       "defaultValue": "dns.local",
@@ -232,13 +276,49 @@
             "description": "DNS Proxy OS Version"
         }
     },
+    "DC1OSVersion": {
+        "type": "string",
+        "defaultValue": "2019-Datacenter",
+        "allowedValues": [
+          "2019-Datacenter",
+          "2016-Datacenter",
+          "2012-R2-Datacenter"
+        ],
+        "metadata": {
+            "description": "Domain Controller1 OS Version"
+        }
+    },
+    "WK1OSVersion": {
+      "type": "string",
+      "defaultValue": "19h1-pro",
+      "allowedValues": [
+        "19h1-pro"
+      ],
+      "metadata": {
+          "description": "Workstation1 OS Version"
+      }
+  },        
     "DNSVMSize": {
         "type": "string",
         "defaultValue": "Standard_D2s_v3",
         "metadata": {
             "description": "DNS PRoxy VMSize"
         }
-    },                                                                      
+    },
+    "DC1VMSize": {
+        "type": "string",
+        "defaultValue": "Standard_D2s_v3",
+        "metadata": {
+            "description": "Domain Controller1 VMSize"
+        }
+    },        
+    "WK1VMSize": {
+      "type": "string",
+      "defaultValue": "Standard_D2s_v3",
+      "metadata": {
+          "description": "Workstation1 VMSize"
+      }
+    },                                                                            
     "_artifactsLocation": {
       "type": "string",
       "metadata": {
@@ -277,16 +357,24 @@
     "vnet2subnet2Prefix": "[concat(parameters('vnet2ID'),'.2.0/24')]",    
     "vnet2BastionsubnetPrefix": "[concat(parameters('vnet2ID'),'.253.0/24')]",  
     "DockerBridgeCIDR": "17.17.0.1/16",              
-    "dnsserviceIP": "[concat(parameters('vnet1ID'),'.1.',variables('dnslastoctet'))]",            
+    "AKSDnsserviceIP": "[concat(parameters('vnet1ID'),'.1.',variables('dnslastoctet'))]",            
     "dnslastoctet": "101",       
-    "dnsname": "[concat(parameters('NamingConvention'),'-dns-proxy')]",           
+    "dnsname": "[concat(parameters('NamingConvention'),'-dns-proxy')]",   
+    "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",           
+    "dc1IP": "[concat(parameters('vnet0ID'),'.1.',variables('dc1lastoctet'))]",        
+    "dc1lastoctet": "101",        
+    "wk1lastoctet": "201",            
+    "wk1name": "[concat(parameters('NamingConvention'),'-wk-01')]",           
+    "wk1IP": "[concat(parameters('vnet0ID'),'.2.',variables('wk1lastoctet'))]",        
+    "DCDataDisk1Name": "NTDS",            
+    "InternaldomainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('InternalTLD'))]",
+    "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('InternalTLD'))]",
+    "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",          
     "ReverseLookup": "[concat('1.',parameters('ReverseLookup'))]",        
-    "DNSZoneName": "[concat('privatelink.',resourceGroup().location,'.cx.aks.containerservice.azure.us')]",
+    "PrivateDNSZoneName": "[concat('privatelink.',resourceGroup().location,'.cx.aks.containerservice.azure.us')]",
     "AKSClusterName": "[concat(parameters('NamingConvention'),'-AKS-Private-Cluster')]",
     "ManagedIDName": "[concat(parameters('NamingConvention'),'-mi-', uniqueString(resourceGroup().id))]",
     "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"                
-    
-
   },  
   "resources": [
     {
@@ -674,7 +762,7 @@
           },
           "parameters": {
               "ZoneName": {
-                  "value": "[variables('DNSZoneName')]"
+                  "value": "[variables('PrivateDNSZoneName')]"
               },
               "vnet1Name": {
                 "value": "[variables('VNet1Name')]"
@@ -703,7 +791,7 @@
                   "value": "[variables('dnsname')]"
               },
               "computerIP": {
-                  "value": "[variables('dnsserviceIP')]"
+                  "value": "[variables('AKSDnsserviceIP')]"
               },
               "Publisher": {
                   "value": "MicrosoftWindowsServer"
@@ -756,11 +844,20 @@
                   "value": "[variables('dnsname')]"
               },
               "computerIP": {
-                  "value": "[variables('dnsserviceIP')]"
+                  "value": "[variables('AKSDNSserviceIP')]"
               },              
               "TimeZone": {
                   "value": "[parameters('TimeZone')]"
               },                          
+              "AKSDNSZone": {
+                "value": "[variables('PrivateDNSZoneName')]"
+              },  
+              "InternalDomainName": {
+                "value": "[variables('InternalDomainName')]"
+              }, 
+              "DC1IP": {
+                "value": "[variables('dc1ip')]"
+              },                                            
               "LocalDNSDomain": {
                 "value": "[parameters('LocalDNSDomain')]"
               },              
@@ -857,13 +954,13 @@
                 "value": "[variables('vnet1subnet1Prefix')]"
             },
             "dnsServiceIP": {
-                "value": "[variables('dnsserviceIP')]"
+                "value": "[variables('AKSDNSserviceIP')]"
             },
             "dockerBridgeCidr": {
                 "value": "[variables('DockerBridgeCIDR')]"
             },                                    
             "DNSZoneName": {
-                "value": "[variables('DNSZoneName')]"
+                "value": "[variables('PrivateDNSZoneName')]"
             },     
             "ManagedIDName": {
                 "value": "[variables('ManagedIDName')]"

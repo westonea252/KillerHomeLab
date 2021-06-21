@@ -5,6 +5,9 @@
         [String]$computerName,
         [String]$computerIP,
         [String]$TimeZone,    
+        [String]$AKSDNSZone,                               
+        [String]$InternalDomainName,
+        [String]$DC1IP,                                       
         [String]$LocalDNSDomain,                               
         [String]$ReverseLookup,
         [String]$dnslastoctet
@@ -79,6 +82,20 @@
             Type      = 'Ptr'
             Ensure    = 'Present'
             DependsOn = '[xDnsServerPrimaryZone]ReverseLookupZone', '[xDnsRecord]DNSPROXY'
+        }
+
+        xDnsServerConditionalForwarder AKSDnsZone
+        {
+            Name      = $AKSDNSZone
+            MasterServers = "168.63.129.16"
+            Ensure    = 'Present'
+        }
+
+        xDnsServerConditionalForwarder InternalDomainName
+        {
+            Name      = $InternalDomainName
+            MasterServers = $DC1IP
+            Ensure    = 'Present'
         }
 
         xPendingReboot RebootAfterPrimaryDNSSuffix

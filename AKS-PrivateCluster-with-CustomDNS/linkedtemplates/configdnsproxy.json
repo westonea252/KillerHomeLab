@@ -20,6 +20,24 @@
                 "description": "Time Zone"
             }
         },                    
+        "AKSDNSZone": {
+            "type": "string",
+            "metadata": {
+                "description": "AKS Private DNS Zone"
+            }
+        },           
+        "InternalDomainName": {
+            "type": "string",
+            "metadata": {
+                "description": "OnPrem DNS Domain"
+            }
+        },        
+        "DC1IP": {
+            "type": "string",
+            "metadata": {
+                "description": "OnPrem DNS Server IP"
+            }
+        },                
         "LocalDNSDomain": {
             "type": "string",
             "metadata": {
@@ -79,6 +97,9 @@
                             "computerName": "[parameters('computerName')]",
                             "computerIP": "[parameters('computerIP')]",                            
                             "TimeZone": "[parameters('TimeZone')]",                            
+                            "AKSDNSZone": "[parameters('AKSDNSZone')]",                                                        
+                            "InternalDomainName": "[parameters('InternalDomainName')]",                                                        
+                            "DC1IP": "[parameters('DC1IP')]",                                                                                                                                            
                             "LocalDNSDomain": "[parameters('LocalDNSDomain')]",                                                        
                             "ReverseLookup": "[parameters('ReverseLookup')]",
                             "dnslastoctet": "[parameters('dnslastoctet')]"

@@ -28,25 +28,32 @@
             "apiVersion": "2018-09-01",
             "location": "global",
             "tags": {},
-            "properties": {
-              "registrationVirtualNetworks": [
-                {
-                  "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vNet1Name'))]"
-                },
-                {
-                  "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vNet2Name'))]"
-                }                
-              ],
-              "resolutionVirtualNetworks": [
-                {
-                    "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vNet1Name'))]"
-                },
-                {
-                    "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vNet2Name'))]"
-                }                
-              ]
-            },
+            "properties": {},
             "resources": []
-          }                 
+          },
+          {
+            "name": "[concat(parameters('ZoneName'),'/',parameters('vnet1Name'))]",
+            "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
+            "apiVersion": "2018-09-01",
+            "location": "global",
+            "properties": {
+              "virtualNetwork": {
+                "id":  "[resourceId('Microsoft.Network/virtualNetworks', parameters('vNet1Name'))]"
+              },
+              "registrationEnabled": true
+            }
+          },
+          {
+            "name": "[concat(parameters('ZoneName'),'/',parameters('vnet2Name'))]",
+            "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
+            "apiVersion": "2018-09-01",
+            "location": "global",
+            "properties": {
+              "virtualNetwork": {
+                "id":  "[resourceId('Microsoft.Network/virtualNetworks', parameters('vNet2Name'))]"
+              },
+              "registrationEnabled": true
+            }
+          }                                    
        ]
     }
