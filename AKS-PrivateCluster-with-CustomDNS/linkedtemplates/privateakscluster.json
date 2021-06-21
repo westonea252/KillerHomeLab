@@ -20,7 +20,7 @@
         "dockerBridgeCidr": {
             "type": "string"
         },                           
-        "DNSZone": {
+        "DNSZoneName": {
             "type": "String"
         },
         "ManagedIDName": {
@@ -36,6 +36,7 @@
     "variables": {
         "subnetId": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]",
         "ManagedID": "[resourceId(resourceGroup().name, 'Microsoft.ManagedIdentity/userAssignedIdentities', parameters('ManagedIDName'))]",        
+        "DNSZoneID": "[resourceId(resourceGroup().name, 'Microsoft.Network/privateDnsZones', parameters('DNSZoneName'))]",
         "publicIPAddressName": "[concat(parameters('AKSClusterName'),'-pip')]"
     },
     "resources": [
@@ -136,7 +137,7 @@
                 ],                
                 "apiServerAccessProfile": {
                     "enablePrivateCluster": true,
-                    "privateDNSZone": "[parameters('DNSZone')]"
+                    "privateDNSZone": "[variables('DNSZoneID')]"
                 }
             }
         },

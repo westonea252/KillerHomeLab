@@ -76,7 +76,7 @@
     "vnet2BastionsubnetPrefix": "[concat(parameters('vnet2ID'),'.253.0/24')]",  
     "DockerBridgeCIDR": "17.17.0.1/16",              
     "dnsserviceIP": "[concat(parameters('vnet2ID'),'.1.101')]",                    
-    "DNSZone": "[concat('privatelink.',resourceGroup().location,'.cx.aks.containerservice.azure.us')]",
+    "DNSZoneName": "[concat('privatelink.',resourceGroup().location,'.cx.aks.containerservice.azure.us')]",
     "AKSClusterName": "[concat(parameters('NamingConvention'),'-AKS-Private-Cluster')]",
     "ManagedIDName": "[concat(parameters('NamingConvention'),'-mi-', uniqueString(resourceGroup().id))]",
     "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"                
@@ -469,7 +469,7 @@
           },
           "parameters": {
               "ZoneName": {
-                  "value": "[variables('DNSZone')]"
+                  "value": "[variables('DNSZoneName')]"
               },
               "vnet1Name": {
                 "value": "[variables('VNet1Name')]"
@@ -560,7 +560,7 @@
                 "value": "[variables('DockerBridgeCIDR')]"
             },                                    
             "DNSZone": {
-                "value": "[variables('DNSZone')]"
+                "value": "[variables('DNSZoneName')]"
             },     
             "ManagedIDName": {
                 "value": "[variables('ManagedIDName')]"
