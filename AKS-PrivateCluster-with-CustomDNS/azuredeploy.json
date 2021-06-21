@@ -79,7 +79,6 @@
     "DNSZone": "[concat('privatelink.',resourceGroup().location,'.cx.aks.containerservice.azure.us')]",
     "AKSClusterName": "[concat(parameters('NamingConvention'),'-AKS-Private-Cluster')]",
     "ManagedIDName": "[concat(parameters('NamingConvention'),'-mi-', uniqueString(resourceGroup().id))]",
-    "ManagedID": "[resourceId(resourceGroup().name, 'ManagedIdentity/userAssignedIdentities', variables('ManagedIDName'))]",
     "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"                
     
 
@@ -563,8 +562,8 @@
             "DNSZone": {
                 "value": "[variables('DNSZone')]"
             },     
-            "ManagedID": {
-                "value": "[variables('ManagedID')]"
+            "ManagedIDName": {
+                "value": "[variables('ManagedIDName')]"
             },               
             "location": {
                 "value": "[resourceGroup().location]"
