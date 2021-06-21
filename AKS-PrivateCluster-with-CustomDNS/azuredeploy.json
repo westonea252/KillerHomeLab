@@ -418,38 +418,6 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "DeployOnPremBastionHost",
-      "dependsOn": [
-        "DeployOnPremVNet"
-      ],
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/bastionhost.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "publicIPAddressName": {
-                "value": "[concat(variables('vnet0Name'),'-Bastion-pip')]"
-              },
-              "AllocationMethod": {
-                "value": "Static"
-              },              
-              "vnetName": {
-                  "value": "[variables('vnet0Name')]"
-              },
-              "subnetName": {
-                  "value": "AzureBastionSubnet"
-              },
-              "location": {
-                  "value": "[resourceGroup().location]"
-              }
-          }
-      }
-    },            
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
       "name": "DeployHubVNet",
       "properties": {
           "mode": "Incremental",
@@ -555,38 +523,6 @@
           }
       }
     },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
-      "name": "DeploySpokeBastionHost",
-      "dependsOn": [
-        "DeploySpokeVNet"
-      ],
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/bastionhost.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "publicIPAddressName": {
-                "value": "[concat(variables('vnet2Name'),'-Bastion-pip')]"
-              },
-              "AllocationMethod": {
-                "value": "Static"
-              },              
-              "vnetName": {
-                  "value": "[variables('vnet2Name')]"
-              },
-              "subnetName": {
-                  "value": "AzureBastionSubnet"
-              },
-              "location": {
-                  "value": "[resourceGroup().location]"
-              }
-          }
-      }
-    },    
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
