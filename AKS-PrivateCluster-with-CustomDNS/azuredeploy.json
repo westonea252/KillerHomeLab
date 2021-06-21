@@ -894,25 +894,25 @@
           },
           "parameters": {
               "vnetName": {
-                  "value": "[variables('vnet0Name')]"
+                  "value": "[variables('vnet1Name')]"
               },
               "vnetprefix": {
-                  "value": "[variables('vnet0Prefix')]"
+                  "value": "[variables('vnet1Prefix')]"
               },
               "subnet1Name": {
-                "value": "[variables('vnet0subnet1Name')]"
+                "value": "[variables('vnet1subnet1Name')]"
               },                                                                                                            
               "subnet1Prefix": {
-                "value": "[variables('vnet0subnet1Prefix')]"
+                "value": "[variables('vnet1subnet1Prefix')]"
               }, 
               "subnet2Name": {
-                "value": "[variables('vnet0subnet2Name')]"
+                "value": "[variables('vnet1subnet2Name')]"
               },                                                                                                            
               "subnet2Prefix": {
-                "value": "[variables('vnet0subnet2Prefix')]"
+                "value": "[variables('vnet1subnet2Prefix')]"
               },               
               "BastionsubnetPrefix": {
-                "value": "[variables('vnet0BastionsubnetPrefix')]"
+                "value": "[variables('vnet1BastionsubnetPrefix')]"
               },                         
               "DNSServerIP": {
                 "value": [
