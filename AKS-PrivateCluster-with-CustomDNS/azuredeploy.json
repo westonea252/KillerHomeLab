@@ -545,13 +545,13 @@
                 "value": "[variables('AKSClusterName')]"
             },
             "vnetName": {
-                "value": "[variables('vnet2Name')]"
+                "value": "[variables('vnet1Name')]"
             },            
             "subnetName": {
-                "value": "[variables('vnet2subnet1Name')]"
+                "value": "[variables('vnet1subnet1Name')]"
             },  
             "serviceCidr": {
-                "value": "[variables('vnet2subnet1Prefix')]"
+                "value": "[variables('vnet1subnet1Prefix')]"
             },
             "dnsServiceIP": {
                 "value": "[variables('dnsserviceIP')]"
