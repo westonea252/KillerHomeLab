@@ -559,7 +559,7 @@
             "dockerBridgeCidr": {
                 "value": "[variables('DockerBridgeCIDR')]"
             },                                    
-            "DNSZone": {
+            "DNSZoneName": {
                 "value": "[variables('DNSZoneName')]"
             },     
             "ManagedIDName": {
