@@ -62,7 +62,9 @@
             },
             "identity": {
                 "type": "UserAssigned",
-                "userAssignedIdentities": "[variables('ManagedID')]"
+                "userAssignedIdentities": {
+                    "[variables('ManagedID')]": {}
+                }
             },
             "properties": {
                 "kubernetesVersion": "1.19.11",
