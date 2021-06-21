@@ -35,7 +35,7 @@
     },
     "variables": {
         "subnetId": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]",
-        "ManagedID": "[resourceId(resourceGroup().name, 'ManagedIdentity/userAssignedIdentities', parameters('ManagedIDName'))]",        
+        "ManagedID": "[resourceId(resourceGroup().name, 'Microsoft.ManagedIdentity/userAssignedIdentities', parameters('ManagedIDName'))]",        
         "publicIPAddressName": "[concat(parameters('AKSClusterName'),'-pip')]"
     },
     "resources": [
