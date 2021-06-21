@@ -684,97 +684,6 @@
               }                                                                                                                                                                              
           }
       }
-    },                     
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
-      "name": "CreateManagedID",   
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/managedidentity.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "ManagedIDName": {
-                  "value": "[variables('ManagedIDName')]"
-              },
-              "location": {
-                  "value": "[resourceGroup().location]"
-              }
-          }
-      }
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
-      "name": "AssignManagedIDRG",
-      "dependsOn": [
-        "DeployPrivateDNSZone",
-        "CreateManagedID"
-      ],        
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/roleassignment.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "PrincipalID": {
-                  "value": "[reference('CreateManagedID').outputs.principalId.value]"
-              },
-              "RoleDefinitionID": {
-                  "value": "[variables('Contributor')]"
-              },
-              "roleAssignmentGuid": {
-                  "value": "[parameters('roleAssignmentGuid')]"
-              }              
-          }
-      }
-    }, 
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
-      "name": "DeployAKSCluster",     
-      "dependsOn": [
-        "AssignManagedIDRG"
-      ],  
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-            "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/privateakscluster.json', parameters('_artifactsLocationSasToken')))]",
-            "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-            "AKSClusterName": {
-                "value": "[variables('AKSClusterName')]"
-            },
-            "vnetName": {
-                "value": "[variables('vnet2Name')]"
-            },            
-            "subnetName": {
-                "value": "[variables('vnet2subnet1Name')]"
-            },  
-            "serviceCidr": {
-                "value": "[variables('vnet1subnet1Prefix')]"
-            },
-            "dnsServiceIP": {
-                "value": "[variables('dnsserviceIP')]"
-            },
-            "dockerBridgeCidr": {
-                "value": "[variables('DockerBridgeCIDR')]"
-            },                                    
-            "DNSZoneName": {
-                "value": "[variables('DNSZoneName')]"
-            },     
-            "ManagedIDName": {
-                "value": "[variables('ManagedIDName')]"
-            },               
-            "location": {
-                "value": "[resourceGroup().location]"
-            }                                                                                                                   
-        }
-      }
     },
     {
       "type": "Microsoft.Resources/deployments",
@@ -871,6 +780,98 @@
                   "value": "[resourceGroup().location]"
               }
           }
+      }
+    },                         
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "CreateManagedID",   
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/managedidentity.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "ManagedIDName": {
+                  "value": "[variables('ManagedIDName')]"
+              },
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "AssignManagedIDRG",
+      "dependsOn": [
+        "DeployPrivateDNSZone",
+        "ConfigureDNSProxy",
+        "CreateManagedID"
+      ],        
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/roleassignment.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "PrincipalID": {
+                  "value": "[reference('CreateManagedID').outputs.principalId.value]"
+              },
+              "RoleDefinitionID": {
+                  "value": "[variables('Contributor')]"
+              },
+              "roleAssignmentGuid": {
+                  "value": "[parameters('roleAssignmentGuid')]"
+              }              
+          }
+      }
+    }, 
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DeployAKSCluster",     
+      "dependsOn": [
+        "AssignManagedIDRG"
+      ],  
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+            "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/privateakscluster.json', parameters('_artifactsLocationSasToken')))]",
+            "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+            "AKSClusterName": {
+                "value": "[variables('AKSClusterName')]"
+            },
+            "vnetName": {
+                "value": "[variables('vnet2Name')]"
+            },            
+            "subnetName": {
+                "value": "[variables('vnet2subnet1Name')]"
+            },  
+            "serviceCidr": {
+                "value": "[variables('vnet1subnet1Prefix')]"
+            },
+            "dnsServiceIP": {
+                "value": "[variables('dnsserviceIP')]"
+            },
+            "dockerBridgeCidr": {
+                "value": "[variables('DockerBridgeCIDR')]"
+            },                                    
+            "DNSZoneName": {
+                "value": "[variables('DNSZoneName')]"
+            },     
+            "ManagedIDName": {
+                "value": "[variables('ManagedIDName')]"
+            },               
+            "location": {
+                "value": "[resourceGroup().location]"
+            }                                                                                                                   
+        }
       }
     }                   
   ]
