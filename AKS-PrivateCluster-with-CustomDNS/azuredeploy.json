@@ -74,7 +74,7 @@
     "vnet2subnet2Name": "[concat(parameters('NamingConvention'),'-Spoke-VNet-Subnet2')]",    
     "vnet2subnet2Prefix": "[concat(parameters('vnet2ID'),'.2.0/24')]",    
     "vnet2BastionsubnetPrefix": "[concat(parameters('vnet2ID'),'.253.0/24')]",  
-    "DockerBridgeCIDR": "17.17.0.0/16",              
+    "DockerBridgeCIDR": "17.17.0.1/16",              
     "dnsserviceIP": "[concat(parameters('vnet2ID'),'.1.101')]",                    
     "DNSZone": "[concat('privatelink.',resourceGroup().location,'.cx.aks.containerservice.azure.us')]",
     "AKSClusterName": "[concat(parameters('NamingConvention'),'-AKS-Private-Cluster')]",
