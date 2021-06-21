@@ -100,10 +100,6 @@
                         ]
                     }
                 },
-                "windowsProfile": {
-                    "adminUsername": "azureuser",
-                    "enableCSIProxy": false
-                },
                 "servicePrincipalProfile": {
                     "clientId": "msi"
                 },
