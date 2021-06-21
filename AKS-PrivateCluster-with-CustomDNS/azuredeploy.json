@@ -761,7 +761,7 @@
               "TimeZone": {
                   "value": "[parameters('TimeZone')]"
               },                          
-              "LocalDNSName": {
+              "LocalDNSDomain": {
                 "value": "[parameters('LocalDNSDomain')]"
               },              
               "ReverseLookup": {
