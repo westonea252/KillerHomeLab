@@ -75,7 +75,7 @@
     "vnet2subnet2Prefix": "[concat(parameters('vnet2ID'),'.2.0/24')]",    
     "vnet2BastionsubnetPrefix": "[concat(parameters('vnet2ID'),'.253.0/24')]",  
     "DockerBridgeCIDR": "17.17.0.0/16",              
-    "dnsserviceIP": "[concat(parameters('vnet1ID'),'.1.101')]",                    
+    "dnsserviceIP": "[concat(parameters('vnet2ID'),'.1.101')]",                    
     "DNSZone": "[concat('privatelink.',resourceGroup().location,'.cx.aks.containerservice.azure.us')]",
     "AKSClusterName": "[concat(parameters('NamingConvention'),'-AKS-Private-Cluster')]",
     "ManagedIDName": "[concat(parameters('NamingConvention'),'-mi-', uniqueString(resourceGroup().id))]",
@@ -551,7 +551,7 @@
                 "value": "[variables('vnet1subnet1Name')]"
             },  
             "serviceCidr": {
-                "value": "[variables('vnet1subnet1Prefix')]"
+                "value": "[variables('vnet2subnet1Prefix')]"
             },
             "dnsServiceIP": {
                 "value": "[variables('dnsserviceIP')]"
