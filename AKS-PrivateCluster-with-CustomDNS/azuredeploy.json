@@ -159,7 +159,7 @@
       "metadata": {
         "description": "The password for the Administrator account of the new VM and Domain"
       }
-    },    
+    },       
     "WindowsServerLicenseType": {
       "type": "string",
       "defaultValue": "None",
@@ -278,6 +278,9 @@
     "roleAssignmentGuid": {
         "type": "string",
         "defaultValue": "[newGuid()]",
+        "allowedValues": [
+          "[newGuid()]"
+        ],        
         "metadata": {
             "description": "A new GUID used to identify the role assignment"
         }
@@ -342,14 +345,21 @@
       "metadata": {
           "description": "The location of resources, such as templates and DSC modules, that the template depends on"
       },
-      "defaultValue": "[deployment().properties.templateLink.uri]"
+      "defaultValue": "[deployment().properties.templateLink.uri]",
+      "allowedValues": [
+        "[deployment().properties.templateLink.uri]"
+      ]
     },
     "_artifactsLocationSasToken": {
         "type": "securestring",
         "metadata": {
             "description": "Auto-generated token to access _artifactsLocation. Leave it blank unless you need to provide your own value."
         },
-        "defaultValue": ""
+        "defaultValue": "",
+        "allowedValues": [
+          ""
+        ]        
+        
     }
   },
   "variables": {
@@ -360,22 +370,22 @@
     "vnet0subnet2Name": "[concat(parameters('NamingConvention'),'-OnPrem-VNet-Subnet2')]",    
     "vnet0subnet2Prefix": "[concat(parameters('vnet0ID'),'.2.0/24')]",    
     "vnet0BastionsubnetPrefix": "[concat(parameters('vnet0ID'),'.253.0/24')]",        
-    "vnet1Name": "[concat(parameters('NamingConvention'),'-Hub-VNet')]",
+    "vnet1Name": "[concat(parameters('NamingConvention'),'-Spoke-VNet')]",
     "vnet1Prefix": "[concat(parameters('vnet1ID'),'.0.0/16')]",
-    "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-Hub-VNet-Subnet1')]",    
+    "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-Spoke-VNet-Subnet1')]",    
     "vnet1subnet1Prefix": "[concat(parameters('vnet1ID'),'.1.0/24')]",    
-    "vnet1subnet2Name": "[concat(parameters('NamingConvention'),'-Hub-VNet-Subnet2')]",    
+    "vnet1subnet2Name": "[concat(parameters('NamingConvention'),'-Spoke-VNet-Subnet2')]",    
     "vnet1subnet2Prefix": "[concat(parameters('vnet1ID'),'.2.0/24')]",    
-    "vnet1BastionsubnetPrefix": "[concat(parameters('vnet1ID'),'.253.0/24')]",        
-    "vnet2Name": "[concat(parameters('NamingConvention'),'-Spoke-VNet')]",
+    "vnet1BastionsubnetPrefix": "[concat(parameters('vnet1ID'),'.253.0/24')]",  
+    "vnet2Name": "[concat(parameters('NamingConvention'),'-Hub-VNet')]",
     "vnet2Prefix": "[concat(parameters('vnet2ID'),'.0.0/16')]",
-    "vnet2subnet1Name": "[concat(parameters('NamingConvention'),'-Spoke-VNet-Subnet1')]",    
+    "vnet2subnet1Name": "[concat(parameters('NamingConvention'),'-Hub-VNet-Subnet1')]",    
     "vnet2subnet1Prefix": "[concat(parameters('vnet2ID'),'.1.0/24')]",    
-    "vnet2subnet2Name": "[concat(parameters('NamingConvention'),'-Spoke-VNet-Subnet2')]",    
+    "vnet2subnet2Name": "[concat(parameters('NamingConvention'),'-Hub-VNet-Subnet2')]",    
     "vnet2subnet2Prefix": "[concat(parameters('vnet2ID'),'.2.0/24')]",    
-    "vnet2BastionsubnetPrefix": "[concat(parameters('vnet2ID'),'.253.0/24')]",  
+    "vnet2BastionsubnetPrefix": "[concat(parameters('vnet2ID'),'.253.0/24')]",        
     "DockerBridgeCIDR": "17.17.0.1/16",              
-    "AKSDnsserviceIP": "[concat(parameters('vnet1ID'),'.1.',variables('dnslastoctet'))]",            
+    "AKSDnsserviceIP": "[concat(parameters('vnet2ID'),'.1.',variables('dnslastoctet'))]",            
     "dnslastoctet": "101",       
     "dnsname": "[concat(parameters('NamingConvention'),'-dns-proxy')]",   
     "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",           
@@ -393,7 +403,7 @@
     "PrivateDNSZoneName": "[concat('privatelink.',resourceGroup().location,'.cx.aks.containerservice.azure.us')]",
     "AKSClusterName": "[concat(parameters('NamingConvention'),'-AKS-Private-Cluster')]",
     "ManagedIDName": "[concat(parameters('NamingConvention'),'-mi-', uniqueString(resourceGroup().id))]",
-    "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"                
+    "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"
   },  
   "resources": [
     {
@@ -446,76 +456,6 @@
           },
           "parameters": {
               "vnetName": {
-                  "value": "[variables('vnet1Name')]"
-              },
-              "vnetprefix": {
-                  "value": "[variables('vnet1Prefix')]"
-              },
-              "subnet1Name": {
-                  "value": "[variables('vnet1subnet1Name')]"
-              },
-              "subnet1Prefix": {
-                  "value": "[variables('vnet1subnet1Prefix')]"
-              },
-              "subnet2Name": {
-                "value": "[variables('vnet1subnet2Name')]"
-              },
-              "subnet2Prefix": {
-                "value": "[variables('vnet1subnet2Prefix')]"
-              },              
-              "BastionsubnetPrefix": {
-                "value": "[variables('vnet1BastionsubnetPrefix')]"
-              },              
-              "location": {
-                  "value": "[resourceGroup().location]"
-              }
-          }
-      }
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
-      "name": "DeployHubBastionHost",
-      "dependsOn": [
-        "DeployHubVNet"
-      ],
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/bastionhost.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "publicIPAddressName": {
-                "value": "[concat(variables('vnet1Name'),'-Bastion-pip')]"
-              },
-              "AllocationMethod": {
-                "value": "Static"
-              },              
-              "vnetName": {
-                  "value": "[variables('vnet1Name')]"
-              },
-              "subnetName": {
-                  "value": "AzureBastionSubnet"
-              },
-              "location": {
-                  "value": "[resourceGroup().location]"
-              }
-          }
-      }
-    },                
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
-      "name": "DeploySpokeVNet",
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/vnet.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "vnetName": {
                   "value": "[variables('vnet2Name')]"
               },
               "vnetprefix": {
@@ -545,6 +485,76 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
+      "name": "DeployHubBastionHost",
+      "dependsOn": [
+        "DeployHubVNet"
+      ],
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/bastionhost.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "publicIPAddressName": {
+                "value": "[concat(variables('vnet2Name'),'-Bastion-pip')]"
+              },
+              "AllocationMethod": {
+                "value": "Static"
+              },              
+              "vnetName": {
+                  "value": "[variables('vnet2Name')]"
+              },
+              "subnetName": {
+                  "value": "AzureBastionSubnet"
+              },
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },                
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DeploySpokeVNet",
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/vnet.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "vnetName": {
+                  "value": "[variables('vnet1Name')]"
+              },
+              "vnetprefix": {
+                  "value": "[variables('vnet1Prefix')]"
+              },
+              "subnet1Name": {
+                  "value": "[variables('vnet1subnet1Name')]"
+              },
+              "subnet1Prefix": {
+                  "value": "[variables('vnet1subnet1Prefix')]"
+              },
+              "subnet2Name": {
+                "value": "[variables('vnet1subnet2Name')]"
+              },
+              "subnet2Prefix": {
+                "value": "[variables('vnet1subnet2Prefix')]"
+              },              
+              "BastionsubnetPrefix": {
+                "value": "[variables('vnet1BastionsubnetPrefix')]"
+              },              
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
       "name": "PeeringFromHubToSpoke",
       "dependsOn": [
         "DeployHubVNet",
@@ -558,10 +568,10 @@
           },
           "parameters": {
               "SourceVNetName": {
-                "value": "[variables('vnet1Name')]"
+                "value": "[variables('vnet2Name')]"
               },
               "TargetVNetName": {
-                "value": "[variables('vnet2Name')]"
+                "value": "[variables('vnet1Name')]"
               },              
               "allowVirtualNetworkAccess": {
                 "value": "true"
@@ -596,10 +606,10 @@
           },
           "parameters": {
               "SourceVNetName": {
-                "value": "[variables('vnet2Name')]"
+                "value": "[variables('vnet1Name')]"
               },
               "TargetVNetName": {
-                "value": "[variables('vnet1Name')]"
+                "value": "[variables('vnet2Name')]"
               },              
               "allowVirtualNetworkAccess": {
                 "value": "true"
@@ -635,7 +645,7 @@
           },
           "parameters": {
               "SourceVNetName": {
-                "value": "[variables('vnet1Name')]"
+                "value": "[variables('vnet2Name')]"
               },
               "TargetVNetName": {
                 "value": "[variables('vnet0Name')]"
@@ -676,7 +686,7 @@
                 "value": "[variables('vnet0Name')]"
               },
               "TargetVNetName": {
-                "value": "[variables('vnet1Name')]"
+                "value": "[variables('vnet2Name')]"
               },              
               "allowVirtualNetworkAccess": {
                 "value": "true"
@@ -764,10 +774,10 @@
                 "value": "[parameters('DNSVMSize')]"
               },
               "vnetName": {
-                "value": "[variables('vnet1Name')]"
+                "value": "[variables('vnet2Name')]"
               },            
               "subnetName": {
-                "value": "[variables('vnet1subnet1Name')]"
+                "value": "[variables('vnet2subnet1Name')]"
               },                                                                                                                       
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
@@ -849,25 +859,25 @@
           },
           "parameters": {
               "vnetName": {
-                  "value": "[variables('vnet1Name')]"
+                  "value": "[variables('vnet2Name')]"
               },
               "vnetprefix": {
-                  "value": "[variables('vnet1Prefix')]"
+                  "value": "[variables('vnet2Prefix')]"
               },
               "subnet1Name": {
-                "value": "[variables('vnet1subnet1Name')]"
+                "value": "[variables('vnet2subnet1Name')]"
               },                                                                                                            
               "subnet1Prefix": {
-                "value": "[variables('vnet1subnet1Prefix')]"
+                "value": "[variables('vnet2subnet1Prefix')]"
               }, 
               "subnet2Name": {
-                "value": "[variables('vnet1subnet2Name')]"
+                "value": "[variables('vnet2subnet2Name')]"
               },                                                                                                            
               "subnet2Prefix": {
-                "value": "[variables('vnet1subnet2Prefix')]"
+                "value": "[variables('vnet2subnet2Prefix')]"
               },               
               "BastionsubnetPrefix": {
-                "value": "[variables('vnet1BastionsubnetPrefix')]"
+                "value": "[variables('vnet2BastionsubnetPrefix')]"
               },                         
               "DNSServerIP": {
                 "value": [
@@ -975,13 +985,13 @@
                 "value": "[variables('AKSClusterName')]"
             },
             "vnetName": {
-                "value": "[variables('vnet2Name')]"
+                "value": "[variables('vnet1Name')]"
             },            
             "subnetName": {
-                "value": "[variables('vnet2subnet1Name')]"
+                "value": "[variables('vnet1subnet1Name')]"
             },  
             "serviceCidr": {
-                "value": "[variables('vnet1subnet1Prefix')]"
+                "value": "[variables('vnet2subnet1Prefix')]"
             },
             "dnsServiceIP": {
                 "value": "[variables('AKSDNSserviceIP')]"
@@ -994,7 +1004,10 @@
             },     
             "ManagedIDName": {
                 "value": "[variables('ManagedIDName')]"
-            },               
+            },   
+            "adminUsername": {
+              "value": "[parameters('adminUsername')]"
+            },                         
             "location": {
                 "value": "[resourceGroup().location]"
             }                                                                                                                   

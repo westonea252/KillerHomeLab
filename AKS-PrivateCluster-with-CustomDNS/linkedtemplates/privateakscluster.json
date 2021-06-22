@@ -25,7 +25,13 @@
         },
         "ManagedIDName": {
             "type": "string"
-        },                           
+        },  
+      "adminUsername": {
+          "type": "string",
+          "metadata": {
+              "description": "The name of the Administrator of the new VM and Domain"
+          }
+      },                                 
         "location": {
             "type": "string",
             "metadata": {
@@ -48,7 +54,15 @@
             "properties": {
                 "publicIPAllocationMethod": "Static"
             }
-        }, 
+        },
+        {
+            "name": "[parameters('adminUsername')]",
+            "type": "Microsoft.Compute/sshPublicKeys",
+            "apiVersion": "2020-12-01",
+            "location": "[parameters('location')]",
+            "properties": {
+            }
+        },
         {
             "type": "Microsoft.ContainerService/managedClusters",
             "apiVersion": "2021-02-01",
@@ -92,7 +106,7 @@
                     }
                 ],
                 "linuxProfile": {
-                    "adminUsername": "azureuser",
+                    "adminUsername": "[parameters('adminUsername')]",
                     "ssh": {
                         "publicKeys": [
                             {
