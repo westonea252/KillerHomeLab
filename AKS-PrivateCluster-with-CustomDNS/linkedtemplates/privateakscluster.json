@@ -26,12 +26,18 @@
         "ManagedIDName": {
             "type": "string"
         },  
-      "adminUsername": {
-          "type": "string",
-          "metadata": {
-              "description": "The name of the Administrator of the new VM and Domain"
-          }
-      },                                 
+        "adminUsername": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the Administrator of the new VM and Domain"
+            }
+        },
+        "adminKey": {
+            "type": "securestring",
+            "metadata": {
+            "description": "The password for the Administrator account of the new VM and Domain"
+            }
+        },                                        
         "location": {
             "type": "string",
             "metadata": {
@@ -53,14 +59,6 @@
             "location": "[parameters('location')]",
             "properties": {
                 "publicIPAllocationMethod": "Static"
-            }
-        },
-        {
-            "name": "[parameters('adminUsername')]",
-            "type": "Microsoft.Compute/sshPublicKeys",
-            "apiVersion": "2020-12-01",
-            "location": "[parameters('location')]",
-            "properties": {
             }
         },
         {
@@ -110,7 +108,7 @@
                     "ssh": {
                         "publicKeys": [
                             {
-                                "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCr7miRdf1igPA46Tz5AGGtqDpWB/jQW6KmMwuRZlvMOMxT4GrEdvFlaZCIlbqaC7bSoN0jV3kOyfnYMMz7d9RrVEi8BZTRKwAMyfLoxT/cwc3LtWgUt8W1ySZDY1G2Bfx24Bh1AcwUaQjzOgXvBPIzZc9KWao1M8GsHxt7V0Jw2gmWhBvptktSeMWlF/+YWgSoC1lkYIvYd2t/qmqDoZPdbVV811cUYIZOrx2IY3YMApbet/GqKJ7OsTcc0CmRx1FkS7sceOXooszQo5i92+ECMBdJDsloP4347xz0aFD2Wgt0wojqEuh4vjxNt31S3oJuPLmIvXqoQOd5m9B8BiIT"
+                                "keyData": "[parameters('adminKey')]"
                             }
                         ]
                     }

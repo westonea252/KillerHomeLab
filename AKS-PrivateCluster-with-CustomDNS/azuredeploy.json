@@ -159,7 +159,13 @@
       "metadata": {
         "description": "The password for the Administrator account of the new VM and Domain"
       }
-    },       
+    },
+    "adminKey": {
+        "type": "securestring",
+      "metadata": {
+        "description": "The SSH Public Key for the Administrator account on Linux VM"
+      }
+    },           
     "WindowsServerLicenseType": {
       "type": "string",
       "defaultValue": "None",
@@ -997,7 +1003,10 @@
             },   
             "adminUsername": {
               "value": "[parameters('adminUsername')]"
-            },                         
+            }, 
+            "adminKey": {
+              "value": "[parameters('adminKey')]"
+            },                                      
             "location": {
                 "value": "[resourceGroup().location]"
             }                                                                                                                   
