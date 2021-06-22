@@ -312,14 +312,14 @@
             "description": "Domain Controller1 OS Version"
         }
     },
-    "WK1OSVersion": {
+    "WKOSVersion": {
       "type": "string",
       "defaultValue": "19h1-pro",
       "allowedValues": [
         "19h1-pro"
       ],
       "metadata": {
-          "description": "Workstation1 OS Version"
+          "description": "Workstation OS Version"
       }
   },        
     "DNSVMSize": {
@@ -336,11 +336,11 @@
             "description": "Domain Controller1 VMSize"
         }
     },        
-    "WK1VMSize": {
+    "WKVMSize": {
       "type": "string",
       "defaultValue": "Standard_D2s_v3",
       "metadata": {
-          "description": "Workstation1 VMSize"
+          "description": "Workstation VMSize"
       }
     },                                                                            
     "_artifactsLocation": {
@@ -387,9 +387,12 @@
     "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",           
     "dc1IP": "[concat(parameters('vnet0ID'),'.1.',variables('dc1lastoctet'))]",        
     "dc1lastoctet": "101",        
+    "wk0lastoctet": "201",            
+    "wk0name": "[concat(parameters('NamingConvention'),'-wk-op')]",           
+    "wk0IP": "[concat(parameters('vnet0ID'),'.2.',variables('wk0lastoctet'))]",        
     "wk1lastoctet": "201",            
-    "wk1name": "[concat(parameters('NamingConvention'),'-wk-01')]",           
-    "wk1IP": "[concat(parameters('vnet0ID'),'.2.',variables('wk1lastoctet'))]",        
+    "wk1name": "[concat(parameters('NamingConvention'),'-wk-spk')]",           
+    "wk1IP": "[concat(parameters('vnet1ID'),'.2.',variables('wk1lastoctet'))]",            
     "DCDataDisk1Name": "NTDS",            
     "InternaldomainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('InternalTLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('InternalTLD'))]",
@@ -843,7 +846,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "updatevnet1dns",
+      "name": "updatevnet2dns",
       "dependsOn": [
         "ConfigureDNSProxy"
       ],            
@@ -891,7 +894,7 @@
       "apiVersion": "2019-10-01",
       "name": "RestartDNSProxy",
       "dependsOn": [
-        "updatevnet1dns"
+        "updatevnet2dns"
       ],            
       "properties": {
           "mode": "Incremental",
@@ -1013,6 +1016,60 @@
         }
       }
     },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "deployWK1VM",
+      "dependsOn": [
+        "DeploySpokeVNet",        
+        "DeployAKSCluster"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('wk1name')]"
+              },
+              "computerIP": {
+                  "value": "[variables('wk1IP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsDesktop"
+              },
+              "Offer": {
+                  "value": "Windows-10"
+              },
+              "OSVersion": {
+                "value": "[parameters('WKOSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "[parameters('WindowsClientLicenseType')]"
+              },              
+              "VMSize": {
+                "value": "[parameters('WKVMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('vnet1Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('vnet1subnet2Name')]"
+              },                                                                                                                    
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },    
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
@@ -1270,7 +1327,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "deployWK1VM",
+      "name": "deployWK0VM",
       "dependsOn": [
         "restartdc1"
       ],      
@@ -1282,10 +1339,10 @@
           },
           "parameters": {
               "computerName": {
-                  "value": "[variables('wk1name')]"
+                  "value": "[variables('wk0name')]"
               },
               "computerIP": {
-                  "value": "[variables('wk1IP')]"
+                  "value": "[variables('wk0IP')]"
               },
               "Publisher": {
                   "value": "MicrosoftWindowsDesktop"
@@ -1294,13 +1351,13 @@
                   "value": "Windows-10"
               },
               "OSVersion": {
-                "value": "[parameters('WK1OSVersion')]"
+                "value": "[parameters('WKOSVersion')]"
               },              
               "LicenseType": {
                 "value": "[parameters('WindowsClientLicenseType')]"
               },              
               "VMSize": {
-                "value": "[parameters('WK1VMSize')]"
+                "value": "[parameters('WKVMSize')]"
               },
               "vnetName": {
                 "value": "[variables('vnet0Name')]"
@@ -1323,9 +1380,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "DomainJoinWK1VM",
+      "name": "DomainJoinWK0VM",
       "dependsOn": [
-        "DeployWK1VM"
+        "DeployWK0VM"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1335,7 +1392,7 @@
           },
           "parameters": {
               "computerName": {
-                  "value": "[variables('wk1name')]"
+                  "value": "[variables('wk0name')]"
               },
               "domainName": {
                   "value": "[variables('InternalDomainName')]"

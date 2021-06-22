@@ -33,7 +33,7 @@ Parameters that support changes
 - Reverse Lookup1.  Enter first 2 octets for VNet0ID (Hub) in Reverse (Example:  21.10)
 - DNSOSVersion.  Select 2016-Datacenter (Windows 2016) or 2019-Datacenter (Windows 2019)  or 2012-R2-Datacenter (Windows 2012 R2) DNS Proxy OS Version
 - DC1OSVersion.  Select 2016-Datacenter (Windows 2016) or 2019-Datacenter (Windows 2019) or 2012-R2-Datacenter (Windows 2012 R2)Domain Controller 1 OS Version
-- WK1OSVersion.  Workstation1 OS Version is not configurable and set to 19h1-pro (Windows 10).
+- WKOSVersion.  Workstation1 OS Version is not configurable and set to 19h1-pro (Windows 10).
 - DNSVMSize.  Enter a Valid VM Size based on which Region the VM is deployed.
 - DC1VMSize.  Enter a Valid VM Size based on which Region the VM is deployed.
-- WK1VMSize.  Enter a Valid VM Size based on which Region the VM is deployed.
+- WKVMSize.  Enter a Valid VM Size based on which Region the VM is deployed.
