@@ -1291,10 +1291,10 @@
                 "value": "[parameters('WK1VMSize')]"
               },
               "vnetName": {
-                "value": "[variables('vnet1Name')]"
+                "value": "[variables('vnet0Name')]"
               },            
               "subnetName": {
-                "value": "[variables('vnet1subnet2Name')]"
+                "value": "[variables('vnet0subnet2Name')]"
               },                                                                                                                    
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
