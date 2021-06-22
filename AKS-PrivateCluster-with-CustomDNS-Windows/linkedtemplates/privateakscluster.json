@@ -104,8 +104,7 @@
                         "nodeLabels": {},
                         "mode": "System",
                         "enableEncryptionAtHost": false,
-                        "osType": "Linux",
-                        "osSKU": "Ubuntu",
+                        "osType": "Windows",
                         "enableFIPS": false
                     }
                 ],
