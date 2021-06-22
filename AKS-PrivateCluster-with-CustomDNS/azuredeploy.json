@@ -342,21 +342,14 @@
       "metadata": {
           "description": "The location of resources, such as templates and DSC modules, that the template depends on"
       },
-      "defaultValue": "[deployment().properties.templateLink.uri]",
-      "allowedValues": [
-        "[deployment().properties.templateLink.uri]"
-      ]
+      "defaultValue": "[deployment().properties.templateLink.uri]"
     },
     "_artifactsLocationSasToken": {
         "type": "securestring",
         "metadata": {
             "description": "Auto-generated token to access _artifactsLocation. Leave it blank unless you need to provide your own value."
         },
-        "defaultValue": "",
-        "allowedValues": [
-          ""
-        ]        
-        
+        "defaultValue": ""
     }
   },
   "variables": {
