@@ -1048,9 +1048,12 @@
             "adminUsername": {
               "value": "[parameters('adminUsername')]"
             }, 
-              "adminPassword": {
-                "value": "[parameters('adminPassword')]"
-              },                                      
+            "adminPassword": {
+              "value": "[parameters('adminPassword')]"
+            },              
+            "LicenseType": {
+              "value": "[parameters('WindowsServerLicenseType')]"
+            },                                                    
             "location": {
                 "value": "[resourceGroup().location]"
             }                                                                                                                   
