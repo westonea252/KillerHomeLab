@@ -191,6 +191,7 @@
     "NamingConvention": {
       "type": "string",
       "defaultValue": "khl",
+      "maxLength": 4,       
       "metadata": {
         "description": "Naming Convention for Lab Objects"
       }
