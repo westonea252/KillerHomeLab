@@ -277,10 +277,7 @@
     },                            
     "roleAssignmentGuid": {
         "type": "string",
-        "defaultValue": "[newGuid()]",
-        "allowedValues": [
-          "[newGuid()]"
-        ],        
+        "defaultValue": "[newGuid()]",        
         "metadata": {
             "description": "A new GUID used to identify the role assignment"
         }
