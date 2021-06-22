@@ -159,13 +159,7 @@
       "metadata": {
         "description": "The password for the Administrator account of the new VM and Domain"
       }
-    },
-    "adminKey": {
-        "type": "securestring",
-      "metadata": {
-        "description": "The SSH Public Key for the Administrator account on Linux VM"
-      }
-    },           
+    },          
     "WindowsServerLicenseType": {
       "type": "string",
       "defaultValue": "None",
@@ -277,7 +271,7 @@
     },    
     "ReverseLookup1": {
       "type": "string",
-      "defaultValue": "20.10",
+      "defaultValue": "21.10",
       "metadata": {
           "description": "DNS Reverse Lookup Zone1 Prefix"
       }
@@ -1054,9 +1048,9 @@
             "adminUsername": {
               "value": "[parameters('adminUsername')]"
             }, 
-            "adminKey": {
-              "value": "[parameters('adminKey')]"
-            },                                      
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                      
             "location": {
                 "value": "[resourceGroup().location]"
             }                                                                                                                   

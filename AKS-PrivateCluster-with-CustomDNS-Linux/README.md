@@ -1,9 +1,9 @@
-# AKS Private Cluster with Custom DNS Server
+# AKS Private Cluster with Custom DNS Server - Linux
 
 Click a button below to deploy to the cloud of your choice
 
-[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2FDevelopment%2FAKS-PrivateCluster-with-CustomDNS%2Fazuredeploy.json)
-[![Deploy To Azure US Gov](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.svg?sanitize=true)](https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2FDevelopment%2FAKS-PrivateCluster-with-CustomDNS%2Fazuredeploy.json)
+[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2FDevelopment%2FAKS-PrivateCluster-with-CustomDNS-Linux%2Fazuredeploy.json)
+[![Deploy To Azure US Gov](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.svg?sanitize=true)](https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2FDevelopment%2FAKS-PrivateCluster-with-CustomDNS-Linux%2Fazuredeploy.json)
 
 This Templates deploys a xxx:
 
@@ -16,8 +16,8 @@ This Templates deploys a xxx:
 Parameters that support changes
 - TimeZone.  Select an appropriate Time Zone.
 - Admin Username.  Enter a valid Admin Username
-- Admin Password.  Enter a valid SSH Private Key
-- Admin Key.  Enter a valid Admin Password
+- Admin Password.  Enter a valid Admin Password
+- Admin Key.  Enter a valid SSH Private Key
 - WindowsServerLicenseType.  Choose Windows Server License Type (Example:  Windows_Server or None)
 - WindowsClientLicenseType.  Choose Windows Client License Type (Example:  Windows_Client or None)
 - Naming Convention. Enter a name that will be used as a naming prefix for (Servers, VNets, etc) you are using.
