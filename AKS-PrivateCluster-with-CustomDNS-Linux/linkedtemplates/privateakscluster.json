@@ -11,6 +11,9 @@
         "subnetName": {
             "type": "string"
         },
+        "podCidr": {
+            "type": "string"
+        },
         "serviceCidr": {
             "type": "string"
         },
@@ -80,12 +83,12 @@
                 }
             },
             "properties": {
-                "kubernetesVersion": "1.19.11",
+                "kubernetesVersion": "1.19.7",
                 "fqdnSubdomain": "aks",
                 "agentPoolProfiles": [
                     {
                         "name": "nodepool1",
-                        "count": 3,
+                        "count": 1,
                         "vmSize": "Standard_DS2_v2",
                         "osDiskSizeGB": 128,
                         "osDiskType": "Managed",
@@ -93,7 +96,7 @@
                         "vnetSubnetID": "[variables('subnetId')]",
                         "maxPods": 30,
                         "type": "VirtualMachineScaleSets",
-                        "orchestratorVersion": "1.19.11",
+                        "orchestratorVersion": "1.19.3",
                         "enableNodePublicIP": false,
                         "nodeLabels": {},
                         "mode": "System",
@@ -101,7 +104,26 @@
                         "osType": "Linux",
                         "osSKU": "Ubuntu",
                         "enableFIPS": false
-                    }
+                    },
+                    {
+                        "name": "nodepool2",
+                        "count": 1,
+                        "vmSize": "Standard_DS2_v2",
+                        "osDiskSizeGB": 128,
+                        "osDiskType": "Managed",
+                        "kubeletDiskType": "OS",
+                        "vnetSubnetID": "[variables('subnetId')]",
+                        "maxPods": 30,
+                        "type": "VirtualMachineScaleSets",
+                        "orchestratorVersion": "1.19.3",
+                        "enableNodePublicIP": false,
+                        "nodeLabels": {},
+                        "mode": "User",
+                        "enableEncryptionAtHost": false,
+                        "osType": "Linux",
+                        "osSKU": "Ubuntu",
+                        "enableFIPS": false
+                    }                    
                 ],
                 "linuxProfile": {
                     "adminUsername": "[parameters('adminUsername')]",
@@ -119,7 +141,7 @@
                 "nodeResourceGroup": "[concat('MC_Private-AKS-Lab01_', parameters('AKSClusterName'), parameters('location'))]",
                 "enableRBAC": true,
                 "networkProfile": {
-                    "networkPlugin": "azure",
+                    "networkPlugin": "kubenet",
                     "loadBalancerSku": "Standard",
                     "loadBalancerProfile": {
                         "managedOutboundIPs": {
@@ -131,6 +153,7 @@
                             }
                         ]
                     },
+                    "podCidr": "[parameters('podCidr')]",                    
                     "serviceCidr": "[parameters('serviceCidr')]",
                     "dnsServiceIP": "[parameters('dnsServiceIP')]",
                     "dockerBridgeCidr": "[parameters('dockerBridgeCidr')]",

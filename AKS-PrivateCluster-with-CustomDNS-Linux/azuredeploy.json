@@ -268,6 +268,20 @@
         "description": "Hub VNet Prefix"
       }
     },
+    "PODID": {
+      "type": "string",
+      "defaultValue": "10.30",
+      "metadata": {
+        "description": "POD Network ID"
+      }
+    },    
+    "serviceID": {
+      "type": "string",
+      "defaultValue": "10.31",
+      "metadata": {
+        "description": "Service Network ID"
+      }
+    },        
     "ReverseLookup0": {
       "type": "string",
       "defaultValue": "1.10",
@@ -382,9 +396,12 @@
     "vnet2subnet2Prefix": "[concat(parameters('vnet2ID'),'.2.0/24')]",    
     "vnet2BastionsubnetPrefix": "[concat(parameters('vnet2ID'),'.253.0/24')]",        
     "DockerBridgeCIDR": "17.17.0.1/16",              
-    "AKSDnsserviceIP": "[concat(parameters('vnet2ID'),'.1.',variables('dnslastoctet'))]",            
+    "podCIDR": "[concat(parameters('podID'),'.0.0/16')]",                          
+    "serviceCIDR": "[concat(parameters('serviceID'),'.0.0/16')]",                                                
+    "AKSDnsserviceIP": "[concat(parameters('serviceID'),'.1.10')]",            
     "dnslastoctet": "101",       
     "dnsname": "[concat(parameters('NamingConvention'),'-dns-proxy')]",   
+    "dnsIP": "[concat(parameters('vnet2ID'),'.1.',variables('dnslastoctet'))]",
     "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",           
     "dc1IP": "[concat(parameters('vnet0ID'),'.1.',variables('dc1lastoctet'))]",        
     "dc1lastoctet": "101",        
@@ -756,7 +773,7 @@
                   "value": "[variables('dnsname')]"
               },
               "computerIP": {
-                  "value": "[variables('AKSDnsserviceIP')]"
+                  "value": "[variables('dnsIP')]"
               },
               "Publisher": {
                   "value": "MicrosoftWindowsServer"
@@ -809,7 +826,7 @@
                   "value": "[variables('dnsname')]"
               },
               "computerIP": {
-                  "value": "[variables('AKSDNSserviceIP')]"
+                  "value": "[variables('dnsIP')]"
               },              
               "TimeZone": {
                   "value": "[parameters('TimeZone')]"
@@ -881,7 +898,7 @@
               },                         
               "DNSServerIP": {
                 "value": [
-                  "[variables('AKSDnsserviceIP')]"
+                  "[variables('dnsIP')]"
                 ]
               },                                                                                                            
               "location": {
@@ -927,7 +944,7 @@
               },                         
               "DNSServerIP": {
                 "value": [
-                  "[variables('AKSDnsserviceIP')]"
+                  "[variables('dnsIP')]"
                 ]
               },                                                                                                            
               "location": {
@@ -1036,8 +1053,11 @@
             "subnetName": {
                 "value": "[variables('vnet1subnet1Name')]"
             },  
+            "podCidr": {
+                "value": "[variables('podCIDR')]"
+            },
             "serviceCidr": {
-                "value": "[variables('vnet2subnet1Prefix')]"
+                "value": "[variables('serviceCIDR')]"
             },
             "dnsServiceIP": {
                 "value": "[variables('AKSDNSserviceIP')]"
