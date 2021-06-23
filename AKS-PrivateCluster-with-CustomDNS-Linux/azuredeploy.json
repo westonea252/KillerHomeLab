@@ -1335,8 +1335,8 @@
               "AKSDNSZone": {
                 "value": "[variables('PrivateDNSZoneName')]"
               },   
-              "DC1IP": {
-                "value": "[variables('dc1ip')]"
+              "DNSIP": {
+                "value": "[variables('dnsip')]"
               },                           
               "InternalDomainName": {
                 "value": "[variables('InternalDomainName')]"

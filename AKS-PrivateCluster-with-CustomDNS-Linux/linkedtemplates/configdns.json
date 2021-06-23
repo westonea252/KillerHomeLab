@@ -20,10 +20,10 @@
                 "description": "AKS Private DNS Zone"
             }
         },
-        "DC1IP": {
+        "DNSIP": {
             "type": "string",
             "metadata": {
-                "description": "OnPrem DNS Server IP"
+                "description": "DNS Proxy Server IP"
             }
         },                         
         "InternalDomainName": {
@@ -97,7 +97,7 @@
                             "computerName": "[parameters('computerName')]",
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",    
                             "AKSDNSZone": "[parameters('AKSDNSZone')]",      
-                            "DC1IP": "[parameters('DC1IP')]",                                                                                                                                                                                                                                                                              
+                            "DNSIP": "[parameters('DNSIP')]",                                                                                                                                                                                                                                                                              
                             "InternalDomainName": "[parameters('InternalDomainName')]",                                                        
                             "ReverseLookup1": "[parameters('ReverseLookup1')]",
                             "dc1lastoctet": "[parameters('dc1lastoctet')]",

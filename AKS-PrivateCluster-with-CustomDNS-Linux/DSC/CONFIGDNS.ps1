@@ -4,7 +4,7 @@
    (
         [String]$computerName,
         [String]$NetBiosDomain,
-        [String]$DC1IP,                                       
+        [String]$DNSIP,                                       
         [String]$AKSDNSZone,
         [String]$dc1lastoctet,
         [String]$InternaldomainName,
@@ -49,7 +49,7 @@
         xDnsServerConditionalForwarder AKSDnsZone
         {
             Name      = $AKSDNSZone
-            MasterServers = $DC1IP
+            MasterServers = $DNSIP
             Ensure    = 'Present'
         }
     }
