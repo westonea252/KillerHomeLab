@@ -4,6 +4,8 @@
    (
         [String]$computerName,
         [String]$NetBiosDomain,
+        [String]$DC1IP,                                       
+        [String]$AKSDNSZone,
         [String]$dc1lastoctet,
         [String]$InternaldomainName,
         [String]$ReverseLookup1,
@@ -42,6 +44,13 @@
             Type      = 'Ptr'
             Ensure    = 'Present'
             DependsOn = "[xDnsServerADZone]ReverseADZone1"
+        }
+
+        xDnsServerConditionalForwarder AKSDnsZone
+        {
+            Name      = $AKSDNSZone
+            MasterServers = $DC1IP
+            Ensure    = 'Present'
         }
     }
 }

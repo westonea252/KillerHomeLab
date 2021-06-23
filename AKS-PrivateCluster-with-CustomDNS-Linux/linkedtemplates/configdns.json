@@ -13,7 +13,19 @@
             "metadata": {
                 "description": "NetBios Domain Name"
             }
-        },            
+        },   
+        "AKSDNSZone": {
+            "type": "string",
+            "metadata": {
+                "description": "AKS Private DNS Zone"
+            }
+        },
+        "DC1IP": {
+            "type": "string",
+            "metadata": {
+                "description": "OnPrem DNS Server IP"
+            }
+        },                         
         "InternalDomainName": {
             "type": "string",
           "metadata": {
@@ -83,7 +95,9 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "computerName": "[parameters('computerName')]",
-                            "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
+                            "NetBiosDomain": "[parameters('NetBiosDomain')]",    
+                            "AKSDNSZone": "[parameters('AKSDNSZone')]",      
+                            "DC1IP": "[parameters('DC1IP')]",                                                                                                                                                                                                                                                                              
                             "InternalDomainName": "[parameters('InternalDomainName')]",                                                        
                             "ReverseLookup1": "[parameters('ReverseLookup1')]",
                             "dc1lastoctet": "[parameters('dc1lastoctet')]",

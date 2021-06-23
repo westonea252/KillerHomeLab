@@ -1331,7 +1331,13 @@
               },
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
-              },              
+              }, 
+              "AKSDNSZone": {
+                "value": "[variables('PrivateDNSZoneName')]"
+              },   
+              "DC1IP": {
+                "value": "[variables('dc1ip')]"
+              },                           
               "InternalDomainName": {
                 "value": "[variables('InternalDomainName')]"
               },              
