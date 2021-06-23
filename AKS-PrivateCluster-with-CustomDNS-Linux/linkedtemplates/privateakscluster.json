@@ -83,7 +83,7 @@
                 }
             },
             "properties": {
-                "kubernetesVersion": "1.19.7",
+                "kubernetesVersion": "1.19.11",
                 "fqdnSubdomain": "aks",
                 "agentPoolProfiles": [
                     {
@@ -96,7 +96,7 @@
                         "vnetSubnetID": "[variables('subnetId')]",
                         "maxPods": 30,
                         "type": "VirtualMachineScaleSets",
-                        "orchestratorVersion": "1.19.3",
+                        "orchestratorVersion": "1.19.11",
                         "enableNodePublicIP": false,
                         "nodeLabels": {},
                         "mode": "System",
@@ -115,7 +115,7 @@
                         "vnetSubnetID": "[variables('subnetId')]",
                         "maxPods": 30,
                         "type": "VirtualMachineScaleSets",
-                        "orchestratorVersion": "1.19.3",
+                        "orchestratorVersion": "1.19.11",
                         "enableNodePublicIP": false,
                         "nodeLabels": {},
                         "mode": "User",
@@ -201,6 +201,32 @@
                 "osSKU": "Ubuntu",
                 "enableFIPS": false
             }
-        }
+        },
+        {
+            "type": "Microsoft.ContainerService/managedClusters/agentPools",
+            "apiVersion": "2021-02-01",
+            "name": "[concat(parameters('AKSClusterName'), '/nodepool2')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ContainerService/managedClusters', parameters('AKSClusterName'))]"
+            ],
+            "properties": {
+                "count": 3,
+                "vmSize": "Standard_DS2_v2",
+                "osDiskSizeGB": 128,
+                "osDiskType": "Managed",
+                "kubeletDiskType": "OS",
+                "vnetSubnetID": "[variables('subnetId')]",
+                "maxPods": 30,
+                "type": "VirtualMachineScaleSets",
+                "orchestratorVersion": "1.19.11",
+                "enableNodePublicIP": false,
+                "nodeLabels": {},
+                "mode": "User",
+                "enableEncryptionAtHost": false,
+                "osType": "Linux",
+                "osSKU": "Ubuntu",
+                "enableFIPS": false
+            }
+        }        
     ]
 }
