@@ -884,7 +884,7 @@
       "apiVersion": "2019-10-01",
       "name": "DeployTools",
       "dependsOn": [
-        "finalizeca"
+        "configdns"
       ],      
       "properties": {
           "mode": "Incremental",
