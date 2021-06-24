@@ -25,7 +25,7 @@
                 # Configure RRAS
                 $Feature = Get-WindowsFeature -Name Routing
                 $Installed = $Feature.Installed
-                $AddressPrefix = '@('+"$using:LocalAddressPrefix"+':100)'
+                $AddressPrefix = '@("'+"$using:LocalAddressPrefix"+':100)"'
                 $GatewayIP = "$using:RemoteGatewayIP"
 
                 IF ($Installed -like "False" -or $Null){
