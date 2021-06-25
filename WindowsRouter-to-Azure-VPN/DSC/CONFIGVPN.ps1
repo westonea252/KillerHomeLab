@@ -23,11 +23,11 @@
             SetScript =
             {
                 # Configure RRAS
-                $Feature = Get-WindowsFeature -Name Routing
-                $Installed = $Feature.Installed
+                $RemoteAccess = Get-RemoteAccess
+                $InstallStatus = $RemoteAccess.VpnS2SStatus
                 $AddressPrefix = "$using:LocalAddressPrefix"+':100'
 
-                IF ($Installed -like "False" -or $Null){
+                IF ($InstallStatus -like "Uninstalled"){
                 Install-RemoteAccess -VpnType VpnS2S
                 Add-Content -Path C:\VPNInstall.txt -Value 'Installed VpnS2S'
                 Add-VpnS2SInterface -Protocol IKEv2 -AuthenticationMethod PSKOnly -NumberOfTries 3 -ResponderAuthenticationMethod PSKOnly -Name Azure -Destination "$using:RemoteGatewayIP" -IPv4Subnet "$AddressPrefix" -SharedSecret "$using:SharedKey"
