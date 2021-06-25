@@ -25,15 +25,12 @@
                 # Configure RRAS
                 $Feature = Get-WindowsFeature -Name Routing
                 $Installed = $Feature.Installed
+                $AddressPrefix = "$using:LocalAddressPrefix"+':100'
 
                 IF ($Installed -like "False" -or $Null){
-                Install-WindowsFeature Routing -IncludeAllSubFeature -IncludeManagementTools
-                Set-Content -Path C:\VPNInstall.txt -Value 'Installed RRAS Role'
                 Install-RemoteAccess -VpnType VpnS2S
                 Add-Content -Path C:\VPNInstall.txt -Value 'Installed VpnS2S'
-                Import-Module RemoteAccess
-                Add-Content -Path C:\VPNInstall.txt -Value 'Imported RemoteAccess Module'
-                Add-VpnS2SInterface -Protocol IKEv2 -AuthenticationMethod PSKOnly -NumberOfTries 3 -ResponderAuthenticationMethod PSKOnly -Name Azure -Destination "$using:RemoteGatewayIP" -IPv4Subnet "$using:LocalAddressPrefix"+':100' -SharedSecret "$using:SharedKey"
+                Add-VpnS2SInterface -Protocol IKEv2 -AuthenticationMethod PSKOnly -NumberOfTries 3 -ResponderAuthenticationMethod PSKOnly -Name Azure -Destination "$using:RemoteGatewayIP" -IPv4Subnet "$AddressPrefix" -SharedSecret "$using:SharedKey"
                 Add-Content -Path C:\VPNInstall.txt -Value 'Added VPNS2SInterface'
                 Set-VpnServerIPsecConfiguration -EncryptionType MaximumEncryption
                 Add-Content -Path C:\VPNInstall.txt -Value 'Set Encryption'
