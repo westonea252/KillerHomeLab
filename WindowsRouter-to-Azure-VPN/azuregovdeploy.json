@@ -730,6 +730,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "restartgw",
+      "resourceGroup":  "[parameters('Site1RG')]",      
       "dependsOn": [
         "InstallRRAS"
       ],            
