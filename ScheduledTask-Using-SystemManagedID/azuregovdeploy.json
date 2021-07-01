@@ -490,7 +490,7 @@
     },                            
     "EX1VMSize": {
         "type": "string",
-        "defaultValue": "Standard_D8s_v3",
+        "defaultValue": "Standard_D4s_v3",
         "metadata": {
             "description": "Exchange Server1 VMSize"
         }
@@ -2051,8 +2051,8 @@
               "BaseDN": {
                   "value": "[variables('BaseDN')]"
               },                                   
-              "CAServerIP": {
-                  "value": "[variables('icaIP')]"
+              "TLSServerIP": {
+                  "value": "[variables('tl1IP')]"
               },                                                                                                                                                                                                                   
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"

@@ -32,10 +32,10 @@
                 "description": "Base Domain Distiguished Name"
             }
         },                        
-        "CAServerIP": {
+        "TLSServerIP": {
             "type": "string",
             "metadata": {
-                "description": "CA Server IP"
+                "description": "Tools Server IP"
             }
         },                                             
         "adminUsername": {
@@ -93,7 +93,7 @@
                             "ExternaldomainName": "[parameters('ExternaldomainName')]",   
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",        
                             "BaseDN": "[parameters('BaseDN')]",                                                                                                               
-                            "CAServerIP": "[parameters('CAServerIP')]",                                                                                                                                                                                
+                            "TLSServerIP": "[parameters('TLSServerIP')]",                                                                                                                                                                                
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"
