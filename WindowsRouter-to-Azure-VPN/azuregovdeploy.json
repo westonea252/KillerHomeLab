@@ -847,6 +847,57 @@
               }
           }
       }
-    }                                                                                                                                                                                                                                                          
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "ConfigureVPN1",
+      "resourceGroup":  "[parameters('Site1RG')]",
+      "dependsOn": [
+        "OnPremVNetLNG",
+        "InstallRRAS",
+        "restartgw",
+        "AzureVNetVNG-pip"                
+      ],           
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/configvpn1.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('routername')]"
+              },
+              "TimeZone": {
+                "value": "[parameters('TimeZone')]"
+              },
+              "RemoteGatewayIP": {
+                  "value": "[reference('AzureVNetVNG-pip').outputs.PublicIP.value]"
+              },             
+              "LocalAddressPrefix": {
+                "value": "[variables('vnet2Prefix')]"
+              },       
+              "SharedKey": {
+                "value": "[parameters('SharedKey')]"
+              },
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },              
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                
+              "location": {
+                  "value": "[deployment().Location]"
+              }              
+          }
+      }
+    }                                                                                                                                                                                                                                                              
   ]
 }
