@@ -86,7 +86,7 @@
                             "RemoteGatewayIP": "[parameters('RemoteGatewayIP')]",                            
                             "LocalAddressPrefix": "[parameters('LocalAddressPrefix')]",
                             "SharedKey": "[parameters('SharedKey')]",
-                            "Admi6nCreds": {
+                            "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"
                             }                                                                                                                                                                                              
