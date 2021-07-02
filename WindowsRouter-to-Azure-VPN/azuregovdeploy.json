@@ -468,7 +468,8 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "DeployAzureVM",  
+      "name": "DeployAzureVM",
+      "resourceGroup":  "[parameters('Site2RG')]",      
       "dependsOn": [
         "AzureVNet"
       ],      
@@ -675,6 +676,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DeployOnPremVM",  
+      "resourceGroup":  "[parameters('Site1RG')]",            
       "dependsOn": [
         "DeployWindowsRouter"
       ],      
