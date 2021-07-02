@@ -65,7 +65,8 @@
     },
     "variables": {
         "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/CONFIGVPN1.zip', parameters('_artifactsLocationSasToken')))]",
-        "ConfigurationFunction": "CONFIGVPN1.ps1\\CONFIGVPN1"
+        "ConfigurationFunction": "CONFIGVPN1.ps1\\CONFIGVPN1",
+        "IPv4Subnet": "[concat(parameters('LocalAddressPrefix'),':100')]"        
     },
     "resources": [
         {
@@ -84,7 +85,7 @@
                         "Properties": {
                             "TimeZone": "[parameters('TimeZone')]",                            
                             "RemoteGatewayIP": "[parameters('RemoteGatewayIP')]",                            
-                            "LocalAddressPrefix": "[parameters('LocalAddressPrefix')]",
+                            "IPv4Subnet": "[variables('IPv4Subnet')]",
                             "SharedKey": "[parameters('SharedKey')]",
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
