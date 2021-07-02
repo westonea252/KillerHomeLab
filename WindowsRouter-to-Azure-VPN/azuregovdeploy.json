@@ -197,18 +197,7 @@
       "metadata": {
           "description": "Windows Server OS License Type"
       }
-    },   
-    "WindowsClientLicenseType": {
-      "type": "string",
-      "defaultValue": "None",
-      "allowedValues": [
-        "None",
-        "Windows_Client"
-      ],      
-      "metadata": {
-          "description": "Windows Client OS License Type"
-      }
-    },                         
+    },                          
     "OPNamingConvention": {
       "type": "string",
       "defaultValue": "OP",
