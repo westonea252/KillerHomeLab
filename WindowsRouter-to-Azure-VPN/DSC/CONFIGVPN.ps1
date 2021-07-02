@@ -4,8 +4,9 @@
    (
         [String]$TimeZone,
         [String]$RemoteGatewayIP,
-        [String]$LocalAddressPrefix,
-        [String]$SharedKey                                 
+        [String]$IPv4Subnet,
+        [String]$SharedKey,
+        [System.Management.Automation.PSCredential]$Admincreds                                                                          
     )
 
     Import-DscResource -Module ComputerManagementDsc # Used for TimeZone
@@ -22,26 +23,23 @@
         {
             SetScript =
             {
+
                 # Configure RRAS
                 $RemoteAccess = Get-RemoteAccess
                 $InstallStatus = $RemoteAccess.VpnS2SStatus
-                $AddressPrefix = "$using:LocalAddressPrefix"+':100'
+                $FalseValue = '$False'
 
                 IF ($InstallStatus -like "Uninstalled"){
                 Install-RemoteAccess -VpnType VpnS2S
-                Add-Content -Path C:\VPNInstall.txt -Value 'Installed VpnS2S'
-                Add-VpnS2SInterface -Protocol IKEv2 -AuthenticationMethod PSKOnly -NumberOfTries 3 -ResponderAuthenticationMethod PSKOnly -Name Azure -Destination "$using:RemoteGatewayIP" -IPv4Subnet "$AddressPrefix" -SharedSecret "$using:SharedKey"
-                Add-Content -Path C:\VPNInstall.txt -Value 'Added VPNS2SInterface'
+                Add-VpnS2SInterface -Protocol IKEv2 -AuthenticationMethod PSKOnly -NumberOfTries 3 -ResponderAuthenticationMethod PSKOnly -Name Azure -Destination $using:RemoteGatewayIP -IPv4Subnet $using:IPv4Subnet -SharedSecret "$using:SharedKey"
                 Set-VpnServerIPsecConfiguration -EncryptionType MaximumEncryption
-                Add-Content -Path C:\VPNInstall.txt -Value 'Set Encryption'
-                Set-VpnS2Sinterface -Name Azure -InitiateConfigPayload $false -Force
-                Add-Content -Path C:\VPNInstall.txt -Value 'Set VPNS2SInterface'
+                Set-VpnS2Sinterface -Name Azure -InitiateConfigPayload $FalseValue -Force
                 Connect-VpnS2SInterface -Name Azure
-                Add-Content -Path C:\VPNInstall.txt -Value 'Connected to Azure'
                 }
             }
             GetScript =  { @{} }
             TestScript = { $false}
+            Credential = $Admincreds
         }
     }
 }
