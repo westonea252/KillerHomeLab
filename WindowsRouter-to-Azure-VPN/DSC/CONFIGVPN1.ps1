@@ -54,6 +54,7 @@
             GetScript =  { @{} }
             TestScript = { $false}
             DependsOn = '[File]ConfigureRRAS'
+            PsDscRunAsCredential = $Admincreds
         }
     }
 }
