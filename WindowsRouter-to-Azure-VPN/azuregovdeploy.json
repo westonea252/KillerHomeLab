@@ -841,7 +841,7 @@
                 "value": "[parameters('ROUTEROSVersion')]"
               },              
               "LicenseType": {
-                "value": "[parameters('WindowsLicenseType')]"
+                "value": "[parameters('WindowsServerLicenseType')]"
               },            
               "VMSize": {
                 "value": "[parameters('ROUTERVMSize')]"
