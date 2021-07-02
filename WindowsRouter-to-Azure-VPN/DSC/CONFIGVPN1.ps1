@@ -34,13 +34,13 @@
                 $Load = "$using:AdminCreds"
                 $Username = $AdminCreds.GetNetworkCredential().Username
                 $Password = $AdminCreds.GetNetworkCredential().Password
-                $False = '$False'
+                $FalseValue = '$False'
                 
                 # Create ConfigureRRAS Script
                 Set-Content -Path C:\ConfigureRRAS\SetupRRAS.ps1 -Value "Install-RemoteAccess -VpnType VpnS2S"
                 Add-Content -Path C:\ConfigureRRAS\SetupRRAS.ps1 -Value "Add-VpnS2SInterface -Protocol IKEv2 -AuthenticationMethod PSKOnly -NumberOfTries 3 -ResponderAuthenticationMethod PSKOnly -Name Azure -Destination $using:RemoteGatewayIP -IPv4Subnet $using:IPv4Subnet -SharedSecret $using:SharedKey"
                 Add-Content -Path C:\ConfigureRRAS\SetupRRAS.ps1 -Value "Set-VpnServerIPsecConfiguration -EncryptionType MaximumEncryption"
-                Add-Content -Path C:\ConfigureRRAS\SetupRRAS.ps1 -Value "Set-VpnS2Sinterface -Name Azure -InitiateConfigPayload $False -Force"
+                Add-Content -Path C:\ConfigureRRAS\SetupRRAS.ps1 -Value "Set-VpnS2Sinterface -Name Azure -InitiateConfigPayload $FalseValue -Force"
                 Add-Content -Path C:\ConfigureRRAS\SetupRRAS.ps1 -Value "Connect-VpnS2SInterface -Name Azure"
 
                 # Create Scheduled Task
