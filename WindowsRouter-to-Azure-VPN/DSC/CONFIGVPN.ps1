@@ -39,7 +39,7 @@
             }
             GetScript =  { @{} }
             TestScript = { $false}
-            Credential = $Admincreds
+            PsDscRunAsCredential = $Admincreds
         }
     }
 }
