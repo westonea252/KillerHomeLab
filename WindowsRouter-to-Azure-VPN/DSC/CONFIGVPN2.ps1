@@ -51,9 +51,8 @@
         {
             TaskName            = 'Configure RRAS'
             ActionExecutable    = 'C:\windows\system32\WindowsPowerShell\v1.0\powershell.exe'
-            ScheduleType        = 'Daily'
-            RepeatInterval     = '00:01:00'
-            RepetitionDuration = '00:02:00'
+            ScheduleType        = 'Once'
+            StartTime           = (Get-Date).AddMinutes(1)
             ActionArguments     = 'C:\ConfigureRRAS\SetupRRAS.ps1'
             Enable              = $true
             ExecuteAsCredential = $LocalCreds
