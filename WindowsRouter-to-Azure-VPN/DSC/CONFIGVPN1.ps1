@@ -2,6 +2,7 @@
 {
    param
    (
+        [String]$ComputerName,
         [String]$TimeZone,
         [String]$RemoteGatewayIP,
         [String]$IPv4Subnet,
@@ -10,6 +11,8 @@
     )
 
     Import-DscResource -Module ComputerManagementDsc # Used for TimeZone
+
+    [System.Management.Automation.PSCredential ]$LocalCreds = New-Object System.Management.Automation.PSCredential ("${ComputerName}\$($AdminCreds.UserName)", $AdminCreds.Password)
 
     Node localhost
     {
@@ -31,9 +34,9 @@
             SetScript =
             {
                 # Create Credentials
-                $Load = "$using:AdminCreds"
-                $Username = $AdminCreds.GetNetworkCredential().Username
-                $Password = $AdminCreds.GetNetworkCredential().Password
+                $Load = "$using:LocalCreds"
+                $Username = $LocalCreds.GetNetworkCredential().Username
+                $Password = $LocalCreds.GetNetworkCredential().Password
                 $FalseValue = '$False'
                 
                 # Create ConfigureRRAS Script
@@ -48,12 +51,35 @@
                 IF ($scheduledtask -eq $null) {
                 $action = New-ScheduledTaskAction -Execute Powershell -Argument '.\SetupRRAS.ps1' -WorkingDirectory 'C:\ConfigureRRAS'
                 Register-ScheduledTask -Action $action -TaskName "Configure RRAS" -Description "Configure RRAS" -User $Username -Password $Password
-                Start-ScheduledTask "Configure RRAS"
+
+                # Allow Remote Copy
+                $allowlegacy = get-itemproperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\RemoteAccess\Parameters" -Name "ModernStackEnabled" -ErrorAction 0
+                IF ($allowlegacy.ModernStackEnabled -ne 0) {New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\RemoteAccess\Parameters\" -Name "ModernStackEnabled" -Value 0 -Force}
                 }      
             }
             GetScript =  { @{} }
             TestScript = { $false}
             DependsOn = '[File]ConfigureRRAS'
         }
+
+        Script StartTask
+        {
+            SetScript =
+            {   
+
+                # Create Scheduled Task
+                $scheduledtaskInfo = Get-ScheduledTaskInfo -TaskName "Configure RRAS" -ErrorAction 0
+                $CurrentDate = Get-Date
+                $LastRunTime = $scheduledtaskInfo.LastRunTime
+                IF ($CurrentDate -gt $LastRunTime) {
+                Start-ScheduledTask "Configure RRAS"
+                }      
+            }
+            GetScript =  { @{} }
+            TestScript = { $false}
+            DependsOn = '[File]ConfigureRRAS'
+            Credential = $LocalCreds
+        }
+
     }
 }
