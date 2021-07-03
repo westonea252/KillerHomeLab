@@ -51,10 +51,6 @@
                 IF ($scheduledtask -eq $null) {
                 $action = New-ScheduledTaskAction -Execute Powershell -Argument '.\SetupRRAS.ps1' -WorkingDirectory 'C:\ConfigureRRAS'
                 Register-ScheduledTask -Action $action -TaskName "Configure RRAS" -Description "Configure RRAS" -User $Username -Password $Password
-
-                # Allow Remote Copy
-                $allowlegacy = get-itemproperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\RemoteAccess\Parameters" -Name "ModernStackEnabled" -ErrorAction 0
-                IF ($allowlegacy.ModernStackEnabled -ne 0) {New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\RemoteAccess\Parameters\" -Name "ModernStackEnabled" -Value 0 -Force}
                 }      
             }
             GetScript =  { @{} }
@@ -73,12 +69,16 @@
                 $LastRunTime = $scheduledtaskInfo.LastRunTime
                 IF ($CurrentDate -gt $LastRunTime) {
                 Start-ScheduledTask "Configure RRAS"
+
+                # Allow Remote Copy
+                $allowlegacy = get-itemproperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\RemoteAccess\Parameters" -Name "ModernStackEnabled" -ErrorAction 0
+                IF ($allowlegacy.ModernStackEnabled -ne 0) {New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\RemoteAccess\Parameters\" -Name "ModernStackEnabled" -Value 0 -Force}
                 }      
             }
             GetScript =  { @{} }
             TestScript = { $false}
             DependsOn = '[File]ConfigureRRAS'
-            Credential = $LocalCreds
+            PsDscRunAsCredential = $LocalCreds
         }
 
     }
