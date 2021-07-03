@@ -54,7 +54,6 @@
             GetScript =  { @{} }
             TestScript = { $false}
             DependsOn = '[File]ConfigureRRAS'
-            Credential  = $Admincreds
         }
     }
 }
