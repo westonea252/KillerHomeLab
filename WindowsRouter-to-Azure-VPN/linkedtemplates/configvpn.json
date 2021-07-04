@@ -83,6 +83,7 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
+                            "ComputerName": "[parameters('computerName')]",                            
                             "TimeZone": "[parameters('TimeZone')]",                            
                             "RemoteGatewayIP": "[parameters('RemoteGatewayIP')]",                            
                             "IPv4Subnet": "[variables('IPv4Subnet')]",

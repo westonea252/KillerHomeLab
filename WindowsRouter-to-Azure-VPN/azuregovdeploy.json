@@ -320,13 +320,13 @@
     "vnet2BastionsubnetPrefix": "[concat(parameters('vnet2ID'),'.253.0/24')]",
     "vnet2VNGName": "[concat(parameters('AZNamingConvention'),'-VNet1-VNG')]",                          
     "vnet1LNGName": "[concat(parameters('OPNamingConvention'),'-VNet1-LNG')]",                              
-    "ConnectionName": "[concat(parameters('AZNamingConvention'),'-',parameters('OPNamingConvention'))]",                                  
+    "ConnectionName": "[concat(parameters('AZNamingConvention'),'-',parameters('OPNamingConvention'))]",    
+    "routeTableName": "[concat(parameters('OPNamingConvention'),'-RT')]",                                                                
     "routername": "[concat(parameters('OPNamingConvention'),'-gw-01')]", 
     "router-Outside-IP": "[concat(parameters('vnet1ID'),'.1.',variables('routeroutlastoctet'))]",        
     "router-Inside-IP": "[concat(parameters('vnet1ID'),'.2.',variables('routerinlastoctet'))]",            
     "routeroutlastoctet": "254",        
     "routerinlastoctet": "254",
-
     "azurevmname": "[concat(parameters('AZNamingConvention'),'-vm1')]", 
     "azurevmIP": "[concat(parameters('vnet2ID'),'.1.',variables('azurevmlastoctet'))]",        
     "azurevmlastoctet": "100",
@@ -1013,7 +1013,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "ConfigureVPN1",
+      "name": "ConfigureVPN",
       "resourceGroup":  "[parameters('Site1RG')]",
       "dependsOn": [
         "OnPremVNetLNG",
@@ -1024,7 +1024,7 @@
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/configvpn2.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/configvpn.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -1060,6 +1060,37 @@
               }              
           }
       }
-    }                                                                                                                                                                                                                                                              
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "CreateRouteTable",
+      "resourceGroup":  "[parameters('Site1RG')]",
+      "dependsOn": [
+        "OnPremVNet",
+        "ConfigureVPN"                
+      ],              
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/routetable.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "nName": {
+                  "value": "[variables('routeTableName')]"
+              },
+              "SubnetPrefix": {
+                  "value": "[variables('vnet1Prefix')]"
+              },           
+              "RemoteGatewayIP": {
+                  "value": "[variables('router-Inside-IP')]"
+              },                        
+              "location": {
+                  "value": "[deployment().Location]"
+              }
+          }
+      }
+    }                                                                                                                                                                                                                                                                  
   ]
 }
