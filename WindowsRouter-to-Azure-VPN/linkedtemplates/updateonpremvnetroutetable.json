@@ -43,7 +43,13 @@
         "metadata": {
           "description": "The address range of the subnet created in the new VNET"
         }
-      },      
+      },
+      "NetworkSecurityGroupName": {
+        "type": "string",
+        "metadata": {
+          "description": "Network Security Group Name"
+        }
+      },            
       "RouteTableName": {
         "type": "string",
         "metadata": {
@@ -58,6 +64,7 @@
       }
     },
   "variables": {
+      "NetworkSecurityGroupID": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', parameters('NetworkSecurityGroupName'))]",
       "RouteTableId": "[resourceId(resourceGroup().name, 'Microsoft.Network/routeTables', parameters('RouteTableName'))]"            
   },    
     "resources": [

@@ -1124,7 +1124,10 @@
               },                                                                                                            
               "subnet2Prefix": {
                 "value": "[variables('vnet1subnet2Prefix')]"
-              },               
+              },
+              "NetworkSecurityGroupname": {
+                  "value": "[variables('NSG1Name')]"
+              },                             
               "BastionsubnetPrefix": {
                 "value": "[variables('vnet1BastionsubnetPrefix')]"
               },                           
