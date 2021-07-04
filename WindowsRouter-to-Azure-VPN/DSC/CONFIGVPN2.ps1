@@ -36,18 +36,17 @@
                 # Create ConfigureRRAS Script
                 $FalseValue = '$False'
                 Set-Content -Path C:\ConfigureRRAS\SetupRRAS.ps1 -Value "Install-RemoteAccess -VpnType VpnS2S"
-                Add-Content -Path C:\ConfigureRRAS\SetupRRAS.ps1 -Value "whoami > C:\ConfigureRRAS\ScheduledTask-Account.txt"
-                Add-Content -Path C:\ConfigureRRAS\SetupRRAS.ps1 -Value "Set-Content -Path C:\ConfigureRRAS\ConfigRRAS-Status.txt -Value 'RRAS Installed Successfully'"
                 Add-Content -Path C:\ConfigureRRAS\SetupRRAS.ps1 -Value "Import-Module RemoteAccess"
-                Add-Content -Path C:\ConfigureRRAS\SetupRRAS.ps1 -Value "Add-Content -Path C:\ConfigureRRAS\ConfigRRAS-Status.txt -Value 'Remote Access Module Imported Successfully'"
+                Add-Content -Path C:\ConfigureRRAS\SetupRRAS.ps1 -Value "$Service =  Get-Service -Name 'Routing and Remote Access'"
+                Add-Content -Path C:\ConfigureRRAS\SetupRRAS.ps1 -Value "$RemoteAccess = Get-RemoteAccess"                
+                Add-Content -Path C:\ConfigureRRAS\SetupRRAS.ps1 -Value "$InstallStatus = $RemoteAccess.VpnS2SStatus"                                
+                Add-Content -Path C:\ConfigureRRAS\SetupRRAS.ps1 -Value "while (($Service.Status -ne 'Running')){sleep 10}"                                                
+                Add-Content -Path C:\ConfigureRRAS\SetupRRAS.ps1 -Value "while (($InstallStatus -ne 'Installed')){sleep 10}"                                                                
+                Add-Content -Path C:\ConfigureRRAS\SetupRRAS.ps1 -Value "sleep 30"                                                                
                 Add-Content -Path C:\ConfigureRRAS\SetupRRAS.ps1 -Value "Add-VpnS2SInterface -Protocol IKEv2 -AuthenticationMethod PSKOnly -NumberOfTries 3 -ResponderAuthenticationMethod PSKOnly -Name Azure -Destination $using:RemoteGatewayIP -IPv4Subnet $using:IPv4Subnet -SharedSecret $using:SharedKey"
-                Add-Content -Path C:\ConfigureRRAS\SetupRRAS.ps1 -Value "Add-Content -Path C:\ConfigureRRAS\ConfigRRAS-Status.txt -Value 'Added VPNS2SInterface Successfully'"
                 Add-Content -Path C:\ConfigureRRAS\SetupRRAS.ps1 -Value "Set-VpnServerIPsecConfiguration -EncryptionType MaximumEncryption"
-                Add-Content -Path C:\ConfigureRRAS\SetupRRAS.ps1 -Value "Add-Content -Path C:\ConfigureRRAS\ConfigRRAS-Status.txt -Value 'Set Encryption Type Successfully'"
                 Add-Content -Path C:\ConfigureRRAS\SetupRRAS.ps1 -Value "Set-VpnS2Sinterface -Name Azure -InitiateConfigPayload $FalseValue -Force"
-                Add-Content -Path C:\ConfigureRRAS\SetupRRAS.ps1 -Value "Add-Content -Path C:\ConfigureRRAS\ConfigRRAS-Status.txt -Value 'Set VPNS2SInterface Successfully'"
                 Add-Content -Path C:\ConfigureRRAS\SetupRRAS.ps1 -Value "Connect-VpnS2SInterface -Name Azure"
-                Add-Content -Path C:\ConfigureRRAS\SetupRRAS.ps1 -Value "Add-Content -Path C:\ConfigureRRAS\ConfigRRAS-Status.txt -Value 'Connect VPNS2SInterface Successfully'"
             }
             GetScript =  { @{} }
             TestScript = { $false}
