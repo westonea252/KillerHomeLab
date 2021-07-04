@@ -1081,7 +1081,7 @@
                   "value": "[variables('routeTableName')]"
               },
               "SubnetPrefix": {
-                  "value": "[variables('vnet1Prefix')]"
+                  "value": "[variables('vnet2Prefix')]"
               },           
               "RemoteGatewayIP": {
                   "value": "[variables('router-Inside-IP')]"
