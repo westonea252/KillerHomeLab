@@ -186,8 +186,8 @@
         "metadata": {
           "description": "Shared Key for VPN Connection"
       }
-    },    
-    "WindowsLicenseType": {
+    },
+    "WindowsServerLicenseType": {
       "type": "string",
       "defaultValue": "None",
       "allowedValues": [
@@ -195,18 +195,27 @@
         "Windows_Server"
       ],      
       "metadata": {
-          "description": "Windows OS License Type"
+          "description": "Windows Server OS License Type"
       }
-    },                  
-    "NamingConvention": {
+    },                          
+    "OPNamingConvention": {
       "type": "string",
-      "defaultValue": "khl",
+      "defaultValue": "OP",
       "minLength": 1,
       "maxLength": 4,
       "metadata": {
-        "description": "Environment Naming Convention"
+        "description": "OnPrem Environment Naming Convention"
       }
     }, 
+    "AZNamingConvention": {
+      "type": "string",
+      "defaultValue": "AZ",
+      "minLength": 1,
+      "maxLength": 4,
+      "metadata": {
+        "description": "Azure Environment Naming Convention"
+      }
+    },     
     "VNet1ID": {
       "type": "string",
       "defaultValue": "192.168",
@@ -230,16 +239,54 @@
           "2012-R2-Datacenter"
         ],
         "metadata": {
-            "description": "Domain Controller1 OS Version"
+            "description": "Router OS Version"
         }
     },
     "ROUTERVMSize": {
         "type": "string",
         "defaultValue": "Standard_D2s_v3",
         "metadata": {
-            "description": "Domain Controller1 VMSize"
+            "description": "Router VMSize"
         }
     },        
+    "AzureOSVersion": {
+        "type": "string",
+        "defaultValue": "2019-Datacenter",
+        "allowedValues": [
+          "2019-Datacenter",
+          "2016-Datacenter",
+          "2012-R2-Datacenter"
+        ],
+        "metadata": {
+            "description": "Azure VM OS Version"
+        }
+    },
+    "AzureVMSize": {
+        "type": "string",
+        "defaultValue": "Standard_D2s_v3",
+        "metadata": {
+            "description": "Azure VMSize"
+        }
+    },            
+    "OnPremOSVersion": {
+        "type": "string",
+        "defaultValue": "2019-Datacenter",
+        "allowedValues": [
+          "2019-Datacenter",
+          "2016-Datacenter",
+          "2012-R2-Datacenter"
+        ],
+        "metadata": {
+            "description": "OnPrem VM OS Version"
+        }
+    },
+    "OnPremVMSize": {
+        "type": "string",
+        "defaultValue": "Standard_D2s_v3",
+        "metadata": {
+            "description": "OnPrem VMSize"
+        }
+    },                
     "_artifactsLocation": {
       "type": "string",
       "metadata": {
@@ -256,30 +303,37 @@
     }    
   },
   "variables": {
-    "vnet1Name": "[concat(parameters('NamingConvention'),'-OnPrem-VNet1')]",
+    "vnet1Name": "[concat(parameters('OPNamingConvention'),'-VNet1')]",
     "vnet1Prefix": "[concat(parameters('vnet1ID'),'.0.0/16')]",    
-    "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-OnPrem-VNet1-PublicSubnet')]", 
+    "vnet1subnet1Name": "[concat(parameters('OPNamingConvention'),'-VNet1-OutsideSubnet')]", 
     "vnet1subnet1Prefix": "[concat(parameters('vnet1ID'),'.1.0/24')]",           
-    "vnet1subnet2Name": "[concat(parameters('NamingConvention'),'-OnPrem-VNet1-PrivateSubnet')]",  
+    "vnet1subnet2Name": "[concat(parameters('OPNamingConvention'),'-VNet1-InsideSubnet')]",  
     "vnet1subnet2Prefix": "[concat(parameters('vnet1ID'),'.2.0/24')]",    
     "vnet1BastionsubnetPrefix": "[concat(parameters('vnet1ID'),'.253.0/24')]",                  
-    "vnet2Name": "[concat(parameters('NamingConvention'),'-Azure-VNet1')]",
+    "vnet2Name": "[concat(parameters('AZNamingConvention'),'-VNet1')]",
     "vnet2Prefix": "[concat(parameters('vnet2ID'),'.0.0/16')]",    
     "vnet2GatewaySubnetPrefix": "[concat(parameters('vnet2ID'),'.0.0/24')]",                      
-    "vnet2subnet1Name": "[concat(parameters('NamingConvention'),'-Azure-VNet1-PublicSubnet')]", 
+    "vnet2subnet1Name": "[concat(parameters('AZNamingConvention'),'-VNet1-Subnet1')]", 
     "vnet2subnet1Prefix": "[concat(parameters('vnet2ID'),'.1.0/24')]",           
-    "vnet2subnet2Name": "[concat(parameters('NamingConvention'),'-Azure-VNet1-PrivateSubnet')]",  
+    "vnet2subnet2Name": "[concat(parameters('AZNamingConvention'),'-VNet1-Subnet2')]",  
     "vnet2subnet2Prefix": "[concat(parameters('vnet2ID'),'.2.0/24')]",    
     "vnet2BastionsubnetPrefix": "[concat(parameters('vnet2ID'),'.253.0/24')]",
-    "vnet2VNGName": "[concat(parameters('NamingConvention'),'-Azure-VNet1-VNG')]",                          
-    "vnet1LNGName": "[concat(parameters('NamingConvention'),'-OnPrem-VNet1-LNG')]",                              
-    "ConnectionName": "[concat(parameters('NamingConvention'),'-Azure-to-OnPrem')]",                                  
-    "routername": "[concat(parameters('NamingConvention'),'-gw-01')]", 
+    "vnet2VNGName": "[concat(parameters('AZNamingConvention'),'-VNet1-VNG')]",                          
+    "vnet1LNGName": "[concat(parameters('OPNamingConvention'),'-VNet1-LNG')]",                              
+    "ConnectionName": "[concat(parameters('AZNamingConvention'),'-',parameters('OPNamingConvention'))]",    
+    "routeTableName": "[concat(parameters('OPNamingConvention'),'-RT')]",                                                                
+    "routername": "[concat(parameters('OPNamingConvention'),'-gw-01')]", 
     "router-Outside-IP": "[concat(parameters('vnet1ID'),'.1.',variables('routeroutlastoctet'))]",        
     "router-Inside-IP": "[concat(parameters('vnet1ID'),'.2.',variables('routerinlastoctet'))]",            
-    "routeroutlastoctet": "101",        
-    "routerinlastoctet": "101",
-    "NSG1Name": "[concat(parameters('NamingConvention'),'-nsg01')]"                    
+    "routeroutlastoctet": "254",        
+    "routerinlastoctet": "254",
+    "azurevmname": "[concat(parameters('AZNamingConvention'),'-vm1')]", 
+    "azurevmIP": "[concat(parameters('vnet2ID'),'.1.',variables('azurevmlastoctet'))]",        
+    "azurevmlastoctet": "100",
+    "opvmname": "[concat(parameters('OPNamingConvention'),'-vm1')]", 
+    "opvmIP": "[concat(parameters('vnet1ID'),'.2.',variables('opvmlastoctet'))]",        
+    "opvmlastoctet": "100",
+    "NSG1Name": "[concat(parameters('OPNamingConvention'),'-nsg01')]"                    
   },  
   "resources": [
     {
@@ -414,6 +468,60 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
+      "name": "DeployAzureVM",
+      "resourceGroup":  "[parameters('Site2RG')]",      
+      "dependsOn": [
+        "AzureVNet"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('azurevmname')]"
+              },
+              "computerIP": {
+                  "value": "[variables('azurevmIP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsServer"
+              },
+              "Offer": {
+                  "value": "WindowsServer"
+              },
+              "OSVersion": {
+                "value": "[parameters('AzureOSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "[parameters('WindowsServerLicenseType')]"
+              },            
+              "VMSize": {
+                "value": "[parameters('AzureVMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('vnet2Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('vnet2subnet1Name')]"
+              },            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
       "name": "AzureVNetVNG",
       "resourceGroup":  "[parameters('Site2RG')]",
       "dependsOn": [
@@ -538,7 +646,7 @@
                 "value": "[parameters('ROUTEROSVersion')]"
               },              
               "LicenseType": {
-                "value": "[parameters('WindowsLicenseType')]"
+                "value": "[parameters('WindowsServerLicenseType')]"
               },            
               "VMSize": {
                 "value": "[parameters('ROUTERVMSize')]"
@@ -564,6 +672,60 @@
           }
       }
     },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DeployOnPremVM",  
+      "resourceGroup":  "[parameters('Site1RG')]",            
+      "dependsOn": [
+        "DeployWindowsRouter"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('opvmname')]"
+              },
+              "computerIP": {
+                  "value": "[variables('opvmIP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsServer"
+              },
+              "Offer": {
+                  "value": "WindowsServer"
+              },
+              "OSVersion": {
+                "value": "[parameters('OnPremOSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "[parameters('WindowsServerLicenseType')]"
+              },            
+              "VMSize": {
+                "value": "[parameters('OnPremVMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('vnet1Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('vnet1subnet2Name')]"
+              },            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[deployment().Location]"
+              }
+          }
+      }
+    },        
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
@@ -670,7 +832,7 @@
                 "value": "[parameters('ROUTEROSVersion')]"
               },              
               "LicenseType": {
-                "value": "[parameters('WindowsLicenseType')]"
+                "value": "[parameters('WindowsServerLicenseType')]"
               },            
               "VMSize": {
                 "value": "[parameters('ROUTERVMSize')]"
@@ -696,6 +858,66 @@
           }
       }
     },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "InstallRRAS",
+      "resourceGroup":  "[parameters('Site1RG')]",
+      "dependsOn": [
+        "AddWindowsRouterPIP"             
+      ],              
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/rras.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('routername')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                
+              "location": {
+                  "value": "[deployment().Location]"
+              }              
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "restartgw",
+      "resourceGroup":  "[parameters('Site1RG')]",      
+      "dependsOn": [
+        "InstallRRAS"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/restartvm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('routername')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                                                         
+              "location": {
+                  "value": "[deployment().location]"
+              }
+          }
+      }
+    },    
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
@@ -795,6 +1017,8 @@
       "resourceGroup":  "[parameters('Site1RG')]",
       "dependsOn": [
         "OnPremVNetLNG",
+        "InstallRRAS",
+        "restartgw",
         "AzureVNetVNG-pip"                
       ],           
       "properties": {
@@ -819,6 +1043,12 @@
               "SharedKey": {
                 "value": "[parameters('SharedKey')]"
               },
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },              
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
               },                                                                                                            
@@ -830,6 +1060,85 @@
               }              
           }
       }
-    }                                                                                                                                                                                                                                                      
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "CreateRouteTable",
+      "resourceGroup":  "[parameters('Site1RG')]",
+      "dependsOn": [
+        "OnPremVNet",
+        "ConfigureVPN"                
+      ],              
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/routetable.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "Name": {
+                  "value": "[variables('routeTableName')]"
+              },
+              "SubnetPrefix": {
+                  "value": "[variables('vnet1Prefix')]"
+              },           
+              "RemoteGatewayIP": {
+                  "value": "[variables('router-Inside-IP')]"
+              },                        
+              "location": {
+                  "value": "[deployment().Location]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "updatevnet1RouteTable",
+      "resourceGroup":  "[parameters('Site1RG')]",               
+      "dependsOn": [
+        "CreateRouteTable"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/updateonpremvnetroutetable.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "vnetName": {
+                  "value": "[variables('vnet1Name')]"
+              },
+              "vnetprefix": {
+                  "value": "[variables('vnet1Prefix')]"
+              },
+              "subnet1Name": {
+                "value": "[variables('vnet1subnet1Name')]"
+              },                                                                                                            
+              "subnet1Prefix": {
+                "value": "[variables('vnet1subnet1Prefix')]"
+              }, 
+              "subnet2Name": {
+                "value": "[variables('vnet1subnet2Name')]"
+              },                                                                                                            
+              "subnet2Prefix": {
+                "value": "[variables('vnet1subnet2Prefix')]"
+              },
+              "NetworkSecurityGroupname": {
+                  "value": "[variables('NSG1Name')]"
+              },                             
+              "BastionsubnetPrefix": {
+                "value": "[variables('vnet1BastionsubnetPrefix')]"
+              },                           
+              "RouteTableName": {
+                  "value": "[variables('routeTableName')]"
+              },                                                                                                                                                                                                                              
+              "location": {
+                  "value": "[deployment().Location]"
+              }
+          }
+      }
+    }                                                                                                                                                                                                                                                                     
   ]
 }
