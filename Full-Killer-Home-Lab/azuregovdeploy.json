@@ -1445,6 +1445,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "promotedc1",
+      "resourceGroup":  "[parameters('Site1RG')]",                           
       "dependsOn": [
         "DeployDC1VM"
       ],            
