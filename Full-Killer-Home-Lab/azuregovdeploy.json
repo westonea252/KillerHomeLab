@@ -343,7 +343,7 @@
     },                    
     "ReverseLookup2": {
       "type": "string",
-      "defaultValue": "2.10",
+      "defaultValue": "1.10",
       "metadata": {
           "description": "DNS Reverse Lookup Zone2 Prefix"
       }
