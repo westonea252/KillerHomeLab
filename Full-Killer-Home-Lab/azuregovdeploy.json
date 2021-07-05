@@ -656,7 +656,7 @@
     "dc1name": "[concat(parameters('OPNamingConvention'),'-dc-01')]",           
     "dc1IP": "[concat(parameters('VNet1ID'),'.2.',variables('dc1lastoctet'))]",        
     "dc1lastoctet": "101",
-    "dc2name": "[concat(parameters('AZNamingConvention'),'-dc-02')]",           
+    "dc2name": "[concat(parameters('AZNamingConvention'),'-dc-01')]",           
     "dc2IP": "[concat(parameters('VNet2ID'),'.1.',variables('dc2lastoctet'))]",            
     "dc2lastoctet": "101",        
     "DCDataDisk1Name": "NTDS",   
