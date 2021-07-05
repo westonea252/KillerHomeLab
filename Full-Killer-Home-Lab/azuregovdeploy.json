@@ -2163,6 +2163,9 @@
               "computerName": {
                   "value": "[variables('icaname')]"
               },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },              
               "NamingConvention": {
                   "value": "[parameters('AZNamingConvention')]"
               },              
