@@ -2202,7 +2202,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "name": "GrantCARequest",
-      "resourceGroup":  "[parameters('Site2RG')]",                              
+      "resourceGroup":  "[parameters('Site1RG')]",                              
       "dependsOn": [
         "ConfigureIssueCA"
       ],      
@@ -2232,7 +2232,7 @@
                 "value": "[parameters('_artifactsLocationSasToken')]"
               },
               "location": {
-                  "value": "[parameters('Location2')]"
+                  "value": "[deployment().Location]"
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
           }
       }
