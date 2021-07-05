@@ -1497,7 +1497,7 @@
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/updateonpremvnet.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/updateonpremvnetdns.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -1526,7 +1526,13 @@
                 "value": [
                   "[variables('dc1IP')]"
                 ]
-              },                           
+              },  
+              "NetworkSecurityGroupname": {
+                  "value": "[variables('NSG1Name')]"
+              },                             
+              "RouteTableName": {
+                  "value": "[variables('routeTableName')]"
+              },                                       
               "location": {
                   "value": "[deployment().Location]"
               }
@@ -1544,7 +1550,7 @@
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/updateazurevnet.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/updateazurevnetdns.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -1576,7 +1582,7 @@
                 "value": [
                   "[variables('dc1IP')]"
                 ]
-              },                        
+              },                                                                                                                                                                                                                                                                    
               "location": {
                   "value": "[parameters('Location2')]"
               }
@@ -1875,7 +1881,7 @@
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/updateazurevnet.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/updateazurevnetdns.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
