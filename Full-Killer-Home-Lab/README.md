@@ -9,7 +9,6 @@ This Templates deploys a Azure to OnPrem VPN with a Windows Router used as the O
 
 - 2 - Resource Groups
 - 2 - Virtual Networks
-- 2 - Virtual Machines (1-OnPrem, 1-Azure)
 - 1 - Virtual Network Gateway
 - 2 - Bastion Hosts
 - 1 - Windows Router (VM with 2 NIC's and Public IP)
@@ -17,11 +16,32 @@ This Templates deploys a Azure to OnPrem VPN with a Windows Router used as the O
 - 1 - Local Network Gateway
 - 1 - Connection
 - 1 - Route Table
+- 12 - Virtual Machines
+-- 1 - Domain Controller (OnPrem)
+-- 1 - Domain Controller (Azure)
+-- 1 - Root CA Server (OnPrem)
+-- 1 - Issuing CA Server (Azure)
+-- 1 - OCSP Server (Azure)
+-- 1 - File Server (Azure)
+-- 1 - Exchange Server (Azure)
+-- 1 - AD Connect Server (Azure)
+-- 1 - ADFS Server (Azure)
+-- 1 - WAP Connect Server (Azure)
+-- 1 - Workstation (OnPrem)
+-- 1 - Workstation (Azure)
 
 The deployment leverages Desired State Configuration scripts to further customize the following:
 
 Windows Features
 - Windows Routing Remote Access configured as a Site-2-Site VPN
+
+PKI
+- 1 - Offline Root Certificate Authority Server
+- 1 - Issuing Certificate Authority Server
+- 1 - Online Certificate Status Protocol Server
+- Offline Root CA Configuaration
+- Issuing CA Configuration
+- OCSP Configuaration
 
 Parameters that support changes
 - TimeZone.  Select an appropriate Time Zone.

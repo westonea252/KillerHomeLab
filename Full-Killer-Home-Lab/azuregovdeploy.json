@@ -2236,6 +2236,246 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
           }
       }
-    }                      
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "FinalizeCA",
+      "resourceGroup":  "[parameters('Site2RG')]",                              
+      "dependsOn": [
+        "GrantCARequest"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/finalizeca.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('icaname')]"
+              },
+              "RootCAIP": {
+                  "value": "[variables('rcaIP')]"
+              },              
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },              
+              "IssuingCAName": {
+                  "value": "[parameters('IssuingCAName')]"
+              },              
+              "RootCAName": {
+                  "value": "[parameters('RootCAName')]"
+              },
+              "domainName": {
+                  "value": "[variables('ExternaldomainName')]"
+              },   
+              "CATemplateScriptUrl": {
+                  "value": "[variables('CATemplateScriptUrl')]"
+              },                 
+              "location": {
+                  "value": "[parameters('Location2')]"
+              },
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },              
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DeployOCSP",
+      "resourceGroup":  "[parameters('Site2RG')]",                              
+      "dependsOn": [
+        "FinalizeCA"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ocspname')]"
+              },
+              "computerIP": {
+                  "value": "[variables('ocspIP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsServer"
+              },
+              "Offer": {
+                  "value": "WindowsServer"
+              },
+              "OSVersion": {
+                "value": "[parameters('OCSPOSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "[parameters('WindowsServerLicenseType')]"
+              },            
+              "VMSize": {
+                "value": "[parameters('ocspVMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('VNet2Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('VNet2subnet1Name')]"
+              },                                                                                                                       
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DomainJoinOCSP",
+      "resourceGroup":  "[parameters('Site2RG')]",                              
+      "dependsOn": [
+        "DeployOCSP"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/domainjoin.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ocspname')]"
+              },
+              "domainName": {
+                  "value": "[variables('InternaldomainName')]"
+              },
+              "OUPath": {
+                  "value": "[variables('SRVOUPath')]"
+              },
+              "domainJoinOptions": {
+                  "value": 3
+              },
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                             
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "ConfigureOCSP",
+      "resourceGroup":  "[parameters('Site2RG')]",                              
+      "dependsOn": [
+        "DomainJoinOCSP"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/ocsp.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ocspname')]"
+              },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },                         
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },              
+              "Internaldomainname": {
+                  "value": "[variables('InternaldomainName')]"
+              },          
+              "Externaldomainname": {
+                  "value": "[variables('ExternaldomainName')]"
+              },   
+              "IssuingCAName": {
+                  "value": "[parameters('IssuingCAName')]"
+              },              
+              "RootCAName": {
+                  "value": "[parameters('RootCAName')]"
+              },
+              "location": {
+                  "value": "[parameters('Location2')]"
+              },
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },              
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "ReplicateAD",
+      "resourceGroup":  "[parameters('Site2RG')]",                              
+      "dependsOn": [
+        "configureocsp"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/replicatead.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('dc1name')]"
+              },
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },                                          
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                                                                                                      
+              "location": {
+                  "value": "[parameters('Location2')]"
+              },          
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+          }
+      }
+    }                        
   ]
 }
