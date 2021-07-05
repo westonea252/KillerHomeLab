@@ -1539,7 +1539,7 @@
       "name": "updatevnet2DNS-1",
       "resourceGroup":  "[parameters('Site2RG')]",
       "dependsOn": [
-        "promotedc1"        
+        "updatevnet1DNS-1"        
       ],              
       "properties": {
           "mode": "Incremental",
@@ -1870,7 +1870,7 @@
       "name": "updatevnet2DNS-2",
       "resourceGroup":  "[parameters('Site2RG')]",
       "dependsOn": [
-        "promotedc1"        
+        "promotedc2"        
       ],              
       "properties": {
           "mode": "Incremental",
