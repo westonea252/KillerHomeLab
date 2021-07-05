@@ -1390,7 +1390,7 @@
       "name": "DeployDC1VM",
       "resourceGroup":  "[parameters('Site1RG')]",                     
       "dependsOn": [
-        "OnPremVNet"
+        "updatevnet1RouteTable"
       ],      
       "properties": {
           "mode": "Incremental",
