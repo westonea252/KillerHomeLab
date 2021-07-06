@@ -677,7 +677,7 @@
     "EX1IP": "[concat(parameters('VNet2ID'),'.1.',variables('ex1lastoctet'))]", 
     "ex1lastoctet": "105",    
 
-    "ReverseLookup1": "[concat('1.',parameters('ReverseLookup1'))]",    
+    "ReverseLookup1": "[concat('2.',parameters('ReverseLookup1'))]",    
     "ReverseLookup2": "[concat('1.',parameters('ReverseLookup2'))]",
     "NSG1Name": "[concat(parameters('OPNamingConvention'),'-nsg01')]",
     "InternaldomainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('InternalTLD'))]",
