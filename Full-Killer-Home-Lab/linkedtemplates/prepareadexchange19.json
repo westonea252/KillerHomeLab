@@ -14,16 +14,10 @@
                 "description": "Exchange Organization Name"
             }
         },   
-        "DC1Name": {
+        "DCName": {
             "type": "string",
             "metadata": {
-                "description": "Domain Controller 1 Name"
-            }
-        },                                     
-        "DC2Name": {
-            "type": "string",
-            "metadata": {
-                "description": "Domain Controller 2 Name"
+                "description": "Domain Controller used for Setup"
             }
         },   
         "BaseDN": {
@@ -90,8 +84,7 @@
                         "Properties": {
                             "ExchangeOrgName": "[parameters('ExchangeOrgName')]",                                                        
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
-                            "DC1Name": "[parameters('DC1Name')]",                                                                                    
-                            "DC2Name": "[parameters('DC2Name')]",                                                                                                                
+                            "DCName": "[parameters('DCName')]",                                                                                    
                             "BaseDN": "[parameters('BaseDN')]",                                                                                                                                            
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",

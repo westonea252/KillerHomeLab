@@ -4,8 +4,7 @@
    (
         [String]$ExchangeOrgName,
         [String]$NetBiosDomain,
-        [String]$DC1Name,
-        [String]$DC2Name,
+        [String]$DCName,
         [String]$BaseDN,
         [System.Management.Automation.PSCredential]$Admincreds
     )
@@ -39,10 +38,12 @@
             SetScript =
             {
                 # Create Exchange AD Deployment
+
+                Move-ADDirectoryServerOperationMasterRole -Identity "$using:dcName" -OperationMasterRole 0,1,2,3,4 -Force
                 (Get-ADDomainController -Filter *).Name | Foreach-Object { repadmin /syncall $_ (Get-ADDomain).DistinguishedName /AdeP }
 
-                L:\Setup.exe /PrepareSchema /DomainController:"$using:dc1Name" /IAcceptExchangeServerLicenseTerms
-                L:\Setup.exe /PrepareAD /on:"$using:ExchangeOrgName" /DomainController:"$using:dc1Name" /IAcceptExchangeServerLicenseTerms
+                L:\Setup.exe /PrepareSchema /DomainController:"$using:dcName" /IAcceptExchangeServerLicenseTerms
+                L:\Setup.exe /PrepareAD /on:"$using:ExchangeOrgName" /DomainController:"$using:dcName" /IAcceptExchangeServerLicenseTerms
 
                 (Get-ADDomainController -Filter *).Name | Foreach-Object { repadmin /syncall $_ (Get-ADDomain).DistinguishedName /AdeP }
             }

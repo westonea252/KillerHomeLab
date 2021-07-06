@@ -2842,12 +2842,9 @@
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },
-              "dc1name": {
-                  "value": "[variables('dc1name')]"
-              },                            
-              "dc2name": {
+              "dcname": {
                   "value": "[variables('dc2name')]"
-              },                                          
+              },                            
               "BaseDN": {
                   "value": "[variables('BaseDN')]"
               },                                                        
