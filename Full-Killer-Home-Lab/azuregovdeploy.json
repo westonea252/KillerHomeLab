@@ -2529,6 +2529,198 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
           }
       }
-    }                        
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "deployfs1",
+      "resourceGroup":  "[parameters('Site2RG')]",                                    
+      "dependsOn": [
+        "ReplicateAD-2"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('fs1name')]"
+              },
+              "computerIP": {
+                  "value": "[variables('fs1IP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsServer"
+              },
+              "Offer": {
+                  "value": "WindowsServer"
+              },
+              "OSVersion": {
+                "value": "[parameters('FSOSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "[parameters('WindowsServerLicenseType')]"
+              },            
+              "VMSize": {
+                "value": "[parameters('fs1VMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('vnet2Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('vnet2subnet1Name')]"
+              },            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DomainJoinFS1",
+      "resourceGroup":  "[parameters('Site2RG')]",                                    
+      "dependsOn": [
+        "deployfs1"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/domainjoin.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('fs1name')]"
+              },
+              "domainName": {
+                  "value": "[variables('InternaldomainName')]"
+              },
+              "OUPath": {
+                  "value": "[variables('SRVOUPath')]"
+              },
+              "domainJoinOptions": {
+                  "value": 3
+              },
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                             
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "deployex1",
+      "resourceGroup":  "[parameters('Site2RG')]",                                    
+      "dependsOn": [
+        "ReplicateAD-2"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/1nic-3disk-vm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ex1name')]"
+              },
+              "computerIP": {
+                  "value": "[variables('ex1IP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsServer"
+              },
+              "Offer": {
+                  "value": "WindowsServer"
+              },
+              "OSVersion": {
+                "value": "[parameters('EXOSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "[parameters('WindowsServerLicenseType')]"
+              },     
+              "DataDisk1Name": {
+                "value": "Exchange"
+              },            
+              "DataDisk2Name": {
+                "value": "Software"
+              },                                                             
+              "VMSize": {
+                "value": "[parameters('ex1VMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('vnet2Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('vnet2subnet1Name')]"
+              },            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DomainJoinEX1",
+      "resourceGroup":  "[parameters('Site2RG')]",                                    
+      "dependsOn": [
+        "deployex1"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/domainjoin.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ex1name')]"
+              },
+              "domainName": {
+                  "value": "[variables('InternaldomainName')]"
+              },
+              "OUPath": {
+                  "value": "[variables('SRVOUPath')]"
+              },
+              "domainJoinOptions": {
+                  "value": 3
+              },
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                             
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    }                               
   ]
 }
