@@ -2211,7 +2211,7 @@
                   "value": "[parameters('TimeZone')]"
               },              
               "NamingConvention": {
-                  "value": "[parameters('AZNamingConvention')]"
+                  "value": "[parameters('OPNamingConvention')]"
               },              
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
