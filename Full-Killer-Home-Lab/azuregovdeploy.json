@@ -586,7 +586,7 @@
     },                        
     "EX1VMSize": {
         "type": "string",
-        "defaultValue": "Standard_D8s_v3",
+        "defaultValue": "Standard_D4s_v3",
         "metadata": {
             "description": "Exchange Server1 VMSize"
         }
@@ -652,7 +652,6 @@
     "router-Inside-IP": "[concat(parameters('vnet1ID'),'.2.',variables('routerinlastoctet'))]",            
     "routeroutlastoctet": "254",        
     "routerinlastoctet": "254",
-
     "dc1name": "[concat(parameters('OPNamingConvention'),'-dc-01')]",           
     "dc1IP": "[concat(parameters('VNet1ID'),'.2.',variables('dc1lastoctet'))]",        
     "dc1lastoctet": "101",
@@ -676,7 +675,6 @@
     "ex1name": "[concat(parameters('AZNamingConvention'),'-ex-01')]",                   
     "EX1IP": "[concat(parameters('VNet2ID'),'.1.',variables('ex1lastoctet'))]", 
     "ex1lastoctet": "105",    
-
     "ReverseLookup1": "[concat('2.',parameters('ReverseLookup1'))]",    
     "ReverseLookup2": "[concat('1.',parameters('ReverseLookup2'))]",
     "NSG1Name": "[concat(parameters('OPNamingConvention'),'-nsg01')]",
@@ -2721,6 +2719,81 @@
               }
           }
       }
-    }                               
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "prepareexchange19s1",
+      "resourceGroup":  "[parameters('Site2RG')]",                                          
+      "dependsOn": [
+        "DomainJoinEX1"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/prepareexchange19.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ex1name')]"
+              },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              }, 
+              "ExchangeSASUrl": {
+                  "value": "[parameters('Exchange2019ISOUrl')]"
+              },                                 
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },                                    
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                                                                                 
+              "location": {
+                  "value": "[parameters('Location2')]"
+              },          
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          }
+      }
+    },         
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "restartex1-1",
+      "resourceGroup":  "[parameters('Site2RG')]",                                    
+      "dependsOn": [
+        "prepareexchange19s1"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/restartvm.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ex1name')]"
+              },
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              },                                                                                                                                                                                                                                                                                                                         
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    }                                  
   ]
 }
