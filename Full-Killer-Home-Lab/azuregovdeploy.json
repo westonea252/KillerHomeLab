@@ -2927,7 +2927,7 @@
                   "value": "[parameters('NetBiosDomain')]"
               },
               "SetupDC": {
-                  "value": "[variables('dc1name')]"
+                  "value": "[variables('dc2name')]"
               },                                                      
               "DBName": {
                   "value": "[variables('db1name')]"
@@ -2977,15 +2977,6 @@
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },
-              "BaseDN": {
-                  "value": "[variables('BaseDN')]"
-              },                            
-              "Site1DC": {
-                  "value": "[variables('dc1name')]"
-              },                                                     
-              "Site2DC": {
-                  "value": "[variables('dc2name')]"
-              },                                                     
               "ConfigDC": {
                   "value": "[variables('dc1name')]"
               },       
@@ -3037,12 +3028,6 @@
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },              
-              "Site1DC": {
-                  "value": "[variables('dc1name')]"
-              },                                                     
-              "Site2DC": {
-                  "value": "[variables('dc2name')]"
-              },                                                     
               "ConfigDC": {
                   "value": "[variables('dc1name')]"
               },       
@@ -3094,12 +3079,6 @@
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },              
-              "Site1DC": {
-                  "value": "[variables('dc1name')]"
-              },                                                     
-              "Site2DC": {
-                  "value": "[variables('dc2name')]"
-              },                                                     
               "ConfigDC": {
                   "value": "[variables('dc1name')]"
               },       

@@ -20,18 +20,6 @@
                 "description": "NetBios Domain Name"
             }
         },                            
-        "Site1DC": {
-            "type": "string",
-            "metadata": {
-                "description": "Site 2 Domain Controller Name"
-            }
-        },
-        "Site2DC": {
-            "type": "string",
-            "metadata": {
-                "description": "Site 2 Domain Controller Name"
-            }
-        },
         "ConfigDC": {
             "type": "string",
             "metadata": {
@@ -103,8 +91,6 @@
                             "ComputerName": "[parameters('ComputerName')]",
                             "InternaldomainName": "[parameters('InternaldomainName')]",                                                                                    
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",        
-                            "Site1DC": "[parameters('Site1DC')]",
-                            "Site2DC": "[parameters('Site2DC')]",                                                        
                             "ConfigDC": "[parameters('ConfigDC')]",        
                             "Site1FSW": "[parameters('Site1FSW')]",                                                                                                                                                                                
                             "DAGName": "[parameters('DAGName')]",                                                                                                                                                                            

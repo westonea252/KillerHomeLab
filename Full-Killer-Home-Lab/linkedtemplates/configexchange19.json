@@ -26,24 +26,6 @@
                 "description": "NetBios Domain Name"
             }
         },        
-        "BaseDN": {
-            "type": "string",
-            "metadata": {
-                "description": "Base Domain Distiguished Name"
-            }
-        },                        
-        "Site1DC": {
-            "type": "string",
-            "metadata": {
-                "description": "Site 2 Domain Controller Name"
-            }
-        },
-        "Site2DC": {
-            "type": "string",
-            "metadata": {
-                "description": "Site 2 Domain Controller Name"
-            }
-        },
         "ConfigDC": {
             "type": "string",
             "metadata": {
@@ -116,9 +98,6 @@
                             "InternaldomainName": "[parameters('InternaldomainName')]",                                                        
                             "ExternaldomainName": "[parameters('ExternaldomainName')]",   
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",        
-                            "BaseDN": "[parameters('BaseDN')]",                                                                                                               
-                            "Site1DC": "[parameters('Site1DC')]",
-                            "Site2DC": "[parameters('Site2DC')]",                                                        
                             "ConfigDC": "[parameters('ConfigDC')]",                                                                                     
                             "CAServerIP": "[parameters('CAServerIP')]",                                                                                                                                                                                
                             "Site": "[parameters('Site')]",                                                                                                                                                                            

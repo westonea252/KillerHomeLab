@@ -5,8 +5,6 @@
         [String]$ComputerName,  
         [String]$InternaldomainName,                    
         [String]$NetBiosDomain,
-        [String]$Site1DC,
-        [String]$Site2DC,
         [String]$ConfigDC,
         [String]$DBName,
         [System.Management.Automation.PSCredential]$Admincreds
@@ -31,7 +29,7 @@
                 IF ($DBCopyCheck -eq $null) {
                 Add-MailboxDatabaseCopy -Identity "$using:DBName" -MailboxServer "$using:ComputerName" -DomainController "$using:ConfigDC"
 
-            (Get-ADDomainController -Filter *).Name | Foreach-Object { repadmin /syncall $_ (Get-ADDomain).DistinguishedName /AdeP }
+                (Get-ADDomainController -Filter *).Name | Foreach-Object { repadmin /syncall $_ (Get-ADDomain).DistinguishedName /AdeP }
                 }
             }
             GetScript =  { @{} }

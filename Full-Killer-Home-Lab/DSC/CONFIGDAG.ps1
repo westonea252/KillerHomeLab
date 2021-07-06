@@ -5,8 +5,6 @@
         [String]$ComputerName,  
         [String]$InternaldomainName,                    
         [String]$NetBiosDomain,
-        [String]$Site1DC,
-        [String]$Site2DC,
         [String]$ConfigDC,
         [String]$Site1FSW,
         [String]$DAGName,

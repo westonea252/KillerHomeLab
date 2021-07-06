@@ -6,9 +6,6 @@
         [String]$InternaldomainName,
         [String]$ExternaldomainName,                                
         [String]$NetBiosDomain,
-        [String]$BaseDN,
-        [String]$Site1DC,
-        [String]$Site2DC,
         [String]$ConfigDC,
         [String]$CAServerIP,
         [String]$Site,
@@ -63,8 +60,7 @@
         {
             SetScript =
             {
-                repadmin /replicate "$using:Site1DC" "$using:Site2DC" "$using:BaseDN"
-                repadmin /replicate "$using:Site2DC" "$using:Site1DC" "$using:BaseDN"
+                (Get-ADDomainController -Filter *).Name | Foreach-Object { repadmin /syncall $_ (Get-ADDomain).DistinguishedName /AdeP }
 
                 # Get Certificate 2019 Certificate
                 $thumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=owa2019.$using:ExternalDomainName"}).Thumbprint
