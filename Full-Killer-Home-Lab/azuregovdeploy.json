@@ -2061,10 +2061,50 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
+      "name": "ReplicateAD-1",
+      "resourceGroup":  "[parameters('Site1RG')]",                              
+      "dependsOn": [
+        "ConfigureRootCA"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/replicatead.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('dc1name')]"
+              },
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },                                          
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                                                                                                      
+              "location": {
+                  "value": "[deployment().Location]"
+              },          
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
       "name": "DeployIssuingCA",
       "resourceGroup":  "[parameters('Site2RG')]",                        
       "dependsOn": [
-        "ConfigureRootCA"
+        "ConfigureRootCA",
+        "restartdc2"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -2454,8 +2494,8 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "ReplicateAD",
-      "resourceGroup":  "[parameters('Site2RG')]",                              
+      "name": "ReplicateAD-2",
+      "resourceGroup":  "[parameters('Site1RG')]",                              
       "dependsOn": [
         "configureocsp"
       ],      
@@ -2479,7 +2519,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                                                                                                                                                                                                                                      
               "location": {
-                  "value": "[parameters('Location2')]"
+                  "value": "[deployment().Location]"
               },          
               "_artifactsLocation": {
                 "value": "[parameters('_artifactsLocation')]"
