@@ -119,9 +119,11 @@
             SetScript =
             {
                 # Set PageFile to Manual
+                $RAM = Get-WmiObject Win32_OperatingSystem | select TotalVisibleMemorySize
+                $RAM = ($RAM.TotalVisibleMemorySize / 1kb).tostring("00")
                 $pagefileset = Get-WmiObject Win32_pagefilesetting
                 $pagefileset.InitialSize = 8192
-                $pagefileset.MaximumSize = 32778
+                $pagefileset.MaximumSize = $RAM
                 $pagefileset.Put() | Out-Null
             
                 # Disable SMB1
