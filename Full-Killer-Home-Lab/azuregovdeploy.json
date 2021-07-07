@@ -2978,7 +2978,7 @@
                   "value": "[parameters('NetBiosDomain')]"
               },
               "ConfigDC": {
-                  "value": "[variables('dc1name')]"
+                  "value": "[variables('dc2name')]"
               },       
               "CAServerIP": {
                   "value": "[variables('icaIP')]"
@@ -3029,7 +3029,7 @@
                   "value": "[parameters('NetBiosDomain')]"
               },              
               "ConfigDC": {
-                  "value": "[variables('dc1name')]"
+                  "value": "[variables('dc2name')]"
               },       
               "Site1FSW": {
                   "value": "[variables('fs1name')]"
@@ -3080,7 +3080,7 @@
                   "value": "[parameters('NetBiosDomain')]"
               },              
               "ConfigDC": {
-                  "value": "[variables('dc1name')]"
+                  "value": "[variables('dc2name')]"
               },       
               "DBName": {
                   "value": "[variables('DB1Name')]"
