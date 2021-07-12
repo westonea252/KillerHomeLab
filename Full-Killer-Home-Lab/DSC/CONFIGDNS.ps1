@@ -14,6 +14,7 @@
         [String]$icaIP,
         [String]$ocspIP,
         [String]$ex1IP,
+        [String]$adfs1IP,
         [Int]$RetryIntervalSec=420,
         [System.Management.Automation.PSCredential]$Admincreds
     )
@@ -140,6 +141,15 @@
             Target    = "$ex1IP"
             Type      = 'ARecord'
             Ensure    = 'Present'
-         }
+        }
+
+        xDnsRecord adfsrecord
+        {
+            Name      = "adfs"
+            Zone      = $ExternalDomainName
+            Target    = $adfs1IP
+            Type      = 'ARecord'
+            Ensure    = 'Present'
+        }
     }
 }

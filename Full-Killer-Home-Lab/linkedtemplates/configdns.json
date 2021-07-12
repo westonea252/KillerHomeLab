@@ -73,7 +73,13 @@
             "metadata": {
                 "description": "OCSP IP"
             }
-        },                                               
+        },                        
+        "adfs1IP": {
+            "type": "string",
+            "metadata": {
+                "description": "ADFS Server1 IP"
+            }
+        },                                                       
         "location": {
             "type": "string",
           "metadata": {
@@ -136,6 +142,7 @@
                             "icaIP": "[parameters('icaIP')]",                                                        
                             "ocspIP": "[parameters('ocspIP')]",                                                                                                                              
                             "ex1IP": "[parameters('ex1IP')]",                            
+                            "adfs1IP": "[parameters('adfs1IP')]",                                                        
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"
