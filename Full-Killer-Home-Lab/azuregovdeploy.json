@@ -3184,7 +3184,10 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "deployADCVM",  
-      "resourceGroup":  "[parameters('Site1RG')]",                                                                  
+      "resourceGroup":  "[parameters('Site1RG')]", 
+      "dependsOn": [
+        "restartex1-2"
+      ],                                                                        
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -3317,7 +3320,10 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "deployADFS1VM", 
-      "resourceGroup":  "[parameters('Site1RG')]",                                                                           
+      "resourceGroup":  "[parameters('Site1RG')]",
+      "dependsOn": [
+        "restartex1-2"
+      ],                                                                                 
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -3459,7 +3465,10 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "deployWAP1VM",     
-      "resourceGroup":  "[parameters('Site2RG')]",                                                                              
+      "resourceGroup":  "[parameters('Site2RG')]",
+      "dependsOn": [
+        "restartex1-2"
+      ],                                                                                    
       "properties": {
           "mode": "Incremental",
           "templateLink": {
