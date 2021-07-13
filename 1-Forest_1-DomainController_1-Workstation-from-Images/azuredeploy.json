@@ -265,7 +265,7 @@
     },    
     "DC1ImageName": {
         "type": "string",
-        "defaultValue": "1NIC-2DISKS-2K19",
+        "defaultValue": "IMG-2DISKS-2K19",
         "metadata": {
             "description": "Domain Controller Image Name"
         }
