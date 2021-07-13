@@ -124,7 +124,7 @@
                       }
                     },
                     "imageReference": {
-                        "id": "[resourceId('Microsoft.Compute/images',variables('ImageId'))]"
+                        "id": "[variables('ImageId')]"
                     }                  
               },
               "networkProfile": {
