@@ -43,7 +43,13 @@
         "metadata": {
           "description": "The address range of the subnet created in the new VNET"
         }
-      },      
+      },
+      "GatewaySubnetPrefix": {
+        "type": "string",
+        "metadata": {
+          "description": "Gateway Subnet Prefix"
+        }
+      },            
       "DNSServerIP": {
         "type": "array",
         "metadata": {
@@ -82,6 +88,13 @@
             "dnsServers": "[parameters('DNSServerIP')]"
           },          
           "subnets": [
+            {
+              "name": "GatewaySubnet",
+              "properties": {
+                "addressPrefix": "[parameters('GatewaySubnetPrefix')]"
+                
+              }
+            },
             {
               "name": "[parameters('subnet1Name')]",
               "properties": {
