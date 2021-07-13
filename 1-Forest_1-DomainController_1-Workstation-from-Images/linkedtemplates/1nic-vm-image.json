@@ -67,6 +67,7 @@
       "storageAccountType": "Premium_LRS",
       "VMName": "[parameters('computerName')]",
       "subnetId": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]",
+      "ImageId": "[resourceId(resourceGroup().name, 'Microsoft.Compute/images', parameters('ImageName'))]",      
       "NicName": "[concat(parameters('computerName'),'-nic')]",
       "NicIPAddress": "[parameters('computerIP')]"
   },
@@ -117,7 +118,7 @@
                       }
                     },
                     "imageReference": {
-                        "id": "[resourceId('Microsoft.Compute/images',parameters('ImageName'))]"
+                        "id": "[resourceId('Microsoft.Compute/images',variables('ImageId'))]"
                     }                  
               },
               "networkProfile": {
