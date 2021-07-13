@@ -14,12 +14,18 @@
             "description": "Computer IP Address"
         }
       },
+      "ImageRG": {
+        "type": "string",
+        "metadata": {
+            "description": "Image Resource Group Name"
+        }
+      },      
       "ImageName": {
         "type": "string",
         "metadata": {
             "description": "Image Name"
         }
-      },
+      },      
       "licenseType": {
         "type": "string",
         "metadata": {
@@ -67,7 +73,7 @@
       "storageAccountType": "Premium_LRS",
       "VMName": "[parameters('computerName')]",
       "subnetId": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]",
-      "ImageId": "[resourceId(resourceGroup().name, 'Microsoft.Compute/images', parameters('ImageName'))]",      
+      "ImageId": "[resourceId(parameters('ImageRG'), 'Microsoft.Compute/images', parameters('ImageName'))]",      
       "NicName": "[concat(parameters('computerName'),'-nic')]",
       "NicIPAddress": "[parameters('computerIP')]"
   },

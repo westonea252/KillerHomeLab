@@ -248,6 +248,13 @@
           "description": "DNS Reverse Lookup Zone1 Prefix"
       }
     },                        
+    "ImageRG": {
+        "type": "string",
+        "defaultValue": "Images",
+        "metadata": {
+            "description": "Images Resource Group Name"
+        }
+    },    
     "DC1ImageName": {
         "type": "string",
         "defaultValue": "1NIC-2DISKS-2K19",
@@ -306,7 +313,6 @@
     "wk1lastoctet": "201",            
     "wk1name": "[concat(parameters('NamingConvention'),'-wk-01')]",           
     "wk1IP": "[concat(parameters('vnet1ID'),'.2.',variables('wk1lastoctet'))]",        
-    "DCDataDisk1Name": "NTDS",            
     "InternaldomainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('InternalTLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('InternalTLD'))]",
     "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]"
@@ -401,10 +407,13 @@
               },
               "computerIP": {
                   "value": "[variables('dc1IP')]"
-              },             
+              },
+              "ImageRG": {
+                "value": "[parameters('DC1ImageName')]"
+              },                           
               "ImageName": {
                 "value": "[parameters('DC1ImageName')]"
-              },              
+              },                            
               "LicenseType": {
                 "value": "[parameters('WindowsServerLicenseType')]"
               },                        
@@ -647,6 +656,9 @@
               "computerIP": {
                   "value": "[variables('wk1IP')]"
               },
+              "ImageRG": {
+                "value": "[parameters('DC1ImageName')]"
+              },              
               "ImageName": {
                 "value": "[parameters('WK1ImageName')]"
               },                            

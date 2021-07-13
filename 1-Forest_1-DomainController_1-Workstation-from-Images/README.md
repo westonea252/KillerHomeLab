@@ -48,6 +48,7 @@ Parameters that support changes
 - InternalTLD.  Select a valid Top-Level Domain using the Pull-Down Menu.
 - Vnet1ID.  Enter first 2 octets of your desired Address Space for Virtual Network 1 (Example:  10.1)
 - Reverse Lookup1.  Enter first 2 octets of your desired Address Space in Reverse (Example:  1.10)
+- ImageRG.  Images Resource Group Name
 - DC1ImageName.  Enter the Image Name that the Domain Controller should be based on.
 - WK1ImageName.  Enter the Image Name that the Workstation should be based on.
 - DC1VMSize.  Enter a Valid VM Size based on which Region the VM is deployed.
