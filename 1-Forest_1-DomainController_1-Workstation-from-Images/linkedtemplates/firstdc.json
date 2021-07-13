@@ -20,6 +20,12 @@
                 "description": "NetBios Domain Name"
             }
         },
+        "ADDriveLetter": {
+            "type": "string",
+            "metadata": {
+                "description": "Drive Letter for NTDS Database/Logs and SYSVOL directories"
+            }
+        },        
         "domainName": {
             "type": "string",
           "metadata": {
@@ -79,6 +85,7 @@
                             "DomainName": "[parameters('domainName')]",
                             "TimeZone": "[parameters('TimeZone')]",                            
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",
+                            "ADDriveLetter": "[parameters('ADDriveLetter')]",                            
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"

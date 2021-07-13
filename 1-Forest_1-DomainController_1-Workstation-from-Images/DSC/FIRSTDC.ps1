@@ -6,6 +6,7 @@
         [String]$TimeZone,        
         [String]$DomainName,
         [String]$NetBiosDomain,
+        [String]$ADDriveLetter,
         [System.Management.Automation.PSCredential]$Admincreds,
 
         [Int]$RetryCount=20,
@@ -66,7 +67,7 @@
 
         xDisk ADDataDisk {
             DiskID = 2
-            DriveLetter = "N"
+            DriveLetter = $ADDriveLetter
             DependsOn = "[xWaitForDisk]Disk2"
         }
 
@@ -96,9 +97,9 @@
             DomainName = $DomainName
             Credential = $DomainCreds
             SafemodeAdministratorPassword = $DomainCreds
-            DatabasePath = "N:\NTDS"
-            LogPath = "N:\NTDS"
-            SysvolPath = "N:\SYSVOL"
+            DatabasePath = "$ADDriveLetter"+':\Windows\NTDS'
+            LogPath = "$ADDriveLetter"+':\Windows\NTDS'
+            SysvolPath = "$ADDriveLetter"+':\Windows\SYSVOL'
             DependsOn = @("[WindowsFeature]ADDSInstall", "[xDisk]ADDataDisk")
         }
 

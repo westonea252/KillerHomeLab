@@ -212,6 +212,14 @@
           "description": "NetBios Parent Domain Name"
       }
     },  
+    "ADDriveLetter": {
+      "type": "string",
+      "defaultValue": "F",
+      "maxLength": 1,      
+      "metadata": {
+          "description": "Drive Letter for NTDS Database/Logs and SYSVOL directories"
+      }
+    },      
     "InternalDomain": {
       "type": "string",
       "defaultValue": "killerhomelab",
@@ -461,6 +469,9 @@
               "NetBiosDomain": {
                   "value": "[parameters('NetBiosDomain')]"
               },
+              "ADDriveLetter": {
+                  "value": "[parameters('ADDriveLetter')]"
+              },              
               "DomainName": {
                 "value": "[variables('InternaldomainName')]"
               },              

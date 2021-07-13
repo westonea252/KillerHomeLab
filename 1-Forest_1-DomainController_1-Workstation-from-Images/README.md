@@ -41,6 +41,7 @@ Parameters that support changes
 - WindowsServerLicenseType.  Choose Windows Server License Type (Example:  Windows_Server or None)
 - WindowsClientLicenseType.  Choose Windows Client License Type (Example:  Windows_Client or None)
 - Naming Convention. Enter a name that will be used as a naming prefix for (Servers, VNets, etc) you are using.
+- AD Drive Letter.  Drive Letter for NTDS Database/Logs and SYSVOL directories.
 - Sub DNS Domain.  OPTIONALLY, enter a valid DNS Sub Domain. (Example:  sub1. or sub1.sub2.    This entry must end with a DOT )
 - Sub DNS BaseDN.  OPTIONALLY, enter a valid DNS Sub Base DN. (Example:  DC=sub1, or DC=sub1,DC=sub2,    This entry must end with a COMMA )
 - Net Bios Domain.  Enter a valid Net Bios Domain Name (Example:  killerhomelab).
