@@ -3413,7 +3413,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "configurefirstadfs",
-      "resourceGroup":  "[parameters('Site2RG')]",                                                                        
+      "resourceGroup":  "[parameters('Site1RG')]",                                                                        
       "dependsOn": [
         "createFSGMSA",
         "DomainJoinADFS1"
@@ -3632,7 +3632,10 @@
               },               
               "BastionsubnetPrefix": {
                 "value": "[variables('vnet2BastionsubnetPrefix')]"
-              },                         
+              },  
+              "GatewaySubnetPrefix": {
+                "value": "[variables('vnet2GatewaySubnetPrefix')]"
+              },                                     
               "DNSServerIP": {
                 "value": [
                   "[variables('dc1IP')]"
