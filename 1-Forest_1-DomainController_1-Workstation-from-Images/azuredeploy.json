@@ -409,7 +409,7 @@
                   "value": "[variables('dc1IP')]"
               },
               "ImageRG": {
-                "value": "[parameters('DC1ImageName')]"
+                "value": "[parameters('ImageRG')]"
               },                           
               "ImageName": {
                 "value": "[parameters('DC1ImageName')]"
@@ -657,7 +657,7 @@
                   "value": "[variables('wk1IP')]"
               },
               "ImageRG": {
-                "value": "[parameters('DC1ImageName')]"
+                "value": "[parameters('ImageRG')]"
               },              
               "ImageName": {
                 "value": "[parameters('WK1ImageName')]"
