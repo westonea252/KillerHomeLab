@@ -164,6 +164,14 @@
         "description": "Domain Controller IP"
       }
     },
+    "ExistingDCIP": {
+      "type": "string",
+      "defaultValue": "10.1.1.101",
+      "maxLength": 15,      
+      "metadata": {
+        "description": "Any Existing Domain Controller IP"
+      }
+    },    
     "ADDriveLetter": {
       "type": "string",
       "defaultValue": "F",
@@ -336,20 +344,23 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "promotedc1",
+      "name": "promotedc",
       "dependsOn": [
         "DeployDCVM"
       ],            
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/firstdc.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/otherdc.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
               "computerName": {
                   "value": "[parameters('DCName')]"
               },
+              "ExistingDCIP": {
+                  "value": "[parameters('ExistingDCIP')]"
+              },              
               "TimeZone": {
                   "value": "[parameters('TimeZone')]"
               },               
@@ -361,7 +372,7 @@
               },              
               "DomainName": {
                 "value": "[variables('InternaldomainName')]"
-              },              
+              },                            
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
               },                                                                                                            

@@ -1,30 +1,28 @@
-﻿configuration FIRSTDC
+﻿configuration OTHERDC
 {
    param
-   (
-
+    (
         [String]$TimeZone,        
         [String]$DomainName,
-        [String]$NetBiosDomain,
         [String]$ADDriveLetter,
+        [String]$ExistingDCIP,
+        [String]$NetBiosDomain,
         [System.Management.Automation.PSCredential]$Admincreds,
-
         [Int]$RetryCount=20,
         [Int]$RetryIntervalSec=30
     )
 
-    Import-DscResource -Module ActiveDirectoryDsc
-    Import-DscResource -Module xStorage
-    Import-DscResource -Module xNetworking
-    Import-DscResource -Module PSDesiredStateConfiguration
-    Import-DscResource -Module xPendingReboot
-    Import-DscResource -Module ComputerManagementDsc
-    Import-DscResource -Module xPSDesiredStateConfiguration
-    Import-DscResource -Module xDNSServer
+    Import-DscResource -ModuleName ActiveDirectoryDsc
+    Import-DscResource -ModuleName xStorage
+    Import-DscResource -ModuleName xNetworking
+    Import-DscResource -ModuleName xPendingReboot
+    Import-DscResource -ModuleName ComputerManagementDsc
+    Import-DscResource -ModuleName xPSDesiredStateConfiguration
+    Import-DscResource -ModuleName xDNSServer    
 
     [System.Management.Automation.PSCredential ]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${NetBiosDomain}\$($Admincreds.UserName)", $Admincreds.Password)
 
-    $Interface=Get-NetAdapter|Where-Object Name -Like "Ethernet*"|Select-Object -First 1
+    $Interface=Get-NetAdapter|Where Name -Like "Ethernet*"|Select-Object -First 1
     $InterfaceAlias=$($Interface.Name)
 
     Node localhost
@@ -34,39 +32,16 @@
             RebootNodeIfNeeded = $true
         }
 
-        WindowsFeature DNS
-        {
-            Ensure = "Present"
-            Name = "DNS"
-        }
-
-        Script EnableDNSDiags
-        {
-      	    SetScript = {
-                Set-DnsServerDiagnostics -All $true
-                Write-Verbose -Verbose "Enabling DNS client diagnostics"
-            }
-            GetScript =  { @{} }
-            TestScript = { $false }
-            DependsOn = "[WindowsFeature]DNS"
-        }
-
-        WindowsFeature DnsTools
-        {
-            Ensure = "Present"
-            Name = "RSAT-DNS-Server"
-            DependsOn = "[WindowsFeature]DNS"
-        }
-
         xWaitforDisk Disk2
         {
-            DiskID = 2
-            RetryIntervalSec =$RetryIntervalSec
-            RetryCount = $RetryCount
+                DiskId = 2
+                RetryIntervalSec =$RetryIntervalSec
+                RetryCount = $RetryCount
         }
 
-        xDisk ADDataDisk {
-            DiskID = 2
+        xDisk ADDataDisk
+        {
+            DiskId = 2
             DriveLetter = $ADDriveLetter
             DependsOn = "[xWaitForDisk]Disk2"
         }
@@ -75,7 +50,6 @@
         {
             Ensure = "Present"
             Name = "AD-Domain-Services"
-            DependsOn="[WindowsFeature]DNS"
         }
 
         WindowsFeature ADDSTools
@@ -92,7 +66,23 @@
             DependsOn = "[WindowsFeature]ADDSTools"
         }
 
-        ADDomain FirstDS
+        xDnsServerAddress DnsServerAddress
+        {
+            Address        = $ExistingDCIP
+            InterfaceAlias = $InterfaceAlias
+            AddressFamily  = 'IPv4'
+            DependsOn="[WindowsFeature]ADDSInstall"
+        }
+
+        WaitForADDomain DscForestWait
+        {
+            DomainName = $DomainName
+            Credential= $DomainCreds
+            RestartCount = $RetryCount
+            WaitTimeout = $RetryIntervalSec
+            DependsOn = '[xDNSServerAddress]DnsServerAddress'
+        }
+        ADDomainController BDC
         {
             DomainName = $DomainName
             Credential = $DomainCreds
@@ -100,15 +90,7 @@
             DatabasePath = "$ADDriveLetter"+':\Windows\NTDS'
             LogPath = "$ADDriveLetter"+':\Windows\NTDS'
             SysvolPath = "$ADDriveLetter"+':\Windows\SYSVOL'
-            DependsOn = @("[WindowsFeature]ADDSInstall", "[xDisk]ADDataDisk")
-        }
-
-        xDnsServerAddress DnsServerAddress
-        {
-            Address        = '127.0.0.1'
-            InterfaceAlias = $InterfaceAlias
-            AddressFamily  = 'IPv4'
-            DependsOn = "[ADDomain]FirstDS"
+            DependsOn = "[WaitForADDomain]DscForestWait"
         }
 
         TimeZone SetTimeZone
@@ -126,12 +108,12 @@
             }
             GetScript =  { @{} }
             TestScript = { $false}
-            DependsOn = "[xDnsServerAddress]DnsServerAddress"
+            DependsOn = '[xDNSServerAddress]DnsServerAddress'
         }
 
-        xPendingReboot RebootAfterPromotion{
-            Name = "RebootAfterPromotion"
+        xPendingReboot RebootAfterPromotion {
+            Name = "RebootAfterDCPromotion"
             DependsOn = "[Script]UpdateDNSSettings"
-        }
+        }               
     }
 }

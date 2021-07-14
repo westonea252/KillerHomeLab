@@ -8,30 +8,36 @@
                 "description": "Computer Name"
             }
         },
+        "ExistingDCIP": {
+            "type": "string",      
+            "metadata": {
+                "description": "Any Existing Domain Controller IP Address"
+            }
+        },
+        "ADDriveLetter": {
+            "type": "string",
+            "metadata": {
+                "description": "Drive Letter for NTDS Database/Logs and SYSVOL directories"
+            }
+        },                       
+        "TimeZone": {
+            "type": "string",      
+            "metadata": {
+                "description": "Time Zone"
+            }
+        },           
         "NetBiosDomain": {
             "type": "string",
             "metadata": {
                 "description": "NetBios Domain Name"
             }
-        },            
-        "InternalDomainName": {
+        },
+        "domainName": {
             "type": "string",
           "metadata": {
             "description": "The FQDN of the AD Domain created "
           }
-        },
-        "ReverseLookup1": {
-            "type": "string",
-            "metadata": {
-                "description": "The name of Reverse Lookup Zone 1 Network ID"
-            }
-        },
-        "dc1lastoctet": {
-            "type": "string",
-            "metadata": {
-                "description": "DC! Last IP Octet"
-            }
-        },        
+        },                                       
         "location": {
             "type": "string",
           "metadata": {
@@ -49,7 +55,7 @@
           "metadata": {
             "description": "The password for the Administrator account of the new VM and Domain"
           }
-        },        
+        },
         "_artifactsLocation": {
             "type": "string",
             "metadata": {
@@ -64,8 +70,8 @@
         }                
     },
     "variables": {
-        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/CONFIGDNS.zip', parameters('_artifactsLocationSasToken')))]",
-        "ConfigurationFunction": "CONFIGDNS.ps1\\CONFIGDNS"
+        "ModulesURL": "[uri(parameters('_artifactsLocation'), concat('DSC/OTHERDC.zip', parameters('_artifactsLocationSasToken')))]",
+        "ConfigurationFunction": "OTHERDC.ps1\\OTHERDC"
     },
     "resources": [
         {
@@ -82,22 +88,22 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
-                            "computerName": "[parameters('computerName')]",
-                            "NetBiosDomain": "[parameters('NetBiosDomain')]",                            
-                            "InternalDomainName": "[parameters('InternalDomainName')]",                                                        
-                            "ReverseLookup1": "[parameters('ReverseLookup1')]",
-                            "dc1lastoctet": "[parameters('dc1lastoctet')]",
+                            "ExistingDCIP": "[parameters('ExistingDCIP')]", 
+                            "ADDriveLetter": "[parameters('ADDriveLetter')]",                                                                                   
+                            "TimeZone": "[parameters('TimeZone')]",
+                            "DomainName": "[parameters('domainName')]",
+                            "NetBiosDomain": "[parameters('NetBiosDomain')]",
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"
-                            }                                                        
+                            }
                         }
                 },
                 "protectedSettings": {
                     "Items": {
                         "AdminPassword": "[parameters('adminPassword')]"
                     }
-                }                   
+                }                
             }
         }
     ]

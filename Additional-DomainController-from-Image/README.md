@@ -12,6 +12,7 @@ Parameters that support changes
 - TimeZone.  Select an appropriate Time Zone.
 - DCName.  Domain Controller Name
 - DCIP.  Domain Controller IP Address
+- ExistingDCIP.  Any Existing Domain Controller IP Address
 - AD Drive Letter.  Drive Letter for NTDS Database/Logs and SYSVOL directories.
 - DCVNetName.  Virtual Network Name
 - DCSubnetName.  Subnet Name
