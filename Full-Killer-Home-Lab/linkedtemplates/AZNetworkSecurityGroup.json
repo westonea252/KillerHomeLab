@@ -13,7 +13,19 @@
       "metadata": {
         "description": "WAP1 Private IP Address"
       }
-    },       
+    }, 
+    "OCSPPrivateIP": {
+      "type": "string",
+      "metadata": {
+        "description": "OCSP Private IP Address"
+      }
+    },    
+    "EXPrivateIP": {
+      "type": "string",
+      "metadata": {
+        "description": "Exchange Private IP Address"
+      }
+    },            
     "location": {
         "type": "string",
         "metadata": {
@@ -56,7 +68,35 @@
                 "priority": 200,
                 "direction": "Inbound"
               }
-            }             
+            },
+            {
+              "name": "HTTP",
+              "properties": {
+                "description": "Opens Port HTTP (Port 80/TCP)",
+                "protocol": "Tcp",
+                "sourcePortRange": "*",
+                "destinationPortRange": "80",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix": "[parameters('OCSPPrivateIP')]",
+                "access": "Allow",
+                "priority": 300,
+                "direction": "Inbound"
+              }
+            },
+            {
+                "name": "SMTP",
+                "properties": {
+                  "description": "Opens Port SMTP (Port 25/TCP)",
+                  "protocol": "Tcp",
+                  "sourcePortRange": "*",
+                  "destinationPortRange": "25",
+                  "sourceAddressPrefix": "*",
+                  "destinationAddressPrefix": "[parameters('EXPrivateIP')]",
+                  "access": "Allow",
+                  "priority": 400,
+                  "direction": "Inbound"
+                }
+            }                                                             
           ]
         }
       }

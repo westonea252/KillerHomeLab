@@ -3590,7 +3590,13 @@
               },                                                                                                      
               "WAP1PrivateIP": {
                   "value": "[variables('WAP1IP')]"
+              },
+              "OCSPPrivateIP": {
+                  "value": "[variables('ocspIP')]"
               },                                                                                                      
+              "EXPrivateIP": {
+                  "value": "[variables('ex1IP')]"
+              },                                                                                                                    
               "location": {
                   "value": "[parameters('Location2')]"
               }
@@ -3649,7 +3655,121 @@
               }
           }
       }
-    },                                                                                                                                                                                                                                  
+    }, 
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "addocsppip",
+      "resourceGroup":  "[parameters('Site2RG')]",                                                                                    
+      "dependsOn": [
+        "configureocsp"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/1nic-1disk-vm-pip.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ocspname')]"
+              },
+              "computerIP": {
+                  "value": "[variables('ocspIP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsServer"
+              },
+              "Offer": {
+                  "value": "WindowsServer"
+              },
+              "OSVersion": {
+                "value": "[parameters('OCSPOSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "[parameters('WindowsServerLicenseType')]"
+              },            
+              "VMSize": {
+                "value": "[parameters('ocspVMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('vnet2Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('vnet2subnet1Name')]"
+              },            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },                     
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "addex1pip",
+      "resourceGroup":  "[parameters('Site2RG')]",      
+      "dependsOn": [
+        "restartex1-2"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/1nic-3disk-vm-pip.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ex1name')]"
+              },
+              "computerIP": {
+                  "value": "[variables('ex1IP')]"
+              },
+              "Publisher": {
+                  "value": "MicrosoftWindowsServer"
+              },
+              "Offer": {
+                  "value": "WindowsServer"
+              },
+              "OSVersion": {
+                "value": "[parameters('EXOSVersion')]"
+              },              
+              "LicenseType": {
+                "value": "[parameters('WindowsServerLicenseType')]"
+              },     
+              "DataDisk1Name": {
+                "value": "Exchange"
+              },            
+              "DataDisk2Name": {
+                "value": "Software"
+              },                                                             
+              "VMSize": {
+                "value": "[parameters('ex1VMSize')]"
+              },
+              "vnetName": {
+                "value": "[variables('vnet1Name')]"
+              },            
+              "subnetName": {
+                "value": "[variables('vnet1subnet1Name')]"
+              },            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                        
+              "location": {
+                  "value": "[parameters('Location2')]"
+              }
+          }
+      }
+    },                                                                                                                                                                                                                    
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
@@ -3668,6 +3788,30 @@
             "ZoneName": {
                 "value": "[variables('ExternaldomainName')]"
             },
+            "OCSPRecord": {
+                "value": "ocsp"
+            },
+            "OCSPPublicIP": {
+                "value": "[reference('addocsppip').outputs.PublicIP.value]"             
+            },                                                                                                                                      
+            "OWARecord": {
+                "value": "owa2019"
+            },
+            "AutoDiscoverRecord": {
+                "value": "autodiscover"
+            },
+            "OutlookRecord": {
+                "value": "outlook2019"
+            },
+            "EASRecord": {
+                "value": "eas2019"
+            },
+            "SMTP1Record": {
+                "value": "smtp1"
+            },    
+            "EX1PublicIP": {
+                "value": "[reference('addex1pip').outputs.PublicIP.value]"             
+            },                                                                                                                                      
             "ADFSRecord": {
                 "value": "adfs"
             },              
@@ -3862,6 +4006,66 @@
               }
           }
       }
-    }                            
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "sendcompletionemail",
+      "resourceGroup":  "[parameters('Site2RG')]",                                                                                          
+      "dependsOn": [
+        "DomainJoinWK2VM"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/sendemail.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('icaname')]"
+              },
+              "ToEmail": {
+                  "value": "[parameters('ToEmail')]"
+              },
+              "FromEmail": {
+                  "value": "[variables('FromEmail')]"
+              },
+              "IssuingCAServerName": {
+                  "value": "[variables('icaname')]"
+              },                                                                                                                                      
+              "RootCAServerName": {
+                  "value": "[variables('rcaname')]"
+              },                                                                                                                                                    
+              "IssuingCAName": {
+                  "value": "[parameters('IssuingCAName')]"
+              },
+              "RootCAName": {
+                  "value": "[parameters('RootCAName')]"
+              },
+              "ExternalDomainName": {
+                  "value": "[variables('ExternaldomainName')]"
+              },
+              "ExchangeServerName": {
+                  "value": "[variables('ex1name')]"
+              },
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                                                                                                      
+              "location": {
+                  "value": "[parameters('Location2')]"
+              },          
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+          }
+      }
+    }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
   ]
 }
