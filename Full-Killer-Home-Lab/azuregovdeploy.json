@@ -3753,10 +3753,10 @@
                 "value": "[parameters('ex1VMSize')]"
               },
               "vnetName": {
-                "value": "[variables('vnet1Name')]"
+                "value": "[variables('vnet2Name')]"
               },            
               "subnetName": {
-                "value": "[variables('vnet1subnet1Name')]"
+                "value": "[variables('vnet2subnet1Name')]"
               },            
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
