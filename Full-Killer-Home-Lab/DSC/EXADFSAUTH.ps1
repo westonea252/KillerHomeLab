@@ -32,7 +32,6 @@
             Type = "File"
             SourcePath = "\\$ADFSServerName\c$\Certificates\ADFSThumbprint.txt"
             DestinationPath = "C:\ADFSCertificate\ADFSThumbprint.txt"
-            Credential = $DomainCreds
             DependsOn = '[File]ADFSCertificate'
         }
 

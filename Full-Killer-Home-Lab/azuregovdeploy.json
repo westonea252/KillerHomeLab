@@ -3697,7 +3697,7 @@
                 ]
               },  
               "NetworkSecurityGroupname": {
-                  "value": "[variables('NSG1Name')]"
+                  "value": "[variables('NSG2Name')]"
               },                                                                                                                                                                                                                              
               "location": {
                   "value": "[parameters('Location2')]"

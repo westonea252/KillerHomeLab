@@ -134,7 +134,7 @@
                 Get-ChildItem -Path cert:\LocalMachine\my\$signthumbprint | Export-PfxCertificate -FilePath "C:\Certificates\adfs-signing.$using:DomainName.pfx" -Password $Password
 
                 # Export Token Signing Certificate Thumbprint
-                $ADFSThumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subect -like 'CN=adfs-signing*'}).Thumbprint
+                $ADFSThumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like 'CN=adfs-signing*'}).Thumbprint
                 Set-Content -Path C:\Certificates\ADFSThumbprint.txt $ADFSThumbprint
             }
             GetScript =  { @{} }
