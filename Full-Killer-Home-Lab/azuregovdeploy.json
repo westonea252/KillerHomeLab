@@ -4013,7 +4013,7 @@
       "name": "sendcompletionemail",
       "resourceGroup":  "[parameters('Site2RG')]",                                                                                          
       "dependsOn": [
-        "DomainJoinWK2VM"
+        "addex1pip"
       ],            
       "properties": {
           "mode": "Incremental",
