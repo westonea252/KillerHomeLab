@@ -109,7 +109,7 @@
             "TTL": 900,
             "ARecords": [
                 {
-                    "ipv4Address": "[parameters('EX1PublicIP')]"
+                    "ipv4Address": "[parameters('WAP1PublicIP')]"
                 }
                 ]
             }
@@ -126,7 +126,7 @@
             "TTL": 900,
             "ARecords": [
                 {
-                    "ipv4Address": "[parameters('EX1PublicIP')]"
+                    "ipv4Address": "[parameters('WAP1PublicIP')]"
                 }
                 ]
             }
@@ -143,7 +143,7 @@
             "TTL": 900,
             "ARecords": [
                 {
-                    "ipv4Address": "[parameters('EX1PublicIP')]"
+                    "ipv4Address": "[parameters('WAP1PublicIP')]"
                 }
                 ]
             }
@@ -160,7 +160,7 @@
             "TTL": 900,
             "ARecords": [
                 {
-                    "ipv4Address": "[parameters('EX1PublicIP')]"
+                    "ipv4Address": "[parameters('WAP1PublicIP')]"
                 }
                 ]
             }

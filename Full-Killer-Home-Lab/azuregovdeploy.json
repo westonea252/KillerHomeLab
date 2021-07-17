@@ -709,6 +709,7 @@
     "DB1Name": "[concat(parameters('AZNamingConvention'),'-19-db01')]",
     "DAG19Name": "[concat(parameters('AZNamingConvention'),'-19-dag01')]",
     "NSG1Name": "[concat(parameters('OPNamingConvention'),'-nsg01')]",
+    "NSG2Name": "[concat(parameters('AZNamingConvention'),'-nsg01')]",    
     "InternaldomainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('InternalTLD'))]",
     "ExternaldomainName": "[concat(parameters('ExternalDomain'),'.',parameters('ExternalTLD'))]",    
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('InternalTLD'))]",
@@ -3573,6 +3574,54 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
+      "name": "SetExchangeADFSAuth",
+      "resourceGroup":  "[parameters('Site2RG')]",                                                      
+      "dependsOn": [
+        "configurefirstwap"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/exadfsauth.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('ex1name')]"
+              },
+              "ADFSServerName": {
+                  "value": "[variables('adfs1name')]"
+              },              
+              "InternaldomainName": {
+                  "value": "[variables('InternaldomainName')]"
+              },              
+              "ExternaldomainName": {
+                  "value": "[variables('ExternaldomainName')]"
+              },                
+              "NetBiosDomain": {
+                  "value": "[parameters('NetBiosDomain')]"
+              },                          
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                                                                                                      
+              "location": {
+                  "value": "[parameters('Location2')]"
+              },          
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
       "name": "DeployAZNSG1",
       "resourceGroup":  "[parameters('Site2RG')]",                                                                              
       "dependsOn": [
@@ -3586,7 +3635,7 @@
           },
           "parameters": {
               "NetworkSecurityGroupname": {
-                  "value": "[variables('NSG1Name')]"
+                  "value": "[variables('NSG2Name')]"
               },                                                                                                      
               "WAP1PrivateIP": {
                   "value": "[variables('WAP1IP')]"
