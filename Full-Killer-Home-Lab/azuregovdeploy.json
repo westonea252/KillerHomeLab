@@ -3444,6 +3444,9 @@
               "RootCAName": {
                   "value": "[parameters('RootCAName')]"
               },
+              "EXServerName": {
+                  "value": "[variables('ex1name')]"
+              },              
               "adminUsername": {
                 "value": "[parameters('adminUsername')]"
               },                                                                                                            

@@ -5,6 +5,7 @@ Configuration WAP
         [String]$TimeZone,
         [String]$NetBiosDomain,
         [String]$ADFSServerIP,
+        [String]$EXServerIP,
         [String]$DomainName,
         [String]$IssuingCAName,
         [String]$RootCAName,     
@@ -44,6 +45,14 @@ Configuration WAP
             DependsOn = '[Script]AllowRemoteCopy'
         }
 
+        File EXCertificates
+        {
+            Type = 'Directory'
+            DestinationPath = 'C:\EXCertificates'
+            Ensure = "Present"
+            DependsOn = '[File]Certificates'
+        }
+
         TimeZone SetTimeZone
         {
             IsSingleInstance = 'Yes'
@@ -63,7 +72,7 @@ Configuration WAP
             Name = 'RSAT-RemoteAccess'
         }
 
-        File CopyServiceCommunicationCertFromADFS
+        File CopyADFSCertsFromADFS
         {
             Ensure = "Present"
             Type = "Directory"
@@ -72,6 +81,17 @@ Configuration WAP
             DestinationPath = "C:\Certificates\"
             Credential = $Admincreds
             DependsOn = '[File]Certificates'
+        }
+
+        File CopyEXCertsFromADFS
+        {
+            Ensure = "Present"
+            Type = "Directory"
+            Recurse = $true
+            SourcePath = "\\$ADFSServerIP\c$\EXCertificates"
+            DestinationPath = "C:\EXCertificates\"
+            Credential = $Admincreds
+            DependsOn = '[File]EXCertificates'
         }
 
         Script ConfigureWAPCertificates
@@ -98,7 +118,7 @@ Configuration WAP
             }
             GetScript =  { @{} }
             TestScript = { $false}
-            DependsOn = '[File]CopyServiceCommunicationCertFromADFS'
+            DependsOn = '[File]CopyADFSCertsFromADFS'
         }
 
         Script ConfigureWAPADFSTrust
@@ -117,6 +137,23 @@ Configuration WAP
             GetScript =  { @{} }
             TestScript = { $false}
             DependsOn = '[Script]ConfigureWAPCertificates'
+        }
+
+        Script ImportEXCertificate
+        {
+            SetScript =
+            {
+                # Create Credentials
+                $LoadCreds = "$using:AdminCreds"
+                $Password = $AdminCreds.Password
+
+                #Check if ADFS Service Communication Certificate already exists if NOT Create
+                $exthumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like 'CN=owa2019*'}).Thumbprint
+                IF ($exthumbprint -eq $null) {Import-PfxCertificate -FilePath "C:\Certificates\owa2019.$using:DomainName.pfx" -CertStoreLocation Cert:\LocalMachine\My -Password $Password}
+            }
+            GetScript =  { @{} }
+            TestScript = { $false}
+            DependsOn = '[File]CopyEXCertsFromADFS'
         }
     }
   }

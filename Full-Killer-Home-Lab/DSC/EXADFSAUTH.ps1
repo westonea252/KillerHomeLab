@@ -50,7 +50,7 @@
                 $ADFSThumbprint = Get-Content -Path "C:\ADFSCertificate\ADFSThumbprint.txt"
 
                 # Set Organization Config
-                $uris = @("https://owa2019.$using:ExternalDomainName/ECP","https://owa2019.$using:ExternalDomainName/ECP")
+                $uris = @("https://owa2019.$using:ExternalDomainName/OWA","https://owa2019.$using:ExternalDomainName/ECP")
                 Set-OrganizationConfig -AdfsIssuer "https://adfs.$using:ExternalDomainName/adfs/ls/" -AdfsAudienceUris $uris -AdfsSignCertificateThumbprint "$ADFSThumbprint"
 
                 # ADFS on FORMS off

@@ -7,9 +7,8 @@
         [String]$DomainName,
         [String]$IssuingCAName,
         [String]$RootCAName,     
+        [String]$EXServerName,     
         [System.Management.Automation.PSCredential]$Admincreds
-
-
     )
     Import-DscResource -Module xPSDesiredStateConfiguration # Used for xRemoteFile
     Import-DscResource -Module ComputerManagementDsc # Used for TimeZone
@@ -48,6 +47,14 @@
             DestinationPath = 'C:\Certificates'
             Ensure = "Present"
             DependsOn = '[File]MachineConfig'
+        }
+
+        File EXCertificates
+        {
+            Type = 'Directory'
+            DestinationPath = 'C:\EXCertificates'
+            Ensure = "Present"
+            DependsOn = '[File]Certificates'
         }
 
         Script GetADFSCertificates
@@ -197,6 +204,17 @@
             TestScript = { $false}
             PsDscRunAsCredential = $DomainCreds
             DependsOn = '[Script]GetADFSCertificates'
+        }
+
+        File CopyExchangeCert
+        {
+            Ensure = "Present"
+            Type = "Directory"
+            Recurse = $true
+            SourcePath = "\\$EXServerName\c$\Certificates"
+            DestinationPath = "C:\EXCertificates\"
+            Credential = $Admincreds
+            DependsOn = '[File]EXCertificates'
         }
     }
 }

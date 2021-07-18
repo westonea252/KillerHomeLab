@@ -8,6 +8,12 @@
                 "description": "Computer Name"
             }
         },
+        "EXServerName": {
+            "type": "string",
+            "metadata": {
+                "description": "Exchange Server Name"
+            }
+        },        
         "TimeZone": {
             "type": "string",      
             "metadata": {
@@ -93,6 +99,7 @@
                             "NetBiosDomain": "[parameters('NetBiosDomain')]",  
                             "IssuingCAName": "[parameters('IssuingCAName')]",
                             "RootCAName": "[parameters('RootCAName')]",                                                                                  
+                            "EXServerName": "[parameters('EXServerName')]",                            
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"
