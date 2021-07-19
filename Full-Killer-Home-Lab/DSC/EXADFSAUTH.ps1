@@ -19,21 +19,22 @@
             RebootNodeIfNeeded = $true
         }
 
-        File ADFSCertificate
+        File ADFSCertificates
         {
             Type = 'Directory'
-            DestinationPath = 'C:\ADFSCertificate'
+            DestinationPath = 'C:\ADFSCertificates'
             Ensure = "Present"
         }
 
-        File CopyADFSThumbprint
+        File CopyADFSCerts
         {
             Ensure = "Present"
-            Type = "File"
-            SourcePath = "\\$ADFSServerName\c$\Certificates\ADFSThumbprint.txt"
-            DestinationPath = "C:\ADFSCertificate\ADFSThumbprint.txt"
+            Type = "Directory"
+            Recurse = $true
+            SourcePath = "\\$ADFSServerName\c$\Certificates"
+            DestinationPath = "C:\ADFSCertificates\"
             Credential = $Admincreds
-            DependsOn = '[File]ADFSCertificate'
+            DependsOn = '[File]ADFSCertificates'
         }
 
         Script ConfigureExchangeADFSAuth
@@ -61,7 +62,7 @@
             GetScript =  { @{} }
             TestScript = { $false}
             PsDscRunAsCredential = $DomainCreds
-            DependsOn = '[File]CopyADFSThumbprint'
+            DependsOn = '[File]CopyADFSCerts'
         }
     }
 }
