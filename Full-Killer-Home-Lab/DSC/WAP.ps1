@@ -149,7 +149,7 @@ Configuration WAP
 
                 #Check if ADFS Service Communication Certificate already exists if NOT Create
                 $exthumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like 'CN=owa2019*'}).Thumbprint
-                IF ($exthumbprint -eq $null) {Import-PfxCertificate -FilePath "C:\Certificates\owa2019.$using:DomainName.pfx" -CertStoreLocation Cert:\LocalMachine\My -Password $Password}
+                IF ($exthumbprint -eq $null) {Import-PfxCertificate -FilePath "C:\EXCertificates\owa2019.$using:DomainName.pfx" -CertStoreLocation Cert:\LocalMachine\My -Password $Password}
             }
             GetScript =  { @{} }
             TestScript = { $false}
