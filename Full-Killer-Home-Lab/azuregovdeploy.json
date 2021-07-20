@@ -1,5 +1,5 @@
 {
-"$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptiondeploymentTemplate.json#",
+"$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
     "TimeZone": {
@@ -157,14 +157,14 @@
     },   
     "Site1RG": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "OnPrem-RG",
       "metadata": {
         "description": "Site1 Resource Groups"
       }
     },            
     "Site2RG": {
       "type": "string",
-      "defaultValue": "",
+      "defaultValue": "Azure-RG",
       "metadata": {
         "description": "Site2 Resource Groups"
       }
