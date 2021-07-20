@@ -48,7 +48,7 @@
                 Import-PSSession $Session
 
                 # Load ADFS Thumbprint
-                $ADFSThumbprint = Get-Content -Path "C:\ADFSCertificate\ADFSThumbprint.txt"
+                $ADFSThumbprint = Get-Content -Path "C:\ADFSCertificates\ADFSThumbprint.txt"
 
                 # Set Organization Config
                 $uris = @("https://owa2019.$using:ExternalDomainName/OWA","https://owa2019.$using:ExternalDomainName/ECP")

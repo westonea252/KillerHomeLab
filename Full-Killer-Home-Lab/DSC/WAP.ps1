@@ -147,13 +147,37 @@ Configuration WAP
                 $LoadCreds = "$using:AdminCreds"
                 $Password = $AdminCreds.Password
 
-                #Check if ADFS Service Communication Certificate already exists if NOT Create
+                #Check if Exchange Certificate already exists if NOT Create
                 $exthumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like 'CN=owa2019*'}).Thumbprint
                 IF ($exthumbprint -eq $null) {Import-PfxCertificate -FilePath "C:\EXCertificates\owa2019.$using:DomainName.pfx" -CertStoreLocation Cert:\LocalMachine\My -Password $Password}
             }
             GetScript =  { @{} }
             TestScript = { $false}
             DependsOn = '[File]CopyEXCertsFromADFS'
+        }
+
+        Script PublishExchange
+        {
+            SetScript =
+            {
+                $exthumbprint = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like 'CN=owa2019*'}).Thumbprint
+                Add-WebApplicationProxyApplication -BackendServerUrl "https://owa2019.$using:DomainName/OWA/" -ExternalCertificateThumbprint $exthumbprint -ExternalUrl "https://owa2019.$using:DomainName/OWA/" -Name ‘OWA’ -ExternalPreAuthentication ADFS -ADFSRelyingPartyName ‘Outlook Web App 2019’
+
+                Add-WebApplicationProxyApplication -BackendServerUrl "https://owa2019.$using:DomainName/ECP/" -ExternalCertificateThumbprint $exthumbprint -ExternalUrl "https://owa2019.$using:DomainName/ECP/" -Name ‘ECP’ -ExternalPreAuthentication ADFS -ADFSRelyingPartyName ‘Exchange Admin Center (EAC) 2019’
+
+                Add-WebApplicationProxyApplication -BackendServerUrl 'https://eas2019.$using:DomainName/Microsoft-Server-ActiveSync/' -ExternalCertificateThumbprint $exthumbprint -ExternalUrl 'https://eas2019.$using:DomainName/Microsoft-Server-ActiveSync/' -Name 'ActiveSync' -ExternalPreAuthentication PassThrough
+
+                Add-WebApplicationProxyApplication -BackendServerUrl 'https://autodiscover.$using:DomainName/Autodiscover/' -ExternalCertificateThumbprint $exthumbprint -ExternalUrl 'https://autodiscover.$using:DomainName/Autodiscover/' -Name 'Autodiscover' -ExternalPreAuthentication PassThrough
+
+                Add-WebApplicationProxyApplication -BackendServerUrl 'https://outlook2019.$using:DomainName/MAPI/' -ExternalCertificateThumbprint $exthumbprint -ExternalUrl 'https://outlook2019.$using:DomainName/MAPI/' -Name 'MAPI over HTTP' -ExternalPreAuthentication PassThrough
+
+                Add-WebApplicationProxyApplication -BackendServerUrl 'https://outlook2019.$using:DomainName/EWS/' -ExternalCertificateThumbprint $exthumbprint -ExternalUrl 'https://outlook2019.$using:DomainName/EWS/' -Name 'Web Services' -ExternalPreAuthentication PassThrough
+
+                Add-WebApplicationProxyApplication -BackendServerUrl 'https://outlook2019.$using:DomainName/OAB/' -ExternalCertificateThumbprint $exthumbprint -ExternalUrl 'https://outlook2019.$using:DomainName/OAB/' -Name 'Outlook Offline Address Book' -ExternalPreAuthentication PassThrough
+            }
+            GetScript =  { @{} }
+            TestScript = { $false}
+            DependsOn = '[Script]ImportEXCertificate'
         }
     }
   }
