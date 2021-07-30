@@ -37,7 +37,13 @@
         "metadata": {
             "description": "License Type (Windows_Server or None)"
         }
-      },      
+      },  
+      "DataDisk1Name": {
+        "type": "string",
+        "metadata": {
+            "description": "Data Disk Name 1"
+        }
+      },          
       "VMSize": {
           "type": "string",
           "metadata": {
