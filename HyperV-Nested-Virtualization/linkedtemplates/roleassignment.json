@@ -1,0 +1,43 @@
+{
+"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+"contentVersion": "1.0.0.0",
+"parameters": {
+    "SystemManagedID": {
+      "type": "string",
+      "metadata": {
+        "description": "System Managed ID"
+      }
+    },
+    "RoleDefinitionID": {
+      "type": "string",
+      "metadata": {
+        "description": "Managed ID Name"
+      }
+    },
+    "roleAssignmentGuid": {
+      "type": "string",
+      "metadata": {
+        "description": "A new GUID used to identify the role assignment"
+      }
+    },
+    "scope": {
+      "type": "string",
+      "metadata": {
+        "description": "Scope for Role Assignment"
+      }
+    }             
+},
+"resources": [
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2018-09-01-preview",
+      "name": "[parameters('roleAssignmentGuid')]",
+      "properties": {
+        "roleDefinitionId": "[parameters('RoleDefinitionId')]",
+        "principalId": "[parameters('SystemManagedID')]",
+        "principalType": "ServicePrincipal",
+        "scope": "[parameters('scope')]"
+      }
+    }
+  ]
+}

@@ -57,13 +57,27 @@
             "description": "Hyper-V OS Version"
         }
     },
+    "RecoveryServicesVaultUniqueID": {
+      "type": "string",
+      "defaultValue": "1234567890x1",
+      "metadata": {
+          "description": "Recovery Services Vault 1 Unique Identifier"
+      }
+  },                                  
     "HVVMSize": {
         "type": "string",
         "defaultValue": "Standard_D8s_v3",
         "metadata": {
             "description": "Hyper-V VMSize"
         }
-    },        
+    },  
+    "roleAssignmentGuid1": {
+      "type": "string",
+      "defaultValue": "[newGuid()]",
+      "metadata": {
+          "description": "A new GUID used to identify the role assignment"
+      }
+    },          
     "_artifactsLocation": {
       "type": "string",
       "metadata": {
@@ -87,21 +101,43 @@
     "vnet1subnet2Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet2')]",    
     "vnet1subnet2Prefix": "[concat(parameters('vnet1ID'),'.2.0/24')]",    
     "vnet1BastionsubnetPrefix": "[concat(parameters('vnet1ID'),'.253.0/24')]",
+    "RSVault1Name": "[concat(parameters('NamingConvention'),'-rv1-', parameters('RecoveryServicesVaultUniqueID'))]",                
     "HyperVNATIP": "[concat(parameters('HyperVSubnetID'),'.1')]",        
     "HyperVsubnetPrefix": "[concat(parameters('HyperVSubnetID'),'.0/24')]",         
     "hvname": "[concat(parameters('NamingConvention'),'-hv-01')]",                      
     "hvIP": "[concat(parameters('vnet1ID'),'.1.',variables('hvlastoctet'))]", 
-    "hvlastoctet": "123"
+    "hvlastoctet": "123",
+    "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"                  
   },  
   "resources": [
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
+      "name": "DeployRSVault",
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/recoveryservicesvault.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "RSVaultName": {
+                  "value": "[variables('RSVault1Name')]"
+              },
+              "location": {
+                  "value": "[deployment().location]"
+              }
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
       "name": "VNet1",
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/vnet.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/vnet.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -134,7 +170,7 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "BastionHost1",
       "dependsOn": [
         "VNet1"
@@ -142,7 +178,7 @@
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/bastionhost.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/bastionhost.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -166,7 +202,7 @@
     },        
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
       "name": "deployHVVM",
       "dependsOn": [
         "VNet1"
@@ -174,7 +210,7 @@
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-2disk-vm.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/1nic-2disks-vm-mi.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -222,7 +258,37 @@
     },
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2019-10-01",
+      "name": "AssignManagedIDRSV",
+      "dependsOn": [
+        "DeployRSVault",
+        "deployHVVM"
+      ],        
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('listedtemplates/roleassignment.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "SystemManagedID": {
+                  "value": "[reference('deployHVVM').outputs.principalId.value]"
+              },
+              "RoleDefinitionID": {
+                  "value": "[variables('Contributor')]"
+              },
+              "roleAssignmentGuid": {
+                  "value": "[parameters('roleAssignmentGuid1')]"
+              },
+              "scope": {
+                "value": "[concat('Microsoft.RecoveryServices/vaults', '/', variables('RSVault1Name'))]"
+              }              
+          }
+      }
+    },    
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
       "name": "ConfigureHyperV",
       "dependsOn": [
         "DeployHVVM"
@@ -230,7 +296,7 @@
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/HyperV.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/HyperV.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
