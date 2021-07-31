@@ -107,7 +107,8 @@
     "hvname": "[concat(parameters('NamingConvention'),'-hv-01')]",                      
     "hvIP": "[concat(parameters('vnet1ID'),'.1.',variables('hvlastoctet'))]", 
     "hvlastoctet": "123",
-    "Contributor": "[resourceId(resourceGroup().name, 'Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"                 
+    "Contributor": "[concat('Microsoft.Authorization/roleDefinitions', '/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+    "Scope": "[concat('Microsoft.RecoveryServices/vaults', '/', variables('RSVault1Name'))]"                     
   },  
   "resources": [
     {
