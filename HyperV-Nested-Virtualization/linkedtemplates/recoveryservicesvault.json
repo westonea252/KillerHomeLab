@@ -29,7 +29,7 @@
     },
   "variables": {
     "skuName":  "Standard",
-    "RoleDefinitionID": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', parameters('RoleDefinitionID'))]"    
+    "RoleDefinitionID": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"    
   },    
     "resources": [
         {
