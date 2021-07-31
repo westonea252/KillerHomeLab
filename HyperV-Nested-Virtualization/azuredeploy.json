@@ -108,27 +108,7 @@
     "hvIP": "[concat(parameters('vnet1ID'),'.1.',variables('hvlastoctet'))]", 
     "hvlastoctet": "123"
   },  
-  "resources": [
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
-      "name": "DeployRSVault",
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/recoveryservicesvault.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "RSVaultName": {
-                  "value": "[variables('RSVault1Name')]"
-              },
-              "location": {
-                  "value": "[resourceGroup().location]"
-              }
-          }
-      }
-    },    
+  "resources": [    
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
@@ -258,29 +238,31 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "AssignManagedIDRSV",
+      "name": "DeployRSVault",
       "dependsOn": [
-        "DeployRSVault",
         "deployHVVM"
       ],        
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/roleassignment.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/recoveryservicesvault.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
-              "SystemManagedID": {
-                  "value": "[reference('deployHVVM').outputs.principalId.value]"
-              },
               "RSVaultName": {
                   "value": "[variables('RSVault1Name')]"
               },
+              "SystemManagedID": {
+                "value": "[reference('deployHVVM').outputs.principalId.value]"
+              },
               "roleAssignmentGuid": {
                   "value": "[parameters('roleAssignmentGuid1')]"
-              }              
+              },                            
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
           }
       }
-    }        
+    }    
   ]
 }
