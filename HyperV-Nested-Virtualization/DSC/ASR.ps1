@@ -37,13 +37,7 @@
         {
             SetScript =
             {                 
-                Connect-AzAccount -Environment AzureUSGovernment -Identity
-                $AzProfile = [Microsoft.Azure.Commands.Common.Authentication.Abstractions.AzureRmProfileProvider]::Instance.Profile
-                if (-not $AzProfile.Accounts.Count)
-                {
-                    Write-Error "Please run Connect-AzAccount before calling this function."
-                    break
-                }               ​
+                Connect-AzAccount -Environment AzureUSGovernment -Identity               ​
                 
                 # Get Vault
                 $Vault = Get-AzRecoveryServicesVault -Name "$using:VaultName"
