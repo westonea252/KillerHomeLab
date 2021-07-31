@@ -80,8 +80,7 @@
                     },
                     "protectedSettings": {
                         "Items": {
-                            "AdminPassword": "[parameters('adminPassword')]",
-                            "TenantPassword": "[parameters('TenantPassword')]"                            
+                            "AdminPassword": "[parameters('adminPassword')]"                        
                         }
                     }                 
             }
