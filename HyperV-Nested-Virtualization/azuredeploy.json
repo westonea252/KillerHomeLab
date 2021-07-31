@@ -106,7 +106,8 @@
     "HyperVsubnetPrefix": "[concat(parameters('HyperVSubnetID'),'.0/24')]",         
     "hvname": "[concat(parameters('NamingConvention'),'-hv-01')]",                      
     "hvIP": "[concat(parameters('vnet1ID'),'.1.',variables('hvlastoctet'))]", 
-    "hvlastoctet": "123"
+    "hvlastoctet": "123",
+    "HyperVSite": "15714-Starling"    
   },  
   "resources": [    
     {
@@ -298,6 +299,47 @@
               }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
           }
       }
-    }        
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "ConfigureASR",
+      "dependsOn": [
+        "ConfigureHyperV"
+      ],
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/ASR.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('hvname')]"
+              },
+              "VaultName": {
+                  "value": "[variables('RSVault1Name')]"
+              },                                          
+              "HyperVSite": {
+                "value": "[ variables('HyperVSite')]"
+              },                                                                                                            
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },
+              "location": {
+                "value": "[resourceGroup().location]"
+              },                                                                                                                                                      
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+          }
+      }
+    }                    
   ]
 }

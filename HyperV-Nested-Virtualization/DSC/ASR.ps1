@@ -4,8 +4,7 @@
    (
         [String]$VaultName,
         [String]$HyperVSite,
-        [System.Management.Automation.PSCredential]$Admincreds,
-        [System.Management.Automation.PSCredential]$Tenantcreds
+        [System.Management.Automation.PSCredential]$Admincreds
     )
 
     Import-DscResource -Module xPendingReboot # Used for Reboots
@@ -38,25 +37,17 @@
         {
             SetScript =
             {                 
-                # Create Credentials
-                $Creds = $using:TenantCreds
-                $Creds.GetNetworkCredential().Password | fl > C:\CredsPlainPassword.txt
-
-                $AzureCreds = New-Object System.Management.Automation.PSCredential ("$($Creds.UserName)", $Creds.Password)
-                $AzureCreds.GetType() | fl > C:\AzureCredsType.txt
-                $AzureCreds.UserName | fl > C:\AzureCredsUsername.txt
-                $AzureCreds.GetNetworkCredential().Password | fl > C:\AzureCredsPlainTextPassword.txt
-                $AzureCreds.Password.Length | fl > C:\AzureCredsPasswordLength.txt
-
-                Connect-AzAccount -Environment AzureUSGovernment -Credential $AzureCreds
-
-                New-Item -Path C:\TestAfterLoginLogin -Type Directory                ​
+                Connect-AzAccount -Environment AzureUSGovernment -Identity
+                $AzProfile = [Microsoft.Azure.Commands.Common.Authentication.Abstractions.AzureRmProfileProvider]::Instance.Profile
+                if (-not $AzProfile.Accounts.Count)
+                {
+                    Write-Error "Please run Connect-AzAccount before calling this function."
+                    break
+                }               ​
                 
                 # Get Vault
                 $Vault = Get-AzRecoveryServicesVault -Name "$using:VaultName"
                 Set-AzRecoveryServicesAsrVaultContext -Vault $Vault
-
-                New-Item -Path C:\TestAfterVaultContext -Type Directory                
                 
                 # Create Hyper-V Site
                 $FabricCheck = Get-AzRecoveryServicesAsrFabric -Name "$using:HyperVSite" -ErrorAction SilentlyContinue
