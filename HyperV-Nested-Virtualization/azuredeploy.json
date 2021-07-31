@@ -282,7 +282,7 @@
                   "value": "[parameters('roleAssignmentGuid1')]"
               },
               "scope": {
-                "value": "[concat('Microsoft.RecoveryServices/vaults', '/', variables('RSVault1Name'))]"
+                "value": "[variables('Scope')]"
               }              
           }
       }
