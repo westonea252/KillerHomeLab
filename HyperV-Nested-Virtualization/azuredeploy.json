@@ -106,9 +106,7 @@
     "HyperVsubnetPrefix": "[concat(parameters('HyperVSubnetID'),'.0/24')]",         
     "hvname": "[concat(parameters('NamingConvention'),'-hv-01')]",                      
     "hvIP": "[concat(parameters('vnet1ID'),'.1.',variables('hvlastoctet'))]", 
-    "hvlastoctet": "123",
-    "Contributor": "[resourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
-    "Scope": "[resourceId('Microsoft.RecoveryServices/vaults', variables('RSVault1Name'))]"
+    "hvlastoctet": "123"
   },  
   "resources": [
     {
@@ -275,14 +273,11 @@
               "SystemManagedID": {
                   "value": "[reference('deployHVVM').outputs.principalId.value]"
               },
-              "RoleDefinitionID": {
-                  "value": "[variables('Contributor')]"
+              "RSVaultName": {
+                  "value": "[variables('RSVault1Name')]"
               },
               "roleAssignmentGuid": {
                   "value": "[parameters('roleAssignmentGuid1')]"
-              },
-              "scope": {
-                "value": "[variables('Scope')]"
               }              
           }
       }

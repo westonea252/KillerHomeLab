@@ -2,16 +2,16 @@
 "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
 "contentVersion": "1.0.0.0",
 "parameters": {
-    "SystemManagedID": {
+  "RSVaultName": {
+    "type": "string",
+    "metadata": {
+      "description": "Recovery Services Vault Name"
+    }
+  },
+  "SystemManagedID": {
       "type": "string",
       "metadata": {
         "description": "System Managed ID"
-      }
-    },
-    "RoleDefinitionID": {
-      "type": "string",
-      "metadata": {
-        "description": "Managed ID Name"
       }
     },
     "roleAssignmentGuid": {
@@ -27,16 +27,20 @@
       }
     }             
 },
+"variables": {
+  "scope": "[concat('Microsoft.RecoveryServices/vaults', '/', parameters('RSVaultName'))]",
+  "RoleDefinitionID": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', parameters('RoleDefinitionID'))]"
+},
 "resources": [
     {
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2018-09-01-preview",
       "name": "[parameters('roleAssignmentGuid')]",
       "properties": {
-        "roleDefinitionId": "[parameters('RoleDefinitionId')]",
+        "roleDefinitionId": "[variables('RoleDefinitionId')]",
         "principalId": "[parameters('SystemManagedID')]",
         "principalType": "ServicePrincipal",
-        "scope": "[parameters('scope')]"
+        "scope": "[variables('scope')]"
       }
     }
   ]
