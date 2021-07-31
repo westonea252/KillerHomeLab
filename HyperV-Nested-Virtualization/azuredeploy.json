@@ -125,7 +125,7 @@
                   "value": "[variables('RSVault1Name')]"
               },
               "location": {
-                  "value": "[deployment().location]"
+                  "value": "[resourceGroup().location]"
               }
           }
       }
