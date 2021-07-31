@@ -8,18 +8,6 @@
           "description": "Name of the Recovery Services Vault"
         }
       },
-      "SystemManagedID": {
-        "type": "string",
-        "metadata": {
-          "description": "System Managed ID"
-        }
-      },      
-      "roleAssignmentGuid": {
-        "type": "string",
-        "metadata": {
-          "description": "A new GUID used to identify the role assignment"
-        }
-      },      
       "location": {
           "type": "string",
         "metadata": {
@@ -28,8 +16,7 @@
       }
     },
   "variables": {
-    "skuName":  "Standard",
-    "RoleDefinitionID": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"    
+    "skuName":  "Standard"
   },    
     "resources": [
         {
@@ -43,19 +30,6 @@
             "sku": {
                 "name": "RS0",
                 "tier": "[variables('skuName')]"          
-            }
-        },
-        {
-            "type": "Microsoft.Authorization/roleAssignments",
-            "apiVersion": "2018-09-01-preview",
-            "name": "[parameters('roleAssignmentGuid')]",
-            "scope": "[concat('Microsoft.RecoveryServices/vaults', '/', parameters('RSVaultName'))]",
-            "dependsOn": [
-              "[parameters('RSVaultName')]"
-            ],                      
-            "properties": {
-              "roleDefinitionId": "[variables('RoleDefinitionId')]",
-              "principalId": "[parameters('SystemManagedID')]"
             }
         }        
     ]

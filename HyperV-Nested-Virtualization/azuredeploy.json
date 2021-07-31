@@ -71,7 +71,7 @@
             "description": "Hyper-V VMSize"
         }
     },  
-    "roleAssignmentGuid1": {
+    "roleAssignmentGuid": {
       "type": "string",
       "defaultValue": "[newGuid()]",
       "metadata": {
@@ -107,7 +107,8 @@
     "hvname": "[concat(parameters('NamingConvention'),'-hv-01')]",                      
     "hvIP": "[concat(parameters('vnet1ID'),'.1.',variables('hvlastoctet'))]", 
     "hvlastoctet": "123",
-    "HyperVSite": "15714-Starling"    
+    "HyperVSite": "15714-Starling",
+    "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"     
   },  
   "resources": [    
     {
@@ -252,12 +253,6 @@
           "parameters": {
               "RSVaultName": {
                   "value": "[variables('RSVault1Name')]"
-              },
-              "SystemManagedID": {
-                "value": "[reference('deployHVVM').outputs.principalId.value]"
-              },
-              "roleAssignmentGuid": {
-                  "value": "[parameters('roleAssignmentGuid1')]"
               },                            
               "location": {
                   "value": "[resourceGroup().location]"
@@ -268,9 +263,36 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
+      "name": "AssignManagedID",
+      "dependsOn": [
+        "deployHVVM"
+      ],        
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/roleassignment.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "PrincipalID": {
+                  "value": "[reference('deployHVVM').outputs.principalId.value]"
+              },
+              "RoleDefinitionID": {
+                  "value": "[variables('Contributor')]"
+              },
+              "roleAssignmentGuid": {
+                  "value": "[parameters('roleAssignmentGuid')]"
+              }              
+          }
+      }
+    },        
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
       "name": "ConfigureHyperV",
       "dependsOn": [
-        "DeployHVVM"
+        "DeployHVVM",
+        "AssignManagedID"
       ],
       "properties": {
           "mode": "Incremental",
