@@ -240,7 +240,7 @@
     }    
   },
   "variables": {
-    "AzureEnvironment": "AzureCloud",
+    "AzureEnvironment": "AzureUSGovernment",
     "vnet1Name": "[concat(parameters('NamingConvention'),'-VNet1')]",
     "vnet1Prefix": "[concat(parameters('vnet1ID'),'.0.0/16')]",
     "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet1')]",    

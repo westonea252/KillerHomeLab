@@ -3,6 +3,7 @@
    param
    (
         [String]$ComputerName,
+        [String]$AzureEnvironment,
         [String]$ResourceGroupName,
         [String]$NamingConvention,
         [String]$VaultName,
@@ -112,7 +113,7 @@
         {
             SetScript =
             {                 
-                Connect-AzAccount -Environment AzureUSGovernment -Identity
+                Connect-AzAccount -Environment "$using:AzureEnvironment" -Identity
 
                 $dt = $(Get-Date).ToString("M-d-yyyy")
                 $cert = New-SelfSignedCertificate -CertStoreLocation Cert:\CurrentUser\My -FriendlyName "$using:HyperVSite" -subject "Windows Azure Tools" -KeyExportPolicy Exportable -NotAfter $(Get-Date).AddHours(48) -NotBefore $(Get-Date).AddHours(-24) -KeyProtection None -KeyUsage None -TextExtension @("2.5.29.37={text}1.3.6.1.5.5.7.3.2") -Provider "Microsoft Enhanced Cryptographic Provider v1.0"

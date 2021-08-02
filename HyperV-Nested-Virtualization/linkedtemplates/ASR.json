@@ -8,6 +8,12 @@
                 "description": "Computer Name"
             }
         },
+        "AzureEnvironment": {
+            "type": "string",
+            "metadata": {
+                "description": "Azure Cloud Environment"
+            }
+        },           
         "ResourceGroupName": {
             "type": "string",
             "metadata": {
@@ -89,6 +95,7 @@
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
                             "ComputerName": "[parameters('ComputerName')]",
+                            "AzureEnvironment": "[parameters('AzureEnvironment')]",                            
                             "ResourceGroupName": "[parameters('ResourceGroupName')]",
                             "NamingConvention": "[parameters('NamingConvention')]",                                                        
                             "VaultName": "[parameters('VaultName')]",
