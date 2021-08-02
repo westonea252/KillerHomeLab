@@ -8,6 +8,18 @@
                 "description": "Computer Name"
             }
         },
+        "ResourceGroupName": {
+            "type": "string",
+            "metadata": {
+                "description": "Resource Group Name"
+            }
+        },   
+        "NamingConvention": {
+            "type": "string",
+            "metadata": {
+                "description": "Naming Convention"
+            }
+        },                          
         "VaultName": {
             "type": "string",
             "metadata": {
@@ -19,7 +31,13 @@
             "metadata": {
                 "description": "Azure Site Recovery Hyper-V Site"
             }
-        },                                           
+        },   
+        "StorageAccountName": {
+            "type": "string",
+            "metadata": {
+                "description": "Storage Account Name"
+            }
+        },                                                   
         "adminUsername": {
             "type": "string",
             "metadata": {
@@ -70,8 +88,12 @@
                     "ModulesUrl": "[variables('modulesUrl')]",
                     "ConfigurationFunction": "[variables('configurationFunction')]",
                         "Properties": {
+                            "ComputerName": "[parameters('ComputerName')]",
+                            "ResourceGroupName": "[parameters('ResourceGroupName')]",
+                            "NamingConvention": "[parameters('NamingConvention')]",                                                        
                             "VaultName": "[parameters('VaultName')]",
                             "HyperVSite": "[parameters('HyperVSite')]",
+                            "StorageAccountName": "[parameters('StorageAccountName')]",                            
                             "AdminCreds": {
                                 "UserName": "[parameters('adminUsername')]",
                                 "Password": "PrivateSettingsRef:AdminPassword"

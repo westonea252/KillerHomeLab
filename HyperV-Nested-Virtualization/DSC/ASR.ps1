@@ -2,15 +2,90 @@
 {
    param
    (
+        [String]$ComputerName,
+        [String]$ResourceGroupName,
+        [String]$NamingConvention,
         [String]$VaultName,
         [String]$HyperVSite,
+        [String]$StorageAccountName,
+        [String]$Location,                                       
         [System.Management.Automation.PSCredential]$Admincreds
     )
 
+    Import-DscResource -Module xPSDesiredStateConfiguration # Used for xRemoteFile   
     Import-DscResource -Module xPendingReboot # Used for Reboots
 
     Node localhost
     {
+        Registry SchUseStrongCrypto
+        {
+            Key                         = 'HKLM:\SOFTWARE\Microsoft\.NETFramework\v4.0.30319'
+            ValueName                   = 'SchUseStrongCrypto'
+            ValueType                   = 'Dword'
+            ValueData                   =  '1'
+            Ensure                      = 'Present'
+        }
+
+        Registry SchUseStrongCrypto64
+        {
+            Key                         = 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework\v4.0.30319'
+            ValueName                   = 'SchUseStrongCrypto'
+            ValueType                   = 'Dword'
+            ValueData                   =  '1'
+            Ensure                      = 'Present'
+        }
+
+        File CreateASRFolder
+        {
+            Type = 'Directory'
+            DestinationPath = 'C:\ASR'
+            Ensure = "Present"
+            DependsOn = '[Registry]SchUseStrongCrypto', '[Registry]SchUseStrongCrypto64'
+        }
+
+        File CreateVMFolder
+        {
+            Type = 'Directory'
+            DestinationPath = 'V:\VMs'
+            Ensure = "Present"
+            DependsOn = '[Registry]SchUseStrongCrypto', '[Registry]SchUseStrongCrypto64'
+        }
+        
+        xRemoteFile DownloadASRProvider
+        {
+            DestinationPath = "C:\ASR\AzureSiteRecoveryProvider"
+            Uri             = "http://aka.ms/downloaddra_ugv"
+            UserAgent       = "[Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer"
+            DependsOn = '[File]CreateASRFolder'
+        }
+
+        xRemoteFile Win10Download
+        {
+            DestinationPath = "C:\ASR\WinDev2106Eval.HyperVGen1.zip"
+            Uri             = "https://aka.ms/windev_VM_hyperv"
+            UserAgent       = "[Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer"
+            DependsOn = '[xWaitForVolume]WaitForVVolume','[File]CreateASRFolder'
+        }
+
+        Script CreateWin10VM
+        {
+            SetScript =
+            {
+                # UnCompress Win10
+                $VMs = Get-Item -Path "V:\WinDev2106Eval.HyperVGen1" -ErrorAction 0
+                IF ($VMs -ne $Null) {
+                Expand-Archive -Path "C:\ASR\WinDev2106Eval.HyperVGen1.zip" -DestinationPath "V:\" -Force
+                $VMFile = Get-ChildItem -Path "V:\Virtual Machines\" | Where-Object {$_.Name -like '*vmcx'}
+                $VMFileName = $VMFile.Name
+                Import-VM -Path "V:\Virtual Machines\$VMFileName"
+                Start-VM -Name WinDev2106Eval
+                }
+            }
+            GetScript =  { @{} }
+            TestScript = { $false}
+            DependsOn = '[xRemoteFile]Win10Download'
+        }
+
         LocalConfigurationManager
         {
             RebootNodeIfNeeded = $true
@@ -37,7 +112,11 @@
         {
             SetScript =
             {                 
-                Connect-AzAccount -Environment AzureUSGovernment -Identity               ​
+                Connect-AzAccount -Environment AzureUSGovernment -Identity
+
+                $dt = $(Get-Date).ToString("M-d-yyyy")
+                $cert = New-SelfSignedCertificate -CertStoreLocation Cert:\CurrentUser\My -FriendlyName "$using:HyperVSite" -subject "Windows Azure Tools" -KeyExportPolicy Exportable -NotAfter $(Get-Date).AddHours(48) -NotBefore $(Get-Date).AddHours(-24) -KeyProtection None -KeyUsage None -TextExtension @("2.5.29.37={text}1.3.6.1.5.5.7.3.2") -Provider "Microsoft Enhanced Cryptographic Provider v1.0"
+                $certficate = [convert]::ToBase64String($cert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Pfx))
                 
                 # Get Vault
                 $Vault = Get-AzRecoveryServicesVault -Name "$using:VaultName"
@@ -49,7 +128,61 @@
 
                 # Generate and Download Registration Key
                 $SiteIdentifier = Get-AzRecoveryServicesAsrFabric -Name "$using:HyperVSite" | Select-Object -ExpandProperty SiteIdentifier
-                $path = Get-AzRecoveryServicesVaultSettingsFile -Vault $Vault -SiteIdentifier $SiteIdentifier -SiteFriendlyName "$using:HyperVSite"
+                $path = Get-AzRecoveryServicesVaultSettingsFile -Vault $Vault -SiteIdentifier $SiteIdentifier -SiteFriendlyName "$using:HyperVSite" -Certificate $certificate
+
+                # Add Hyper-V Server
+                $server = Get-AzRecoveryServicesAsrFabric -Name "$using:HyperVSite" | Get-AzRecoveryServicesAsrServicesProvider -FriendlyName "$using:ComputerName"
+
+                # Extract ASR Provider
+                C:\ASR\AzureSiteRecoveryProvider.exe /x:C:\ASR /q
+
+                # Silent Install
+                C:\ASR\setupdr.exe /i
+                
+                $InstallPath = "C:\Program Files\Microsoft Azure Site Recovery Provider\DRConfigurator.exe"
+                & $InstallPath /r /Friendlyname "$using:ComputerName" /Credentials $path.FilePath
+
+                # Create Replication Policy
+                $ReplicationFrequencyInSeconds = "300";        #options are 30,300,900
+                $PolicyName = “replicapolicy”
+                $Recoverypoints = 6                    #specify the number of recovery points
+
+                $StorageAccountCheck = Get-AzStorageAccount -Name "$using:StorageAccountName" -ResourceGroupName "$using:ResourceGroupName" -ErrorAction 0
+                IF ($StorageAccountCheck -eq $null) {
+                $StorageAccount = New-AzStorageAccount -Name "$using:StorageAccountName" -ResourceGroupName "$using:ResourceGroupName" -SkuName Standard_LRS -Location $Location
+                $storageaccountID = $StorageAccount.Id
+                }
+                ELSE {
+                $storageaccountID = Get-AzStorageAccount -Name "$using:StorageAccountName" -ResourceGroupName "$using:ResourceGroupName" | Select-Object -ExpandProperty Id
+                }
+
+                $PolicyResult = New-AzRecoveryServicesAsrPolicy -Name $PolicyName -ReplicationProvider “HyperVReplicaAzure” -ReplicationFrequencyInSeconds $ReplicationFrequencyInSeconds -NumberOfRecoveryPointsToRetain $Recoverypoints -ApplicationConsistentSnapshotFrequencyInHours 1 -RecoveryAzureStorageAccountId $storageaccountID
+
+                $Fabric = Get-AzRecoveryServicesAsrFabric -Name "$HyperVSite"
+                $protectionContainer = Get-AzRecoveryServicesAsrProtectionContainer -Fabric $Fabric
+
+                $Policy = Get-AzRecoveryServicesAsrPolicy -FriendlyName $PolicyName
+                New-AzRecoveryServicesAsrProtectionContainerMapping -Name "OnPrem-to-Azure" -Policy $Policy -PrimaryProtectionContainer $protectionContainer[0]
+                $associationJob = Get-AzRecoveryServicesAsrProtectionContainerMapping -Name "OnPrem-to-Azure" -ProtectionContainer $protectionContainer[0]
+
+                while (($associationJob.State -ne 'Paired')){
+                $associationJob = Get-AzRecoveryServicesAsrProtectionContainerMapping -Name "OnPrem-to-Azure" -ProtectionContainer $protectionContainer[0]
+                Start-Sleep 60}
+
+                $ProtectionContainerMapping = Get-AzRecoveryServicesAsrProtectionContainerMapping -ProtectionContainer $protectionContainer
+
+                $VMFriendlyName = "WinDev2106Eval"          #Name of the VM
+                $OSDisk = "$VMFriendlyName"+"_OSDisk"
+                $ProtectableItem = Get-AzRecoveryServicesAsrProtectableItem -ProtectionContainer $protectionContainer -FriendlyName $VMFriendlyName
+
+                $OSType = "Windows"          # "Windows" or "Linux"
+                $VM = Get-VM -Name WinDev2106Eval
+                $ResourceGroup = Get-AzResourceGroup -Name "$using:ResourceGroupName"
+                $DRjob = New-AzRecoveryServicesAsrReplicationProtectedItem -ProtectableItem $ProtectableItem -Name $ProtectableItem.Name -ProtectionContainerMapping $ProtectionContainerMapping -HyperVToAzure -UseManagedDisk True -RecoveryResourceGroupId $ResourceGroup.ResourceId -RecoveryAzureStorageAccountId $storageaccountID -OSDiskName $OSDisk -OS Windows
+
+                while (($DRjob.ProtectionState -ne 'Paired')){
+                $DRjob = Get-AzRecoveryServicesAsrReplicationProtectedItem -ProtectionContainer $protectionContainer[0]
+                Start-Sleep 60}
             }
             GetScript =  { @{} }
             TestScript = { $false}

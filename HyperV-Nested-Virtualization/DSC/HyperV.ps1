@@ -3,22 +3,15 @@
    param
    (
         [String]$HyperVNATIP,
-        [String]$HyperVSubnetPrefix
+        [String]$HyperVSubnetPrefix,
+        [String]$TimeZone
     )
  
     Import-DscResource -Module ComputerManagementDsc # Used for TimeZone
     Import-DscResource -Module xStorage # Used for ISO
-    Import-DscResource -Module xPSDesiredStateConfiguration # Used for xRemote
 
     Node localhost
     {
-        WindowsFeature 'Hyper-V'
-        {
-            Name   = 'Hyper-V'
-            Ensure = 'Present'
-            IncludeAllSubFeature = $true
-        }
-
         WindowsFeature 'RSAT-Hyper-V-Tools'
         {
             Name   = 'RSAT-Hyper-V-Tools'
@@ -72,7 +65,7 @@
         TimeZone SetTimeZone
         {
             IsSingleInstance = 'Yes'
-            TimeZone         = 'Eastern Standard Time'
+            TimeZone         = $TimeZone
         }
      }
   }
