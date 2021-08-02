@@ -65,7 +65,7 @@
             DestinationPath = "C:\ASR\WinDev2106Eval.HyperVGen1.zip"
             Uri             = "https://aka.ms/windev_VM_hyperv"
             UserAgent       = "[Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer"
-            DependsOn = '[xWaitForVolume]WaitForVVolume','[File]CreateASRFolder'
+            DependsOn = '[File]CreateASRFolder'
         }
 
         Script CreateWin10VM
