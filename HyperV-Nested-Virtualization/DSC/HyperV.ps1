@@ -45,7 +45,7 @@
             SetScript =
             {
                 # CREATE Hyper-V Switch
-                $SwitchCheck = Get-VMSwitch -Name "InternalNAT"
+                $SwitchCheck = Get-VMSwitch -Name "InternalNAT" -ErrorAction 0
                 IF ($SwitchCheck -eq $null) {New-VMSwitch -Name "InternalNAT" -SwitchType Internal}
 
                 # Get IfIndex
