@@ -18,6 +18,11 @@
 
     Node localhost
     {
+        LocalConfigurationManager
+        {
+            RebootNodeIfNeeded = $true
+        }
+
         Registry SchUseStrongCrypto
         {
             Key                         = 'HKLM:\SOFTWARE\Microsoft\.NETFramework\v4.0.30319'
@@ -54,7 +59,7 @@
         
         xRemoteFile DownloadASRProvider
         {
-            DestinationPath = "C:\ASR\AzureSiteRecoveryProvider"
+            DestinationPath = "C:\ASR\AzureSiteRecoveryProvider.exe"
             Uri             = "http://aka.ms/downloaddra_ugv"
             UserAgent       = "[Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer"
             DependsOn = '[File]CreateASRFolder'
@@ -62,7 +67,7 @@
 
         xRemoteFile Win10Download
         {
-            DestinationPath = "C:\ASR\WinDev2106Eval.HyperVGen1.zip"
+            DestinationPath = "C:\ASR\WinDev2016Eval.HyperVGen1.zip"
             Uri             = "https://aka.ms/windev_VM_hyperv"
             UserAgent       = "[Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer"
             DependsOn = '[xRemoteFile]DownloadASRProvider'
@@ -73,23 +78,18 @@
             SetScript =
             {
                 # UnCompress Win10
-                $VMs = Get-Item -Path "V:\WinDev2106Eval.HyperVGen1" -ErrorAction 0
+                $VMs = Get-Item -Path "V:\WinDev2016Eval.HyperVGen1" -ErrorAction 0
                 IF ($VMs -eq $Null) {
-                Expand-Archive -Path "C:\ASR\WinDev2106Eval.HyperVGen1.zip" -DestinationPath "V:\" -Force
+                Expand-Archive -Path "C:\ASR\WinDev2016Eval.HyperVGen1.zip" -DestinationPath "V:\" -Force
                 $VMFile = Get-ChildItem -Path "V:\Virtual Machines\" | Where-Object {$_.Name -like '*vmcx'}
                 $VMFileName = $VMFile.Name
                 Import-VM -Path "V:\Virtual Machines\$VMFileName"
-                Start-VM -Name WinDev2106Eval
+                Start-VM -Name WinDev2016Eval
                 }
             }
             GetScript =  { @{} }
             TestScript = { $false}
             DependsOn = '[xRemoteFile]Win10Download'
-        }
-
-        LocalConfigurationManager
-        {
-            RebootNodeIfNeeded = $true
         }
 
         Script InstallAzModule
