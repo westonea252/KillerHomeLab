@@ -67,7 +67,7 @@
 
         xRemoteFile Win10Download
         {
-            DestinationPath = "C:\ASR\WinDev2016Eval.HyperVGen1.zip"
+            DestinationPath = "C:\ASR\WinDev2106Eval.HyperVGen1.zip"
             Uri             = "https://aka.ms/windev_VM_hyperv"
             UserAgent       = "[Microsoft.PowerShell.Commands.PSUserAgent]::InternetExplorer"
             DependsOn = '[xRemoteFile]DownloadASRProvider'
@@ -78,13 +78,13 @@
             SetScript =
             {
                 # UnCompress Win10
-                $VMs = Get-Item -Path "V:\WinDev2016Eval.HyperVGen1" -ErrorAction 0
+                $VMs = Get-Item -Path "V:\WinDev2106Eval.HyperVGen1" -ErrorAction 0
                 IF ($VMs -eq $Null) {
-                Expand-Archive -Path "C:\ASR\WinDev2016Eval.HyperVGen1.zip" -DestinationPath "V:\" -Force
+                Expand-Archive -Path "C:\ASR\WinDev2106Eval.HyperVGen1.zip" -DestinationPath "V:\" -Force
                 $VMFile = Get-ChildItem -Path "V:\Virtual Machines\" | Where-Object {$_.Name -like '*vmcx'}
                 $VMFileName = $VMFile.Name
                 Import-VM -Path "V:\Virtual Machines\$VMFileName"
-                Start-VM -Name WinDev2016Eval
+                Start-VM -Name WinDev2106Eval
                 }
             }
             GetScript =  { @{} }
@@ -113,9 +113,12 @@
         {
             SetScript =
             {                 
+                $CertCheck = Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "Windows Azure Tools"}
+                IF ($CertCheck -eq $Null){
                 $dt = $(Get-Date).ToString("M-d-yyyy")
                 $cert = New-SelfSignedCertificate -CertStoreLocation Cert:\LocalMachine\My -FriendlyName "$using:HyperVSite" -subject "Windows Azure Tools" -KeyExportPolicy Exportable -NotAfter $(Get-Date).AddHours(48) -NotBefore $(Get-Date).AddHours(-24) -KeyProtection None -KeyUsage None -TextExtension @("2.5.29.37={text}1.3.6.1.5.5.7.3.2") -Provider "Microsoft Enhanced Cryptographic Provider v1.0"
                 $certificate = [convert]::ToBase64String($cert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Pfx))
+                }
                 Connect-AzAccount -Environment "$using:AzureEnvironment" -Identity
                 
                 # Get Vault
