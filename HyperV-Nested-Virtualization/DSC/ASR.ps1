@@ -137,7 +137,7 @@
                 $server = Get-AzRecoveryServicesAsrFabric -Name "$using:HyperVSite" | Get-AzRecoveryServicesAsrServicesProvider -FriendlyName "$using:ComputerName"
 
                 # Extract ASR Provider
-                C:\ASR\AzureSiteRecoveryProvider.exe /x:C:\ASR /q
+                C:\ASR\AzureSiteRecoveryProvider.exe '/x:C:\ASR' /q
 
                 # Silent Install
                 C:\ASR\setupdr.exe /i
