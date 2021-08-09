@@ -113,11 +113,14 @@
         {
             SetScript =
             {                 
-                $CertCheck = Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "Windows Azure Tools"}
+                $CertCheck = Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=Windows Azure Tools"}
                 IF ($CertCheck -eq $Null){
                 $dt = $(Get-Date).ToString("M-d-yyyy")
                 $cert = New-SelfSignedCertificate -CertStoreLocation Cert:\LocalMachine\My -FriendlyName "$using:HyperVSite" -subject "Windows Azure Tools" -KeyExportPolicy Exportable -NotAfter $(Get-Date).AddHours(48) -NotBefore $(Get-Date).AddHours(-24) -KeyProtection None -KeyUsage None -TextExtension @("2.5.29.37={text}1.3.6.1.5.5.7.3.2") -Provider "Microsoft Enhanced Cryptographic Provider v1.0"
                 $certificate = [convert]::ToBase64String($cert.Export([System.Security.Cryptography.X509Certificates.X509ContentType]::Pfx))
+                }
+                ELSE {
+                $certificate = (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "CN=Windows Azure Tools"}).Thumbprint
                 }
                 Connect-AzAccount -Environment "$using:AzureEnvironment" -Identity
                 
@@ -137,13 +140,15 @@
                 $server = Get-AzRecoveryServicesAsrFabric -Name "$using:HyperVSite" | Get-AzRecoveryServicesAsrServicesProvider -FriendlyName "$using:ComputerName"
 
                 # Extract ASR Provider
-                C:\ASR\AzureSiteRecoveryProvider.exe '/x:C:\ASR' /q
+                $ExtractPath = "C:\ASR\AzureSiteRecoveryProvider.exe"
+                & $ExtractPath '/x:C:\ASR' /q
 
                 # Silent Install
-                C:\ASR\setupdr.exe /i
+                $InstallPath = "C:\ASR\setupdr.exe"
+                & $InstallPath /i
                 
-                $InstallPath = "C:\Program Files\Microsoft Azure Site Recovery Provider\DRConfigurator.exe"
-                & $InstallPath /r /Friendlyname "$using:ComputerName" /Credentials $path.FilePath
+                $ConfigPath = "C:\Program Files\Microsoft Azure Site Recovery Provider\DRConfigurator.exe"
+                & $ConfigPath /r /Friendlyname "$using:ComputerName" /Credentials $path.FilePath
 
                 # Create Replication Policy
                 $ReplicationFrequencyInSeconds = "300";        #options are 30,300,900
