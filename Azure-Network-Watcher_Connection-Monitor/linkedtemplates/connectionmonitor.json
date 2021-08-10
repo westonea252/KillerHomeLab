@@ -35,7 +35,7 @@
       },      
     "resources": [
         {
-            "apiVersion": "2019-07-01",
+            "apiVersion": "2020-04-01",
             "name": "[variables('CMName')]",
             "location": "[parameters('location')]",
             "type": "Microsoft.Network/networkWatchers/connectionMonitors",
@@ -56,7 +56,7 @@
                     {
                         "name": "Web-Traffic",
                         "testFrequencySec": 30,
-                        "protocol": "TCP",
+                        "protocol": "Tcp",
                         "successThreshold": {
                             "checksFailedPercent": 10,
                             "roundTripTimeMs": 100
