@@ -672,6 +672,41 @@
               }                            
           }
       }
-    }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DeployConnectionMonitor",
+      "dependsOn": [
+        "DeployLogAnalysticsWorkspace",
+        "deployVNet2VM",        
+        "deployVNet2VM-NW",                
+        "CreateManagedID",
+        "AssignManagedID",
+        "ConnectVM1",
+        "ConnectVM2"        
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/connectionmonitor.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "NamingConvention": {
+                  "value": "[parameters('NamingConvention')]"
+              },
+              "SourceVMName": {
+                  "value": "[variables('vm1Name')]"
+              },
+              "DestinationVMName": {
+                  "value": "[variables('vm2Name')]"
+              },                                                 
+              "Location": {
+                  "value": "[resourceGroup().location]"
+              }                            
+          }
+      }
+    }                   
   ]
 }
