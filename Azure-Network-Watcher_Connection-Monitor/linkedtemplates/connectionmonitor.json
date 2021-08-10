@@ -1,0 +1,88 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "NamingConvention": {
+            "type": "string",
+            "metadata": {
+                "description": "Naming Convention"
+            }
+        },        
+        "SourceVMName": {
+            "type": "string",
+            "metadata": {
+                "description": "Source VM Name"
+            }
+        },                                  
+        "DestinationVMName ": {
+            "type": "string",
+            "metadata": {
+                "description": "Destination VM Name"
+            }
+        },                                   
+        "location": {
+            "type": "string",
+          "metadata": {
+            "description": "Region of Resources"
+          }
+        }                
+    },
+    "variables": { 
+        "CMName": "[concat(parameters('NamingConvention'),'-ConnectionMonitor')]",
+        "SourceVMID": "[resourceId(resourceGroup().name, 'Microsoft.Compute/virtualMachines', parameters('SourceVMName'))]",        
+        "DestinationVMID": "[resourceId(resourceGroup().name, 'Microsoft.Compute/virtualMachines', parameters('DestinationVMName'))]",
+        "TestGroupName": "[concat(parameters('SourceVMName'),'-to-', parameters('DestinationVMName'))]"        
+      },      
+    "resources": [
+        {
+            "apiVersion": "2019-07-01",
+            "name": "[variables('CMName')]",
+            "location": "[parameters('location')]",
+            "type": "Microsoft.Network/networkWatchers/connectionMonitors",
+            "properties": {
+                "endpoints": [
+                    {
+                        "name": "[parameters('SourceVMName')]",
+                        "resourceId": "[variables('SourceVMID')]",
+                        "type": "AzureVNet"
+                    },
+                    {
+                        "name": "[parameters('DestinationVMName')]",
+                        "resourceId": "[variables('DestinationVMID')]",
+                        "type": "AzureVNet"
+                    }
+                ],
+                "testConfigurations": [
+                    {
+                        "name": "Web-Traffic",
+                        "testFrequencySec": 30,
+                        "protocol": "TCP",
+                        "successThreshold": {
+                            "checksFailedPercent": 10,
+                            "roundTripTimeMs": 100
+                        },
+                        "tcpConfiguration": {
+                            "port": 80,
+                            "disableTraceRoute": false
+                        }
+                    }
+                ],
+                "testGroups": [
+                    {
+                        "name": "[variables('TestGroupName')]",
+                        "sources": [
+                            "[parameters('SourceVMName')]"
+                        ],
+                        "destinations": [
+                            "[parameters('DestinationVMName')]"
+                        ],
+                        "testConfigurations": [
+                            "Web-Traffic"
+                        ],
+                        "disable": false
+                    }
+                ]
+            }
+        }
+    ]
+}
