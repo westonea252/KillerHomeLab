@@ -1,7 +1,14 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptiondeploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "ResourceGroup": {
+      "type": "string",
+      "defaultValue": "NW-ConnectionMonitor-01",
+      "metadata": {
+        "description": "Resource Groups"
+      }
+    },
     "Location2": {
       "type": "string",
       "defaultValue": "USGovTexas", 
@@ -107,7 +114,14 @@
         "metadata": {
             "description": "A new GUID used to identify the role assignment"
         }
-    },                
+    },  
+    "UniqueID": {
+        "type": "string",
+        "defaultValue": "1234567890x1",
+        "metadata": {
+            "description": "Unique Identifier"
+        }
+    },                  
     "_artifactsLocation": {
       "type": "string",
       "metadata": {
@@ -144,16 +158,41 @@
     "vm2IP": "[concat(parameters('vnet2ID'),'.1.',variables('vm2lastoctet'))]",            
     "vm1lastoctet": "101",        
     "vm2lastoctet": "101",        
-    "WorkSpaceName": "[concat(parameters('NamingConvention'),'-LAW-',uniqueString(resourceGroup().id))]",
-    "CMName": "[concat(parameters('NamingConvention'),'-CM-',uniqueString(resourceGroup().id))]",    
-    "ManagedIDName": "[concat(parameters('NamingConvention'),'-ManagedID-',uniqueString(resourceGroup().id))]",
+    "WorkSpaceName": "[concat(parameters('NamingConvention'),'-LAW-',parameters('UniqueID'))]",
+    "CMName": "[concat(parameters('NamingConvention'),'-CM-',parameters('UniqueID'))]",    
+    "ManagedIDName": "[concat(parameters('NamingConvention'),'-ManagedID-',parameters('UniqueID'))]",
     "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"
   },  
   "resources": [
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
+      "name": "CreateRG",
+      "location": "[deployment().location]",              
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/resourcegroup.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "ResourceGroupName": {
+                  "value": "[parameters('ResourceGroup')]"
+              },
+              "location": {
+                  "value": "[deployment().Location]"
+              }            
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
       "name": "DeployLogAnalysticsWorkspace",
+      "resourceGroup":  "[parameters('ResourceGroup')]",    
+      "dependsOn": [
+        "CreateRG"
+      ],      
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -177,6 +216,10 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "VNet1",
+      "resourceGroup":  "[parameters('ResourceGroup')]",    
+      "dependsOn": [
+        "CreateRG"
+      ],            
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -206,7 +249,7 @@
                 "value": "[variables('vnet1BastionsubnetPrefix')]"
               },              
               "location": {
-                  "value": "[resourceGroup().location]"   
+                  "value": "[deployment().location]"
               }
           }
       }
@@ -215,6 +258,10 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "VNet2",    
+      "resourceGroup":  "[parameters('ResourceGroup')]",    
+      "dependsOn": [
+        "CreateRG"
+      ],                  
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -253,6 +300,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "BastionHost1",
+      "resourceGroup":  "[parameters('ResourceGroup')]",          
       "dependsOn": [
         "VNet1"
       ],
@@ -276,7 +324,7 @@
                   "value": "AzureBastionSubnet"
               },
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().location]"
               }
           }
       }
@@ -285,6 +333,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DeployVNet1VM",
+      "resourceGroup":  "[parameters('ResourceGroup')]",                
       "dependsOn": [
         "VNet1"
       ],      
@@ -329,7 +378,7 @@
                 "value": "[parameters('adminPassword')]"
               },                                                                                                                                        
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().location]"
               }
           }
       }
@@ -338,6 +387,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DeployVNet1VM-NW",
+      "resourceGroup":  "[parameters('ResourceGroup')]",                
       "dependsOn": [
         "DeployVNet1VM"
       ],            
@@ -352,7 +402,7 @@
                   "value": "[variables('vm1name')]"
               },
               "location": {
-                "value": "[resourceGroup().location]"   
+                "value": "[deployment().location]"   
             }           
           }
       }
@@ -361,6 +411,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "deployVNet2VM",
+      "resourceGroup":  "[parameters('ResourceGroup')]",                      
       "dependsOn": [
         "VNet2"
       ],      
@@ -414,6 +465,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "InstallIIS",
+      "resourceGroup":  "[parameters('ResourceGroup')]",                      
       "dependsOn": [
         "deployVNet2VM"
       ],      
@@ -443,6 +495,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DeployVNet2VM-NW",
+      "resourceGroup":  "[parameters('ResourceGroup')]",                      
       "dependsOn": [
         "DeployVNet2VM",
         "InstallIIS"        
@@ -467,6 +520,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "PeeringToSite2",
+      "resourceGroup":  "[parameters('ResourceGroup')]",                      
       "dependsOn": [
         "VNet1",
         "VNet2"
@@ -497,7 +551,7 @@
                 "value": "false"
               },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().location]"
               }
           }
       }
@@ -506,6 +560,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "PeeringToSite1",
+      "resourceGroup":  "[parameters('ResourceGroup')]",                      
       "dependsOn": [
         "VNet1",
         "VNet2",        
@@ -546,6 +601,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "CreateManagedID",
+      "resourceGroup":  "[parameters('ResourceGroup')]",                            
       "properties": {
           "mode": "Incremental",
           "templateLink": {
@@ -557,7 +613,7 @@
                   "value": "[variables('ManagedIDName')]"
               },
               "location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().location]"
               }
           }
       }
@@ -566,6 +622,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "AssignManagedID",
+      "resourceGroup":  "[parameters('ResourceGroup')]",                            
       "dependsOn": [
         "CreateManagedID"
       ],        
@@ -592,6 +649,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "ConnectVM1",
+      "resourceGroup":  "[parameters('ResourceGroup')]",                                  
       "dependsOn": [
         "DeployLogAnalysticsWorkspace",
         "deployVNet1VM",
@@ -625,7 +683,7 @@
                   "value": "USGovVirginia"
               },                                           
               "Location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().location]"
               }                            
           }
       }
@@ -634,6 +692,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "ConnectVM2",
+      "resourceGroup":  "[parameters('ResourceGroup')]",                                  
       "dependsOn": [
         "DeployLogAnalysticsWorkspace",
         "deployVNet2VM",        
@@ -656,10 +715,10 @@
                   "value": "[variables('WorkSpaceName')]"
               },
               "VMResourceGroupName": {
-                  "value": "[resourceGroup().Name]"
+                  "value": "[parameters('ResourceGroup')]"
               },       
               "WorkspaceResourceGroup": {
-                  "value": "[resourceGroup().Name]"
+                  "value": "[parameters('ResourceGroup')]"
               },
               "ManagedIDName": {
                   "value": "[variables('ManagedIDName')]"
@@ -677,6 +736,7 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DeployConnectionMonitor",
+      "resourceGroup":  "NetworkWatcherRG",            
       "dependsOn": [
         "DeployLogAnalysticsWorkspace",
         "deployVNet2VM",        
@@ -703,7 +763,7 @@
                   "value": "[variables('vm2Name')]"
               },                                                 
               "Location": {
-                  "value": "[resourceGroup().location]"
+                  "value": "[deployment().location]"
               }                            
           }
       }
