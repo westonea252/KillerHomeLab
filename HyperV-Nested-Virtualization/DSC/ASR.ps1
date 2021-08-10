@@ -141,10 +141,10 @@
 
                 # Extract ASR Provider
                 $ExtractPath = "C:\ASR\AzureSiteRecoveryProvider.exe"
-                & $ExtractPath '/x:C:\ASR' /q
+                & $ExtractPath '/x:C:\ASR\AzureSiteProvider' /q
 
                 # Silent Install
-                $InstallPath = "C:\ASR\setupdr.exe"
+                $InstallPath = "C:\ASR\AzureSiteProvider\setupdr.exe"
                 & $InstallPath /i
                 
                 $ConfigPath = "C:\Program Files\Microsoft Azure Site Recovery Provider\DRConfigurator.exe"
