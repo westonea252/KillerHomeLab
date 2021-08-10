@@ -693,7 +693,7 @@
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
-              "CMVMName": {
+              "CMName": {
                   "value": "[variables('CMName')]"
               },              
               "SourceVMName": {
