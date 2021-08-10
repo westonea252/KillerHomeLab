@@ -30,7 +30,7 @@
     "variables": { 
 
         "SourceVMID": "[resourceId(resourceGroup().name, 'Microsoft.Compute/virtualMachines', parameters('SourceVMName'))]",                
-        "NWID": "[concat('NetworkWatcher_',parameters('location'), parameters('CMName'))]",
+        "NWID": "[concat('NetworkWatcher_',parameters('location'), '/', parameters('CMName'))]",
         "DestinationVMID": "[resourceId(resourceGroup().name, 'Microsoft.Compute/virtualMachines', parameters('DestinationVMName'))]",
         "TestGroupName": "[concat(parameters('SourceVMName'),'-to-', parameters('DestinationVMName'))]"        
       },      
