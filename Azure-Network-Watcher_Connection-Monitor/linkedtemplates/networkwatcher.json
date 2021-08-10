@@ -21,9 +21,6 @@
             "apiVersion": "2021-03-01",
             "name": "[concat(parameters('computerName'), '/AzureNetworkWatcherExtension')]",
             "location": "[parameters('location')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Compute/virtualMachines', parameters('computerName'))]"
-            ],
             "properties": {
                 "autoUpgradeMinorVersion": true,
                 "publisher": "Microsoft.Azure.NetworkWatcher",
