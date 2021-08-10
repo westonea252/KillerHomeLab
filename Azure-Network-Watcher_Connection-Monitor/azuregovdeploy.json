@@ -409,13 +409,43 @@
               }
           }
       }
-    },    
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "InstallIIS",
+      "dependsOn": [
+        "deployVNet2VM"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/iis.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('vm2name')]"
+              },           
+              "location": {
+                  "value": "[parameters('Location2')]"
+              },                                          
+              "_artifactsLocation": {
+                "value": "[parameters('_artifactsLocation')]"
+              },                                                                                                            
+              "_artifactsLocationSasToken": {
+                "value": "[parameters('_artifactsLocationSasToken')]"
+              }                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+          }
+      }
+    },        
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
       "name": "DeployVNet2VM-NW",
       "dependsOn": [
-        "DeployVNet2VM"
+        "DeployVNet2VM",
+        "InstallIIS"        
       ],            
       "properties": {
           "mode": "Incremental",
