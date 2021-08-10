@@ -29,14 +29,15 @@
     },
     "variables": { 
         "CMName": "[concat(parameters('NamingConvention'),'-ConnectionMonitor')]",
-        "SourceVMID": "[resourceId(resourceGroup().name, 'Microsoft.Compute/virtualMachines', parameters('SourceVMName'))]",        
+        "SourceVMID": "[resourceId(resourceGroup().name, 'Microsoft.Compute/virtualMachines', parameters('SourceVMName'))]",                
+        "NWID": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkWatchers', variables('CMName'))]",        
         "DestinationVMID": "[resourceId(resourceGroup().name, 'Microsoft.Compute/virtualMachines', parameters('DestinationVMName'))]",
         "TestGroupName": "[concat(parameters('SourceVMName'),'-to-', parameters('DestinationVMName'))]"        
       },      
     "resources": [
         {
             "apiVersion": "2020-04-01",
-            "name": "[concat(Microsoft.Network/networkWatchers/connectionMonitors/, variables('CMName'))]",
+            "name": "[variables('NWID')]",
             "location": "[parameters('location')]",
             "type": "Microsoft.Network/networkWatchers/connectionMonitors",
             "properties": {
