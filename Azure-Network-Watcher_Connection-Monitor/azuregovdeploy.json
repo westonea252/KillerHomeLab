@@ -145,7 +145,7 @@
     "vm1lastoctet": "101",        
     "vm2lastoctet": "101",        
     "WorkSpaceName": "[concat(parameters('NamingConvention'),'-LAW-',uniqueString(resourceGroup().id))]",
-    "SubscriptionID": "[subscription().SubscriptionId]",
+    "CMName": "[concat(parameters('NamingConvention'),'-CM-',uniqueString(resourceGroup().id))]",    
     "ManagedIDName": "[concat(parameters('NamingConvention'),'-ManagedID-',uniqueString(resourceGroup().id))]",
     "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"
   },  
@@ -693,9 +693,9 @@
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
-              "NamingConvention": {
-                  "value": "[parameters('NamingConvention')]"
-              },
+              "CMVMName": {
+                  "value": "[variables('CMName')]"
+              },              
               "SourceVMName": {
                   "value": "[variables('vm1Name')]"
               },

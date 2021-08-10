@@ -2,10 +2,10 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "NamingConvention": {
+        "CMName": {
             "type": "string",
             "metadata": {
-                "description": "Naming Convention"
+                "description": "Connection Monitor Name"
             }
         },        
         "SourceVMName": {
@@ -28,9 +28,9 @@
         }                
     },
     "variables": { 
-        "CMName": "[concat(parameters('NamingConvention'),'-ConnectionMonitor')]",
+
         "SourceVMID": "[resourceId(resourceGroup().name, 'Microsoft.Compute/virtualMachines', parameters('SourceVMName'))]",                
-        "NWID": "[concat('NetworkWatcher_',parameters('location'), '/connectionMonitors/',variables('CMName'))]",
+        "NWID": "[concat('NetworkWatcher_',parameters('location'), '/connectionMonitors/',parameters('CMName'))]",
         "DestinationVMID": "[resourceId(resourceGroup().name, 'Microsoft.Compute/virtualMachines', parameters('DestinationVMName'))]",
         "TestGroupName": "[concat(parameters('SourceVMName'),'-to-', parameters('DestinationVMName'))]"        
       },      
