@@ -30,7 +30,7 @@
     "variables": { 
         "CMName": "[concat(parameters('NamingConvention'),'-ConnectionMonitor')]",
         "SourceVMID": "[resourceId(resourceGroup().name, 'Microsoft.Compute/virtualMachines', parameters('SourceVMName'))]",                
-        "NWID": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkWatchers', variables('CMName'))]",        
+        "NWID": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkWatchers', '/NetworkWatcher_', parameters('location'), '/', variables('CMName'))]",        
         "DestinationVMID": "[resourceId(resourceGroup().name, 'Microsoft.Compute/virtualMachines', parameters('DestinationVMName'))]",
         "TestGroupName": "[concat(parameters('SourceVMName'),'-to-', parameters('DestinationVMName'))]"        
       },      
