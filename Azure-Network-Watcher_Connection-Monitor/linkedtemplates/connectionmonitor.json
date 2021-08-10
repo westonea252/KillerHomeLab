@@ -14,7 +14,7 @@
                 "description": "Source VM Name"
             }
         },                                  
-        "DestinationVMName ": {
+        "DestinationVMName": {
             "type": "string",
             "metadata": {
                 "description": "Destination VM Name"
