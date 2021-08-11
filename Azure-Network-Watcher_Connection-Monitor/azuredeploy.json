@@ -716,7 +716,7 @@
                   "value": "[variables('ManagedIDName')]"
               },   
               "ScriptLocation": {
-                  "value": "USGovVirginia"
+                  "value": "[deployment().location]"
               },                                          
               "Location": {
                   "value": "[parameters('Location2')]"
