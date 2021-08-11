@@ -758,7 +758,10 @@
           "parameters": {
               "CMName": {
                   "value": "[variables('CMName')]"
-              },              
+              }, 
+              "VMResourceGroupName": {
+                  "value": "[parameters('ResourceGroup')]"
+              },                           
               "SourceVMName": {
                   "value": "[variables('vm1Name')]"
               },

@@ -7,7 +7,13 @@
             "metadata": {
                 "description": "Connection Monitor Name"
             }
-        },        
+        },
+        "VMResourceGroupName": {
+            "type": "string",
+            "metadata": {
+                "description": "VM Resource Group"
+            }
+        },                        
         "SourceVMName": {
             "type": "string",
             "metadata": {
@@ -29,9 +35,9 @@
     },
     "variables": { 
 
-        "SourceVMID": "[resourceId(resourceGroup().name, 'Microsoft.Compute/virtualMachines', parameters('SourceVMName'))]",                
+        "SourceVMID": "[resourceId(parameters('VMResourceGroupName'), 'Microsoft.Compute/virtualMachines', parameters('SourceVMName'))]",                
         "NWID": "[concat('NetworkWatcher_',parameters('location'), '/', parameters('CMName'))]",
-        "DestinationVMID": "[resourceId(resourceGroup().name, 'Microsoft.Compute/virtualMachines', parameters('DestinationVMName'))]",
+        "DestinationVMID": "[resourceId(parameters('VMResourceGroupName'), 'Microsoft.Compute/virtualMachines', parameters('DestinationVMName'))]",
         "TestGroupName": "[concat(parameters('SourceVMName'),'-to-', parameters('DestinationVMName'))]"        
       },      
     "resources": [
