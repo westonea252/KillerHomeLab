@@ -46,7 +46,7 @@
     }
 },
 "variables": {
-    "ScriptURL": "https://raw.githubusercontent.com/elliottfieldsjr/KillerHomeLab/masterAzure-Network-Watcher_Connection-Monitor/Scripts/ConnectToWorkspace.ps1"
+    "ScriptURL": "https://raw.githubusercontent.com/elliottfieldsjr/KillerHomeLab/master/Azure-Network-Watcher_Connection-Monitor/Scripts/ConnectToWorkspace.ps1"
 },
 "resources": [
     {
