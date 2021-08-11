@@ -674,10 +674,10 @@
                   "value": "[variables('WorkSpaceName')]"
               },
               "VMResourceGroupName": {
-                  "value": "[resourceGroup().Name]"
+                  "value": "[parameters('ResourceGroup')]"
               },       
               "WorkspaceResourceGroup": {
-                  "value": "[resourceGroup().Name]"
+                  "value": "[parameters('ResourceGroup')]"
               },              
               "ManagedIDName": {
                   "value": "[variables('ManagedIDName')]"
