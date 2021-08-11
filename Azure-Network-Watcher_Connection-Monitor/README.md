@@ -1,5 +1,7 @@
 # Azure Network Watcher (Connection Monitor)
 
+Deploys 2 VM's that utilize Network Watcher to test traffic via VNet Peering between a Source VM on VNet1 and Destination VM on VNet2 running IIS over port 80/TCP using the Connection Monitor feature of Network Watcher.
+
 Click the button below to deploy
 
 [![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2Fmaster%2FAzure-Network-Watcher_Connection-Monitor%2Fazuredeploy.json)
