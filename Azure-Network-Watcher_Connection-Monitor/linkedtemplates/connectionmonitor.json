@@ -45,12 +45,12 @@
                     {
                         "name": "[parameters('SourceVMName')]",
                         "resourceId": "[variables('SourceVMID')]",
-                        "type": "AzureVNet"
+                        "type": "AzureVM"
                     },
                     {
                         "name": "[parameters('DestinationVMName')]",
                         "resourceId": "[variables('DestinationVMID')]",
-                        "type": "AzureVNet"
+                        "type": "AzureVM"
                     }
                 ],
                 "testConfigurations": [
