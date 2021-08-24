@@ -83,7 +83,7 @@
                 }
             },
             "properties": {
-                "kubernetesVersion": "1.19.11",
+                "kubernetesVersion": "1.18.19",
                 "fqdnSubdomain": "aks",
                 "agentPoolProfiles": [
                     {
@@ -96,7 +96,7 @@
                         "vnetSubnetID": "[variables('subnetId')]",
                         "maxPods": 30,
                         "type": "VirtualMachineScaleSets",
-                        "orchestratorVersion": "1.19.11",
+                        "orchestratorVersion": "1.18.17",
                         "enableNodePublicIP": false,
                         "nodeLabels": {},
                         "mode": "System",
@@ -115,7 +115,7 @@
                         "vnetSubnetID": "[variables('subnetId')]",
                         "maxPods": 30,
                         "type": "VirtualMachineScaleSets",
-                        "orchestratorVersion": "1.19.11",
+                        "orchestratorVersion": "1.18.19",
                         "enableNodePublicIP": false,
                         "nodeLabels": {},
                         "mode": "User",
@@ -192,7 +192,7 @@
                 "vnetSubnetID": "[variables('subnetId')]",
                 "maxPods": 30,
                 "type": "VirtualMachineScaleSets",
-                "orchestratorVersion": "1.19.11",
+                "orchestratorVersion": "1.18.17",
                 "enableNodePublicIP": false,
                 "nodeLabels": {},
                 "mode": "System",
@@ -218,7 +218,7 @@
                 "vnetSubnetID": "[variables('subnetId')]",
                 "maxPods": 30,
                 "type": "VirtualMachineScaleSets",
-                "orchestratorVersion": "1.19.11",
+                "orchestratorVersion": "1.18.19",
                 "enableNodePublicIP": false,
                 "nodeLabels": {},
                 "mode": "User",
