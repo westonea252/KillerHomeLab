@@ -1510,7 +1510,7 @@
       "apiVersion": "2019-10-01",
       "name": "DeployAzureFirewall1",
       "dependsOn": [
-        "DMZVNet1"
+        "DeployAKSCluster"
       ],      
       "properties": {
           "mode": "Incremental",
