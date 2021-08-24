@@ -1288,7 +1288,10 @@
               },               
               "BastionsubnetPrefix": {
                 "value": "[variables('vnet0BastionsubnetPrefix')]"
-              },                         
+              },   
+              "FirewallsubnetPrefix": {
+                "value": "[variables('VNet2FirewallsubnetPrefix')]"
+              },                                      
               "DNSServerIP": {
                 "value": [
                   "[variables('dc1IP')]"
