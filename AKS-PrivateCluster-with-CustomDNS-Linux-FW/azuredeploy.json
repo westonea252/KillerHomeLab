@@ -1540,7 +1540,7 @@
               "VNet2Prefix": {
                   "value": "[variables('VNet2Prefix')]"
               },         
-              "DC1IP": {
+              "DCIP": {
                   "value": "[variables('dc1IP')]"
               },                               
               "DNSIP": {
