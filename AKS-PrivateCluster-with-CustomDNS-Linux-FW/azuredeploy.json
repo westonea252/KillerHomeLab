@@ -381,6 +381,7 @@
     "vnet0subnet2Name": "[concat(parameters('NamingConvention'),'-OnPrem-VNet-Subnet2')]",    
     "vnet0subnet2Prefix": "[concat(parameters('vnet0ID'),'.2.0/24')]",    
     "vnet0BastionsubnetPrefix": "[concat(parameters('vnet0ID'),'.253.0/24')]",        
+    "vnet0FirewallsubnetPrefix": "[concat(parameters('vnet0ID'),'.254.0/24')]",       
     "vnet1Name": "[concat(parameters('NamingConvention'),'-Spoke-VNet')]",
     "vnet1Prefix": "[concat(parameters('vnet1ID'),'.0.0/16')]",
     "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-Spoke-VNet-Subnet1')]",    
@@ -388,6 +389,7 @@
     "vnet1subnet2Name": "[concat(parameters('NamingConvention'),'-Spoke-VNet-Subnet2')]",    
     "vnet1subnet2Prefix": "[concat(parameters('vnet1ID'),'.2.0/24')]",    
     "vnet1BastionsubnetPrefix": "[concat(parameters('vnet1ID'),'.253.0/24')]",  
+    "vnet1FirewallsubnetPrefix": "[concat(parameters('vnet1ID'),'.254.0/24')]",       
     "vnet2Name": "[concat(parameters('NamingConvention'),'-Hub-VNet')]",
     "vnet2Prefix": "[concat(parameters('vnet2ID'),'.0.0/16')]",
     "vnet2subnet1Name": "[concat(parameters('NamingConvention'),'-Hub-VNet-Subnet1')]",    
@@ -458,7 +460,7 @@
                 "value": "[variables('vnet0BastionsubnetPrefix')]"
               },
               "FirewallsubnetPrefix": {
-                "value": "[variables('VNet2FirewallsubnetPrefix')]"
+                "value": "[variables('VNet0FirewallsubnetPrefix')]"
               },                           
               "location": {
                   "value": "[resourceGroup().location]"
@@ -572,7 +574,7 @@
                 "value": "[variables('vnet1BastionsubnetPrefix')]"
               },
               "FirewallsubnetPrefix": {
-                "value": "[variables('VNet2FirewallsubnetPrefix')]"
+                "value": "[variables('VNet1FirewallsubnetPrefix')]"
               },                            
               "location": {
                   "value": "[resourceGroup().location]"
@@ -908,7 +910,7 @@
                 "value": "[variables('vnet1BastionsubnetPrefix')]"
               },    
               "FirewallsubnetPrefix": {
-                "value": "[variables('VNet2FirewallsubnetPrefix')]"
+                "value": "[variables('VNet1FirewallsubnetPrefix')]"
               },                                      
               "DNSServerIP": {
                 "value": [
@@ -1290,7 +1292,7 @@
                 "value": "[variables('vnet0BastionsubnetPrefix')]"
               },   
               "FirewallsubnetPrefix": {
-                "value": "[variables('VNet2FirewallsubnetPrefix')]"
+                "value": "[variables('VNet0FirewallsubnetPrefix')]"
               },                                      
               "DNSServerIP": {
                 "value": [
