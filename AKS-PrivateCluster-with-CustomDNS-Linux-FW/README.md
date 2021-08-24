@@ -1,9 +1,9 @@
-# AKS Private Cluster with Custom DNS Server - Linux
+# AKS Private Cluster with Custom DNS Server - Linux - with Azure Firewall
 
 Click a button below to deploy to the cloud of your choice
 
-[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2FDevelopment%2FAKS-PrivateCluster-with-CustomDNS-Linux%2Fazuredeploy.json)
-[![Deploy To Azure US Gov](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.svg?sanitize=true)](https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2FDevelopment%2FAKS-PrivateCluster-with-CustomDNS-Linux%2Fazuredeploy.json)
+[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2FDevelopment%2FAKS-PrivateCluster-with-CustomDNS-Linux-FW%2Fazuredeploy.json)
+[![Deploy To Azure US Gov](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazuregov.svg?sanitize=true)](https://portal.azure.us/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Felliottfieldsjr%2FKillerHomeLab%2FDevelopment%2FAKS-PrivateCluster-with-CustomDNS-Linux-FW%2Fazuredeploy.json)
 
 !!!!NOTE:  YOU WILL NEED A SSH KEY PAIR TO USE WITHIN THIS DEPLOYMENT IN ORDER TO SUCCESSFULLY CONNECT TO THE NODE AGENT POOL INSTANCES.
 
@@ -18,6 +18,7 @@ This Templates deploys a an Private AKS Cluster which uses an External DNS Proxy
 - 1 - AKS Management Workstation (On AKS/Spoke VNet)
 - 1 - OnPremise Domain Controller (Conditional forwarder for AKS Private DNS Zone)
 - 1 - OnPremise Workstation
+- 1 - Azure Firewall
 
 
 Parameters that support changes

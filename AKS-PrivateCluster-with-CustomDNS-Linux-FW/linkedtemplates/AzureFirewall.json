@@ -1,0 +1,173 @@
+{
+"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+"contentVersion": "1.0.0.0",
+"parameters": {
+    "FirewallName": {
+        "type": "string",
+        "metadata": {
+            "description": "Resource Group Name"
+          }
+    }, 
+    "vnetName": {
+        "type": "string",
+        "metadata": {
+            "description": "Azure Firewall Subnet"
+        }
+    },  
+    "subnetName": {
+        "type": "string",
+        "metadata": {
+            "description": "Existing subnet name that contains the domain controller"
+        }
+    },      
+    "VNet0Prefix": {
+        "type": "string",
+        "metadata": {
+            "description": "On-Prem Address Prefix"
+        }
+    },                 
+    "VNet1Prefix": {
+        "type": "string",
+        "metadata": {
+            "description": "Spoke Address Prefix"
+        }
+    },                     
+    "VNet2Prefix": {
+        "type": "string",
+        "metadata": {
+            "description": "Hub Address Prefix"
+        }
+    },                 
+    "DCIP": {
+        "type": "string",
+        "metadata": {
+            "description": "DC IP"
+        }
+    },  
+    "DNSIP": {
+        "type": "string",
+        "metadata": {
+            "description": "DNS IP"
+        }
+    },      
+    "location": {
+        "type": "string",
+        "metadata": {
+          "description": "Specifies the location in which to create the workspace."
+        }
+    }
+},
+"variables": {
+    "publicIPAddressName": "[concat(parameters('FirewallName'),'-pip')]",
+    "subnetId": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]"      
+},
+"resources": [
+    {
+        "name": "[variables('publicIPAddressName')]",
+        "type": "Microsoft.Network/publicIPAddresses",
+        "apiVersion": "2018-11-01",
+        "location": "[parameters('location')]",
+        "sku": {
+          "name": "Standard"
+        },
+        "properties": {
+            "publicIPAllocationMethod": "Static"
+        }
+    },      
+    {
+      "type": "Microsoft.Network/azureFirewalls",
+      "apiVersion": "2020-04-01",
+      "name": "[parameters('FirewallName')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('publicIPAddressName')))]"
+      ],
+      "properties": {
+        "sku": {
+          "name": "AZFW_VNet",
+          "tier": "Standard"
+        },
+        "threatIntelMode": "Alert",
+        "ipConfigurations": [
+            {
+            "Name": "PrimaryIPConfiguration",
+            "Properties":  {
+                "subnet":   {
+                    "id":   "[variables('subnetId')]"
+                    },
+                "publicIPAddress":  {
+                    "id":   "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('publicIPAddressName')))]"
+                    }
+                }
+            }
+        ],
+        "networkRuleCollections": [
+          {
+            "name": "Internal-Traffic",
+            "properties": {
+              "priority": 100,
+              "action": {
+                "type": "Allow"
+              },
+              "rules": [
+                {
+                  "name": "Site1-To-Site2",
+                  "description": "string",
+                  "protocols": [
+                    "Any"
+                  ],
+                  "sourceAddresses": [
+                    "[parameters('VNet0Prefix')]",
+                    "[parameters('VNet1Prefix')]",
+                    "[parameters('VNet2Prefix')]"
+                  ],
+                  "destinationAddresses": [
+                    "[parameters('VNet0Prefix')]",
+                    "[parameters('VNet1Prefix')]",
+                    "[parameters('VNet2Prefix')]"
+                  ],
+                  "destinationPorts": [
+                    "*"
+                  ]
+                }
+              ]
+            }
+          }
+        ],        
+        "applicationRuleCollections": [
+          {
+            "name": "Allowed-Sites",
+            "properties": {
+              "priority": 100,
+              "action": {
+                "type": "Allow"
+              },
+              "rules": [
+                {
+                  "name": "Azure-Portals",
+                  "protocols": [
+                    {
+                      "protocolType": "Http",
+                      "port": 80
+                    },
+                    {
+                      "protocolType": "Https",
+                      "port": 443
+                    }
+                  ],
+                  "targetFqdns": [
+                    "portal.azure.com",
+                    "portal.azure.us"
+                  ],
+                  "sourceAddresses": [
+                    "*"
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

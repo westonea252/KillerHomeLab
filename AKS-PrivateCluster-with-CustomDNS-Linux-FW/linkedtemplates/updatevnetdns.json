@@ -44,6 +44,12 @@
           "description": "The address range of the subnet created in the new VNET"
         }
       },      
+      "FirewallsubnetPrefix": {
+        "type": "string",
+        "metadata": {
+          "description": "Firewall Subnet Prefix"
+        }
+      },       
       "DNSServerIP": {
         "type": "array",
         "metadata": {
@@ -93,7 +99,14 @@
                 "addressPrefix": "[parameters('BastionsubnetPrefix')]"
                 
               }
-            }                    
+            },
+            {
+              "name": "AzureFirewallSubnet",
+              "properties": {
+                "addressPrefix": "[parameters('FirewallsubnetPrefix')]"
+                
+              }
+            }                                  
           ]
         }
       }

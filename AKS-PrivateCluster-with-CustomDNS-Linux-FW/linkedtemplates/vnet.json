@@ -43,7 +43,13 @@
         "metadata": {
           "description": "Bastion Subnet Prefix"
         }
-      },      
+      },
+      "FirewallsubnetPrefix": {
+        "type": "string",
+        "metadata": {
+          "description": "Firewall Subnet Prefix"
+        }
+      },         
       "location": {
         "type": "string",
         "metadata": {
@@ -84,7 +90,14 @@
               "addressPrefix": "[parameters('BastionsubnetPrefix')]"
               
             }
-          }                    
+          },
+          {
+            "name": "AzureFirewallSubnet",
+            "properties": {
+              "addressPrefix": "[parameters('FirewallsubnetPrefix')]"
+              
+            }
+          }                               
         ]
       }
     }
