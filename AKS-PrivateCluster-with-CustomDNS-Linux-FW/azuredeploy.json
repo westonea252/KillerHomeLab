@@ -399,7 +399,7 @@
     "vnet2BastionsubnetPrefix": "[concat(parameters('vnet2ID'),'.253.0/24')]",        
     "vnet2FirewallsubnetPrefix": "[concat(parameters('vnet2ID'),'.254.0/24')]",   
     "FirewallName1": "[concat(parameters('NamingConvention'),'-Hub-FW')]",    
-    "RouteTableName1": "[concat(parameters('NamingConvention'),'-VNet2-RT')]",                       
+    "RouteTableName1": "[concat(parameters('NamingConvention'),'-Spoke-RT')]",                       
     "DockerBridgeCIDR": "17.17.0.1/16",              
     "podCIDR": "[concat(parameters('podID'),'.0.0/16')]",                          
     "serviceCIDR": "[concat(parameters('serviceID'),'.0.0/16')]",                                                
@@ -1507,7 +1507,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "DeployVNet2RouteTable",
+      "name": "DeploySpokeRouteTable",
       "dependsOn": [
         "DeployAzureFirewall1"
       ],      
@@ -1533,9 +1533,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "UpdateVNet2RouteTable",
+      "name": "UpdateSpokeRouteTable",
       "dependsOn": [
-        "DeployVNet2RouteTable"
+        "DeploySpokeRouteTable"
       ],            
       "properties": {
           "mode": "Incremental",
@@ -1548,32 +1548,32 @@
                   "value": "[variables('RouteTableName1')]"
               }, 
               "vnetName": {
-                  "value": "[variables('vnet2Name')]"
+                  "value": "[variables('vnet1Name')]"
               },
               "vnetprefix": {
-                  "value": "[variables('vnet2Prefix')]"
+                  "value": "[variables('vnet1Prefix')]"
               },
               "subnet1Name": {
-                "value": "[variables('vnet2subnet1Name')]"
+                "value": "[variables('vnet1subnet1Name')]"
               },                                                                                                            
               "subnet1Prefix": {
-                "value": "[variables('vnet2subnet1Prefix')]"
+                "value": "[variables('vnet1subnet1Prefix')]"
               }, 
               "subnet2Name": {
-                "value": "[variables('vnet2subnet2Name')]"
+                "value": "[variables('vnet1subnet2Name')]"
               },                                                                                                            
               "subnet2Prefix": {
-                "value": "[variables('vnet2subnet2Prefix')]"
+                "value": "[variables('vnet1subnet2Prefix')]"
               },               
               "BastionsubnetPrefix": {
-                "value": "[variables('vnet2BastionsubnetPrefix')]"
+                "value": "[variables('vnet1BastionsubnetPrefix')]"
               },   
               "FirewallsubnetPrefix": {
-                "value": "[variables('VNet2FirewallsubnetPrefix')]"
+                "value": "[variables('VNet1FirewallsubnetPrefix')]"
               },                                      
               "DNSServerIP": {
                 "value": [
-                  "[variables('dc1IP')]"
+                  "[variables('dnsIP')]"
                 ]
               },                                                                                                            
               "location": {
@@ -1588,7 +1588,7 @@
       "name": "DeployAKSCluster",     
       "dependsOn": [
         "AssignManagedIDRG",
-        "UpdateVNet2RouteTable"
+        "UpdateSpokeRouteTable"
       ],  
       "properties": {
         "mode": "Incremental",
