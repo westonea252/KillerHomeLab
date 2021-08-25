@@ -1052,63 +1052,9 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "DeployAKSCluster",     
-      "dependsOn": [
-        "AssignManagedIDRG"
-      ],  
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-            "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/privateakscluster.json', parameters('_artifactsLocationSasToken')))]",
-            "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-            "AKSClusterName": {
-                "value": "[variables('AKSClusterName')]"
-            },
-            "vnetName": {
-                "value": "[variables('vnet1Name')]"
-            },            
-            "subnetName": {
-                "value": "[variables('vnet1subnet1Name')]"
-            },  
-            "podCidr": {
-                "value": "[variables('podCIDR')]"
-            },
-            "serviceCidr": {
-                "value": "[variables('serviceCIDR')]"
-            },
-            "dnsServiceIP": {
-                "value": "[variables('AKSDNSserviceIP')]"
-            },
-            "dockerBridgeCidr": {
-                "value": "[variables('DockerBridgeCIDR')]"
-            },                                    
-            "DNSZoneName": {
-                "value": "[variables('PrivateDNSZoneName')]"
-            },     
-            "ManagedIDName": {
-                "value": "[variables('ManagedIDName')]"
-            },   
-            "adminUsername": {
-              "value": "[parameters('adminUsername')]"
-            }, 
-            "adminKey": {
-              "value": "[parameters('adminKey')]"
-            },                                      
-            "location": {
-                "value": "[resourceGroup().location]"
-            }                                                                                                                   
-        }
-      }
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
       "name": "deployWK1VM",
       "dependsOn": [
-        "DeploySpokeVNet",        
-        "DeployAKSCluster"
+        "DeploySpokeVNet"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1515,7 +1461,8 @@
       "apiVersion": "2019-10-01",
       "name": "DeployAzureFirewall1",
       "dependsOn": [
-        "DeployAKSCluster"
+        "configdns",
+        "DomainJoinWK0VM"
       ],      
       "properties": {
           "mode": "Incremental",
@@ -1553,6 +1500,60 @@
               }
           }
       }
-    }                                                                                                            
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DeployAKSCluster",     
+      "dependsOn": [
+        "AssignManagedIDRG",
+        "DeployAzureFirewall1"
+      ],  
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+            "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/privateakscluster.json', parameters('_artifactsLocationSasToken')))]",
+            "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+            "AKSClusterName": {
+                "value": "[variables('AKSClusterName')]"
+            },
+            "vnetName": {
+                "value": "[variables('vnet1Name')]"
+            },            
+            "subnetName": {
+                "value": "[variables('vnet1subnet1Name')]"
+            },  
+            "podCidr": {
+                "value": "[variables('podCIDR')]"
+            },
+            "serviceCidr": {
+                "value": "[variables('serviceCIDR')]"
+            },
+            "dnsServiceIP": {
+                "value": "[variables('AKSDNSserviceIP')]"
+            },
+            "dockerBridgeCidr": {
+                "value": "[variables('DockerBridgeCIDR')]"
+            },                                    
+            "DNSZoneName": {
+                "value": "[variables('PrivateDNSZoneName')]"
+            },     
+            "ManagedIDName": {
+                "value": "[variables('ManagedIDName')]"
+            },   
+            "adminUsername": {
+              "value": "[parameters('adminUsername')]"
+            }, 
+            "adminKey": {
+              "value": "[parameters('adminKey')]"
+            },                                      
+            "location": {
+                "value": "[resourceGroup().location]"
+            }                                                                                                                   
+        }
+      }
+    }                                                                                                               
   ]
 }
