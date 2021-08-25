@@ -398,7 +398,8 @@
     "vnet2subnet2Prefix": "[concat(parameters('vnet2ID'),'.2.0/24')]",    
     "vnet2BastionsubnetPrefix": "[concat(parameters('vnet2ID'),'.253.0/24')]",        
     "vnet2FirewallsubnetPrefix": "[concat(parameters('vnet2ID'),'.254.0/24')]",   
-    "FirewallName1": "[concat(parameters('NamingConvention'),'-Hub-FW')]",               
+    "FirewallName1": "[concat(parameters('NamingConvention'),'-Hub-FW')]",    
+    "RouteTableName1": "[concat(parameters('NamingConvention'),'-VNet2-RT')]",                       
     "DockerBridgeCIDR": "17.17.0.1/16",              
     "podCIDR": "[concat(parameters('podID'),'.0.0/16')]",                          
     "serviceCIDR": "[concat(parameters('serviceID'),'.0.0/16')]",                                                
@@ -406,6 +407,8 @@
     "dnslastoctet": "101",       
     "dnsname": "[concat(parameters('NamingConvention'),'-dns-proxy')]",   
     "dnsIP": "[concat(parameters('vnet2ID'),'.1.',variables('dnslastoctet'))]",
+    "fw1IP": "[concat(parameters('vNet2ID'),'.254.',variables('fw1lastoctet'))]",     
+    "fw1lastoctet": "4",                      
     "dc1name": "[concat(parameters('NamingConvention'),'-dc-01')]",           
     "dc1IP": "[concat(parameters('vnet0ID'),'.1.',variables('dc1lastoctet'))]",        
     "dc1lastoctet": "101",        
@@ -1504,10 +1507,88 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
+      "name": "DeployVNet2RouteTable",
+      "dependsOn": [
+        "DeployAzureFirewall1"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/RouteTable.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "FirewallIP": {
+                  "value": "[variables('fw1IP')]"
+              },
+              "RouteTableName": {
+                  "value": "[variables('RouteTableName1')]"
+              },                 
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "UpdateVNet2RouteTable",
+      "dependsOn": [
+        "DeployVNet2RouteTable"
+      ],            
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/updatevnetdns.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "RouteTableName": {
+                  "value": "[variables('RouteTableName1')]"
+              }, 
+              "vnetName": {
+                  "value": "[variables('vnet2Name')]"
+              },
+              "vnetprefix": {
+                  "value": "[variables('vnet2Prefix')]"
+              },
+              "subnet1Name": {
+                "value": "[variables('vnet2subnet1Name')]"
+              },                                                                                                            
+              "subnet1Prefix": {
+                "value": "[variables('vnet2subnet1Prefix')]"
+              }, 
+              "subnet2Name": {
+                "value": "[variables('vnet2subnet2Name')]"
+              },                                                                                                            
+              "subnet2Prefix": {
+                "value": "[variables('vnet2subnet2Prefix')]"
+              },               
+              "BastionsubnetPrefix": {
+                "value": "[variables('vnet2BastionsubnetPrefix')]"
+              },   
+              "FirewallsubnetPrefix": {
+                "value": "[variables('VNet2FirewallsubnetPrefix')]"
+              },                                      
+              "DNSServerIP": {
+                "value": [
+                  "[variables('dc1IP')]"
+                ]
+              },                                                                                                            
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },        
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
       "name": "DeployAKSCluster",     
       "dependsOn": [
         "AssignManagedIDRG",
-        "DeployAzureFirewall1"
+        "UpdateVNet2RouteTable"
       ],  
       "properties": {
         "mode": "Incremental",
