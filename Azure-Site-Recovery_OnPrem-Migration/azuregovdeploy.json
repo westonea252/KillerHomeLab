@@ -203,20 +203,20 @@
             "description": "Hyper-V OS Version"
         }
     },
-    "RecoveryServicesVaultUniqueID": {
-      "type": "string",
-      "defaultValue": "1234567890x1",
-      "metadata": {
-          "description": "Recovery Services Vault 1 Unique Identifier"
-      }
-  },                                  
     "HVVMSize": {
         "type": "string",
         "defaultValue": "Standard_D8s_v3",
         "metadata": {
             "description": "Hyper-V VMSize"
         }
-    },  
+    },
+    "RecoveryServicesVaultUniqueID": {
+      "type": "string",
+      "defaultValue": "1234567890x1",
+      "metadata": {
+          "description": "Recovery Services Vault 1 Unique Identifier"
+      }
+    },                                        
     "roleAssignmentGuid": {
       "type": "string",
       "defaultValue": "[newGuid()]",

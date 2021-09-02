@@ -19,6 +19,7 @@ Hyper-V Deployment
 - Create NAT Network
 
 Parameters that support changes
+- TimeZone.  Select an appropriate Time Zone.
 - Admin Username.  Enter a valid Admin Username
 - Admin Password.  Enter a valid Admin Password
 - WindowsServerLicenseType.  Choose Windows Server License Type (Example:  Windows_Server or None)
@@ -27,3 +28,4 @@ Parameters that support changes
 - HyperVSubnetID.  Enter first 3 octets of your desired Address Space for HyperV VNet (Example:  192.168.1)
 - HVOSVersion.  Select 2016-Datacenter (Windows 2016) or 2019-Datacenter (Windows 2019) Hyper-V OS Version
 - HVVMSize.  Enter a Valid VM Size based on which Region the VM is deployed.
+- RecoveryServicesVaultUniqueID.  Unique Identifier for Recovery Services Vault.
