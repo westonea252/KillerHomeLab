@@ -13,7 +13,7 @@ The deployment leverages Desired State Configuration scripts to further customiz
 
 Hyper-V Deployment
 - Create DataDisk
-- Install HyperV
+- Install Hyper-V
 - Create Virtual Switch
 - Create NAT Gateway
 - Create NAT Network
