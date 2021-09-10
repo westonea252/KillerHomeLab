@@ -1,5 +1,5 @@
 ﻿$Family = Read-Host "Please Enter the Family Sku Name"
-$Exclude = Read-Host "Please Enter Family Exlusion"
+$Exclude = Read-Host "Please Enter Family Exclusion"
 $CombinedView = @()
 
 # Select Subscription
