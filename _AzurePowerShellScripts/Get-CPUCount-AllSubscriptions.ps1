@@ -1,6 +1,8 @@
 ﻿$Family = Read-Host "Please Enter the Family Sku Name"
 $Exclude = Read-Host "Please Enter Family Exclusion"
 $SubscriptionLocationView = @()
+$SubscriptionView = @()
+$AllView = @()
 
 # Select Subscription
 $Subscriptions = Get-AzSubscription -ErrorAction 0
@@ -21,17 +23,51 @@ $Locations = Get-AzLocation -ErrorAction 0
         $VMCoreCount = (Get-AzVMSize -VMName $VM.Name -ResourceGroupName $vm.ResourceGroupName -ErrorAction 0 | Where-Object {$_.Name -like $VMSize}).NumberOfCores
         $TotalVMCoreCount = @()
         $TotalVMCoreCount += $VMCoreCount
-        $LocationCoreCount = $TotalVMCoreCount | Measure-Object -Sum
+        $LocationCoreCount = ($TotalVMCoreCount | Measure-Object -Sum).Sum
 
-        $obj = new-object psobject -InformationAction SilentlyContinue -Property @{
-            "Total $SubscriptionName $LocationName $Family CPU Count" = $LocationCoreCount.Sum
-                            }
+        $SubscriptionLocationObject = new-object psobject -InformationAction SilentlyContinue -Property @{
+            "Total $SubscriptionName $LocationName $Family CPU Count" = $LocationCoreCount
+            }
         }
-        $SubscriptionLocationView += $obj | Format-List "Total $SubscriptionName $LocationName $Family CPU Count"
+        $SubscriptionLocationView += $SubscriptionLocationObject | Format-List "Total $SubscriptionName $LocationName $Family CPU Count"
+
+        $SubscriptionCoreCount = @()
+        foreach ($Subscription in $Subscriptions){
+            $SubscriptionCoreCount += $LocationCoreCount
+            $TotalSubscriptionCoreCount = ($SubscriptionCoreCount | Measure-Object -Sum).Sum
+
+        $SubscriptionObject = new-object psobject -InformationAction SilentlyContinue -Property @{
+            "Total $SubscriptionName $Family CPU Count" = $TotalSubscriptionCoreCount
+            }
+        }
+        $TotalCoreCount = @()
+        foreach ($Subscription in $Subscriptions){
+            $TotalCoreCount += $TotalSubscriptionCoreCount
+            $FinalCoreCount = ($TotalCoreCount | Measure-Object -Sum).Sum
+
+        $AllObject = new-object psobject -InformationAction SilentlyContinue -Property @{
+            "Total $Family CPU Count" = $FinalCoreCount
+            }
+        }
     }
+    $SubscriptionView += $SubscriptionObject | Format-List "Total $SubscriptionName $Family CPU Count"    
 }
+$AllView += $AllObject | Format-List "Total $Family CPU Count"
+
 # Clean Up View/Remove File
 $SubscriptionLocationView | Out-File "C:\Temp\CPUCount.txt"
+$file = "C:\Temp\CPUCount.txt"
+$file = Get-Content -Path "C:\Temp\CPUCount.txt"
+$file | ForEach-Object {$_.TrimEnd()} | Where-Object {$_.trim()}
+Remove-Item -Path C:\Temp\CPUCount.txt -Force
+
+$SubscriptionView | Out-File "C:\Temp\CPUCount.txt"
+$file = "C:\Temp\CPUCount.txt"
+$file = Get-Content -Path "C:\Temp\CPUCount.txt"
+$file | ForEach-Object {$_.TrimEnd()} | Where-Object {$_.trim()}
+Remove-Item -Path C:\Temp\CPUCount.txt -Force
+
+$AllView | Out-File "C:\Temp\CPUCount.txt"
 $file = "C:\Temp\CPUCount.txt"
 $file = Get-Content -Path "C:\Temp\CPUCount.txt"
 $file | ForEach-Object {$_.TrimEnd()} | Where-Object {$_.trim()}
