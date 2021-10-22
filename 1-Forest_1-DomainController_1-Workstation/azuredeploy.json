@@ -327,7 +327,7 @@
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/vnet.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/vnet.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -368,7 +368,7 @@
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/bastionhost.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/bastionhost.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -400,7 +400,7 @@
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-2disk-vm.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/1nic-2disk-vm.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -456,7 +456,7 @@
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/firstdc.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/firstdc.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -500,7 +500,7 @@
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/updatevnetdns.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/updatevnetdns.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -546,7 +546,7 @@
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/restartvm.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/restartvm.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -575,7 +575,7 @@
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/configdns.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/configdns.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -622,7 +622,7 @@
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/createous.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/createous.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -654,7 +654,7 @@
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/1nic-1disk-vm.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
@@ -707,7 +707,7 @@
       "properties": {
           "mode": "Incremental",
           "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('nestedtemplates/domainjoin.json', parameters('_artifactsLocationSasToken')))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/domainjoin.json', parameters('_artifactsLocationSasToken')))]",
               "contentVersion": "1.0.0.0"
           },
           "parameters": {
