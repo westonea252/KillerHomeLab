@@ -9,7 +9,7 @@ This Templates deploys a Single Forest/Domain:
 
 - 1 - Active Directory Forest/Domain
 - 1 - Domain Controller
-- 1 - Domain Joined Windows Workstation (Windows 10 or 11)
+- 1 - Domain Joined Windows Workstation (Windows 11/10/7)
 
 The deployment leverages Desired State Configuration scripts to further customize the following:
 
@@ -28,9 +28,11 @@ AD OU Structure:
 - --- Servers2012R2
 - --- Serverrs2016
 - --- Servers2019
+- --- Servers2022
 - -- MaintenanceServers
 - -- MaintenanceWorkstations
 - -- Workstations
+- --- Windows11
 - --- Windows10
 - --- Windows7
 

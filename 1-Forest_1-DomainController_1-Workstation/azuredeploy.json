@@ -266,7 +266,8 @@
       "defaultValue": "Windows-11",
       "allowedValues": [
         "Windows-11",
-        "Windows-10"
+        "Windows-10",
+        "Windows-7"
       ],
       "metadata": {
           "description": "Workstation1 OS Version"
