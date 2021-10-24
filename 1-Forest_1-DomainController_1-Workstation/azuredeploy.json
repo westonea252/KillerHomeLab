@@ -250,8 +250,9 @@
     },                        
     "DC1OSVersion": {
         "type": "string",
-        "defaultValue": "2019-Datacenter",
+        "defaultValue": "2022-Datacenter",
         "allowedValues": [
+          "2022-Datacenter",
           "2019-Datacenter",
           "2016-Datacenter",
           "2012-R2-Datacenter"
