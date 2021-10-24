@@ -303,7 +303,6 @@
     }
   },
   "variables": {
-    "WK1Sku": "[if(equals(parameters('WK1OSVersion'), 'Windows-11'), 'win11-21h2-pro', '21h1-pro')]",
     "vnet1Name": "[concat(parameters('NamingConvention'),'-VNet1')]",
     "vnet1Prefix": "[concat(parameters('vnet1ID'),'.0.0/16')]",
     "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet1')]",    
@@ -321,8 +320,9 @@
     "DCDataDisk1Name": "NTDS",            
     "InternaldomainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('InternalTLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('InternalTLD'))]",
-    "WK1OU": "[if(equals(parameters('WK1OSVersion'), 'Windows-11'), 'Windows 11', 'Windows 10')]",
-    "WK1OUPath": "[concat('OU=', variables('WK1OU'), ',OU=Workstations,',variables('BaseDN'))]"
+    "WIN11OUPath": "[concat('OU=Windows 11,OU=Workstations,',variables('BaseDN'))]",
+    "WIN10OUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
+    "WIN7OUPath": "[concat('OU=Windows 7,OU=Workstations,',variables('BaseDN'))]"        
   },  
   "resources": [
     {
@@ -812,12 +812,89 @@
       }
     },    
     {
+      "condition": "[equals(parameters('WK1OSVersion'),'Windows-11')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "DomainJoinWK1VM",
+      "name": "DomainJoinWK1VM-11",
       "dependsOn": [
-        "DeployWK1VM-11",
-        "DeployWK1VM-10",
+        "DeployWK1VM-11"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/domainjoin.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('wk1name')]"
+              },
+              "domainName": {
+                  "value": "[variables('InternalDomainName')]"
+              },
+              "OUPath": {
+                  "value": "[variables('WIN11OUPath')]"
+              },
+              "domainJoinOptions": {
+                  "value": 3
+              },
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                             
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },
+    {
+      "condition": "[equals(parameters('WK1OSVersion'),'Windows-10')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DomainJoinWK1VM-10",
+      "dependsOn": [
+        "DeployWK1VM-10"
+      ],      
+      "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/domainjoin.json', parameters('_artifactsLocationSasToken')))]",
+              "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+              "computerName": {
+                  "value": "[variables('wk1name')]"
+              },
+              "domainName": {
+                  "value": "[variables('InternalDomainName')]"
+              },
+              "OUPath": {
+                  "value": "[variables('WIN10OUPath')]"
+              },
+              "domainJoinOptions": {
+                  "value": 3
+              },
+              "adminUsername": {
+                "value": "[parameters('adminUsername')]"
+              },                                                                                                            
+              "adminPassword": {
+                "value": "[parameters('adminPassword')]"
+              },                                                                                                                                                                                                                                                                             
+              "location": {
+                  "value": "[resourceGroup().location]"
+              }
+          }
+      }
+    },
+    {
+      "condition": "[equals(parameters('WK1OSVersion'),'Windows-7')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "DomainJoinWK1VM-7",
+      "dependsOn": [
         "DeployWK1VM-7"
       ],      
       "properties": {
@@ -834,7 +911,7 @@
                   "value": "[variables('InternalDomainName')]"
               },
               "OUPath": {
-                  "value": "[variables('WK1OUPath')]"
+                  "value": "[variables('WIN7OUPath')]"
               },
               "domainJoinOptions": {
                   "value": 3
@@ -850,6 +927,6 @@
               }
           }
       }
-    }                                                                                        
+    }                                                                                                                                                                                                                                                                                
   ]
 }
