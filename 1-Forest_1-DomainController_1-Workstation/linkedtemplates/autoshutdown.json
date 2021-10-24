@@ -1,0 +1,62 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "computerName": {
+            "type": "string",
+            "metadata": {
+                "description": "Computer Name"
+            }
+        },
+        "TimeZone": {
+            "type": "string",      
+            "metadata": {
+                "description": "Time Zone"
+            }
+        },            
+        "AutoShutdownTime": {
+            "type": "string",
+          "metadata": {
+            "description": "Time to Shutdown VM"
+          }
+        },            
+        "AutoShutdownEmail": {
+            "type": "string",      
+            "metadata": {
+                "description": "Notification Email for Auto-Shutdown"
+            }
+        },                                       
+        "location": {
+            "type": "string",
+          "metadata": {
+            "description": "Region of Resources"
+          }
+        }        
+    },
+    "variables": {
+        "VMId": "[resourceId(resourceGroup().name, 'Microsoft.Compute/virtualMachines', parameters('computerName'))]"
+    },    
+    "resources": [
+        {
+            "type": "microsoft.devtestlab/schedules",
+            "apiVersion": "2018-09-15",
+            "name": "[concat(parameters('computerName'), '/AutoShutdown')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "status": "Enabled",
+                "taskType": "ComputeVmShutdownTask",
+                "dailyRecurrence": {
+                    "time": "[parameters('AutoShutdownTime')]"
+                },
+                "timeZoneId": "[parameters('TimeZone')]",
+                "notificationSettings": {
+                    "status": "Enabled",
+                    "timeInMinutes": 30,
+                    "emailRecipient": "[parameters('AutoShutdownEmail')]",
+                    "notificationLocale": "en"
+                },
+                "targetResourceId": "[variables('VMId')]"
+            }
+        }
+    ]
+}
