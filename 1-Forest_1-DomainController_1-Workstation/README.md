@@ -49,6 +49,6 @@ Parameters that support changes
 - Vnet1ID.  Enter first 2 octets of your desired Address Space for Virtual Network 1 (Example:  10.1)
 - Reverse Lookup1.  Enter first 2 octets of your desired Address Space in Reverse (Example:  1.10)
 - DC1OSVersion.  Select 2022-Datacenter (Windows 2022) or 2019-Datacenter (Windows 2019) or 2019-Datacenter (Windows 2016) Domain Controller 1 OS Version
-- WK1OSVersion.  Select Windows-11 (win11-21h2-pro) or Windows-10 (21h1-pro) Workstation 1 OS Version
+- WK1OSVersion.  Select Windows-11 (win11-21h2-pro) or Windows-10 (21h1-pro) Workstation or Windows-7 (win7-enterprise) 1 OS Version
 - DC1VMSize.  Enter a Valid VM Size based on which Region the VM is deployed.
 - WK1VMSize.  Enter a Valid VM Size based on which Region the VM is deployed.
