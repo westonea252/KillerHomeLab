@@ -106,6 +106,7 @@
         "imageSKU": "[parameters('OSVersion')]",
         "DataDiskSize": 50,      
         "subnetId": "[resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]",
+        "VMId": "[resourceId(resourceGroup().name, 'Microsoft.Compute/virtualMachines', parameters('computerName'))]",
         "NicName": "[concat(parameters('computerName'),'-nic')]",
         "NicIPAddress": "[parameters('computerIP')]"
     },
@@ -188,7 +189,7 @@
         {
             "type": "microsoft.devtestlab/schedules",
             "apiVersion": "2018-09-15",
-            "name": "[concat(parameters('computerName'),'-AutoShutdown')]",
+            "name": "[concat('shutdown-computevm-',parameters('computerName'))]",
             "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Compute/virtualMachines',parameters('computerName'))]"
@@ -206,7 +207,7 @@
                     "emailRecipient": "[parameters('AutoShutdownEmail')]",
                     "notificationLocale": "en"
                 },
-                "targetResourceId": "[resourceId('Microsoft.Compute/virtualMachines',parameters('computerName'))]"
+                "targetResourceId": "[variables('VMId')]"
             }
         }              
     ]
