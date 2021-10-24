@@ -188,7 +188,7 @@
         {
             "type": "microsoft.devtestlab/schedules",
             "apiVersion": "2018-09-15",
-            "name": "[concat(parameters('computerName'), '/AutoShutdown')]",
+            "name": "[concat(parameters('computerName'),'-AutoShutdown')]",
             "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Compute/virtualMachines',parameters('computerName'))]"
