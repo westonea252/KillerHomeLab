@@ -301,7 +301,7 @@
     }
   },
   "variables": {
-    "WK1Sku": "[if(equals(parameters('WK1OSVersion'), 'Windows-11'), 'win11-21h2-pro', '19h1-pro')]",
+    "WK1Sku": "[if(equals(parameters('WK1OSVersion'), 'Windows-11'), 'win11-21h2-pro', '21h1-pro')]",
     "vnet1Name": "[concat(parameters('NamingConvention'),'-VNet1')]",
     "vnet1Prefix": "[concat(parameters('vnet1ID'),'.0.0/16')]",
     "vnet1subnet1Name": "[concat(parameters('NamingConvention'),'-VNet1-Subnet1')]",    
