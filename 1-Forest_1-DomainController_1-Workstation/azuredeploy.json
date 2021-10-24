@@ -319,7 +319,8 @@
     "DCDataDisk1Name": "NTDS",            
     "InternaldomainName": "[concat(parameters('SubDNSDomain'),parameters('InternalDomain'),'.',parameters('InternalTLD'))]",
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('InternalTLD'))]",
-    "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]"
+    "WK1OU": "[if(equals(parameters('WK1OSVersion'), 'Windows-11'), 'Windows 11', 'Windows 10')]",
+    "WK1OUPath": "[concat('OU=', variables('WK1OU'), ',OU=Workstations,',variables('BaseDN'))]"
   },  
   "resources": [
     {
@@ -720,7 +721,7 @@
                   "value": "[variables('InternalDomainName')]"
               },
               "OUPath": {
-                  "value": "[variables('WKOUPath')]"
+                  "value": "[variables('WK1OUPath')]"
               },
               "domainJoinOptions": {
                   "value": 3
