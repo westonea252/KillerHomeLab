@@ -948,38 +948,6 @@
               }
           }
       }
-    },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
-      "name": "AutoShutdown-DC1",
-      "dependsOn": [
-        "DeployDC1VM"
-      ],            
-      "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), concat('linkedtemplates/autoshutdown.json', parameters('_artifactsLocationSasToken')))]",
-              "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-              "computerName": {
-                  "value": "[variables('dc1name')]"
-              },
-              "TimeZone": {
-                  "value": "[parameters('TimeZone')]"
-              },               
-              "AutoShutdownTime": {
-                  "value": "[parameters('AutoShutdownTime')]"
-              },              
-              "AutoShutdownEmail": {
-                  "value": "[parameters('AutoShutdownEmail')]"
-              },                   
-              "location": {
-                  "value": "[resourceGroup().location]"
-              }
-          }
-      }
-    }                                                                                                                                                                                                                                                                                  
+    }
   ]
 }
