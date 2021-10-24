@@ -372,8 +372,9 @@
     },                                            
     "DC1OSVersion": {
       "type": "string",
-      "defaultValue": "2019-Datacenter",
+      "defaultValue": "2022-Datacenter",
       "allowedValues": [
+        "2022-Datacenter",
         "2019-Datacenter",
         "2016-Datacenter"
       ],      
@@ -383,8 +384,9 @@
     },    
     "DC2OSVersion": {
       "type": "string",
-      "defaultValue": "2019-Datacenter",
+      "defaultValue": "2022-Datacenter",
       "allowedValues": [
+        "2022-Datacenter",
         "2019-Datacenter",
         "2016-Datacenter"
       ],      
@@ -394,8 +396,9 @@
     },
     "RCAOSVersion": {
       "type": "string",
-      "defaultValue": "2019-Datacenter",
+      "defaultValue": "2022-Datacenter",
       "allowedValues": [
+        "2022-Datacenter",
         "2019-Datacenter",
         "2016-Datacenter"
       ],      
@@ -405,8 +408,9 @@
     },            
     "ICAOSVersion": {
       "type": "string",
-      "defaultValue": "2019-Datacenter",
+      "defaultValue": "2022-Datacenter",
       "allowedValues": [
+        "2022-Datacenter",        
         "2019-Datacenter",
         "2016-Datacenter"
       ],      
@@ -416,8 +420,9 @@
     },            
     "OCSPOSVersion": {
       "type": "string",
-      "defaultValue": "2019-Datacenter",
+      "defaultValue": "2022-Datacenter",
       "allowedValues": [
+        "2022-Datacenter",        
         "2019-Datacenter",
         "2016-Datacenter"
       ],      
@@ -427,8 +432,9 @@
     },            
     "FSOSVersion": {
       "type": "string",
-      "defaultValue": "2019-Datacenter",
+      "defaultValue": "2022-Datacenter",
       "allowedValues": [
+        "2022-Datacenter",
         "2019-Datacenter",
         "2016-Datacenter"
       ],      
@@ -448,9 +454,9 @@
     },            
     "WK1OSVersion": {
       "type": "string",
-      "defaultValue": "19h1-pro",
+      "defaultValue": "win11-21h2-pro",
       "allowedValues": [
-        "19h1-pro"
+        "win11-21h2-pro"
       ],      
       "metadata": {
           "description": "Worksation1 OS Version"
@@ -458,9 +464,9 @@
     },            
     "WK2OSVersion": {
       "type": "string",
-      "defaultValue": "19h1-pro",
+      "defaultValue": "win11-21h2-pro",
       "allowedValues": [
-        "19h1-pro"
+        "win11-21h2-pro"
       ],      
       "metadata": {
           "description": "Worksation2 OS Version"
@@ -3042,7 +3048,7 @@
                   "value": "MicrosoftWindowsDesktop"
               },
               "Offer": {
-                  "value": "Windows-10"
+                  "value": "Windows-11"
               },
               "OSVersion": {
                 "value": "[parameters('WK1OSVersion')]"
@@ -3133,7 +3139,7 @@
                   "value": "MicrosoftWindowsDesktop"
               },
               "Offer": {
-                  "value": "Windows-10"
+                  "value": "Windows-11"
               },
               "OSVersion": {
                 "value": "[parameters('WK2OSVersion')]"
