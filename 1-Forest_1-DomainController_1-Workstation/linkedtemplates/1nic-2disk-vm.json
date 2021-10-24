@@ -184,30 +184,6 @@
                     ]
                 }
             }
-        },
-        {
-            "type": "microsoft.devtestlab/schedules",
-            "apiVersion": "2018-09-15",
-            "name": "[concat(parameters('computerName'),'-AutoShutdown')]",
-            "location": "[parameters('location')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Compute/virtualMachines',parameters('computerName'))]"
-            ],          
-            "properties": {
-                "status": "Enabled",
-                "taskType": "ComputeVmShutdownTask",
-                "dailyRecurrence": {
-                    "time": "[parameters('AutoShutdownTime')]"
-                },
-                "timeZoneId": "[parameters('TimeZone')]",
-                "notificationSettings": {
-                    "status": "Enabled",
-                    "timeInMinutes": 30,
-                    "emailRecipient": "[parameters('AutoShutdownEmail')]",
-                    "notificationLocale": "en"
-                },
-                "targetResourceId": "[resourceId('Microsoft.Compute/virtualMachines',parameters('computerName'))]"
-            }
-        }      
+        }
     ]
 }
