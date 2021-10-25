@@ -56,9 +56,11 @@ AD OU Structure:
 - --- Servers2012R2
 - --- Servers2016
 - --- Servers2019
+- --- Servers2022
 - -- MaintenanceServers
 - -- MaintenanceWorkstations
 - -- Workstations
+- --- Windows10
 - --- Windows10
 - --- Windows7
 
@@ -94,6 +96,8 @@ Exchange
 Parameters that support changes
 - Location2. Enter a Valid Azure Region based on which Cloud (AzureCloud, AzureUSGovernment, etc...) you are using.
 - TimeZone.  Select an appropriate Time Zone.
+- AutoShutdownTime.  24-Hour Clock Time for Auto-Shutdown (Example: 1900 = 7PM)
+- AutoShutdownEmail.  Auto-Shutdown notification Email (Example:  user@domain.com)
 - Exchange Org Name. Enter a name that will be used for your Exchange Organization Name.
 - Exchange2019ISOUrl.  You must enter a URL or created SAS URL that points to an Exchange 2019 ISO for this installation to be successful.
 - Admin Username.  Enter a valid Admin Username

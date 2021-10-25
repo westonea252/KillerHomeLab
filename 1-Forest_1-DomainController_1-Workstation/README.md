@@ -38,6 +38,8 @@ AD OU Structure:
 
 Parameters that support changes
 - TimeZone.  Select an appropriate Time Zone.
+- AutoShutdownTime.  24-Hour Clock Time for Auto-Shutdown (Example: 1900 = 7PM)
+- AutoShutdownEmail.  Auto-Shutdown notification Email (Example:  user@domain.com)
 - Admin Username.  Enter a valid Admin Username
 - Admin Password.  Enter a valid Admin Password
 - WindowsServerLicenseType.  Choose Windows Server License Type (Example:  Windows_Server or None)

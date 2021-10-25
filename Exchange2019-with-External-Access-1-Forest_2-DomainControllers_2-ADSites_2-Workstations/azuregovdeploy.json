@@ -154,7 +154,19 @@
       "metadata": {
           "description": "Time Zone"
       }
-    },                     
+    },
+    "AutoShutdownTime": {
+      "type": "string",
+      "metadata": {
+          "description": "24-Hour Clock Time for Auto-Shutdown Example: 1900 = 7PM"
+      }
+    },                                
+    "AutoShutdownEmail": {
+      "type": "string",
+      "metadata": {
+          "description": "Auto-Shutdown notification Email Example:  user@domain.com"
+      }
+    },                                     
     "ExchangeOrgName": {
       "type": "string",
       "defaultValue": "49ers",
@@ -454,24 +466,28 @@
     },            
     "WK1OSVersion": {
       "type": "string",
-      "defaultValue": "win11-21h2-pro",
+      "defaultValue": "Windows-11",
       "allowedValues": [
-        "win11-21h2-pro"
-      ],      
+        "Windows-11",
+        "Windows-10",
+        "Windows-7"
+      ],
       "metadata": {
-          "description": "Worksation1 OS Version"
+          "description": "Workstation1 OS Version"
       }
     },            
     "WK2OSVersion": {
       "type": "string",
-      "defaultValue": "win11-21h2-pro",
+      "defaultValue": "Windows-11",
       "allowedValues": [
-        "win11-21h2-pro"
-      ],      
+        "Windows-11",
+        "Windows-10",
+        "Windows-7"
+      ],
       "metadata": {
-          "description": "Worksation2 OS Version"
+          "description": "Workstation1 OS Version"
       }
-    },             
+    },
     "DC1VMSize": {
         "type": "string",
         "defaultValue": "Standard_D2s_v3",
@@ -620,6 +636,12 @@
     "ExternaldomainName": "[concat(parameters('ExternalDomain'),'.',parameters('ExternalTLD'))]", 
     "BaseDN": "[concat(parameters('SubDNSBaseDN'),'DC=',parameters('InternalDomain'),',DC=',parameters('InternalTLD'))]",
     "WKOUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
+    "WIN11OUPath": "[concat('OU=Windows 11,OU=Workstations,',variables('BaseDN'))]",
+    "WIN10OUPath": "[concat('OU=Windows 10,OU=Workstations,',variables('BaseDN'))]",
+    "WIN7OUPath": "[concat('OU=Windows 7,OU=Workstations,',variables('BaseDN'))]",    
+    "SRV22OUPath": "[concat('OU=Servers2022,OU=Servers,',variables('BaseDN'))]",
+    "SRV19OUPath": "[concat('OU=Server2019,OU=Servers,',variables('BaseDN'))]",
+    "SRV16OUPath": "[concat('OU=Server2016,OU=Servers,',variables('BaseDN'))]",        
     "SRVOUPath": "[concat('OU=Servers,',variables('BaseDN'))]",
     "DB1Name": "[concat(parameters('NamingConvention'),'-19-db01')]",
     "DB2Name": "[concat(parameters('NamingConvention'),'-19-db02')]" ,             
@@ -786,7 +808,16 @@
               },                                                                                                            
               "adminPassword": {
                 "value": "[parameters('adminPassword')]"
-              },                                                                                                                                        
+              },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },               
+              "AutoShutdownTime": {
+                  "value": "[parameters('AutoShutdownTime')]"
+              },              
+              "AutoShutdownEmail": {
+                  "value": "[parameters('AutoShutdownEmail')]"
+              },                                                                                                                                                      
               "location": {
                   "value": "[resourceGroup().location]"
               }
@@ -1228,7 +1259,16 @@
               },                                                                                                            
               "adminPassword": {
                 "value": "[parameters('adminPassword')]"
-              },                                                                                                                                        
+              },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },               
+              "AutoShutdownTime": {
+                  "value": "[parameters('AutoShutdownTime')]"
+              },              
+              "AutoShutdownEmail": {
+                  "value": "[parameters('AutoShutdownEmail')]"
+              },                                                                                                                                                      
               "location": {
                   "value": "[parameters('Location2')]"
               }
@@ -1509,7 +1549,16 @@
               },                                                                                                            
               "adminPassword": {
                 "value": "[parameters('adminPassword')]"
-              },                                                                                                                                        
+              },  
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },               
+              "AutoShutdownTime": {
+                  "value": "[parameters('AutoShutdownTime')]"
+              },              
+              "AutoShutdownEmail": {
+                  "value": "[parameters('AutoShutdownEmail')]"
+              },                                                                                                                                                    
               "location": {
                   "value": "[resourceGroup().location]"
               }
@@ -1750,7 +1799,16 @@
               },                                                                                                            
               "adminPassword": {
                 "value": "[parameters('adminPassword')]"
-              },                                                                                                                                        
+              }, 
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },               
+              "AutoShutdownTime": {
+                  "value": "[parameters('AutoShutdownTime')]"
+              },              
+              "AutoShutdownEmail": {
+                  "value": "[parameters('AutoShutdownEmail')]"
+              },                                                                                                                                                     
               "location": {
                   "value": "[resourceGroup().location]"
               }
@@ -1932,7 +1990,16 @@
               },                                                                                                            
               "adminPassword": {
                 "value": "[parameters('adminPassword')]"
-              },                                                                                                                                        
+              }, 
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },               
+              "AutoShutdownTime": {
+                  "value": "[parameters('AutoShutdownTime')]"
+              },              
+              "AutoShutdownEmail": {
+                  "value": "[parameters('AutoShutdownEmail')]"
+              },                                                                                                                                                     
               "location": {
                   "value": "[resourceGroup().location]"
               }
@@ -2023,7 +2090,16 @@
               },                                                                                                            
               "adminPassword": {
                 "value": "[parameters('adminPassword')]"
-              },                                                                                                                                        
+              }, 
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },               
+              "AutoShutdownTime": {
+                  "value": "[parameters('AutoShutdownTime')]"
+              },              
+              "AutoShutdownEmail": {
+                  "value": "[parameters('AutoShutdownEmail')]"
+              },                                                                                                                                                     
               "location": {
                   "value": "[parameters('Location2')]"
               }
@@ -2120,7 +2196,16 @@
               },                                                                                                            
               "adminPassword": {
                 "value": "[parameters('adminPassword')]"
-              },                                                                                                                                        
+              },  
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },               
+              "AutoShutdownTime": {
+                  "value": "[parameters('AutoShutdownTime')]"
+              },              
+              "AutoShutdownEmail": {
+                  "value": "[parameters('AutoShutdownEmail')]"
+              },                                                                                                                                                    
               "location": {
                   "value": "[resourceGroup().location]"
               }
@@ -2290,7 +2375,16 @@
               },                                                                                                            
               "adminPassword": {
                 "value": "[parameters('adminPassword')]"
-              },                                                                                                                                        
+              },  
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },               
+              "AutoShutdownTime": {
+                  "value": "[parameters('AutoShutdownTime')]"
+              },              
+              "AutoShutdownEmail": {
+                  "value": "[parameters('AutoShutdownEmail')]"
+              },                                                                                                                                                    
               "location": {
                   "value": "[parameters('Location2')]"
               }
@@ -3070,7 +3164,16 @@
               },                                                                                                            
               "adminPassword": {
                 "value": "[parameters('adminPassword')]"
-              },                                                                                                                                        
+              }, 
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },               
+              "AutoShutdownTime": {
+                  "value": "[parameters('AutoShutdownTime')]"
+              },              
+              "AutoShutdownEmail": {
+                  "value": "[parameters('AutoShutdownEmail')]"
+              },                                                                                                                                                     
               "location": {
                   "value": "[resourceGroup().location]"
               }
@@ -3161,7 +3264,16 @@
               },                                                                                                            
               "adminPassword": {
                 "value": "[parameters('adminPassword')]"
-              },                                                                                                                                        
+              },  
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },               
+              "AutoShutdownTime": {
+                  "value": "[parameters('AutoShutdownTime')]"
+              },              
+              "AutoShutdownEmail": {
+                  "value": "[parameters('AutoShutdownEmail')]"
+              },                                                                                                                                                    
               "location": {
                   "value": "[parameters('Location2')]"
               }
@@ -3252,7 +3364,16 @@
               },                                                                                                            
               "adminPassword": {
                 "value": "[parameters('adminPassword')]"
-              },                                                                                                                                        
+              },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },               
+              "AutoShutdownTime": {
+                  "value": "[parameters('AutoShutdownTime')]"
+              },              
+              "AutoShutdownEmail": {
+                  "value": "[parameters('AutoShutdownEmail')]"
+              },                                                                                                                                                     
               "location": {
                   "value": "[resourceGroup().location]"
               }
@@ -3312,7 +3433,16 @@
               },                                                                                                            
               "adminPassword": {
                 "value": "[parameters('adminPassword')]"
-              },                                                                                                                                        
+              },
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },               
+              "AutoShutdownTime": {
+                  "value": "[parameters('AutoShutdownTime')]"
+              },              
+              "AutoShutdownEmail": {
+                  "value": "[parameters('AutoShutdownEmail')]"
+              },                                                                                                                                                      
               "location": {
                   "value": "[resourceGroup().location]"
               }
@@ -3372,7 +3502,16 @@
               },                                                                                                            
               "adminPassword": {
                 "value": "[parameters('adminPassword')]"
-              },                                                                                                                                        
+              }, 
+              "TimeZone": {
+                  "value": "[parameters('TimeZone')]"
+              },               
+              "AutoShutdownTime": {
+                  "value": "[parameters('AutoShutdownTime')]"
+              },              
+              "AutoShutdownEmail": {
+                  "value": "[parameters('AutoShutdownEmail')]"
+              },                                                                                                                                                     
               "location": {
                   "value": "[parameters('Location2')]"
               }
